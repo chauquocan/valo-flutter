@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:valo_flutter_fontend/modules/auth/screens/welcome/welcome_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'dart:convert' show json, base64, ascii;
+//components
+import 'package:valo_flutter_fontend/modules/auth/screens/welcome/welcome_screen.dart';
 
+//secure storage
 final storage = FlutterSecureStorage();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

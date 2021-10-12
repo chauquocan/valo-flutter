@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:valo_flutter_fontend/constrants.dart';
+//components
 import 'package:valo_flutter_fontend/widgets/background.dart';
 import 'package:valo_flutter_fontend/widgets/rounded_button.dart';
 import 'package:valo_flutter_fontend/modules/auth/screens/login/login_screen.dart';
 import 'package:valo_flutter_fontend/modules/auth/screens/register/register_screen.dart';
+//utils
+import 'package:valo_flutter_fontend/constrants.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

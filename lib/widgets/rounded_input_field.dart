@@ -5,12 +5,14 @@ import 'package:valo_flutter_fontend/constrants.dart';
 class RoundedInputField extends StatelessWidget {
   final String? hintText;
   final IconData icon;
+  final Color? textColor;
   final ValueChanged<String>? onChanged;
   final TextEditingController myController = new TextEditingController();
   RoundedInputField({
     Key? key,
     this.hintText,
     this.icon = Icons.person,
+    this.textColor,
     this.onChanged,
   }) : super(key: key);
 
@@ -21,6 +23,7 @@ class RoundedInputField extends StatelessWidget {
         controller: myController,
         onChanged: onChanged,
         cursorColor: kPrimaryColor,
+        style: TextStyle(color: textColor),
         decoration: InputDecoration(
           icon: Icon(
             icon,

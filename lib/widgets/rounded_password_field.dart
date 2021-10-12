@@ -5,11 +5,13 @@ import 'package:valo_flutter_fontend/widgets/text_field_container.dart';
 class RoundedPasswordField extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final String? myHintText;
+  final Color? textColor;
   final TextEditingController myController = new TextEditingController();
   RoundedPasswordField({
     Key? key,
     this.onChanged,
     this.myHintText,
+    this.textColor,
   }) : super(key: key);
 
   @override
@@ -19,6 +21,7 @@ class RoundedPasswordField extends StatelessWidget {
         controller: myController,
         obscureText: true,
         onChanged: onChanged,
+        style: TextStyle(color: textColor),
         cursorColor: kPrimaryColor,
         decoration: InputDecoration(
           hintText: myHintText,

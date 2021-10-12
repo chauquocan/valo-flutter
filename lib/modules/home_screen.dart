@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:valo_flutter_fontend/main.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+// import 'package:shared_preferences/shared_preferences.dart';
+//components
 import 'package:valo_flutter_fontend/modules/auth/screens/login/login_screen.dart';
+import 'package:valo_flutter_fontend/modules/auth/screens/login/login_screen.dart';
+//utils
 import 'package:valo_flutter_fontend/constrants.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -10,8 +16,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  //
-  late SharedPreferences sharedPreferences;
   @override
   void initState() {
     super.initState();
@@ -19,12 +23,15 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   checkLoginStatus() async {
-    sharedPreferences = await SharedPreferences.getInstance();
-    if (sharedPreferences.getString("token") == null) {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (BuildContext context) => LoginScreen()),
-          (Route<dynamic> route) => false);
-    }
+    String vefry = storage.read(key: "jwt").toString();
+    vefry.split('.');
+    // sharedPreferences = await SharedPreferences.getInstance();
+    // print('Token o home screen: ${sharedPreferences.getString("token")}');
+    // if (sharedPreferences.getString("token") == "") {
+    //   Navigator.of(context).pushAndRemoveUntil(
+    //       MaterialPageRoute(builder: (BuildContext context) => LoginScreen()),
+    //       (Route<dynamic> route) => false);
+    // }
   }
 
   @override
@@ -35,7 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: <Widget>[
           TextButton(
             onPressed: () {
-              sharedPreferences.clear();
+              // sharedPreferences.clear();
+              storage.deleteAll();
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
                       builder: (BuildContext context) => LoginScreen()),
@@ -47,31 +55,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Center(
         child: Text('Main Page'),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: Text('JWT'),
-              accountEmail: Text('aercolak@gmail.com'),
-            ),
-            ListTile(
-              title: Text('List Products'),
-              trailing: Icon(Icons.list),
-              onTap: () {},
-            ),
-            ListTile(
-              title: Text('Add Products'),
-              trailing: Icon(Icons.add),
-              onTap: () {},
-            ),
-            ListTile(
-              title: Text('Register User'),
-              trailing: Icon(Icons.person_add),
-              onTap: () {},
-            ),
-          ],
-        ),
       ),
     );
   }
