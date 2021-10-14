@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:valo_chat_app/app/modules/register/register_binding.dart';
 import 'login_controller.dart';
 //components
 import '../../../../main.dart';
@@ -15,7 +18,10 @@ class LoginScreen extends GetView<LoginController> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     RoundedInputField _phoneInput = RoundedInputField(
-      hintText: "Phone number",
+      hintText: "Enter phone number",
+      labelText: 'Phone number:',
+      keyboardType: TextInputType.phone,
+      inputFormat: [FilteringTextInputFormatter.digitsOnly],
       textColor: AppColors.light,
       icon: Icons.phone,
       onChanged: (value) {},
@@ -38,7 +44,7 @@ class LoginScreen extends GetView<LoginController> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(
+                const Text(
                   'ĐĂNG NHẬP',
                   style: TextStyle(
                     color: Colors.white,
@@ -46,7 +52,12 @@ class LoginScreen extends GetView<LoginController> {
                     fontSize: 24,
                   ),
                 ),
-                SizedBox(height: size.height * 0.05),
+                SvgPicture.asset(
+                  'assets/icons/logo.svg',
+                  width: size.width * 0.5,
+                  color: AppColors.light,
+                ),
+                SizedBox(height: size.height * 0.01),
                 _phoneInput,
                 _passwordInput,
                 RoundedButton(
@@ -58,9 +69,7 @@ class LoginScreen extends GetView<LoginController> {
                         _passwordInput.myController.text)),
                 SizedBox(height: size.height * 0.03),
                 AlreadyHaveAnAccountCheck(press: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return RegisterScreen();
-                  }));
+                  Get.off(() => RegisterScreen(), binding: RegisterBinding());
                 }),
               ],
             ),

@@ -16,7 +16,7 @@ class LoginController extends GetxController {
     _showLoading();
     final map = {'username': phoneNumber, 'password': password};
     final response = await userProvider.login(map);
-    print(response.toString());
+    print('Respone: ${response.toString()}');
     if (response.ok) {
       await SharePref.saveUser(response.data!);
       Get.offAll(() => HomeScreen(), binding: HomeBinding());

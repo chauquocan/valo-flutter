@@ -24,15 +24,4 @@ class SharePref {
   static Future logout() async {
     await _pref.clear();
   }
-
-  static Future saveColors(int color) async {
-    final colors = [color, ...getColors()];
-    await _pref.setStringList(
-        'colors', colors.map((e) => e.toString()).toList());
-  }
-
-  static List<int> getColors() {
-    final list = _pref.getStringList('colors')?.map(int.parse).toList() ?? [];
-    return list;
-  }
 }

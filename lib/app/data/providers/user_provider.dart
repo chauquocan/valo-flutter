@@ -7,7 +7,7 @@ import '../models/user.dart';
 
 class UserProvider extends ConnectService {
   static const String loginURL = 'api/auth/signin';
-  static const String registerURL = 'register';
+  static const String registerURL = 'api/auth/register';
 
   Future<NetworkResponse<User>> login(Map map) async {
     try {

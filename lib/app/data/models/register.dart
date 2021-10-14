@@ -4,14 +4,14 @@ import 'user.dart';
 
 class Register {
   Register({
-    required this.code,
+    // required this.code,
     required this.message,
-    this.data,
+    // this.data,
   });
 
-  final int code;
+  // final int code;
   final String message;
-  final User? data;
+  // final User? data;
 
   factory Register.fromRawJson(String str) =>
       Register.fromJson(json.decode(str));
@@ -19,14 +19,14 @@ class Register {
   String toRawJson() => json.encode(toJson());
 
   factory Register.fromJson(Map<String, dynamic> json) => Register(
-        code: json["code"],
+        // code: json["code"],
         message: json["message"],
-        data: User.fromJson(json["data"]),
+        // data: User.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "code": code,
+        // "code": code,
         "message": message,
-        "data": data?.toJson(),
+        // "data": data?.toJson(),
       };
 }
