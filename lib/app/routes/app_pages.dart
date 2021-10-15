@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import 'package:valo_chat_app/app/modules/home/home_screen.dart';
-import 'package:valo_chat_app/app/modules/login/login_screen.dart';
-import 'package:valo_chat_app/app/modules/register/register_screen.dart';
+import 'package:valo_chat_app/app/modules/home/home.dart';
+import 'package:valo_chat_app/app/modules/auth/login/login.dart';
+import 'package:valo_chat_app/app/modules/auth/register/register.dart';
 
 part './app_routes.dart';
 

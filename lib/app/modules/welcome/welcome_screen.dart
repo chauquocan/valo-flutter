@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:valo_chat_app/app/modules/login/login_binding.dart';
-import 'package:valo_chat_app/app/modules/register/register_binding.dart';
+import 'package:valo_chat_app/app/modules/auth/login/login.dart';
 //components
 import 'package:valo_chat_app/app/widgets/widgets.dart';
-import '../login/login_screen.dart';
-import '../register/register_screen.dart';
+import '../auth/login/login.dart';
+import '../auth/register/register.dart';
 //utils
 import 'package:valo_chat_app/app/themes/theme.dart';
 

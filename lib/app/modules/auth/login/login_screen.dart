@@ -1,17 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
-import 'package:valo_chat_app/app/modules/register/register_binding.dart';
-import 'login_controller.dart';
-//components
-import '../../../../main.dart';
-import 'package:valo_chat_app/app/widgets/widgets.dart';
-import '../register/register_screen.dart';
-
-//utils
-import 'package:valo_chat_app/app/themes/theme.dart';
-// import 'package:valo_flutter_fontend/utils/url.dart';
+part of 'login.dart';
 
 class LoginScreen extends GetView<LoginController> {
   @override

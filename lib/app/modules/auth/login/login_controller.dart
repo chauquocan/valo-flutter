@@ -1,11 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/status/http_status.dart';
-import '../../data/providers/user_provider.dart';
-import '../home/home_screen.dart';
-import '../home/home_binding.dart';
-import '../../utils/share_pref.dart';
-import 'package:valo_chat_app/app/widgets/dialog_loading.dart';
+part of 'login.dart';
 
 class LoginController extends GetxController {
   final UserProvider userProvider;

@@ -1,22 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get/get.dart';
-// import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:http/http.dart' as http;
-import 'package:valo_chat_app/app/modules/login/login_binding.dart';
-import 'package:valo_chat_app/app/modules/register/register_binding.dart';
-import 'dart:convert';
-
-//components
-import 'package:valo_chat_app/app/widgets/widgets.dart';
-import '../login/login_screen.dart';
-import '../home/home_screen.dart';
-import 'register_controller.dart';
-
-//utils
-import 'package:valo_chat_app/app/themes/theme.dart';
-// import 'package:valo_flutter_fontend/utils/url.dart';
+part of 'register.dart';
 
 class RegisterScreen extends GetView<RegisterController> {
   const RegisterScreen({Key? key}) : super(key: key);

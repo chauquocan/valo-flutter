@@ -13,6 +13,7 @@ class SharePref {
 
   static Future saveUser(User user) async {
     await _pref.setString('user', user.toRawJson());
+    
   }
 
   static User? getUser() {
