@@ -6,6 +6,7 @@ import 'package:valo_chat_app/app/modules/welcome/welcome_screen.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'app/routes/routes.dart';
 import 'app/utils/share_pref.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,11 +22,12 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Valo getx chat app',
       debugShowCheckedModeBanner: false,
-      defaultTransition: Transition.fade,
       theme: AppTheme.light,
       getPages: AppPages.pages,
-      initialBinding: SharePref.getUser() == null ? null : HomeBinding(),
-      home: SharePref.getUser() == null ? const WelcomeScreen() : HomeScreen(),
+      initialBinding: SharePref.validExpire() == false ? null : HomeBinding(),
+      home: SharePref.validExpire() == false
+          ? const WelcomeScreen()
+          : HomeScreen(),
     );
   }
 }

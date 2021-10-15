@@ -31,7 +31,7 @@ class RegisterScreen extends GetView<RegisterController> {
     return SafeArea(
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.keyboard_backspace_rounded),
+            child: const Icon(Icons.keyboard_backspace_rounded),
             backgroundColor: AppColors.primary,
             onPressed: () {
               Navigator.of(context).pop(true);
