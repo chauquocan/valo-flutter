@@ -11,7 +11,6 @@ import 'package:valo_chat_app/app/modules/home/home.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:pinput/pin_put/pin_put.dart';
-import 'package:country_picker/country_picker.dart';
 
 part 'auth_binding.dart';
 part 'auth_screen.dart';

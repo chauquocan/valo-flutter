@@ -11,10 +11,20 @@ class OtpScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: size.height * .4),
+              Text(
+                'enterotp'.tr,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 24,
+                ),
+              ),
+              
+              SizedBox(height: size.height * 0.1),
               RoundedInputField(
                 controller: authController._otpController,
                 hintText: 'Enter OTP',
+                icon: Icons.sms_rounded,
               ),
               RoundedButton(
                 text: 'submit'.tr,

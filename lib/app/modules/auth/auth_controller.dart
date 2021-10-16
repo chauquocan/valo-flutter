@@ -8,7 +8,11 @@ class AuthController extends GetxController {
   var authState = ''.obs;
   String verificationID = '';
 
-  void _verifyPhoneNumber(String phoneNumber) async {
+  _SignInWithPhoneNumber(String phoneNumber) async {
+    var credential = await auth.signInWithPhoneNumber(phoneNumber);
+  }
+
+  _verifyPhoneNumber(String phoneNumber) async {
     await auth.verifyPhoneNumber(
       //số điện thoại xác thực
       phoneNumber: "+84" + phoneNumber,
@@ -38,7 +42,9 @@ class AuthController extends GetxController {
           verificationId: this.verificationID, smsCode: otp),
     );
     if (credential.user != null) {
-      Get.to(RegisterScreen());
+      Get.to(RegisterScreen(), binding: RegisterBinding());
+    } else {
+      Get.snackbar('Error', 'Wrong OTP');
     }
   }
 }

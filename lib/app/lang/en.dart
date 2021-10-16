@@ -1,6 +1,8 @@
 const Map<String, String> en = {
   'chooselang': 'Choose language',
   'submit': 'Submit',
+  'enterphonenumber': 'Enter your phone number',
+  'enterotp': 'Enter OTP code',
   // 'en': 'English',
   // 'vi': 'Vietnamese',
   'changelang': 'English',

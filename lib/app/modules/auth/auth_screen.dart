@@ -20,8 +20,8 @@ class AuthScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                const Text(
-                  'Nhập OTP',
+                Text(
+                  'enterphonenumber'.tr,
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
