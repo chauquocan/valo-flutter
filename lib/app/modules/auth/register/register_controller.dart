@@ -5,14 +5,16 @@ class RegisterController extends GetxController {
 
   RegisterController({required this.userProvider});
 
-  Future register(String phoneNumber, String password) async {
+  Future register(String phoneNumber, String password, String email) async {
     _showLoading();
-    final map = {'username': phoneNumber, 'password': password};
+    final map = {'username': phoneNumber, 'password': password, 'email': email};
     final response = await userProvider.register(map);
     print('Respone: ${response.toString()}');
     if (response.ok) {
       showInfoDialog('Sign up susscessfully', 'lets sign in');
-      Get.offAll(() => LoginScreen(), binding: LoginBinding());
+      Get.offAll(
+        () => WelcomeScreen(),
+      );
     } else {
       Get.back();
       showInfoDialog('Sign up failed', 'something went wrong');

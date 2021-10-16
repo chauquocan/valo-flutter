@@ -4,14 +4,15 @@ import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/home/home.dart';
 import 'package:valo_chat_app/app/modules/welcome/welcome_screen.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
+import 'package:valo_chat_app/app/utils/app_binding.dart';
 import 'app/routes/routes.dart';
 import 'app/utils/share_pref.dart';
-import 'package:jwt_decode/jwt_decode.dart';
+import 'package:valo_chat_app/app/lang/lang.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await SharePref.initial();
+  await SharePref.init();
   runApp(MyApp());
 }
 
@@ -22,12 +23,14 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Valo getx chat app',
       debugShowCheckedModeBanner: false,
+      translations: TranslationService(),
+      locale: TranslationService.locale,
+      fallbackLocale: TranslationService.fallbackLocale,
       theme: AppTheme.light,
       getPages: AppPages.pages,
-      initialBinding: SharePref.validExpire() == false ? null : HomeBinding(),
-      home: SharePref.validExpire() == false
-          ? const WelcomeScreen()
-          : HomeScreen(),
+      initialBinding: AppBinding(),
+      // SharePref.validExpire() == false ? null : HomeBinding(),
+      home: SharePref.validExpire() == false ? WelcomeScreen() : HomeScreen(),
     );
   }
 }

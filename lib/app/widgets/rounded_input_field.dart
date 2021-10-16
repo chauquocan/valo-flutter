@@ -1,8 +1,9 @@
 part of 'widgets.dart';
 
 class RoundedInputField extends StatelessWidget {
-  final TextEditingController myController = new TextEditingController();
+  final TextEditingController controller;
   final TextInputType keyboardType;
+  final AutofillHints? autofillHints;
   final String labelText;
   final String? hintText;
   final IconData? icon;
@@ -14,6 +15,7 @@ class RoundedInputField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormat;
   RoundedInputField({
     Key? key,
+    required this.controller,
     this.labelText = '',
     this.hintText,
     this.icon,
@@ -23,6 +25,7 @@ class RoundedInputField extends StatelessWidget {
     this.fontSize = 18.0,
     this.password = false,
     this.keyboardType = TextInputType.text,
+    this.autofillHints,
     this.inputFormat,
   }) : super(key: key);
 
@@ -30,16 +33,18 @@ class RoundedInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 15),
+      margin: const EdgeInsets.symmetric(vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 1),
       width: size.width * 0.8,
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(29),
       ),
-      child: TextField(
-        controller: myController,
+      child: TextFormField(
+        controller: controller,
         inputFormatters: inputFormat,
+        keyboardType: keyboardType,
+        // autofillHints: autofillHint,
         onChanged: onChanged,
         cursorColor: AppColors.light,
         obscureText: password,

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get_connect/http/src/status/http_status.dart';
+import 'package:valo_chat_app/app/modules/welcome/welcome.dart';
 import 'dart:convert';
 
 //provider

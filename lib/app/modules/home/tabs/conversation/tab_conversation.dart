@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:valo_chat_app/app/modules/home/home.dart';
+import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
+import 'package:valo_chat_app/app/themes/theme.dart';
 
-class ConversationTab extends StatelessWidget {
-  const ConversationTab({Key? key}) : super(key: key);
-
+class ConversationTab extends GetView<TabConversationController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.amber,
+      appBar: AppBar(
+        title: Text(
+          'chat'.tr,
+          style: TextStyle(color: AppColors.primary),
+        ),
+        backgroundColor: AppColors.light,
+        actions: <Widget>[],
+      ),
       body: SafeArea(
         child: Text('conversations'),
       ),

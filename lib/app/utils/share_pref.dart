@@ -7,7 +7,7 @@ class SharePref {
 
   static late SharedPreferences _pref;
 
-  static Future initial() async {
+  static Future init() async {
     _pref = await SharedPreferences.getInstance();
   }
 
