@@ -29,7 +29,7 @@ class User {
         // phone: json["phone"],
         accessToken: json["accessToken"],
       );
-
+  
   Map<String, dynamic> toJson() => {
         "id": id,
         "username": username,
@@ -39,4 +39,3 @@ class User {
         "accessToken": accessToken,
       };
 }
-

@@ -6,6 +6,6 @@ class AppColors {
   // (0xFF2CAEF8);
   static const Color secondary = Color.fromRGBO(119, 206, 255, 1);
   static const Color light = Colors.white;
+  static const Color dark = Colors.black;
   static const Color hintLight = Colors.white60;
-
 }

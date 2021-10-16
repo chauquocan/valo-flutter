@@ -1,7 +1,7 @@
 part of 'auth.dart';
 
 class AuthScreen extends StatelessWidget {
-  final AuthController authController = Get.put(AuthController());
+  final authController = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,10 @@ class AuthScreen extends StatelessWidget {
                   text: 'submit'.tr,
                   color: Colors.white,
                   textColor: AppColors.primary,
-                  onPressed: () => {},
+                  onPressed: () async {
+                    authController._verifyPhoneNumber(
+                        authController._phoneController.text);
+                  },
                 ),
               ],
             ),

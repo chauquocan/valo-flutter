@@ -46,7 +46,7 @@ class WelcomeScreen extends GetView<WelcomeController> {
                     );
                   },
                   separatorBuilder: (context, index) {
-                    return Divider(
+                    return const Divider(
                       color: Colors.blue,
                     );
                   },
@@ -101,7 +101,10 @@ class WelcomeScreen extends GetView<WelcomeController> {
                 ),
                 SizedBox(height: size.height * 0.1),
                 ElevatedButton(
-                    style: ButtonStyle(),
+                    style: ElevatedButton.styleFrom(
+                      // primary: AppColors.primary.withOpacity(0.5),
+                      primary: AppColors.dark.withOpacity(0.5),
+                    ),
                     onPressed: () {
                       buildLanguageDialog(context);
                     },
