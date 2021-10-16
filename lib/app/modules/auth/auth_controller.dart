@@ -11,11 +11,11 @@ class AuthController extends GetxController {
   void _verifyPhoneNumber(String phoneNumber) async {
     await auth.verifyPhoneNumber(
       //số điện thoại xác thực
-      phoneNumber: "84" + phoneNumber,
+      phoneNumber: "+84" + phoneNumber,
       //nếu xác thực thành công
       verificationCompleted: (phoneAuthCredential) {},
       //nếu xác thực thất bại
-      verificationFailed: (authException) {
+      verificationFailed: (FirebaseAuthException exception) {
         Get.snackbar("Error", "Problem when send the code");
       },
       //Firebase gửi code
@@ -32,7 +32,7 @@ class AuthController extends GetxController {
     );
   }
 
-  void _verifyOTP(String otp) async {
+  _verifyOTP(String otp) async {
     var credential = await auth.signInWithCredential(
       PhoneAuthProvider.credential(
           verificationId: this.verificationID, smsCode: otp),
