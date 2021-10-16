@@ -20,6 +20,15 @@ class AuthScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                const Text(
+                  'Nhập OTP',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 24,
+                  ),
+                ),
+                SizedBox(height: size.height * 0.1),
                 RoundedInputField(
                   controller: authController._phoneController,
                   keyboardType: TextInputType.phone,
