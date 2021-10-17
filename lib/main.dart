@@ -6,20 +6,20 @@ import 'package:valo_chat_app/app/modules/welcome/welcome_screen.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:valo_chat_app/app/utils/app_binding.dart';
 import 'app/routes/routes.dart';
-import 'app/utils/share_pref.dart';
+import 'app/utils/store_service.dart';
 import 'package:valo_chat_app/app/lang/lang.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await SharePref.init();
+  await Storage.init();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print('current id: ${SharePref.getUser()?.id}');
+    print('current id: ${Storage.getUser()?.id}');
     return GetMaterialApp(
       title: 'Valo getx chat app',
       debugShowCheckedModeBanner: false,
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       getPages: AppPages.pages,
       initialBinding: AppBinding(),
       // SharePref.validExpire() == false ? null : HomeBinding(),
-      home: SharePref.validExpire() == false ? WelcomeScreen() : HomeScreen(),
+      home: Storage.validExpire() == false ? WelcomeScreen() : HomeScreen(),
     );
   }
 }

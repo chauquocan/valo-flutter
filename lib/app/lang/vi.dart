@@ -3,6 +3,7 @@ const Map<String, String> vi = {
   'submit': 'Xác nhận',
   'enterphonenumber': 'Nhập số điện thoại',
   'enterotp': 'Nhập code OTP',
+  'loading': 'Đang xử lý...',
   // 'en': 'Tiếng Anh',
   // 'vi': 'Tiếng Việt',
   'changelang': 'Tiếng việt',

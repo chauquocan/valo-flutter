@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:valo_chat_app/app/lang/translation_service.dart';
 import 'package:valo_chat_app/app/modules/auth/auth.dart';
 import 'package:valo_chat_app/app/modules/auth/login/login.dart';
-import 'package:valo_chat_app/app/modules/welcome/welcome_controller.dart';
-//components
 import 'package:valo_chat_app/app/widgets/widgets.dart';
 import '../auth/login/login.dart';
-import '../auth/register/register.dart';
-//utils
 import 'package:valo_chat_app/app/themes/theme.dart';
 
-class WelcomeScreen extends GetView<WelcomeController> {
+class WelcomeScreen extends StatelessWidget {
   final List locale = [
     {'name': 'English', 'locale': const Locale('en', 'US')},
     {'name': 'Vietnamese', 'locale': const Locale('vi', 'VN')},
@@ -29,7 +25,7 @@ class WelcomeScreen extends GetView<WelcomeController> {
         builder: (builder) {
           return AlertDialog(
             title: Text('chooselang'.tr),
-            content: Container(
+            content: SizedBox(
               width: double.maxFinite,
               child: ListView.separated(
                   shrinkWrap: true,
@@ -39,7 +35,6 @@ class WelcomeScreen extends GetView<WelcomeController> {
                       child: GestureDetector(
                         child: Text(locale[index]['name']),
                         onTap: () {
-                          print(locale[index]['name']);
                           updateLanguage(locale[index]['locale']);
                         },
                       ),
@@ -101,14 +96,15 @@ class WelcomeScreen extends GetView<WelcomeController> {
                 ),
                 SizedBox(height: size.height * 0.1),
                 ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      // primary: AppColors.primary.withOpacity(0.5),
-                      primary: AppColors.dark.withOpacity(0.5),
-                    ),
-                    onPressed: () {
-                      buildLanguageDialog(context);
-                    },
-                    child: Text('changelang'.tr)),
+                  style: ElevatedButton.styleFrom(
+                    // primary: AppColors.primary.withOpacity(0.5),
+                    primary: AppColors.dark.withOpacity(0.5),
+                  ),
+                  onPressed: () {
+                    buildLanguageDialog(context);
+                  },
+                  child: Text('changelang'.tr),
+                ),
               ],
             ),
           ),

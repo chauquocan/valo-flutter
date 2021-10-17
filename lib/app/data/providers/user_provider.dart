@@ -9,12 +9,12 @@ class UserProvider extends ConnectService {
   static const String loginURL = 'api/auth/signin';
   static const String registerURL = 'api/auth/register';
 
-  Future<NetworkResponse<User>> login(Map map) async {
+  Future<NetworkResponse<UserModel>> login(Map map) async {
     try {
       final response = await post(loginURL, data: map);
       return NetworkResponse.fromResponse(
         response,
-        (json) => User.fromJson(json),
+        (json) => UserModel.fromJson(json),
       );
     } on DioError catch (e, s) {
       print(e.error);

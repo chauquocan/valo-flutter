@@ -12,7 +12,7 @@ class AuthScreen extends StatelessWidget {
           child: const Icon(Icons.keyboard_backspace_rounded),
           backgroundColor: AppColors.primary,
           onPressed: () {
-            Navigator.of(context).pop(true);
+            Get.back();
           }),
       body: SafeArea(
         child: Background(

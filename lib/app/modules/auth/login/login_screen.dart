@@ -10,7 +10,7 @@ class LoginScreen extends GetView<LoginController> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.keyboard_backspace_rounded),
+            child: const Icon(Icons.keyboard_backspace_rounded),
             backgroundColor: AppColors.primary,
             onPressed: () {
               Navigator.of(context).pop(true);
@@ -20,14 +20,6 @@ class LoginScreen extends GetView<LoginController> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                // const Text(
-                //   'ĐĂNG NHẬP',
-                //   style: TextStyle(
-                //     color: Colors.white,
-                //     fontWeight: FontWeight.w700,
-                //     fontSize: 24,
-                //   ),
-                // ),
                 SvgPicture.asset(
                   'assets/icons/logo.svg',
                   width: size.width * 0.5,

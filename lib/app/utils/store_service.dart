@@ -2,8 +2,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import '../data/models/user.dart';
 
-class SharePref {
-  SharePref._();
+class Storage {
+  Storage._();
 
   static late SharedPreferences _pref;
 
@@ -11,19 +11,20 @@ class SharePref {
     _pref = await SharedPreferences.getInstance();
   }
 
-  static Future saveUser(User user) async {
+  static Future saveUser(UserModel user) async {
     await _pref.setString('user', user.toRawJson());
   }
 
-  static User? getUser() {
+  static UserModel? getUser() {
     final raw = _pref.getString('user');
     if (raw == null) return null;
-    return User.fromRawJson(raw);
+    return UserModel.fromRawJson(raw);
   }
 
+//check token is expired
   static bool validExpire() {
     if (getUser() != null) {
-      String token = SharePref.getUser()!.accessToken.toString();
+      String token = Storage.getUser()!.accessToken.toString();
       bool isExpire = Jwt.isExpired(token);
       if (!isExpire) {
         return true;

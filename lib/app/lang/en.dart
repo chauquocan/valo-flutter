@@ -3,6 +3,7 @@ const Map<String, String> en = {
   'submit': 'Submit',
   'enterphonenumber': 'Enter your phone number',
   'enterotp': 'Enter OTP code',
+  'loading': 'Loading...',
   // 'en': 'English',
   // 'vi': 'Vietnamese',
   'changelang': 'English',

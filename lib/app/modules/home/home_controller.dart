@@ -20,7 +20,7 @@ class HomeController extends GetxController {
       inactiveColorPrimary: CupertinoColors.systemGrey,
     ),
     PersistentBottomNavBarItem(
-      icon: Icon(Icons.group),
+      icon: Icon(Icons.groups),
       title: 'contact'.tr,
       activeColorPrimary: AppColors.secondary,
       inactiveColorPrimary: CupertinoColors.systemGrey,
