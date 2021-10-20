@@ -33,6 +33,7 @@ class Storage {
     return false;
   }
 
+  //Log out
   static Future logout() async {
     await _pref.clear();
   }

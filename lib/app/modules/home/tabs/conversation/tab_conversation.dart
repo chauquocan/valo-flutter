@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:valo_chat_app/app/modules/home/home.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:valo_chat_app/app/widgets/custom/customcard.dart';
 
-class ConversationTab extends GetView<TabConversationController> {
-  const ConversationTab({Key? key}) : super(key: key);
+class ConversationTab extends StatelessWidget {
+  TabConversationController controller = Get.put(TabConversationController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
