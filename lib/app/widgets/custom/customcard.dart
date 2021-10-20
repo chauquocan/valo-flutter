@@ -23,7 +23,7 @@ class CustomCard extends StatelessWidget {
               backgroundColor: Colors.blueGrey,
               radius: 30,
               child: SvgPicture.asset(
-                chat!.isGroup
+                chat.isGroup
                     ? 'assets/icons/logo.svg'
                     : 'assets/icons/signup.svg',
                 color: AppColors.secondary,
@@ -32,7 +32,7 @@ class CustomCard extends StatelessWidget {
               ),
             ),
             title: Text(
-              chat!.name,
+              chat.name,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             trailing: Text(chat!.time),
