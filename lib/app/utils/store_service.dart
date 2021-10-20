@@ -22,7 +22,7 @@ class Storage {
   }
 
 //check token is expired
-  static bool validExpire() {
+  static bool ExpireToken() {
     if (getUser() != null) {
       String token = Storage.getUser()!.accessToken.toString();
       bool isExpire = Jwt.isExpired(token);

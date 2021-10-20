@@ -29,8 +29,7 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.light,
       getPages: AppPages.pages,
       initialBinding: AppBinding(),
-      // SharePref.validExpire() == false ? null : HomeBinding(),
-      home: Storage.validExpire() == false ? WelcomeScreen() : HomeScreen(),
+      home: Storage.ExpireToken() == false ? WelcomeScreen() : HomeScreen(),
     );
   }
 }

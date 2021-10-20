@@ -6,6 +6,7 @@ import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:valo_chat_app/app/widgets/custom/customcard.dart';
 
 class ConversationTab extends GetView<TabConversationController> {
+  const ConversationTab({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -14,19 +14,19 @@ class HomeController extends GetxController {
 
   final items = [
     PersistentBottomNavBarItem(
-      icon: Icon(Icons.chat_rounded),
+      icon: const Icon(Icons.chat_rounded),
       title: 'chat'.tr,
       activeColorPrimary: AppColors.secondary,
       inactiveColorPrimary: CupertinoColors.systemGrey,
     ),
     PersistentBottomNavBarItem(
-      icon: Icon(Icons.groups),
+      icon: const Icon(Icons.groups),
       title: 'contact'.tr,
       activeColorPrimary: AppColors.secondary,
       inactiveColorPrimary: CupertinoColors.systemGrey,
     ),
     PersistentBottomNavBarItem(
-        icon: Icon(Icons.person),
+        icon: const Icon(Icons.person),
         title: 'personal'.tr,
         activeColorPrimary: AppColors.secondary,
         inactiveColorPrimary: CupertinoColors.systemGrey),
