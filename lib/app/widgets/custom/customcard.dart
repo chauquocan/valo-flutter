@@ -35,7 +35,7 @@ class CustomCard extends StatelessWidget {
               chat.name,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-            trailing: Text(chat!.time),
+            trailing: Text(chat.time),
             subtitle: Row(
               children: [
                 Icon(Icons.done_all),
@@ -43,7 +43,7 @@ class CustomCard extends StatelessWidget {
                   width: 3,
                 ),
                 Text(
-                  chat!.currentMessage,
+                  chat.currentMessage,
                   style: const TextStyle(fontSize: 13),
                 ),
               ],
