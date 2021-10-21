@@ -12,10 +12,21 @@ class ConversationTab extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             'chat'.tr,
-            style: TextStyle(color: AppColors.primary),
+            style: TextStyle(color: AppColors.light),
           ),
-          backgroundColor: AppColors.light,
-          actions: <Widget>[],
+          backgroundColor: Colors.lightBlue,
+          actions: [
+            IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+            PopupMenuButton<String>(onSelected: (value) {
+              print(value);
+            }, itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem(child: Text("New friend"), value: "New friend"),
+                PopupMenuItem(child: Text("New group"), value: "New group"),
+                PopupMenuItem(child: Text("Setting"), value: "Setting"),
+              ];
+            })
+          ],
         ),
         body: ListView.builder(
           itemBuilder: (context, index) => CustomCard(
