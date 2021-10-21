@@ -4,6 +4,8 @@ import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controll
 import 'package:valo_chat_app/app/themes/theme.dart';
 
 class ContactTab extends GetView<TabContactController> {
+  const ContactTab({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

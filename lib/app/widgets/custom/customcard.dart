@@ -12,9 +12,9 @@ class CustomCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.to(ChatScreen(
-          chatModel: chat,
-        ));
+        Get.to(() => ChatScreen(
+              chatModel: chat,
+            ));
       },
       child: Column(
         children: [

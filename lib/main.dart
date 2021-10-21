@@ -17,9 +17,10 @@ Future main() async {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    print('current id: ${Storage.getUser()?.id}');
+    print('current username: ${Storage.getUser()?.username}');
     return GetMaterialApp(
       title: 'Valo getx chat app',
       debugShowCheckedModeBanner: false,
