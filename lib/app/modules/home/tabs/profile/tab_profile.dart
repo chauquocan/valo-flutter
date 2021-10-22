@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/profile/tab_profile_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
+import 'package:valo_chat_app/app/widgets/widget_appbar.dart';
+
+import 'body.dart';
 
 class TabProfile extends GetView<TabProfileController> {
   const TabProfile({Key? key}) : super(key: key);
@@ -9,25 +13,26 @@ class TabProfile extends GetView<TabProfileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'personal'.tr,
-          style: TextStyle(color: AppColors.primary),
-        ),
-        backgroundColor: AppColors.light,
-        actions: <Widget>[
-          IconButton(
-            onPressed: () => controller.logout(),
-            icon: const Icon(
-              Icons.login_rounded,
-              color: AppColors.primary,
-            ),
-          ),
-        ],
+      appBar: _appBar(),
+      body: Body(),
+    );
+  }
+
+  AppBar _appBar() {
+    return AppBar(
+      // actions: <Widget>[
+      //   IconButton(
+      //     // chuyen nut nay thanh nut back
+      //     onPressed: () => Get.back(),
+      //     icon: Icon(Icons.arrow_back),
+      //     color: AppColors.light,
+      //   ),
+      // ],
+      title: Text(
+        'personal'.tr,
+        style: TextStyle(color: AppColors.light),
       ),
-      body: SafeArea(
-        child: Text('profile'),
-      ),
+      backgroundColor: Colors.lightBlue,
     );
   }
 }
