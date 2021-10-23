@@ -6,7 +6,6 @@ import 'package:valo_chat_app/app/data/models/chat.dart';
 import 'package:valo_chat_app/app/modules/chat/ui/own_message.dart';
 import 'package:valo_chat_app/app/modules/chat/ui/reply_message.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'chat_controller.dart';
 
 class ChatScreen extends GetView<ChatController> {
@@ -41,6 +40,38 @@ class ChatScreen extends GetView<ChatController> {
                       message: "okeee",
                       time: "12:0",
                     ),
+                    OwnMessage(
+                      message: "mesageadsada",
+                      time: "12:0",
+                    ),
+                    ReplyMessage(
+                      message: "okeee",
+                      time: "12:0",
+                    ),
+                    OwnMessage(
+                      message: "mesageadsada",
+                      time: "12:0",
+                    ),
+                    ReplyMessage(
+                      message: "okeee",
+                      time: "12:0",
+                    ),
+                    OwnMessage(
+                      message: "mesageadsada",
+                      time: "12:0",
+                    ),
+                    ReplyMessage(
+                      message: "okeee",
+                      time: "12:0",
+                    ),
+                    OwnMessage(
+                      message: "mesageadsada",
+                      time: "12:0",
+                    ),
+                    ReplyMessage(
+                      message: "okeee",
+                      time: "12:0",
+                    ),
                   ],
                 ),
                 Align(
@@ -56,7 +87,7 @@ class ChatScreen extends GetView<ChatController> {
                           child: TextFormField(
                             textAlignVertical: TextAlignVertical.center,
                             keyboardType: TextInputType.multiline,
-                            maxLines: 6,
+                            maxLines: 5,
                             minLines: 1,
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -87,7 +118,7 @@ class ChatScreen extends GetView<ChatController> {
                         child: CircleAvatar(
                           radius: 25,
                           child: IconButton(
-                              onPressed: () {}, icon: Icon(Icons.mic)),
+                              onPressed: () {}, icon: Icon(Icons.send)),
                         ),
                       )
                     ],
