@@ -13,6 +13,8 @@ class RoundedInputField extends StatelessWidget {
   final bool password;
   final ValueChanged<String>? onChanged;
   final List<TextInputFormatter>? inputFormat;
+  final BorderRadius? border;
+  final double? sizeInput;
   RoundedInputField({
     Key? key,
     required this.controller,
@@ -27,6 +29,8 @@ class RoundedInputField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.autofillHints,
     this.inputFormat,
+    this.border,
+    this.sizeInput,
   }) : super(key: key);
 
   @override
@@ -35,13 +39,14 @@ class RoundedInputField extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 1),
-      width: size.width * 0.8,
+      width: sizeInput ?? size.width * 0.8,
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(29),
+        borderRadius: border ?? BorderRadius.circular(29),
       ),
       child: TextFormField(
         controller: controller,
+
         inputFormatters: inputFormat,
         keyboardType: keyboardType,
         // autofillHints: autofillHint,

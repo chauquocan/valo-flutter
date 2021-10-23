@@ -7,7 +7,6 @@ class AuthScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.keyboard_backspace_rounded),
           backgroundColor: AppColors.primary,
@@ -29,22 +28,41 @@ class AuthScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: size.height * 0.1),
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.secondary,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: CountryCodePicker(
+                    initialSelection: 'VN',
+                    favorite: const ['+84', 'VN'],
+                    showCountryOnly: true,
+                    onChanged: print,
+                  ),
+                ),
                 RoundedInputField(
                   controller: authController._phoneController,
+                  sizeInput: size.width * 0.5,
                   keyboardType: TextInputType.phone,
                   inputFormat: [FilteringTextInputFormatter.digitsOnly],
                   labelText: 'Phone number:',
-                  hintText: '+84',
+                  hintText: 'enterphonenumber'.tr,
                   icon: Icons.phone_android,
                   onChanged: (value) {},
                 ),
                 RoundedButton(
-                  text: 'submit'.tr,
+                  text: 'sendOTP'.tr,
                   color: Colors.white,
                   textColor: AppColors.primary,
                   onPressed: () async {
                     authController._verifyPhoneNumber(
                         authController._phoneController.text);
+                  },
+                ),
+                AlreadyHaveAnAccountCheck(
+                  login: false,
+                  press: () {
+                    Get.off(() => LoginScreen(), binding: LoginBinding());
                   },
                 ),
               ],
@@ -54,4 +72,16 @@ class AuthScreen extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildDropdownItem(Country country) => Container(
+        child: Row(
+          children: <Widget>[
+            CountryPickerUtils.getDefaultFlagImage(country),
+            SizedBox(
+              width: 8.0,
+            ),
+            Text("+${country.phoneCode}(${country.isoCode})"),
+          ],
+        ),
+      );
 }

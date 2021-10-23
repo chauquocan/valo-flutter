@@ -53,6 +53,8 @@ dependencies:
   google_maps_flutter: ^2.0.11
   jwt_decode: ^0.3.1
   emoji_picker: ^0.0.2
+  country_pickers: ^2.0.0
+  country_code_picker: ^2.0.2
 dev_dependencies:
   flutter_launcher_icons: ^0.9.2
   flutter_native_splash: ^1.2.4

@@ -1,8 +1,15 @@
+import 'package:country_code_picker/country_code_picker.dart';
+import 'package:country_pickers/country.dart';
+import 'package:country_pickers/country_picker_dropdown.dart';
+import 'package:country_pickers/country_pickers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:valo_chat_app/app/data/models/register.dart';
 import 'package:valo_chat_app/app/data/models/user.dart';
 import 'package:valo_chat_app/app/modules/auth/login/login.dart';

@@ -60,12 +60,7 @@ class RegisterScreen extends GetView<RegisterController> {
                     onPressed: () => controller.register(_phoneInput.text,
                         _passwordInput.text, _emailInput.text)),
                 SizedBox(height: size.height * 0.03),
-                AlreadyHaveAnAccountCheck(
-                  login: false,
-                  press: () {
-                    Get.off(() => LoginScreen(), binding: LoginBinding());
-                  },
-                ),
+                 
               ],
             ),
           ),

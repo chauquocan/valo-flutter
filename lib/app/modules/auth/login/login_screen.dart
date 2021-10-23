@@ -54,7 +54,7 @@ class LoginScreen extends GetView<LoginController> {
                 ),
                 SizedBox(height: size.height * 0.03),
                 AlreadyHaveAnAccountCheck(press: () {
-                  Get.off(() => RegisterScreen(), binding: RegisterBinding());
+                  Get.off(() => AuthScreen(), binding: AuthBinding());
                 }),
               ],
             ),
