@@ -14,9 +14,10 @@ class AuthController extends GetxController {
   }
 
   _verifyPhoneNumber(String phoneNumber) async {
+    _showLoading();
     await auth.verifyPhoneNumber(
       //số điện thoại xác thực
-      phoneNumber: '+84' + phoneNumber,
+      phoneNumber: "+" + phoneNumber,
       //nếu xác thực thành công
       verificationCompleted: (phoneAuthCredential) {
         loading.value = false;
@@ -35,19 +36,21 @@ class AuthController extends GetxController {
       },
       //thời gian code hết hạn
       codeAutoRetrievalTimeout: (id) {
-        this.verificationID = id;
+        verificationID = id;
       },
-      timeout: Duration(seconds: 60),
+
+      timeout: const Duration(seconds: 60),
     );
   }
 
   _verifyOTP(String otp) async {
+    _showLoading();
     var credential = await auth.signInWithCredential(
       PhoneAuthProvider.credential(
           verificationId: this.verificationID, smsCode: otp),
     );
     if (credential.user != null) {
-      Get.off(RegisterScreen(), binding: RegisterBinding());
+      Get.offAll(RegisterScreen(), binding: RegisterBinding());
     } else {
       Get.snackbar('Error', 'Wrong OTP');
     }
@@ -55,5 +58,13 @@ class AuthController extends GetxController {
 
   void _showLoading() {
     Get.dialog(const DialogLoading());
+  }
+
+  void showInfoDialog(String title, String content) {
+    Get.dialog(AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(29)),
+      title: Text(title),
+      content: Text(content),
+    ));
   }
 }

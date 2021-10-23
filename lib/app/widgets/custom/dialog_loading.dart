@@ -9,7 +9,9 @@ class DialogLoading extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return AlertDialog(
-      title: const Center(child: CupertinoActivityIndicator()),
+      title: const Center(
+        child: CircularProgressIndicator(),
+      ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(29)),
       content: Row(
         mainAxisAlignment: MainAxisAlignment.center,

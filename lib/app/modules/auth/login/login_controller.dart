@@ -2,10 +2,11 @@ part of 'login.dart';
 
 class LoginController extends GetxController {
   final UserProvider userProvider;
-  var loading= false.obs;
+  var isLoading = false.obs;
   LoginController({required this.userProvider});
 
   Future login(String phoneNumber, String password) async {
+    _showLoading();
     final map = {'username': phoneNumber, 'password': password};
     final response = await userProvider.login(map);
     print('Respone: ${response.toString()}');

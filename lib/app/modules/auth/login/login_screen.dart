@@ -8,7 +8,6 @@ class LoginScreen extends GetView<LoginController> {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
         floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.keyboard_backspace_rounded),
             backgroundColor: AppColors.primary,
@@ -49,8 +48,9 @@ class LoginScreen extends GetView<LoginController> {
                   text: 'signin'.tr.toUpperCase(),
                   color: Colors.white,
                   textColor: AppColors.primary,
-                  onPressed: () =>
-                      controller.login(_phoneInput.text, _passwordInput.text),
+                  onPressed: () => {
+                    controller.login(_phoneInput.text, _passwordInput.text),
+                  },
                 ),
                 SizedBox(height: size.height * 0.03),
                 AlreadyHaveAnAccountCheck(press: () {
@@ -63,13 +63,4 @@ class LoginScreen extends GetView<LoginController> {
       ),
     );
   }
-
-  // Future<String?> attemptLogIn(String username, String password) async {
-  //   Map<String, String> headers = {"Content-Type": "application/json"};
-  //   var res = await http.post(Uri.parse('${baseURL}/auth/signin'),
-  //       body: jsonEncode({"username": username, "password": password}),
-  //       headers: headers);
-  //   if (res.statusCode == 200) return res.body;
-  //   return null;
-  // }
 }
