@@ -35,15 +35,35 @@ class LoginScreen extends GetView<LoginController> {
                   icon: Icons.phone,
                   onChanged: (value) {},
                 ),
-                RoundedInputField(
-                  controller: _passwordInput,
-                  hintText: 'Enter Password',
-                  labelText: 'Password:',
-                  password: true,
-                  icon: Icons.lock,
-                  textColor: AppColors.light,
-                  onChanged: (value) {},
-                ),
+                Obx(() => RoundedInputField(
+                      controller: _passwordInput,
+                      hintText: 'Enter Password',
+                      labelText: 'Password:',
+                      password: controller._showPass.value,
+                      icon: Icons.lock,
+                      textColor: AppColors.light,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Password is required.';
+                        }
+
+                        if (value.length < 6 || value.length > 15) {
+                          return 'Password should be 6~15 characters';
+                        }
+
+                        return null;
+                      },
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          controller.onShowPass();
+                        },
+                        icon: Icon(
+                          controller._showPass.value
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                      ),
+                    )),
                 RoundedButton(
                   text: 'signin'.tr.toUpperCase(),
                   color: Colors.white,

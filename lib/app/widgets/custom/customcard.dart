@@ -33,13 +33,13 @@ class CustomCard extends StatelessWidget {
             ),
             title: Text(
               chat.name,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             trailing: Text(chat.time),
             subtitle: Row(
               children: [
                 Icon(Icons.done_all),
-                SizedBox(
+                const SizedBox(
                   width: 3,
                 ),
                 Text(
@@ -49,8 +49,8 @@ class CustomCard extends StatelessWidget {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(right: 20, left: 80),
+          const Padding(
+            padding: EdgeInsets.only(right: 20, left: 80),
             child: Divider(
               thickness: 1,
             ),

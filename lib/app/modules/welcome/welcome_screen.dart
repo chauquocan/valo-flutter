@@ -94,15 +94,26 @@ class WelcomeScreen extends StatelessWidget {
                   color: AppColors.light,
                   textColor: AppColors.primary,
                 ),
-                SizedBox(height: size.height * 0.1),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: AppColors.primary,
-                  ),
+                // SizedBox(height: size.height * 0.15),
+                TextButton(
                   onPressed: () {
                     buildLanguageDialog(context);
                   },
-                  child: Text('changelang'.tr),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'changelang'.tr,
+                        style: const TextStyle(
+                            color: AppColors.light,
+                            decoration: TextDecoration.underline),
+                      ),
+                      const Icon(
+                        Icons.arrow_drop_down_outlined,
+                        color: AppColors.light,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

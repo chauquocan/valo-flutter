@@ -11,6 +11,8 @@ const Map<String, String> en = {
   'signin': 'Sign in',
   'signup': 'Sign up',
   'logout': 'Log out',
+  'donthaveaccount': 'Don’t have an account? ',
+  'haveaccount': 'Already have an account? ',
   'chat': 'Chat',
   'contact': 'Contact',
   'personal': 'Personal',

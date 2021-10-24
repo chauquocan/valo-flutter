@@ -3,21 +3,18 @@ part of 'auth.dart';
 class AuthController extends GetxController {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _otpController = TextEditingController();
+
   late AuthCredential phoneAuthCredential;
   FirebaseAuth auth = FirebaseAuth.instance;
   var authState = ''.obs;
   String verificationID = '';
   var loading = false.obs;
-
-  _SignInWithPhoneNumber(String phoneNumber) async {
-    var credential = await auth.signInWithPhoneNumber(phoneNumber);
-  }
+  String countryCode = '';
 
   _verifyPhoneNumber(String phoneNumber) async {
-    _showLoading();
     await auth.verifyPhoneNumber(
       //số điện thoại xác thực
-      phoneNumber: "+" + phoneNumber,
+      phoneNumber: countryCode + phoneNumber,
       //nếu xác thực thành công
       verificationCompleted: (phoneAuthCredential) {
         loading.value = false;
@@ -38,7 +35,6 @@ class AuthController extends GetxController {
       codeAutoRetrievalTimeout: (id) {
         verificationID = id;
       },
-
       timeout: const Duration(seconds: 60),
     );
   }
@@ -47,10 +43,10 @@ class AuthController extends GetxController {
     _showLoading();
     var credential = await auth.signInWithCredential(
       PhoneAuthProvider.credential(
-          verificationId: this.verificationID, smsCode: otp),
+          verificationId: verificationID, smsCode: otp),
     );
     if (credential.user != null) {
-      Get.offAll(RegisterScreen(), binding: RegisterBinding());
+      Get.offAllNamed('/register');
     } else {
       Get.snackbar('Error', 'Wrong OTP');
     }
@@ -66,5 +62,12 @@ class AuthController extends GetxController {
       title: Text(title),
       content: Text(content),
     ));
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+    _phoneController.dispose();
+    _otpController.dispose();
   }
 }

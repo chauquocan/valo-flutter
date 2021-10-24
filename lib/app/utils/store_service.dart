@@ -28,6 +28,9 @@ class Storage {
       bool isExpire = Jwt.isExpired(token);
       if (!isExpire) {
         return true;
+      } else {
+        _pref.remove('user');
+        return false;
       }
     }
     return false;

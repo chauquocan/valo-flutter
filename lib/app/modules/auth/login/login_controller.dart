@@ -2,6 +2,7 @@ part of 'login.dart';
 
 class LoginController extends GetxController {
   final UserProvider userProvider;
+  var _showPass = true.obs;
   var isLoading = false.obs;
   LoginController({required this.userProvider});
 
@@ -36,4 +37,6 @@ class LoginController extends GetxController {
       content: Text(content),
     ));
   }
+
+  void onShowPass() => _showPass.value = !_showPass.value;
 }

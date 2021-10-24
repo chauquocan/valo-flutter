@@ -1,6 +1,8 @@
 part of 'auth.dart';
 
 class AuthScreen extends StatelessWidget {
+  AuthScreen({Key? key}) : super(key: key);
+
   final authController = Get.put(AuthController());
 
   @override
@@ -21,7 +23,7 @@ class AuthScreen extends StatelessWidget {
               children: <Widget>[
                 Text(
                   'enterphonenumber'.tr,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
                     fontSize: 24,
@@ -30,31 +32,74 @@ class AuthScreen extends StatelessWidget {
                 SizedBox(height: size.height * 0.1),
                 Container(
                   decoration: BoxDecoration(
-                    color: AppColors.secondary,
-                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(),
+                    borderRadius: BorderRadius.circular(29),
+                    color: AppColors.hintLight,
                   ),
-                  child: CountryCodePicker(
-                    initialSelection: 'VN',
-                    favorite: const ['+84', 'VN'],
-                    showCountryOnly: true,
-                    onChanged: print,
+                  height: size.height * 0.1,
+                  width: size.width * 0.95,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                        width: size.width * 0.3,
+                        height: size.height * 0.1,
+                        child: CountryCodePicker(
+                          textStyle: const TextStyle(color: AppColors.dark),
+                          alignLeft: true,
+                          initialSelection: 'VN',
+                          favorite: const ['+84', 'VN'],
+                          dialogSize: Size(size.width * 0.8, size.height * 0.4),
+                          showCountryOnly: true,
+                          onChanged: (value) {
+                            authController.countryCode =
+                                value.dialCode.toString();
+                          },
+                          onInit: (value) => authController.countryCode =
+                              value!.dialCode.toString(),
+                        ),
+                      ),
+                      SizedBox(
+                        width: size.width * 0.6,
+                        height: size.height * 0.1,
+                        child: TextFormField(
+                          controller: authController._phoneController,
+                          keyboardType: TextInputType.phone,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          style: const TextStyle(
+                            color: AppColors.dark,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.normal,
+                          ),
+                          decoration: InputDecoration(
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            labelText: 'Phone number:',
+                            labelStyle: const TextStyle(
+                              fontSize: 16.0,
+                              color: AppColors.dark,
+                              height: 0.2,
+                              fontWeight: FontWeight.normal,
+                            ),
+                            hintText: 'enterphonenumber'.tr,
+                            hintStyle: const TextStyle(
+                              color: AppColors.dark,
+                            ),
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                RoundedInputField(
-                  controller: authController._phoneController,
-                  sizeInput: size.width * 0.5,
-                  keyboardType: TextInputType.phone,
-                  inputFormat: [FilteringTextInputFormatter.digitsOnly],
-                  labelText: 'Phone number:',
-                  hintText: 'enterphonenumber'.tr,
-                  icon: Icons.phone_android,
-                  onChanged: (value) {},
                 ),
                 RoundedButton(
                   text: 'sendOTP'.tr,
                   color: Colors.white,
                   textColor: AppColors.primary,
                   onPressed: () async {
+                    print(authController.countryCode +
+                        authController._phoneController.text);
                     authController._verifyPhoneNumber(
                         authController._phoneController.text);
                   },
@@ -62,7 +107,7 @@ class AuthScreen extends StatelessWidget {
                 AlreadyHaveAnAccountCheck(
                   login: false,
                   press: () {
-                    Get.off(() => LoginScreen(), binding: LoginBinding());
+                    Get.offNamed('/login');
                   },
                 ),
               ],
@@ -72,16 +117,4 @@ class AuthScreen extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildDropdownItem(Country country) => Container(
-        child: Row(
-          children: <Widget>[
-            CountryPickerUtils.getDefaultFlagImage(country),
-            SizedBox(
-              width: 8.0,
-            ),
-            Text("+${country.phoneCode}(${country.isoCode})"),
-          ],
-        ),
-      );
 }

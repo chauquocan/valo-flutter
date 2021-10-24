@@ -11,6 +11,8 @@ const Map<String, String> vi = {
   'signin': 'Đăng nhập',
   'signup': 'Đăng ký',
   'logout': 'Đăng xuất',
+  'donthaveaccount': 'Không có tài khoản? ',
+  'haveaccount': 'Đã có tài khoản? ',
   'chat': 'Tin nhắn',
   'contact': 'Bạn bè',
   'personal': 'Cá nhân',
