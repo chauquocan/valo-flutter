@@ -6,67 +6,54 @@ class RegisterScreen extends GetView<RegisterController> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    RoundedInputField _phoneInput = RoundedInputField(
-      hintText: "Please enter phone number",
-      textColor: AppColors.light,
-      icon: Icons.phone,
-      onChanged: (value) {},
-    );
-    RoundedInputField _emailInput = RoundedInputField(
-      hintText: "Please enter email",
-      textColor: AppColors.light,
-      icon: Icons.email,
-      onChanged: (value) {},
-    );
-    RoundedPasswordField _passwordInput = RoundedPasswordField(
-      myHintText: 'Please enter password',
-      textColor: AppColors.light,
-      onChanged: (value) {},
-    );
-    RoundedPasswordField _confirmPasswordInput = RoundedPasswordField(
-      myHintText: 'Please confirm password',
-      textColor: AppColors.light,
-      onChanged: (value) {},
-    );
     return SafeArea(
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.keyboard_backspace_rounded),
-            backgroundColor: AppColors.primary,
-            onPressed: () {
-              Navigator.of(context).pop(true);
-            }),
+          child: const Icon(Icons.keyboard_backspace_rounded),
+          backgroundColor: AppColors.primary,
+          onPressed: () => Get.back(),
+        ),
         body: Background(
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                const Text(
-                  'ĐĂNG KÝ',
-                  style: TextStyle(
+                Text(
+                  'signup'.toUpperCase().tr,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
                     fontSize: 24,
                   ),
                 ),
                 SizedBox(height: size.height * 0.05),
-                _phoneInput,
-                // _emailInput,
-                _passwordInput,
-                // _confirmPasswordInput,
+                RoundedInputField(
+                  controller: controller._phoneInput,
+                  hintText: "Please enter phone number",
+                  textColor: AppColors.light,
+                  icon: Icons.phone,
+                ),
+                RoundedInputField(
+                  controller: controller._emailInput,
+                  hintText: "Please enter email",
+                  textColor: AppColors.light,
+                  icon: Icons.email,
+                ),
+                RoundedInputField(
+                  controller: controller._passwordInput,
+                  hintText: "Please enter password",
+                  textColor: AppColors.light,
+                  icon: Icons.email,
+                ),
                 RoundedButton(
-                    text: 'SIGN UP',
-                    color: Colors.white,
-                    textColor: AppColors.primary,
-                    onPressed: () => controller.register(
-                        _phoneInput.myController.text,
-                        _passwordInput.myController.text)),
-                SizedBox(height: size.height * 0.03),
-                AlreadyHaveAnAccountCheck(
-                  login: false,
-                  press: () {
-                    Get.off(() => LoginScreen(), binding: LoginBinding());
-                  },
+                  text: 'SIGN UP',
+                  color: Colors.white,
+                  textColor: AppColors.primary,
+                  onPressed: () => controller.register(
+                    controller._phoneInput.text,
+                    controller._passwordInput.text,
+                    controller._emailInput.text,
+                  ),
                 ),
               ],
             ),

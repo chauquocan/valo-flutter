@@ -14,23 +14,22 @@ class HomeController extends GetxController {
 
   final items = [
     PersistentBottomNavBarItem(
-      icon: Icon(Icons.chat),
-      title: 'Chats',
+      icon: const Icon(Icons.chat_rounded),
+      title: 'chat'.tr,
       activeColorPrimary: AppColors.secondary,
       inactiveColorPrimary: CupertinoColors.systemGrey,
     ),
     PersistentBottomNavBarItem(
-      icon: Icon(Icons.contacts),
-      title: 'Contacts',
+      icon: const Icon(Icons.groups),
+      title: 'contact'.tr,
       activeColorPrimary: AppColors.secondary,
       inactiveColorPrimary: CupertinoColors.systemGrey,
     ),
+    PersistentBottomNavBarItem(
+        icon: const Icon(Icons.person),
+        title: 'personal'.tr,
+        activeColorPrimary: AppColors.secondary,
+        inactiveColorPrimary: CupertinoColors.systemGrey),
   ];
-  final tabs = [ContactTab(), ConversationTab()];
-
-  void logout() {
-    Get.dialog(const DialogLoading());
-    SharePref.logout();
-    Get.offAll(() => const WelcomeScreen());
-  }
+  final tabs = [ConversationTab(), ContactTab(), TabProfile()];
 }

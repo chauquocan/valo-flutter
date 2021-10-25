@@ -5,5 +5,7 @@ class ConnectService extends DioForNative {
   ConnectService([BaseOptions? baseOptions]) : super(baseOptions) {
     options.baseUrl = 'http://192.168.1.104:3000/';
     options.contentType = Headers.jsonContentType;
+    options.connectTimeout = 30 * 1000;
+    options.receiveTimeout = 30 * 1000;
   }
 }
