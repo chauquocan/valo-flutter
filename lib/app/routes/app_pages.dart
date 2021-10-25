@@ -27,6 +27,11 @@ abstract class AppPages {
       binding: AuthBinding(),
     ),
     GetPage(
+      name: Routes.OTP,
+      page: () => OtpScreen(phoneNumber: '',),
+      binding: AuthBinding(),
+    ),
+    GetPage(
       name: Routes.LOGIN,
       page: () => LoginScreen(),
       binding: LoginBinding(),

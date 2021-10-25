@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/routes/app_pages.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
-import 'package:valo_chat_app/app/utils/app_binding.dart';
 import 'app/routes/routes.dart';
 import 'app/utils/store_service.dart';
 import 'package:valo_chat_app/app/lang/lang.dart';

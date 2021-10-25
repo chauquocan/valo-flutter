@@ -14,7 +14,7 @@ class AuthController extends GetxController {
   _verifyPhoneNumber(String phoneNumber) async {
     await auth.verifyPhoneNumber(
       //số điện thoại xác thực
-      phoneNumber: countryCode + phoneNumber,
+      phoneNumber: phoneNumber,
       //nếu xác thực thành công
       verificationCompleted: (phoneAuthCredential) {
         loading.value = false;
@@ -29,7 +29,11 @@ class AuthController extends GetxController {
         loading.value = false;
         verificationID = id;
         authState.value = "Login Sucess";
-        Get.to(() => OtpScreen());
+        if (Get.currentRoute == '/otp') {
+          Get.snackbar("Resend code", "please wait");
+        } else {
+          Get.to(() => OtpScreen(phoneNumber: phoneNumber));
+        }
       },
       //thời gian code hết hạn
       codeAutoRetrievalTimeout: (id) {
@@ -46,6 +50,7 @@ class AuthController extends GetxController {
           verificationId: verificationID, smsCode: otp),
     );
     if (credential.user != null) {
+      Get.snackbar('OTP Verify successfully', 'Please inform your profile');
       Get.offAllNamed('/register');
     } else {
       Get.snackbar('Error', 'Wrong OTP');
@@ -64,10 +69,10 @@ class AuthController extends GetxController {
     ));
   }
 
-  @override
-  void onClose() {
-    super.onClose();
-    _phoneController.dispose();
-    _otpController.dispose();
-  }
+  // @override
+  // void onClose() {
+  //   super.onClose();
+  //   _phoneController.dispose();
+  //   _otpController.dispose();
+  // }
 }

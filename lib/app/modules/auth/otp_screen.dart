@@ -1,7 +1,8 @@
 part of 'auth.dart';
 
 class OtpScreen extends StatelessWidget {
-  OtpScreen({Key? key}) : super(key: key);
+  OtpScreen({Key? key, required this.phoneNumber}) : super(key: key);
+  final String phoneNumber;
   final authController = Get.put(AuthController());
   final FocusNode _pinPutFocusNode = FocusNode();
 
@@ -62,6 +63,15 @@ class OtpScreen extends StatelessWidget {
                 text: 'submit'.tr,
                 onPressed: () => authController
                     ._verifyOTP(authController._otpController.text),
+              ),
+              SizedBox(height: size.height * 0.025),
+              TimerButton(
+                label: 'resend',
+                onPressed: () => authController._verifyPhoneNumber(phoneNumber),
+                timeOutInSeconds: 60,
+                buttonType: ButtonType.ElevatedButton,
+                color: AppColors.light,
+                activeTextStyle: TextStyle(color: AppColors.primaryDark),
               ),
             ],
           ),
