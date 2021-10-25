@@ -97,9 +97,7 @@ class AuthScreen extends StatelessWidget {
                   color: Colors.white,
                   textColor: AppColors.primary,
                   onPressed: () async {
-                    print(authController.countryCode +
-                        authController._phoneController.text);
-                    authController._verifyPhoneNumber(
+                    authController._verifyPhoneNumber(authController.countryCode +
                         authController._phoneController.text);
                   },
                 ),
