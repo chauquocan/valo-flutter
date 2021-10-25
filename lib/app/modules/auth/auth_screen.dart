@@ -10,11 +10,10 @@ class AuthScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.keyboard_backspace_rounded),
-          backgroundColor: AppColors.primary,
-          onPressed: () {
-            Get.back();
-          }),
+        child: const Icon(Icons.keyboard_backspace_rounded),
+        backgroundColor: AppColors.primary,
+        onPressed: () => Get.back(),
+      ),
       body: SafeArea(
         child: Background(
           child: SingleChildScrollView(

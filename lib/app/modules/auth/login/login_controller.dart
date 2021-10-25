@@ -2,27 +2,48 @@ part of 'login.dart';
 
 class LoginController extends GetxController {
   final UserProvider userProvider;
-  var _showPass = true.obs;
-  var isLoading = false.obs;
+  final TextEditingController _phoneInput = TextEditingController();
+  final TextEditingController _passwordInput = TextEditingController();
+  final _loginFormKey = GlobalKey<FormState>();
+  final _showPass = true.obs;
+  // final _isLoading = false.obs;
   LoginController({required this.userProvider});
 
+  String phoneValidator(String value) {
+    if (value.isEmpty) {
+      return 'Please enter phone number';
+    }
+    return "";
+  }
+
+  String passwordValidator(String value) {
+    if (value.isEmpty) {
+      return 'Please enter password';
+    }
+    return "";
+  }
+
   Future login(String phoneNumber, String password) async {
-    _showLoading();
-    final map = {'username': phoneNumber, 'password': password};
-    final response = await userProvider.login(map);
-    print('Respone: ${response.toString()}');
-    if (response.ok) {
-      await Storage.saveUser(response.data!);
-      Get.offAll(() => HomeScreen(), binding: HomeBinding());
-    } else {
-      Get.back();
-      if (response.code == HttpStatus.forbidden) {
-        showInfoDialog('Login fail', 'Phone number or password incorrect');
-      } else if (response.code == HttpStatus.unauthorized) {
-        showInfoDialog('Login failed', 'User not found, please register');
+    if (_loginFormKey.currentState!.validate()) {
+      _showLoading();
+      final map = {'username': phoneNumber, 'password': password};
+      final response = await userProvider.login(map);
+      print('Respone: ${response.toString()}');
+      if (response.ok) {
+        await Storage.saveUser(response.data!);
+        Get.offAll(() => HomeScreen(), binding: HomeBinding());
       } else {
-        showInfoDialog('Login failed', 'Sometihing went wrong, try again');
+        Get.back();
+        if (response.code == HttpStatus.forbidden) {
+          showInfoDialog('Login fail', 'Phone number or password incorrect');
+        } else if (response.code == HttpStatus.unauthorized) {
+          showInfoDialog('Login failed', 'User not found, please register');
+        } else {
+          showInfoDialog('Login failed', 'Sometihing went wrong, try again');
+        }
       }
+    } else {
+      showInfoDialog('Login failed', 'Invalid phonenumber or password');
     }
   }
 

@@ -2,14 +2,15 @@ part of '../widgets.dart';
 
 class RoundedButton extends StatelessWidget {
   final String text;
-  final VoidCallback? onPressed;
-  final Color color, textColor;
+  final VoidCallback onPressed;
+  final Color color, textColor, outlinedColor;
   const RoundedButton({
     Key? key,
     required this.text,
-    this.onPressed,
+    required this.onPressed,
     this.color = AppColors.primary,
-    this.textColor = Colors.white,
+    this.textColor = AppColors.light,
+    this.outlinedColor = AppColors.light,
   }) : super(key: key);
 
   @override
@@ -20,29 +21,30 @@ class RoundedButton extends StatelessWidget {
       width: size.width * 0.8,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(29),
-        child: newElevatedButton(),
-      ),
-    );
-  }
-
-  Widget newElevatedButton() {
-    return ElevatedButton(
-      child: Text(
-        text,
-        style: TextStyle(color: textColor),
-      ),
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-          primary: color,
-          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(29),
-            side: const BorderSide(
-              color: Colors.white,
+        child: ElevatedButton(
+          child: Text(
+            text,
+            style: TextStyle(color: textColor),
+          ),
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            onPrimary: AppColors.primaryDark,
+            primary: color,
+            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(29),
+              side: BorderSide(
+                color: outlinedColor,
+              ),
+            ),
+            textStyle: TextStyle(
+              color: textColor,
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          textStyle: TextStyle(
-              color: textColor, fontSize: 14, fontWeight: FontWeight.bold)),
+        ),
+      ),
     );
   }
 }

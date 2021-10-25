@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:valo_chat_app/app/modules/auth/auth.dart';
 import 'package:valo_chat_app/app/modules/home/home.dart';
 import 'package:valo_chat_app/app/modules/auth/login/login.dart';
 import 'package:valo_chat_app/app/modules/auth/register/register.dart';
@@ -19,6 +20,11 @@ abstract class AppPages {
       name: Routes.HOME,
       page: () => HomeScreen(),
       binding: HomeBinding(),
+    ),
+    GetPage(
+      name: Routes.AUTH,
+      page: () => AuthScreen(),
+      binding: AuthBinding(),
     ),
     GetPage(
       name: Routes.LOGIN,

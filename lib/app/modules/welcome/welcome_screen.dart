@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:valo_chat_app/app/modules/auth/auth.dart';
-import 'package:valo_chat_app/app/modules/auth/login/login.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
-import '../auth/login/login.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
-import 'package:flutter/services.dart';
 
 class WelcomeScreen extends StatelessWidget {
   final List locale = [
@@ -80,21 +75,15 @@ class WelcomeScreen extends StatelessWidget {
                 SizedBox(height: size.height * 0.1),
                 RoundedButton(
                   text: 'signin'.tr,
-                  onPressed: () => Get.to(
-                    () => LoginScreen(),
-                    binding: LoginBinding(),
-                  ),
+                  onPressed: () => Get.toNamed('/login'),
                 ),
                 RoundedButton(
                   text: 'signup'.tr,
-                  onPressed: () => Get.to(
-                    () => AuthScreen(),
-                    binding: AuthBinding(),
-                  ),
+                  onPressed: () => Get.toNamed('/auth'),
                   color: AppColors.light,
                   textColor: AppColors.primary,
+                  outlinedColor: AppColors.primary,
                 ),
-                // SizedBox(height: size.height * 0.15),
                 TextButton(
                   onPressed: () {
                     buildLanguageDialog(context);

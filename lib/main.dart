@@ -1,8 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:valo_chat_app/app/modules/home/home.dart';
-import 'package:valo_chat_app/app/modules/welcome/welcome_screen.dart';
 import 'package:valo_chat_app/app/routes/app_pages.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:valo_chat_app/app/utils/app_binding.dart';
@@ -30,7 +28,6 @@ class MyApp extends StatelessWidget {
       fallbackLocale: TranslationService.fallbackLocale,
       theme: AppTheme.light,
       getPages: AppPages.pages,
-      initialBinding: AppBinding(),
       initialRoute:
           Storage.ExpireToken() == false ? Routes.WELCOME : Routes.HOME,
     );

@@ -2,6 +2,9 @@ part of 'register.dart';
 
 class RegisterController extends GetxController {
   final UserProvider userProvider;
+  final TextEditingController _phoneInput = TextEditingController();
+  final TextEditingController _emailInput = TextEditingController();
+  final TextEditingController _passwordInput = TextEditingController();
 
   RegisterController({required this.userProvider});
 
@@ -30,5 +33,13 @@ class RegisterController extends GetxController {
       title: Text(title),
       content: Text(content),
     ));
+  }
+
+  @override
+  void onClose() {
+    _phoneInput.dispose();
+    _emailInput.dispose();
+    _passwordInput.dispose();
+    super.onClose();
   }
 }

@@ -1,8 +1,10 @@
 part of 'auth.dart';
 
 class OtpScreen extends StatelessWidget {
+  OtpScreen({Key? key}) : super(key: key);
   final authController = Get.put(AuthController());
   final FocusNode _pinPutFocusNode = FocusNode();
+
   BoxDecoration get _pinPutDecoration {
     return BoxDecoration(
       border: Border.all(color: AppColors.light),
@@ -13,14 +15,12 @@ class OtpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.keyboard_backspace_rounded),
-          backgroundColor: AppColors.primary,
-          onPressed: () {
-            Get.back();
-          }),
+        child: const Icon(Icons.keyboard_backspace_rounded),
+        backgroundColor: AppColors.primary,
+        onPressed: () => Get.back(),
+      ),
       body: Background(
         child: SingleChildScrollView(
           child: Column(
@@ -33,11 +33,9 @@ class OtpScreen extends StatelessWidget {
                   fontSize: 24,
                 ),
               ),
-
               SizedBox(height: size.height * 0.1),
               Container(
                 decoration: BoxDecoration(
-                  // color: AppColors.light.withOpacity(0.5),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 margin: const EdgeInsets.all(20.0),
@@ -60,17 +58,11 @@ class OtpScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              // RoundedInputField(
-              //   controller: authController._otpController,
-              //   hintText: 'Enter OTP',
-              //   icon: Icons.sms_rounded,
-              // ),
               RoundedButton(
                 text: 'submit'.tr,
-                onPressed: () {
-                  authController._verifyOTP(authController._otpController.text);
-                },
-              )
+                onPressed: () => authController
+                    ._verifyOTP(authController._otpController.text),
+              ),
             ],
           ),
         ),
