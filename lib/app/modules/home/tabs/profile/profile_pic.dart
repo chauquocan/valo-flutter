@@ -73,15 +73,15 @@ class ProfilePic extends StatelessWidget {
                 style: TextButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50),
-                    side: BorderSide(color: Colors.white),
+                    side: const BorderSide(color: Colors.white),
                   ),
                   primary: Colors.white,
-                  backgroundColor: Color(0xFFF5F6F9),
+                  backgroundColor: const Color(0xFFF5F6F9),
                 ),
                 onPressed: () {
                   Get.bottomSheet(
                     Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: AppColors.light,
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(16.0),
@@ -93,16 +93,16 @@ class ProfilePic extends StatelessWidget {
                         crossAxisAlignment: WrapCrossAlignment.end,
                         children: [
                           ListTile(
-                            leading: Icon(Icons.camera),
-                            title: Text('Camera'),
+                            leading: const Icon(Icons.camera),
+                            title: const Text('Camera'),
                             onTap: () {
                               Get.back();
                               controller.uploadImage(ImageSource.camera);
                             },
                           ),
                           ListTile(
-                            leading: Icon(Icons.image),
-                            title: Text('Gallery'),
+                            leading: const Icon(Icons.image),
+                            title: const Text('Gallery'),
                             onTap: () {
                               Get.back();
                               controller.uploadImage(ImageSource.gallery);
