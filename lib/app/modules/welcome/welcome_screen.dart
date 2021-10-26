@@ -74,35 +74,39 @@ class WelcomeScreen extends StatelessWidget {
                 ),
                 SizedBox(height: size.height * 0.1),
                 RoundedButton(
-                  text: 'signin'.tr,
+                  buttonText: 'signin'.tr,
+                  colors: [AppColors.primary, AppColors.secondary],
+                  color: Colors.blue.shade300,
+                  width: size.width * 0.8,
                   onPressed: () => Get.toNamed('/login'),
                 ),
                 RoundedButton(
-                  text: 'signup'.tr,
-                  onPressed: () => Get.toNamed('/auth'),
+                  buttonText: 'signup'.tr,
+                  width: size.width * 0.8,
+                  colors: [AppColors.light, AppColors.hintLight],
                   color: AppColors.light,
-                  textColor: AppColors.primary,
-                  outlinedColor: AppColors.primary,
+                  textColor: AppColors.dark,
+                  onPressed: () => Get.toNamed('/auth'),
                 ),
-                TextButton(
-                  onPressed: () {
-                    buildLanguageDialog(context);
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        buildLanguageDialog(context);
+                      },
+                      child: Text(
                         'changelang'.tr,
                         style: const TextStyle(
                             color: AppColors.light,
                             decoration: TextDecoration.underline),
                       ),
-                      const Icon(
-                        Icons.arrow_drop_down_outlined,
-                        color: AppColors.light,
-                      ),
-                    ],
-                  ),
+                    ),
+                    const Icon(
+                      Icons.arrow_drop_down_outlined,
+                      color: AppColors.light,
+                    ),
+                  ],
                 ),
               ],
             ),

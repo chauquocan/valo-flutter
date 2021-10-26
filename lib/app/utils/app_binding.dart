@@ -13,6 +13,6 @@ class AppBinding extends Bindings {
     Get.lazyPut(() => HomeController(provider: Get.put(UserProvider())));
     Get.lazyPut(() => TabContactController());
     Get.lazyPut(() => TabConversationController());
-    Get.lazyPut(() => TabProfileController());
+    Get.lazyPut(() => TabProfileController(provider: Get.put(UserProvider())));
   }
 }

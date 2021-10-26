@@ -62,9 +62,11 @@ class LoginScreen extends GetView<LoginController> {
                     ),
                   ),
                   RoundedButton(
-                    text: 'signin'.tr.toUpperCase(),
-                    color: Colors.white,
-                    textColor: AppColors.primary,
+                    buttonText: 'signin'.tr.toUpperCase(),
+                    width: size.width * 0.8,
+                    colors: [AppColors.light, AppColors.light],
+                    color: AppColors.light,
+                    textColor: AppColors.dark,
                     onPressed: () => controller.login(
                         controller._phoneInput.text,
                         controller._passwordInput.text),

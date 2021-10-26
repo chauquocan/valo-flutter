@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'user.dart';
 
-class Register {
-  Register({
+class RegisterMessage {
+  RegisterMessage({
     // required this.code,
     required this.message,
     // this.data,
@@ -13,12 +13,12 @@ class Register {
   final String message;
   // final User? data;
 
-  factory Register.fromRawJson(String str) =>
-      Register.fromJson(json.decode(str));
+  factory RegisterMessage.fromRawJson(String str) =>
+      RegisterMessage.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Register.fromJson(Map<String, dynamic> json) => Register(
+  factory RegisterMessage.fromJson(Map<String, dynamic> json) => RegisterMessage(
         // code: json["code"],
         message: json["message"],
         // data: User.fromJson(json["data"]),

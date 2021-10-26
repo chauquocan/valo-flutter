@@ -35,17 +35,14 @@ class AuthScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(29),
                     color: AppColors.hintLight,
                   ),
-                  height: size.height * 0.1,
-                  width: size.width * 0.95,
+                  width: size.width * 0.8,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       SizedBox(
                         width: size.width * 0.3,
-                        height: size.height * 0.1,
                         child: CountryCodePicker(
                           textStyle: const TextStyle(color: AppColors.dark),
-                          alignLeft: true,
                           initialSelection: 'VN',
                           favorite: const ['+84', 'VN'],
                           dialogSize: Size(size.width * 0.8, size.height * 0.4),
@@ -59,8 +56,7 @@ class AuthScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        width: size.width * 0.6,
-                        height: size.height * 0.1,
+                        width: size.width * 0.45,
                         child: TextFormField(
                           controller: authController._phoneController,
                           keyboardType: TextInputType.phone,
@@ -69,14 +65,14 @@ class AuthScreen extends StatelessWidget {
                           ],
                           style: const TextStyle(
                             color: AppColors.dark,
-                            fontSize: 18.0,
+                            fontSize: 16.0,
                             fontWeight: FontWeight.normal,
                           ),
                           decoration: InputDecoration(
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: 'Phone number:',
                             labelStyle: const TextStyle(
-                              fontSize: 16.0,
+                              fontSize: 14.0,
                               color: AppColors.dark,
                               height: 0.2,
                               fontWeight: FontWeight.normal,
@@ -92,15 +88,20 @@ class AuthScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+                SizedBox(height: size.height * 0.015),
                 RoundedButton(
-                  text: 'sendOTP'.tr,
-                  color: Colors.white,
-                  textColor: AppColors.primary,
+                  buttonText: 'sendOTP'.tr,
+                  width: size.width * 0.6,
+                  colors: [AppColors.light, AppColors.light],
+                  color: AppColors.light,
+                  textColor: AppColors.dark,
                   onPressed: () async {
-                    authController._verifyPhoneNumber(authController.countryCode +
-                        authController._phoneController.text);
+                    authController._verifyPhoneNumber(
+                        authController.countryCode +
+                            authController._phoneController.text);
                   },
                 ),
+                SizedBox(height: size.height * 0.025),
                 AlreadyHaveAnAccountCheck(
                   login: false,
                   press: () {

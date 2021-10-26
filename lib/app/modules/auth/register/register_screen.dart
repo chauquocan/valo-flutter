@@ -46,9 +46,11 @@ class RegisterScreen extends GetView<RegisterController> {
                   icon: Icons.email,
                 ),
                 RoundedButton(
-                  text: 'SIGN UP',
-                  color: Colors.white,
-                  textColor: AppColors.primary,
+                  buttonText: 'SIGN UP',
+                  width: size.width * 0.8,
+                  colors: [AppColors.light, AppColors.light],
+                  color: AppColors.light,
+                  textColor: AppColors.dark,
                   onPressed: () => controller.register(
                     controller._phoneInput.text,
                     controller._passwordInput.text,

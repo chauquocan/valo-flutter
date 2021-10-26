@@ -1,11 +1,19 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:valo_chat_app/app/data/providers/user_provider.dart';
+import 'package:valo_chat_app/app/modules/home/tabs/profile/tab_profile_controller.dart';
+import 'package:valo_chat_app/app/themes/theme.dart';
+import 'package:valo_chat_app/app/utils/store_service.dart';
 
 class ProfilePic extends StatelessWidget {
-  const ProfilePic({
+  ProfilePic({
     Key? key,
   }) : super(key: key);
-
+  TabProfileController controller =
+      Get.put(TabProfileController(provider: UserProvider()));
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -15,8 +23,45 @@ class ProfilePic extends StatelessWidget {
         fit: StackFit.expand,
         clipBehavior: Clip.none,
         children: [
-          CircleAvatar(
-            backgroundImage: AssetImage("assets/images/place_avatar.png"),
+          Obx(
+            () {
+              if (controller.isLoading.value) {
+                return CircleAvatar(
+                  backgroundImage: AssetImage("assets/images/place_avatar.png"),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      backgroundColor: AppColors.light,
+                    ),
+                  ),
+                );
+              } else {
+                if (controller.imageURL.length != 0) {
+                  return CachedNetworkImage(
+                    imageUrl: controller.imageURL,
+                    fit: BoxFit.cover,
+                    imageBuilder: (context, imageProvider) => CircleAvatar(
+                      backgroundColor: AppColors.light,
+                      backgroundImage: imageProvider,
+                    ),
+                    placeholder: (context, url) => CircleAvatar(
+                      backgroundImage:
+                          AssetImage("assets/images/place_avatar.png"),
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: AppColors.light,
+                        ),
+                      ),
+                    ),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  );
+                } else {
+                  return CircleAvatar(
+                    backgroundImage:
+                        NetworkImage('${Storage.getUser()?.imgUrl}'),
+                  );
+                }
+              }
+            },
           ),
           Positioned(
             right: -16,
@@ -33,7 +78,41 @@ class ProfilePic extends StatelessWidget {
                   primary: Colors.white,
                   backgroundColor: Color(0xFFF5F6F9),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Get.bottomSheet(
+                    Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.light,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(16.0),
+                          topRight: Radius.circular(16.0),
+                        ),
+                      ),
+                      child: Wrap(
+                        alignment: WrapAlignment.end,
+                        crossAxisAlignment: WrapCrossAlignment.end,
+                        children: [
+                          ListTile(
+                            leading: Icon(Icons.camera),
+                            title: Text('Camera'),
+                            onTap: () {
+                              Get.back();
+                              controller.uploadImage(ImageSource.camera);
+                            },
+                          ),
+                          ListTile(
+                            leading: Icon(Icons.image),
+                            title: Text('Gallery'),
+                            onTap: () {
+                              Get.back();
+                              controller.uploadImage(ImageSource.gallery);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
                 child: SvgPicture.asset("assets/icons/Camera Icon.svg"),
               ),
             ),

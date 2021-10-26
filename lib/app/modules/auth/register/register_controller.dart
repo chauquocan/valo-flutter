@@ -2,16 +2,27 @@ part of 'register.dart';
 
 class RegisterController extends GetxController {
   final UserProvider userProvider;
+  final TextEditingController _fullNameInput = TextEditingController();
   final TextEditingController _phoneInput = TextEditingController();
   final TextEditingController _emailInput = TextEditingController();
   final TextEditingController _passwordInput = TextEditingController();
 
   RegisterController({required this.userProvider});
 
-  Future register(String phoneNumber, String password, String email) async {
+  Future register(
+    // String fullname,
+    String phoneNumber,
+    String password,
+    String email,
+  ) async {
     _showLoading();
-    final map = {'username': phoneNumber, 'password': password, 'email': email};
-    final response = await userProvider.register(map);
+    final RegisterRequest = {
+      // 'name': fullname,
+      'username': phoneNumber,
+      'password': password,
+      'email': email,
+    };
+    final response = await userProvider.register(RegisterRequest);
     print('Respone: ${response.toString()}');
     if (response.ok) {
       showInfoDialog('Sign up susscessfully', 'lets sign in');

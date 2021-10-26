@@ -9,18 +9,18 @@ class LoginController extends GetxController {
   // final _isLoading = false.obs;
   LoginController({required this.userProvider});
 
-  String phoneValidator(String value) {
+  String? phoneValidator(String value) {
     if (value.isEmpty) {
       return 'Please enter phone number';
     }
-    return "";
+    return null;
   }
 
-  String passwordValidator(String value) {
+  String? passwordValidator(String value) {
     if (value.isEmpty) {
       return 'Please enter password';
     }
-    return "";
+    return null;
   }
 
   Future login(String phoneNumber, String password) async {
@@ -30,8 +30,16 @@ class LoginController extends GetxController {
       final response = await userProvider.login(map);
       print('Respone: ${response.toString()}');
       if (response.ok) {
-        await Storage.saveUser(response.data!);
-        Get.offAll(() => HomeScreen(), binding: HomeBinding());
+        await Storage.saveToken(response.data!);
+        final userResponse =
+            await userProvider.getUser(response.data!.accessToken);
+        print('User respone: ${userResponse.toString()}');
+        if (userResponse.ok) {
+          await Storage.saveUser(userResponse.data!);
+          Get.offAllNamed('/home');
+        } else {
+          Get.back();
+        }
       } else {
         Get.back();
         if (response.code == HttpStatus.forbidden) {

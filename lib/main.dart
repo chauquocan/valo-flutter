@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    print('current username: ${Storage.getUser()?.username}');
+    print('current username: ${Storage.getToken()?.username}');
     return GetMaterialApp(
       title: 'Valo chat app',
       debugShowCheckedModeBanner: false,
