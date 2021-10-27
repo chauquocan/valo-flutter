@@ -20,18 +20,14 @@ class Body extends StatelessWidget {
             text: "My Account",
             icon: "assets/icons/User Icon.svg",
             press: () => {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => EditProfileScreen()))
+              // Navigator.of(context).push(MaterialPageRoute(
+              //     builder: (BuildContext context) => EditProfileScreen()))
+              Get.toNamed('/editprofile')
             },
           ),
           ProfileMenu(
             text: "Notifications",
             icon: "assets/icons/Bell.svg",
-            press: () {},
-          ),
-          ProfileMenu(
-            text: "Settings",
-            icon: "assets/icons/Settings.svg",
             press: () {},
           ),
           ProfileMenu(

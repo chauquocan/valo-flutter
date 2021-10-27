@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:valo_chat_app/app/data/models/chat.dart';
 import 'package:valo_chat_app/app/modules/chat/ui/own_message.dart';
 import 'package:valo_chat_app/app/modules/chat/ui/reply_message.dart';
+import 'package:valo_chat_app/app/modules/home/tabs/profile/profile_friend.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'chat_controller.dart';
 
@@ -230,9 +231,12 @@ class ChatScreen extends GetView<ChatController> {
           onPressed: () {},
           icon: Icon(Icons.call),
         ),
-        PopupMenuButton(itemBuilder: (BuildContext context) {
-          return [];
-        })
+        IconButton(
+          onPressed: () {
+            Get.to(ProfileFriend());
+          },
+          icon: Icon(Icons.list_outlined),
+        ),
       ],
     );
   }

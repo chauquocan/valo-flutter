@@ -20,14 +20,6 @@ class TabProfile extends GetView<TabProfileController> {
 
   AppBar _appBar() {
     return AppBar(
-      // actions: <Widget>[
-      //   IconButton(
-      //     // chuyen nut nay thanh nut back
-      //     onPressed: () => Get.back(),
-      //     icon: Icon(Icons.arrow_back),
-      //     color: AppColors.light,
-      //   ),
-      // ],
       title: Text(
         'personal'.tr,
         style: TextStyle(color: AppColors.light),

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:valo_chat_app/app/modules/chat/add_friend/add_friend_screen.dart';
+import 'package:valo_chat_app/app/modules/chat/create_group_chat/create_group_chat_screen.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
+import 'package:valo_chat_app/app/modules/home/tabs/profile/profile_friend.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:valo_chat_app/app/widgets/custom/customcard.dart';
 
@@ -19,12 +22,22 @@ class ConversationTab extends GetView<TabConversationController> {
           actions: [
             IconButton(onPressed: () {}, icon: Icon(Icons.search)),
             PopupMenuButton<String>(onSelected: (value) {
-              print(value);
+              switch (value) {
+                case ("newgroup"):
+                  Get.to(CreateGroupChatScreen());
+                  break;
+                case ("newfriend"):
+                  Get.to(AddFriendScreen());
+                  break;
+              }
             }, itemBuilder: (BuildContext context) {
               return [
-                PopupMenuItem(child: Text("New friend"), value: "New friend"),
-                PopupMenuItem(child: Text("New group"), value: "New group"),
-                PopupMenuItem(child: Text("Setting"), value: "Setting"),
+                PopupMenuItem(
+                  child: Text("New friend"),
+                  value: "newfriend",
+                ),
+                PopupMenuItem(child: Text("New group"), value: "newgroup"),
+                PopupMenuItem(child: Text("Setting"), value: "setting"),
               ];
             })
           ],
