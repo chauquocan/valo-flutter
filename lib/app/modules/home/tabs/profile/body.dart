@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/profile/edit_profile.dart';
-import 'package:valo_chat_app/app/modules/welcome/welcome_screen.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
 import 'profile_menu.dart';
@@ -15,15 +14,15 @@ class Body extends StatelessWidget {
       child: Column(
         children: [
           ProfilePic(),
-          SizedBox(height: 20),
+          SizedBox(height: 10),
+          Center(
+            child: Text('${Storage.getUser()?.email}'),
+          ),
+          SizedBox(height: 10),
           ProfileMenu(
             text: "My Account",
             icon: "assets/icons/User Icon.svg",
-            press: () => {
-              // Navigator.of(context).push(MaterialPageRoute(
-              //     builder: (BuildContext context) => EditProfileScreen()))
-              Get.toNamed('/editprofile')
-            },
+            press: () => Get.to(() => EditProfileScreen()),
           ),
           ProfileMenu(
             text: "Notifications",
@@ -40,7 +39,7 @@ class Body extends StatelessWidget {
             icon: "assets/icons/Log out.svg",
             press: () {
               Storage.logout();
-              Get.offAll(() => WelcomeScreen());
+              Get.offAllNamed('/');
             },
           ),
         ],

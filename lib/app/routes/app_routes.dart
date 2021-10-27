@@ -1,8 +1,17 @@
 part of './app_pages.dart';
 
 abstract class Routes {
-  static const LOGIN = '/login';
+  //
+  static const WELCOME = '/';
   static const HOME = '/home';
+  //auth
+  static const AUTH = '/auth';
+  static const OTP = '/otp';
+  static const LOGIN = '/login';
   static const REGISTER = '/register';
-  static const EDITPROFILE = '/editprofile';
+
+  //tabs
+  static const PROFILE = '/profile';
+  static const CONVERSATION = '/chat';
+  static const CONTACT = '/contact';
 }

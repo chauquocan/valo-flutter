@@ -1,13 +1,12 @@
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:valo_chat_app/app/data/models/register.dart';
-import 'package:valo_chat_app/app/data/models/user.dart';
-import 'package:valo_chat_app/app/modules/auth/login/login.dart';
-import 'package:valo_chat_app/app/modules/auth/register/register.dart';
-import 'package:valo_chat_app/app/modules/home/home.dart';
+import 'package:timer_button/timer_button.dart';
 import 'package:valo_chat_app/app/widgets/custom/dialog_loading.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';

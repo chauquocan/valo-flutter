@@ -3,7 +3,6 @@ part of '../widgets.dart';
 class RoundedInputField extends StatelessWidget {
   final TextEditingController controller;
   final TextInputType keyboardType;
-  final AutofillHints? autofillHints;
   final String labelText;
   final String? hintText;
   final IconData? icon;
@@ -13,6 +12,13 @@ class RoundedInputField extends StatelessWidget {
   final bool password;
   final ValueChanged<String>? onChanged;
   final List<TextInputFormatter>? inputFormat;
+  final BorderRadius? border;
+  final double? sizeInput;
+  final EdgeInsetsGeometry? margin;
+  final EdgeInsetsGeometry? padding;
+  String? Function(String?)? validator;
+  final IconButton? suffixIcon;
+
   RoundedInputField({
     Key? key,
     required this.controller,
@@ -25,26 +31,32 @@ class RoundedInputField extends StatelessWidget {
     this.fontSize = 18.0,
     this.password = false,
     this.keyboardType = TextInputType.text,
-    this.autofillHints,
     this.inputFormat,
+    this.border,
+    this.sizeInput,
+    this.validator,
+    this.margin,
+    this.padding,
+    this.suffixIcon,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 1),
-      width: size.width * 0.8,
+      margin: margin ?? const EdgeInsets.symmetric(vertical: 10),
+      padding:
+          padding ?? const EdgeInsets.symmetric(horizontal: 20, vertical: 1),
+      width: sizeInput ?? size.width * 0.8,
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(29),
+        borderRadius: border ?? BorderRadius.circular(29),
       ),
       child: TextFormField(
         controller: controller,
+        validator: validator,
         inputFormatters: inputFormat,
         keyboardType: keyboardType,
-        // autofillHints: autofillHint,
         onChanged: onChanged,
         cursorColor: AppColors.light,
         obscureText: password,
@@ -54,6 +66,7 @@ class RoundedInputField extends StatelessWidget {
             fontSize: fontSize,
             fontWeight: FontWeight.normal),
         decoration: InputDecoration(
+          suffixIcon: suffixIcon,
           floatingLabelBehavior: FloatingLabelBehavior.always,
           labelText: labelText,
           labelStyle: TextStyle(
@@ -66,8 +79,8 @@ class RoundedInputField extends StatelessWidget {
             icon,
             color: Colors.white,
           ),
-          hintText: this.hintText,
-          hintStyle: TextStyle(color: AppColors.hintLight),
+          hintText: hintText,
+          hintStyle: const TextStyle(color: AppColors.hintLight),
           border: InputBorder.none,
         ),
       ),

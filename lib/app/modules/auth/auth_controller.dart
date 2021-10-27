@@ -3,20 +3,18 @@ part of 'auth.dart';
 class AuthController extends GetxController {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _otpController = TextEditingController();
+
   late AuthCredential phoneAuthCredential;
   FirebaseAuth auth = FirebaseAuth.instance;
   var authState = ''.obs;
   String verificationID = '';
   var loading = false.obs;
-
-  _SignInWithPhoneNumber(String phoneNumber) async {
-    var credential = await auth.signInWithPhoneNumber(phoneNumber);
-  }
+  String countryCode = '';
 
   _verifyPhoneNumber(String phoneNumber) async {
     await auth.verifyPhoneNumber(
       //số điện thoại xác thực
-      phoneNumber: '+84' + phoneNumber,
+      phoneNumber: phoneNumber,
       //nếu xác thực thành công
       verificationCompleted: (phoneAuthCredential) {
         loading.value = false;
@@ -31,23 +29,29 @@ class AuthController extends GetxController {
         loading.value = false;
         verificationID = id;
         authState.value = "Login Sucess";
-        Get.to(() => OtpScreen());
+        if (Get.currentRoute == '/otp') {
+          Get.snackbar("Resend code", "please wait");
+        } else {
+          Get.to(() => OtpScreen(phoneNumber: phoneNumber));
+        }
       },
       //thời gian code hết hạn
       codeAutoRetrievalTimeout: (id) {
-        this.verificationID = id;
+        verificationID = id;
       },
-      timeout: Duration(seconds: 60),
+      timeout: const Duration(seconds: 60),
     );
   }
 
   _verifyOTP(String otp) async {
+    _showLoading();
     var credential = await auth.signInWithCredential(
       PhoneAuthProvider.credential(
-          verificationId: this.verificationID, smsCode: otp),
+          verificationId: verificationID, smsCode: otp),
     );
     if (credential.user != null) {
-      Get.off(RegisterScreen(), binding: RegisterBinding());
+      Get.snackbar('OTP Verify successfully', 'Please inform your profile');
+      Get.offAllNamed('/register');
     } else {
       Get.snackbar('Error', 'Wrong OTP');
     }
@@ -56,4 +60,19 @@ class AuthController extends GetxController {
   void _showLoading() {
     Get.dialog(const DialogLoading());
   }
+
+  void showInfoDialog(String title, String content) {
+    Get.dialog(AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(29)),
+      title: Text(title),
+      content: Text(content),
+    ));
+  }
+
+  // @override
+  // void onClose() {
+  //   super.onClose();
+  //   _phoneController.dispose();
+  //   _otpController.dispose();
+  // }
 }

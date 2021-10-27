@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:valo_chat_app/app/modules/auth/auth.dart';
-import 'package:valo_chat_app/app/modules/auth/login/login.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
-import '../auth/login/login.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -61,7 +57,6 @@ class WelcomeScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                SizedBox(height: size.height * 0.1),
                 const Text(
                   'WELCOME TO VALO',
                   style: TextStyle(
@@ -74,36 +69,44 @@ class WelcomeScreen extends StatelessWidget {
                 SizedBox(height: size.height * 0.1),
                 SvgPicture.asset(
                   'assets/images/banner_mockup.svg',
+                  height: size.height * 0.2,
+                  width: size.height * 0.2,
                 ),
                 SizedBox(height: size.height * 0.1),
                 RoundedButton(
-                  text: 'signin'.tr,
-                  onPressed: () => Get.to(
-                    () => LoginScreen(),
-                    binding: LoginBinding(),
-                  ),
+                  buttonText: 'signin'.tr,
+                  colors: [AppColors.primary, AppColors.secondary],
+                  color: Colors.blue.shade300,
+                  width: size.width * 0.8,
+                  onPressed: () => Get.toNamed('/login'),
                 ),
                 RoundedButton(
-                  text: 'signup'.tr,
-                  onPressed: () => Get.to(
-                    () => AuthScreen(),
-                    binding: AuthBinding(),
-                    // () => RegisterScreen(),
-                    // binding: RegisterBinding(),
-                  ),
-                  color: Colors.white,
-                  textColor: AppColors.primary,
+                  buttonText: 'signup'.tr,
+                  width: size.width * 0.8,
+                  colors: [AppColors.light, AppColors.hintLight],
+                  color: AppColors.light,
+                  textColor: AppColors.dark,
+                  onPressed: () => Get.toNamed('/auth'),
                 ),
-                SizedBox(height: size.height * 0.1),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    // primary: AppColors.primary.withOpacity(0.5),
-                    primary: AppColors.dark.withOpacity(0.5),
-                  ),
-                  onPressed: () {
-                    buildLanguageDialog(context);
-                  },
-                  child: Text('changelang'.tr),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        buildLanguageDialog(context);
+                      },
+                      child: Text(
+                        'changelang'.tr,
+                        style: const TextStyle(
+                            color: AppColors.light,
+                            decoration: TextDecoration.underline),
+                      ),
+                    ),
+                    const Icon(
+                      Icons.arrow_drop_down_outlined,
+                      color: AppColors.light,
+                    ),
+                  ],
                 ),
               ],
             ),
