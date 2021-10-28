@@ -25,8 +25,8 @@ class CustomCard extends StatelessWidget {
               child: SvgPicture.asset(
                 chat.isGroup
                     ? 'assets/icons/logo.svg'
-                    : 'assets/icons/signup.svg',
-                color: AppColors.secondary,
+                    : 'assets/icons/group.svg',
+                //color: AppColors.secondary,
                 height: 38,
                 width: 38,
               ),

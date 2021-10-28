@@ -4,6 +4,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 
+// sua profile cua minh
 class EditProfileScreen extends StatelessWidget {
   bool showPassword = false;
   @override
@@ -35,13 +36,6 @@ class EditProfileScreen extends StatelessWidget {
                           border: Border.all(
                               width: 4,
                               color: Theme.of(context).scaffoldBackgroundColor),
-                          boxShadow: [
-                            BoxShadow(
-                                spreadRadius: 2,
-                                blurRadius: 10,
-                                color: Colors.black.withOpacity(0.1),
-                                offset: Offset(0, 10))
-                          ],
                           shape: BoxShape.circle,
                           image: DecorationImage(
                               fit: BoxFit.cover,
@@ -73,13 +67,12 @@ class EditProfileScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: 35,
+                height: 30,
               ),
-              buildTextField("Name", "Long", false),
-              buildTextField("Phone", "G", false),
-              buildTextField("E-mail", "s2taaa@gmail.com", false),
-              buildTextField("Password", "********", true),
-              buildTextField("Address", "Gia Nghia", false),
+              buildTextField("Name", "Long"),
+              buildTextField("Phone", "G"),
+              buildTextField("E-mail", "s2taaa@gmail.com"),
+              buildTextField("Address", "Gia Nghia"),
               SizedBox(
                 height: 35,
               ),
@@ -121,27 +114,12 @@ class EditProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget buildTextField(
-      String labelText, String placeholder, bool isPasswordTextField) {
+  Widget buildTextField(String labelText, String placeholder) {
     return Padding(
+
       padding: const EdgeInsets.only(bottom: 35.0),
       child: TextField(
-        //obscureText: isPasswordTextField ? showPassword : false,
         decoration: InputDecoration(
-            // suffixIcon: isPasswordTextField
-            //     ? IconButton(
-            //         onPressed: () {
-            //           setState(() {
-            //             showPassword = !showPassword;
-            //           });
-            //         },
-            //         icon: Icon(
-            //           Icons.remove_red_eye,
-            //           color: Colors.grey,
-            //         ),
-            //       )
-            //     : null,
-            // contentPadding: EdgeInsets.only(bottom: 3),
             labelText: labelText,
             floatingLabelBehavior: FloatingLabelBehavior.always,
             hintText: placeholder,
@@ -156,14 +134,6 @@ class EditProfileScreen extends StatelessWidget {
 
   AppBar _appBar() {
     return AppBar(
-      // actions: <Widget>[
-      //   IconButton(
-      //     // chuyen nut nay thanh nut back
-      //     onPressed: () => Get.back(),
-      //     icon: Icon(Icons.arrow_back),
-      //     color: AppColors.light,
-      //   ),
-      // ],
       title: Text(
         'My account',
         style: TextStyle(color: AppColors.light),

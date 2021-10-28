@@ -9,8 +9,10 @@ abstract class Routes {
   static const OTP = '/otp';
   static const LOGIN = '/login';
   static const REGISTER = '/register';
+
   //tabs
   static const PROFILE = '/profile';
   static const CONVERSATION = '/chat';
   static const CONTACT = '/contact';
+  static const EDITPROFILE = '/editprofile';
 }
