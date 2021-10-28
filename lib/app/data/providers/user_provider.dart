@@ -37,14 +37,16 @@ class UserProvider extends ConnectService {
     }
   }
 
-  Future<NetworkResponse<UserResponse>> getUser(String accessToken) async {
+  Future<NetworkResponse<ProfileResponse>> getUser(String accessToken) async {
     try {
-      options.headers = {'Authorization': 'Bearer ${accessToken}'};
-      final response = await get(userURL + Storage.getToken()!.username);
+      ;
+      final response = await get(userURL + Storage.getToken()!.username,
+          options:
+              Options(headers: {'Authorization': 'Bearer ${accessToken}'}));
       print(userURL + Storage.getToken()!.username);
       return NetworkResponse.fromResponse(
         response,
-        (json) => UserResponse.fromJson(json),
+        (json) => ProfileResponse.fromJson(json),
       );
     } on DioError catch (e, s) {
       print(e.error);
@@ -52,7 +54,7 @@ class UserProvider extends ConnectService {
     }
   }
 
-  Future<NetworkResponse<UserResponse>> uploadFile(filePath) async {
+  Future<NetworkResponse<ProfileResponse>> uploadFile(filePath) async {
     var token = Storage.getToken()?.accessToken;
     var _userId = Storage.getUser()?.id;
 
@@ -70,7 +72,7 @@ class UserProvider extends ConnectService {
       );
       return NetworkResponse.fromResponse(
         response,
-        (json) => UserResponse.fromJson(json),
+        (json) => ProfileResponse.fromJson(json),
       );
     } on DioError catch (e) {
       print(e.error);

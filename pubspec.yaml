@@ -37,6 +37,7 @@ dependencies:
   #firebase auth
   firebase_core: ^1.7.0
   firebase_auth: ^3.1.2
+  jwt_decode: ^0.3.1
   #http dio
   dio: ^4.0.0
   #storage
@@ -46,16 +47,22 @@ dependencies:
   pinput: ^1.2.1
   country_code_picker: ^2.0.2
 
+  #socket
+  web_socket_channel: ^2.1.0
+  persistent_bottom_nav_bar: ^4.0.2
+  
+  #phone permission
+  permission_handler: ^8.2.5
+
   cached_network_image: ^3.1.0
   flutter_svg: ^0.23.0+1
-  persistent_bottom_nav_bar: ^4.0.2
+  flutter_link_previewer: ^2.5.2
+  google_maps_flutter: ^2.0.11
+  emoji_picker: ^0.0.2
   emoji_picker_flutter: ^1.0.7
   image_picker: ^0.8.4+2
   photo_view: ^0.13.0
-  flutter_link_previewer: ^2.5.2
-  google_maps_flutter: ^2.0.11
-  jwt_decode: ^0.3.1
-  emoji_picker: ^0.0.2
+  
 dev_dependencies:
   flutter_launcher_icons: ^0.9.2
   flutter_native_splash: ^1.2.4

@@ -21,14 +21,14 @@ class Storage {
     return LoginRespone.fromRawJson(raw);
   }
 
-  static Future saveUser(UserResponse user) async {
+  static Future saveUser(ProfileResponse user) async {
     await _pref.setString('user', user.toRawJson());
   }
 
-  static UserResponse? getUser() {
+  static ProfileResponse? getUser() {
     final raw = _pref.getString('user');
     if (raw == null) return null;
-    return UserResponse.fromRawJson(raw);
+    return ProfileResponse.fromRawJson(raw);
   }
 
 //check token is expired

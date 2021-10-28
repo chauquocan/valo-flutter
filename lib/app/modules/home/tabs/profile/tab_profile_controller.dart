@@ -9,13 +9,15 @@ import 'package:valo_chat_app/app/widgets/custom/dialog_loading.dart';
 class TabProfileController extends GetxController {
   final UserProvider provider;
   var isLoading = false.obs;
+  final ImagePicker _picker = ImagePicker();
   var imageURL = '';
 
   TabProfileController({required this.provider});
 
   void uploadImage(ImageSource imageSource) async {
     try {
-      final pickedFile = await ImagePicker().pickImage(source: imageSource);
+      final pickedFile =
+          await _picker.pickImage(source: imageSource, imageQuality: 50);
       isLoading(true);
       if (pickedFile != null) {
         var response = await provider.uploadFile(pickedFile.path);

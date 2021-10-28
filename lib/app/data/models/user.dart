@@ -33,7 +33,7 @@ class LoginRespone {
       };
 }
 
-class UserResponse {
+class ProfileResponse {
   String id;
   String name;
   String gender;
@@ -44,7 +44,7 @@ class UserResponse {
   String imgUrl;
   String status;
 
-  UserResponse({
+  ProfileResponse({
     required this.id,
     required this.name,
     required this.gender,
@@ -55,12 +55,12 @@ class UserResponse {
     required this.imgUrl,
     required this.status,
   });
-  factory UserResponse.fromRawJson(String str) =>
-      UserResponse.fromJson(json.decode(str));
+  factory ProfileResponse.fromRawJson(String str) =>
+      ProfileResponse.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory UserResponse.fromJson(Map<String, dynamic> json) => UserResponse(
+  factory ProfileResponse.fromJson(Map<String, dynamic> json) => ProfileResponse(
         id: json['id'],
         name: json['name'],
         gender: json['gender'],
