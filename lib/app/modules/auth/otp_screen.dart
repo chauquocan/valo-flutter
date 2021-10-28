@@ -117,7 +117,7 @@ class _OtpScreenState extends State<OtpScreen> {
                             : () => (authController
                                 ._verifyPhoneNumber(widget.phoneNumber)),
                         child: Text(
-                          'Resend Code',
+                          'resendOTP'.tr,
                           style: TextStyle(color: AppColors.light),
                         ),
                       ),
@@ -130,7 +130,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       child: TextButton(
                         onPressed: () {},
                         child: Text(
-                          'Resend Code',
+                          'resendOTP'.tr,
                           style: TextStyle(color: AppColors.dark),
                         ),
                       ),

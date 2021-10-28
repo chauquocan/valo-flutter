@@ -4,6 +4,7 @@ const Map<String, String> vi = {
   'enterphonenumber': 'Nhập số điện thoại',
   'enterotp': 'Nhập code OTP',
   'sendOTP': 'Gửi tin nhắn xác thực',
+  'resendOTP': 'Gửi lại mã xác thực',
   'loading': 'Đang xử lý...',
   // 'en': 'Tiếng Anh',
   // 'vi': 'Tiếng Việt',

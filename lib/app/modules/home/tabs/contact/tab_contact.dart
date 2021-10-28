@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:valo_chat_app/app/widgets/custom/custom_contact.dart';
-import 'package:valo_chat_app/app/widgets/custom/customcard.dart';
 
 class ContactTab extends GetView<TabContactController> {
   const ContactTab({Key? key}) : super(key: key);

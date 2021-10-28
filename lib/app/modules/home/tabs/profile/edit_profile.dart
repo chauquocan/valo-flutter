@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 
 // sua profile cua minh
@@ -116,7 +114,6 @@ class EditProfileScreen extends StatelessWidget {
 
   Widget buildTextField(String labelText, String placeholder) {
     return Padding(
-
       padding: const EdgeInsets.only(bottom: 35.0),
       child: TextField(
         decoration: InputDecoration(
