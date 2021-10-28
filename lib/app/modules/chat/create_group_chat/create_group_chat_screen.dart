@@ -15,19 +15,14 @@ class CreateGroupChatScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            Flexible(
-                child: Column(
-              children: [
-                WidgetField(
-                  //controller: controller.textCtrl,
-                  hint: 'Enter group name',
-                  margin: EdgeInsets.symmetric(
-                    vertical: 10,
-                    horizontal: 10,
-                  ),
-                ),
-              ],
-            ))
+            WidgetField(
+              //controller: controller.textCtrl,
+              hint: 'Enter group name',
+              margin: EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: 10,
+              ),
+            ),
           ],
         ),
       ),
@@ -38,7 +33,7 @@ class CreateGroupChatScreen extends StatelessWidget {
 AppBar _appBar() {
   return AppBar(
     title: Text(
-      'My account',
+      'Create new group',
       style: TextStyle(color: AppColors.light),
     ),
     backgroundColor: Colors.lightBlue,
