@@ -29,10 +29,10 @@ class ConversationTab extends GetView<TabConversationController> {
             PopupMenuButton<String>(onSelected: (value) {
               switch (value) {
                 case ("newgroup"):
-                  Get.to(CreateGroupChatScreen());
+                  Get.to(() => CreateGroupChatScreen());
                   break;
                 case ("newfriend"):
-                  Get.to(AddFriendScreen());
+                  Get.to(() => AddFriendScreen());
                   break;
               }
             }, itemBuilder: (BuildContext context) {

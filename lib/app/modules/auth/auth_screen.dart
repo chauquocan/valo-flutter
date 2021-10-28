@@ -8,14 +8,14 @@ class AuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.keyboard_backspace_rounded),
-        backgroundColor: AppColors.primary,
-        onPressed: () => Get.back(),
-      ),
-      body: SafeArea(
-        child: Background(
+    return SafeArea(
+      child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.keyboard_backspace_rounded),
+          backgroundColor: AppColors.primary,
+          onPressed: () => Get.back(),
+        ),
+        body: Background(
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -33,9 +33,19 @@ class AuthScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     border: Border.all(),
                     borderRadius: BorderRadius.circular(29),
-                    color: AppColors.hintLight,
+                    gradient: const LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        stops: [
+                          0.1,
+                          0.9
+                        ],
+                        colors: [
+                          AppColors.secondary,
+                          AppColors.hintLight,
+                        ]),
                   ),
-                  width: size.width * 0.8,
+                  width: size.width * 0.85,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -44,7 +54,7 @@ class AuthScreen extends StatelessWidget {
                         child: CountryCodePicker(
                           textStyle: const TextStyle(color: AppColors.dark),
                           initialSelection: 'VN',
-                          favorite: const ['+84', 'VN'],
+                          favorite: const ['+84', 'VN', 'US'],
                           dialogSize: Size(size.width * 0.8, size.height * 0.4),
                           showCountryOnly: true,
                           onChanged: (value) {
@@ -56,7 +66,7 @@ class AuthScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        width: size.width * 0.45,
+                        width: size.width * 0.54,
                         child: TextFormField(
                           controller: authController._phoneController,
                           keyboardType: TextInputType.phone,
@@ -89,18 +99,27 @@ class AuthScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: size.height * 0.015),
-                RoundedButton(
-                  buttonText: 'sendOTP'.tr,
-                  width: size.width * 0.6,
-                  colors: [AppColors.light, AppColors.light],
-                  color: AppColors.light,
-                  textColor: AppColors.dark,
-                  onPressed: () async {
-                    authController._verifyPhoneNumber(
-                        authController.countryCode +
-                            authController._phoneController.text);
-                  },
-                ),
+                Obx(() {
+                  if (authController.loading.value) {
+                    return CircularProgressIndicator(
+                      backgroundColor: AppColors.light,
+                    );
+                  } else {
+                    return RoundedButton(
+                      buttonText: 'sendOTP'.tr,
+                      width: size.width * 0.6,
+                      colors: [AppColors.light, AppColors.light],
+                      color: AppColors.light,
+                      textColor: AppColors.dark,
+                      onPressed: () async {
+                        FocusScope.of(context).unfocus();
+                        authController._verifyPhoneNumber(
+                            authController.countryCode +
+                                authController._phoneController.text);
+                      },
+                    );
+                  }
+                }),
                 SizedBox(height: size.height * 0.025),
                 AlreadyHaveAnAccountCheck(
                   login: false,

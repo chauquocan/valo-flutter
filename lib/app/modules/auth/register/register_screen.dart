@@ -11,7 +11,7 @@ class RegisterScreen extends GetView<RegisterController> {
         floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.keyboard_backspace_rounded),
           backgroundColor: AppColors.primary,
-          onPressed: () => Get.back(),
+          onPressed: () => Get.offAllNamed('/'),
         ),
         body: Background(
           child: SingleChildScrollView(

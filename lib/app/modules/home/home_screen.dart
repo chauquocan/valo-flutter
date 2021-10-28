@@ -3,9 +3,9 @@ part of 'home.dart';
 class HomeScreen extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: PersistentTabView(
+    return SafeArea(
+      child: Scaffold(
+        body: PersistentTabView(
           context,
           backgroundColor: AppColors.light,
           screens: controller.tabs,

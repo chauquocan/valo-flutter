@@ -1,10 +1,35 @@
 part of 'auth.dart';
 
-class OtpScreen extends StatelessWidget {
+class OtpScreen extends StatefulWidget {
   OtpScreen({Key? key, required this.phoneNumber}) : super(key: key);
   final String phoneNumber;
+
+  @override
+  State<OtpScreen> createState() => _OtpScreenState();
+}
+
+class _OtpScreenState extends State<OtpScreen> {
   final authController = Get.put(AuthController());
   final FocusNode _pinPutFocusNode = FocusNode();
+
+  int secondsRemaining = 60;
+  bool enableResend = false;
+  late Timer timer;
+  @override
+  initState() {
+    super.initState();
+    timer = Timer.periodic(Duration(seconds: 1), (_) {
+      if (secondsRemaining != 0) {
+        setState(() {
+          secondsRemaining--;
+        });
+      } else {
+        setState(() {
+          enableResend = true;
+        });
+      }
+    });
+  }
 
   BoxDecoration get _pinPutDecoration {
     return BoxDecoration(
@@ -35,6 +60,10 @@ class OtpScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: size.height * 0.1),
+              Text(
+                '$secondsRemaining',
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
@@ -59,27 +88,54 @@ class OtpScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              RoundedButton(
-                buttonText: 'submit'.tr,
-                colors: [AppColors.light, AppColors.light],
-                color: Colors.black,
-                textColor: AppColors.dark,
-                width: size.width * 0.6,
-                onPressed: () => authController
-                    ._verifyOTP(authController._otpController.text),
+              Obx(
+                () => authController.loading.value
+                    ? const CircularProgressIndicator(
+                        backgroundColor: AppColors.light,
+                      )
+                    : RoundedButton(
+                        buttonText: 'submit'.tr,
+                        colors: [AppColors.light, AppColors.light],
+                        color: Colors.black,
+                        textColor: AppColors.dark,
+                        width: size.width * 0.6,
+                        onPressed: () => authController
+                            ._verifyOTP(authController._otpController.text),
+                      ),
               ),
+              SizedBox(height: 30),
+              enableResend
+                  ? Container(
+                      width: size.width * 0.3,
+                      decoration: BoxDecoration(
+                        color: AppColors.primary,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: TextButton(
+                        onPressed: enableResend
+                            ? _resendCode
+                            : () => (authController
+                                ._verifyPhoneNumber(widget.phoneNumber)),
+                        child: Text(
+                          'Resend Code',
+                          style: TextStyle(color: AppColors.light),
+                        ),
+                      ),
+                    )
+                  : Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          'Resend Code',
+                          style: TextStyle(color: AppColors.dark),
+                        ),
+                      ),
+                    ),
               SizedBox(height: size.height * 0.025),
-              TimerButton(
-                label: 'resend',
-                onPressed: () => authController._verifyPhoneNumber(phoneNumber),
-                timeOutInSeconds: 60,
-                resetTimerOnPressed: true,
-                buttonType: ButtonType.ElevatedButton,
-                color: AppColors.light,
-                activeTextStyle: TextStyle(color: AppColors.primaryDark),
-                disabledColor: Colors.black54,
-                disabledTextStyle: TextStyle(color: Colors.white),
-              ),
             ],
           ),
         ),
@@ -91,4 +147,18 @@ class OtpScreen extends StatelessWidget {
     color: const Color.fromRGBO(235, 236, 237, 1),
     borderRadius: BorderRadius.circular(5.0),
   );
+
+  void _resendCode() {
+    //other code here
+    setState(() {
+      secondsRemaining = 60;
+      enableResend = false;
+    });
+  }
+
+  @override
+  dispose() {
+    timer.cancel();
+    super.dispose();
+  }
 }

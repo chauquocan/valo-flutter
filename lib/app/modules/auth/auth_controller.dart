@@ -12,6 +12,8 @@ class AuthController extends GetxController {
   String countryCode = '';
 
   _verifyPhoneNumber(String phoneNumber) async {
+    loading.value = true;
+    print(phoneNumber);
     await auth.verifyPhoneNumber(
       //số điện thoại xác thực
       phoneNumber: phoneNumber,
@@ -44,21 +46,19 @@ class AuthController extends GetxController {
   }
 
   _verifyOTP(String otp) async {
-    _showLoading();
+    loading.value = true;
     var credential = await auth.signInWithCredential(
       PhoneAuthProvider.credential(
           verificationId: verificationID, smsCode: otp),
     );
     if (credential.user != null) {
+      loading.value = false;
       Get.snackbar('OTP Verify successfully', 'Please inform your profile');
       Get.offAllNamed('/register');
     } else {
+      loading.value = false;
       Get.snackbar('Error', 'Wrong OTP');
     }
-  }
-
-  void _showLoading() {
-    Get.dialog(const DialogLoading());
   }
 
   void showInfoDialog(String title, String content) {
@@ -68,11 +68,4 @@ class AuthController extends GetxController {
       content: Text(content),
     ));
   }
-
-  // @override
-  // void onClose() {
-  //   super.onClose();
-  //   _phoneController.dispose();
-  //   _otpController.dispose();
-  // }
 }

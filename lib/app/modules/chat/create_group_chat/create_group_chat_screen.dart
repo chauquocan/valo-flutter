@@ -6,7 +6,7 @@ import 'package:valo_chat_app/app/widgets/widgets.dart';
 
 import 'create_group_chat_controller.dart';
 
-class CreateGroupChatScreen extends GetView<CreateGroupChatController> {
+class CreateGroupChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetX<CreateGroupChatController>(

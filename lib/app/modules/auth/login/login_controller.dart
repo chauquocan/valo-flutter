@@ -6,6 +6,7 @@ class LoginController extends GetxController {
   final TextEditingController _passwordInput = TextEditingController();
   final _loginFormKey = GlobalKey<FormState>();
   final _showPass = true.obs;
+  var _isLoading = false.obs;
   // final _isLoading = false.obs;
   LoginController({required this.userProvider});
 
@@ -24,8 +25,8 @@ class LoginController extends GetxController {
   }
 
   Future login(String phoneNumber, String password) async {
+    _isLoading.value = true;
     if (_loginFormKey.currentState!.validate()) {
-      _showLoading();
       final map = {'username': phoneNumber, 'password': password};
       final response = await userProvider.login(map);
       print('Respone: ${response.toString()}');
@@ -35,13 +36,14 @@ class LoginController extends GetxController {
             await userProvider.getUser(response.data!.accessToken);
         print('User respone: ${userResponse.toString()}');
         if (userResponse.ok) {
+          _isLoading.value = false;
           await Storage.saveUser(userResponse.data!);
           Get.offAllNamed('/home');
         } else {
           Get.back();
         }
       } else {
-        Get.back();
+        _isLoading.value = false;
         if (response.code == HttpStatus.forbidden) {
           showInfoDialog('Login fail', 'Phone number or password incorrect');
         } else if (response.code == HttpStatus.unauthorized) {
@@ -51,6 +53,7 @@ class LoginController extends GetxController {
         }
       }
     } else {
+      _isLoading.value = false;
       showInfoDialog('Login failed', 'Invalid phonenumber or password');
     }
   }
