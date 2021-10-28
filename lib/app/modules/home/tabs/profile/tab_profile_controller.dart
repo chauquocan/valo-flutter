@@ -8,11 +8,16 @@ import 'package:valo_chat_app/app/widgets/custom/dialog_loading.dart';
 
 class TabProfileController extends GetxController {
   final UserProvider provider;
+  final TextEditingController inputName = TextEditingController();
+  final TextEditingController inputPhone = TextEditingController();
+  final TextEditingController inputEmail = TextEditingController();
+  final TextEditingController inputAdress = TextEditingController();
+
+  TabProfileController({required this.provider});
+
   var isLoading = false.obs;
   final ImagePicker _picker = ImagePicker();
   var imageURL = '';
-
-  TabProfileController({required this.provider});
 
   void uploadImage(ImageSource imageSource) async {
     try {
@@ -40,6 +45,30 @@ class TabProfileController extends GetxController {
     } finally {
       isLoading(false);
     }
+  }
+
+  void editProfileInfo(
+      String name, String phone, String email, String address) async {
+    final map = {
+      'name': name,
+      'phone': phone,
+      'email': email,
+      'address': address
+    };
+    // final response =
+    await UserProvider().updateUserInfo(map);
+    // print('Update Response: ${response.toString()}');
+    // if (response.code) {
+    //   Get.snackbar('update thanh cong', 'yeah');
+    // } else {
+    //   if (response.code == HttpStatus.forbidden) {
+    //     Get.snackbar('fail', 'fdgdfg');
+    //   } else if (response.code == HttpStatus.unauthorized) {
+    //     Get.snackbar('failed', 'fdsfsd');
+    //   } else {
+    //     Get.snackbar('failed', 'Sometihing went wrong, try again');
+    //   }
+    // }
   }
 
   void back() {
