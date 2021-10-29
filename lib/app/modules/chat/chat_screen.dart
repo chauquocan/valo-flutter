@@ -35,7 +35,7 @@ class ChatScreen extends GetView<ChatController> {
                   children: [
                     OwnMessage(
                       message: "mesageadsada",
-                      time: "12:0",
+                      time: DateTime.now().toString(),
                     ),
                     ReplyMessage(
                       message: "okeee",
