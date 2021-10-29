@@ -1,10 +1,17 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:valo_chat_app/app/data/providers/user_provider.dart';
+import 'package:valo_chat_app/app/modules/home/tabs/profile/tab_profile_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
+import 'package:valo_chat_app/app/utils/store_service.dart';
 
 // sua profile cua minh
 class EditProfileScreen extends StatelessWidget {
   bool showPassword = false;
+  final controller = Get.put(TabProfileController(provider: UserProvider()));
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,19 +34,61 @@ class EditProfileScreen extends StatelessWidget {
               Center(
                 child: Stack(
                   children: [
-                    Container(
-                      width: 120,
-                      height: 130,
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              width: 4,
-                              color: Theme.of(context).scaffoldBackgroundColor),
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
+                    Obx(() {
+                      if (controller.isLoading.value) {
+                        return Container(
+                          width: 120,
+                          height: 130,
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 1, color: AppColors.dark),
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: AssetImage(
-                                  "assets/images/place_avatar.png"))),
-                    ),
+                              image:
+                                  AssetImage("assets/images/place_avatar.png"),
+                            ),
+                          ),
+                        );
+                      } else {
+                        if (controller.imageURL.length != 0) {
+                          return CachedNetworkImage(
+                            imageUrl: controller.imageURL,
+                            fit: BoxFit.cover,
+                            imageBuilder: (context, imageProvider) =>
+                                CircleAvatar(
+                              backgroundColor: AppColors.light,
+                              backgroundImage: imageProvider,
+                            ),
+                            placeholder: (context, url) => CircleAvatar(
+                              backgroundImage:
+                                  AssetImage("assets/images/place_avatar.png"),
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  backgroundColor: AppColors.light,
+                                ),
+                              ),
+                            ),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
+                          );
+                        } else {
+                          return Container(
+                            width: 120,
+                            height: 130,
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(width: 1, color: AppColors.dark),
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(
+                                    '${Storage.getUser()?.imgUrl}',
+                                  ),
+                                )),
+                          );
+                        }
+                      }
+                    }),
                     Positioned(
                       right: 0,
                       bottom: 0,
@@ -55,7 +104,43 @@ class EditProfileScreen extends StatelessWidget {
                             primary: Colors.white,
                             backgroundColor: Color(0xFFF5F6F9),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.bottomSheet(
+                              Container(
+                                decoration: const BoxDecoration(
+                                  color: AppColors.light,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(16.0),
+                                    topRight: Radius.circular(16.0),
+                                  ),
+                                ),
+                                child: Wrap(
+                                  alignment: WrapAlignment.end,
+                                  crossAxisAlignment: WrapCrossAlignment.end,
+                                  children: [
+                                    ListTile(
+                                      leading: const Icon(Icons.camera),
+                                      title: const Text('Camera'),
+                                      onTap: () {
+                                        Get.back();
+                                        controller
+                                            .uploadImage(ImageSource.camera);
+                                      },
+                                    ),
+                                    ListTile(
+                                      leading: const Icon(Icons.image),
+                                      title: const Text('Gallery'),
+                                      onTap: () {
+                                        Get.back();
+                                        controller
+                                            .uploadImage(ImageSource.gallery);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
                           child:
                               SvgPicture.asset("assets/icons/Camera Icon.svg"),
                         ),
@@ -67,10 +152,21 @@ class EditProfileScreen extends StatelessWidget {
               SizedBox(
                 height: 30,
               ),
-              buildTextField("Name", "Long"),
-              buildTextField("Phone", "G"),
-              buildTextField("E-mail", "s2taaa@gmail.com"),
-              buildTextField("Address", "Gia Nghia"),
+              //Tên
+              buildTextField(
+                "Name",
+                '${Storage.getUser()?.name}',
+                controller.inputName,
+              ),
+              //Số điện thoại
+              buildTextField("Phone", '${Storage.getUser()?.phone}',
+                  controller.inputPhone),
+              //Email
+              buildTextField("E-mail", '${Storage.getUser()?.email}',
+                  controller.inputEmail),
+              //Địa chỉ
+              buildTextField("Address", '${Storage.getUser()?.address}',
+                  controller.inputAdress),
               SizedBox(
                 height: 35,
               ),
@@ -89,7 +185,11 @@ class EditProfileScreen extends StatelessWidget {
                             color: Colors.black)),
                   ),
                   RaisedButton(
-                    onPressed: () {},
+                    onPressed: () => controller.editProfileInfo(
+                        controller.inputName.text,
+                        controller.inputPhone.text,
+                        controller.inputEmail.text,
+                        controller.inputAdress.text),
                     color: Colors.green,
                     padding: EdgeInsets.symmetric(horizontal: 50),
                     elevation: 2,
@@ -112,14 +212,18 @@ class EditProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget buildTextField(String labelText, String placeholder) {
+  Widget buildTextField(
+    String labelText,
+    String placeholder,
+    TextEditingController txtController,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 35.0),
       child: TextField(
+        controller: txtController..text = placeholder,
         decoration: InputDecoration(
             labelText: labelText,
             floatingLabelBehavior: FloatingLabelBehavior.always,
-            hintText: placeholder,
             hintStyle: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,

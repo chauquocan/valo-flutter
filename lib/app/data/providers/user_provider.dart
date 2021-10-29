@@ -11,6 +11,9 @@ class UserProvider extends ConnectService {
   static const String registerURL = 'auth/register';
   static const String userURL = 'users/';
 
+  var _token = Storage.getToken()?.accessToken;
+  var _userId = Storage.getUser()?.id;
+
   Future<NetworkResponse<LoginRespone>> login(Map map) async {
     try {
       final response = await post(loginURL, data: map);
@@ -39,7 +42,6 @@ class UserProvider extends ConnectService {
 
   Future<NetworkResponse<ProfileResponse>> getUser(String accessToken) async {
     try {
-      ;
       final response = await get(userURL + Storage.getToken()!.username,
           options:
               Options(headers: {'Authorization': 'Bearer ${accessToken}'}));
@@ -54,8 +56,33 @@ class UserProvider extends ConnectService {
     }
   }
 
+  Future updateUserInfo(Map map) async {
+    var _token = Storage.getToken()?.accessToken;
+    var _userId = Storage.getUser()?.id;
+    try {
+      final response = await patch(
+        userURL + _userId!,
+        data: map,
+        options: Options(
+          headers: <String, String>{
+            'Authorization': 'Bearer $_token',
+          },
+        ),
+      );
+      (map) => ProfileResponse.fromJson(map);
+      // return response.statusCode;
+      // return NetworkResponse.fromResponse(
+      //   response,
+      //   (json) => ProfileResponse.fromJson(json),
+      // );
+    } on DioError catch (e) {
+      print(e.error);
+      // return NetworkResponse.withError(e.response);
+    }
+  }
+
   Future<NetworkResponse<ProfileResponse>> uploadFile(filePath) async {
-    var token = Storage.getToken()?.accessToken;
+    var _token = Storage.getToken()?.accessToken;
     var _userId = Storage.getUser()?.id;
 
     try {
@@ -66,7 +93,7 @@ class UserProvider extends ConnectService {
         data: formData,
         options: Options(
           headers: <String, String>{
-            'Authorization': 'Bearer $token',
+            'Authorization': 'Bearer $_token',
           },
         ),
       );
