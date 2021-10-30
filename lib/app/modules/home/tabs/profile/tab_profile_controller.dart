@@ -56,7 +56,11 @@ class TabProfileController extends GetxController {
       'address': address
     };
     // final response =
-    await UserProvider().updateUserInfo(map);
+    try {
+      await UserProvider().updateUserInfo(map);
+    } on Exception catch (e) {
+      // TODO
+    }
     // print('Update Response: ${response.toString()}');
     // if (response.code) {
     //   Get.snackbar('update thanh cong', 'yeah');

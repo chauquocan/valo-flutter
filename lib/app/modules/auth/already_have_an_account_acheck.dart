@@ -1,4 +1,4 @@
-part of 'widgets.dart';
+part of 'auth.dart';
 
 class AlreadyHaveAnAccountCheck extends StatelessWidget {
   final bool login;

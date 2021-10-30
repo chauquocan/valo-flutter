@@ -16,3 +16,4 @@ part 'auth_binding.dart';
 part 'auth_screen.dart';
 part 'auth_controller.dart';
 part 'otp_screen.dart';
+part 'already_have_an_account_acheck.dart';

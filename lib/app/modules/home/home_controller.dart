@@ -32,6 +32,4 @@ class HomeController extends GetxController {
         inactiveColorPrimary: CupertinoColors.systemGrey),
   ];
   final tabs = [ConversationTab(), ContactTab(), TabProfile()];
-
-
 }

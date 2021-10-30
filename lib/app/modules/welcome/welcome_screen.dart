@@ -10,6 +10,8 @@ class WelcomeScreen extends StatelessWidget {
     {'name': 'Vietnamese', 'locale': const Locale('vi', 'VN')},
   ];
 
+  WelcomeScreen({Key? key}) : super(key: key);
+
   updateLanguage(Locale locale) {
     Get.back();
     Get.updateLocale(locale);

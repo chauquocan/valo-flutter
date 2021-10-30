@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/status/http_status.dart';
 
 import 'package:valo_chat_app/app/data/providers/user_provider.dart';
+import 'package:valo_chat_app/app/modules/auth/auth.dart';
 import 'package:valo_chat_app/app/widgets/custom/dialog_loading.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
