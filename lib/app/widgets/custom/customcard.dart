@@ -5,6 +5,7 @@ import 'package:valo_chat_app/app/modules/chat/chat.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:get/get.dart';
 
+//Custom card in conversation tab
 class CustomCard extends StatelessWidget {
   const CustomCard({Key? key, required this.chat}) : super(key: key);
   final ChatModel chat;

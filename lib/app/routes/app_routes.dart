@@ -1,5 +1,6 @@
 part of './app_pages.dart';
 
+//Routes
 abstract class Routes {
   //
   static const WELCOME = '/';

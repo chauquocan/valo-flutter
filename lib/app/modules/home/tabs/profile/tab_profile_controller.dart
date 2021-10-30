@@ -7,7 +7,10 @@ import 'package:valo_chat_app/app/utils/store_service.dart';
 import 'package:valo_chat_app/app/widgets/custom/dialog_loading.dart';
 
 class TabProfileController extends GetxController {
+  //user service
   final UserProvider provider;
+
+  //text field controller
   final TextEditingController inputName = TextEditingController();
   final TextEditingController inputPhone = TextEditingController();
   final TextEditingController inputEmail = TextEditingController();
@@ -16,9 +19,11 @@ class TabProfileController extends GetxController {
   TabProfileController({required this.provider});
 
   var isLoading = false.obs;
+  //image
   final ImagePicker _picker = ImagePicker();
   var imageURL = '';
 
+  //upload image function
   void uploadImage(ImageSource imageSource) async {
     try {
       final pickedFile =
@@ -47,6 +52,7 @@ class TabProfileController extends GetxController {
     }
   }
 
+  //edit profile infomation function
   void editProfileInfo(
       String name, String phone, String email, String address) async {
     final map = {
@@ -80,6 +86,7 @@ class TabProfileController extends GetxController {
     Get.back();
   }
 
+  //log out function
   void logout() {
     Get.dialog(const DialogLoading());
     Storage.logout();

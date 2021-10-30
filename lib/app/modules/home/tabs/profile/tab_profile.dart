@@ -12,10 +12,12 @@ class TabProfile extends GetView<TabProfileController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar(),
+      //body view
       body: Body(),
     );
   }
 
+  //app bar
   AppBar _appBar() {
     return AppBar(
       title: Text(

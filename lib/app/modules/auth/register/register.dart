@@ -14,4 +14,3 @@ import 'package:valo_chat_app/app/themes/theme.dart';
 
 part 'register_screen.dart';
 part 'register_controller.dart';
-part 'register_binding.dart';

@@ -1,5 +1,5 @@
 part of 'auth.dart';
-
+//check new or old user
 class AlreadyHaveAnAccountCheck extends StatelessWidget {
   final bool login;
   final VoidCallback? press;

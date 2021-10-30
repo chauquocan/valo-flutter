@@ -34,6 +34,7 @@ class EditProfileScreen extends StatelessWidget {
               Center(
                 child: Stack(
                   children: [
+                    //avatar
                     Obx(() {
                       if (controller.isLoading.value) {
                         return Container(
@@ -89,6 +90,7 @@ class EditProfileScreen extends StatelessWidget {
                         }
                       }
                     }),
+                    //pick image button
                     Positioned(
                       right: 0,
                       bottom: 0,
@@ -152,27 +154,29 @@ class EditProfileScreen extends StatelessWidget {
               SizedBox(
                 height: 30,
               ),
-              //Tên
+              //Name input
               buildTextField(
                 "Name",
                 '${Storage.getUser()?.name}',
                 controller.inputName,
               ),
-              //Số điện thoại
+              //Phone numbers input
               buildTextField("Phone", '${Storage.getUser()?.phone}',
                   controller.inputPhone),
-              //Email
+              //Email input
               buildTextField("E-mail", '${Storage.getUser()?.email}',
                   controller.inputEmail),
-              //Địa chỉ
+              //Address input
               buildTextField("Address", '${Storage.getUser()?.address}',
                   controller.inputAdress),
               SizedBox(
                 height: 35,
               ),
+              //bottom buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  //cancel button
                   OutlinedButton(
                     style: OutlinedButton.styleFrom(
                       padding: EdgeInsets.symmetric(horizontal: 50),
@@ -187,6 +191,7 @@ class EditProfileScreen extends StatelessWidget {
                             letterSpacing: 2.2,
                             color: Colors.black)),
                   ),
+                  //save button
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       primary: Colors.green,

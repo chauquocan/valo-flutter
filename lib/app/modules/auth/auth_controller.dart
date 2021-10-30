@@ -45,6 +45,7 @@ class AuthController extends GetxController {
     );
   }
 
+  //Xác thực OTP code đã gửi
   _verifyOTP(String otp) async {
     loading.value = true;
     var credential = await auth.signInWithCredential(

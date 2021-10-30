@@ -1,7 +1,9 @@
 part of 'auth.dart';
 
+//OTP view
 class OtpScreen extends StatefulWidget {
   OtpScreen({Key? key, required this.phoneNumber}) : super(key: key);
+  //Phone number from auth view
   final String phoneNumber;
 
   @override
@@ -9,12 +11,15 @@ class OtpScreen extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<OtpScreen> {
+  //controller
   final authController = Get.put(AuthController());
-  final FocusNode _pinPutFocusNode = FocusNode();
 
+  final FocusNode _pinPutFocusNode = FocusNode();
+  //time out otp
   int secondsRemaining = 60;
   bool enableResend = false;
   late Timer timer;
+  //timer state
   @override
   initState() {
     super.initState();
@@ -31,6 +36,7 @@ class _OtpScreenState extends State<OtpScreen> {
     });
   }
 
+  //otp input custom decor
   BoxDecoration get _pinPutDecoration {
     return BoxDecoration(
       border: Border.all(color: AppColors.light),
@@ -51,6 +57,7 @@ class _OtpScreenState extends State<OtpScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              //title
               Text(
                 'enterotp'.tr,
                 style: const TextStyle(
@@ -60,10 +67,12 @@ class _OtpScreenState extends State<OtpScreen> {
                 ),
               ),
               SizedBox(height: size.height * 0.1),
+              //OTP code time remaining
               Text(
                 '$secondsRemaining',
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
+              //OTP input
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
@@ -88,6 +97,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   ),
                 ),
               ),
+              //sumit OTP button
               Obx(
                 () => authController.loading.value
                     ? const CircularProgressIndicator(
@@ -104,6 +114,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       ),
               ),
               SizedBox(height: 30),
+              //Resend button
               enableResend
                   ? Container(
                       width: size.width * 0.3,

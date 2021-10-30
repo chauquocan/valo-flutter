@@ -1,3 +1,4 @@
+//Vietnamese
 const Map<String, String> vi = {
   'chooselang': 'Chọn ngôn ngữ',
   'submit': 'Xác nhận',

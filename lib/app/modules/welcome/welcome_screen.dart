@@ -4,19 +4,22 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 
+//Welcome screen
 class WelcomeScreen extends StatelessWidget {
+  //languages
   final List locale = [
     {'name': 'English', 'locale': const Locale('en', 'US')},
     {'name': 'Vietnamese', 'locale': const Locale('vi', 'VN')},
   ];
 
   WelcomeScreen({Key? key}) : super(key: key);
-
+  //Get language
   updateLanguage(Locale locale) {
     Get.back();
     Get.updateLocale(locale);
   }
 
+  //Choosing language dialog
   buildLanguageDialog(BuildContext context) {
     showDialog(
         context: context,
@@ -75,6 +78,7 @@ class WelcomeScreen extends StatelessWidget {
                   width: size.height * 0.2,
                 ),
                 SizedBox(height: size.height * 0.1),
+                //Sign in button
                 RoundedButton(
                   buttonText: 'signin'.tr,
                   colors: [AppColors.primary, AppColors.secondary],
@@ -82,6 +86,7 @@ class WelcomeScreen extends StatelessWidget {
                   width: size.width * 0.8,
                   onPressed: () => Get.toNamed('/login'),
                 ),
+                //Sign up button
                 RoundedButton(
                   buttonText: 'signup'.tr,
                   width: size.width * 0.8,
@@ -90,6 +95,7 @@ class WelcomeScreen extends StatelessWidget {
                   textColor: AppColors.dark,
                   onPressed: () => Get.toNamed('/auth'),
                 ),
+                //Choose language button
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

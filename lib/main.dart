@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/routes/app_pages.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
@@ -18,14 +19,19 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.blue));
     print('current username: ${Storage.getToken()?.username}');
     return GetMaterialApp(
       title: 'Valo chat app',
       debugShowCheckedModeBanner: false,
+      //Translate language
       translations: TranslationService(),
       locale: TranslationService.locale,
       fallbackLocale: TranslationService.fallbackLocale,
+      //Theme
       theme: AppTheme.light,
+      //Routes
       getPages: AppPages.pages,
       initialRoute:
           Storage.ExpireToken() == false ? Routes.WELCOME : Routes.HOME,

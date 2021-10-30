@@ -1,5 +1,6 @@
 part of 'widgets.dart';
 
+//Custom avatar
 class WidgetAvatar extends StatelessWidget {
   final String? url;
   final bool showDot;

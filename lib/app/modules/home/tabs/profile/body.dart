@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:valo_chat_app/app/modules/home/tabs/profile/edit_profile.dart';
+import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/edit_profile.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
-import 'profile_menu.dart';
-import 'profile_pic.dart';
+import './widgets/profile_menu.dart';
+import './widgets/profile_pic.dart';
 
+//profile's body view
 class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -13,12 +14,14 @@ class Body extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 20),
       child: Column(
         children: [
+          //avatar
           ProfilePic(),
           SizedBox(height: 10),
           Center(
             child: Text('${Storage.getUser()?.email}'),
           ),
           SizedBox(height: 10),
+          //menu
           ProfileMenu(
             text: "My Account",
             icon: "assets/icons/User Icon.svg",
