@@ -2,20 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:valo_chat_app/app/data/models/chat.dart';
 import 'package:valo_chat_app/app/modules/chat/chat.dart';
-import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:get/get.dart';
 
 //Custom card in conversation tab
-class CustomCard extends StatelessWidget {
-  const CustomCard({Key? key, required this.chat}) : super(key: key);
+class CustomChatCard extends StatelessWidget {
+  const CustomChatCard({Key? key, required this.chat}) : super(key: key);
   final ChatModel chat;
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.to(() => ChatScreen(
-              chatModel: chat,
-            ));
+        Get.to(
+          () => ChatScreen(
+            chatModel: chat,
+          ),
+        );
       },
       child: Column(
         children: [
