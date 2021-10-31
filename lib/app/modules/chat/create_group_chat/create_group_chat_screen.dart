@@ -8,28 +8,26 @@ import 'package:valo_chat_app/app/widgets/widgets.dart';
 class CreateGroupChatScreen extends GetView<CreateGroupChatController> {
   @override
   Widget build(BuildContext context) {
-    return GetX<CreateGroupChatController>(builder: (_) {
-      return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: _appBar(),
-        body: SafeArea(
-          child: Column(
-            children: [
-              WidgetField(
-                //controller: controller.textCtrl,
-                hint: 'Enter group name',
-                margin: EdgeInsets.symmetric(
-                  vertical: 10,
-                  horizontal: 10,
-                ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: _appBar(),
+      body: SafeArea(
+        child: Column(
+          children: [
+            WidgetField(
+              //controller: controller.textCtrl,
+              hint: 'Enter group name',
+              margin: EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: 10,
               ),
-              SizedBox(height: 10),
-              _buildListUser(),
-            ],
-          ),
+            ),
+            SizedBox(height: 10),
+            //_buildListUser(),
+          ],
         ),
-      );
-    });
+      ),
+    );
   }
 
   AppBar _appBar() {
