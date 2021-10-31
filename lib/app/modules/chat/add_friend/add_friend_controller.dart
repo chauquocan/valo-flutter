@@ -7,7 +7,6 @@ import 'package:valo_chat_app/app/utils/store_service.dart';
 class AddFriendController extends GetxController {
   //User service
   final UserProvider userProvider;
-  final _token = Storage.getToken()?.accessToken;
 
   AddFriendController({required this.userProvider});
 
@@ -51,13 +50,8 @@ class AddFriendController extends GetxController {
         status: searchResponse.data!.status,
       ));
       print(searchResults.length);
-      // addSearchlist(searchResponse.data);
     } else {
       Get.snackbar('Search failed', 'Something wrong');
     }
-  }
-
-  void addSearchlist(ProfileResponse? profileResponse) {
-    searchResults.add(profileResponse!);
   }
 }
