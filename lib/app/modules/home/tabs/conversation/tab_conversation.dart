@@ -23,7 +23,7 @@ class ConversationTab extends GetView<TabConversationController> {
             PopupMenuButton<String>(onSelected: (value) {
               switch (value) {
                 case ("newgroup"):
-                  Get.to(() => CreateGroupChatScreen());
+                  Get.toNamed('/creategroup');
                   break;
                 case ("newfriend"):
                   Get.to(() => AddFriendScreen());

@@ -16,4 +16,7 @@ abstract class Routes {
   static const CONVERSATION = '/chat';
   static const CONTACT = '/contact';
   static const EDITPROFILE = '/editprofile';
+
+  static const CREATEGROUP = '/creategroup';
+  static const NEWFRIEND = '/newfriend';
 }

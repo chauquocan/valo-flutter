@@ -4,6 +4,6 @@ import 'package:valo_chat_app/app/modules/chat/create_group_chat/create_group_ch
 class CreateGroupChatBinding implements Bindings {
   @override
   void dependencies() {
-    Get.put(() => CreateGroupChatController());
+    Get.lazyPut(() => CreateGroupChatController());
   }
 }
