@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/auth/auth.dart';
+import 'package:valo_chat_app/app/modules/chat/create_group_chat/create_group_chat_bindings.dart';
+import 'package:valo_chat_app/app/modules/chat/create_group_chat/create_group_chat_screen.dart';
 import 'package:valo_chat_app/app/modules/home/home.dart';
 import 'package:valo_chat_app/app/modules/auth/login/login.dart';
 import 'package:valo_chat_app/app/modules/auth/register/register.dart';
@@ -47,5 +49,9 @@ abstract class AppPages {
       name: Routes.EDITPROFILE,
       page: () => EditProfileScreen(),
     ),
+    GetPage(
+        name: Routes.CREATEGROUP,
+        page: () => CreateGroupChatScreen(),
+        binding: CreateGroupChatBinding()),
   ];
 }
