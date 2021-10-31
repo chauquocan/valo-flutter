@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/auth/auth.dart';
+import 'package:valo_chat_app/app/modules/chat/add_friend/add_friend_screen.dart';
 import 'package:valo_chat_app/app/modules/chat/create_group_chat/create_group_chat_bindings.dart';
 import 'package:valo_chat_app/app/modules/chat/create_group_chat/create_group_chat_screen.dart';
 import 'package:valo_chat_app/app/modules/home/home.dart';
@@ -50,8 +51,13 @@ abstract class AppPages {
       page: () => EditProfileScreen(),
     ),
     GetPage(
-        name: Routes.CREATEGROUP,
-        page: () => CreateGroupChatScreen(),
-        binding: CreateGroupChatBinding()),
+      name: Routes.CREATEGROUP,
+      page: () => CreateGroupChatScreen(),
+      binding: CreateGroupChatBinding(),
+    ),
+    GetPage(
+      name: Routes.NEWFRIEND,
+      page: () => AddFriendScreen(),
+    ),
   ];
 }

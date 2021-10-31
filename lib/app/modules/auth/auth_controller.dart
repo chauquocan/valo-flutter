@@ -41,7 +41,6 @@ class AuthController extends GetxController {
       //thời gian code hết hạn
       codeAutoRetrievalTimeout: (id) {
         verificationID = id;
-        Get.snackbar("OTP Code expired", "PLease try resend OTP");
       },
       timeout: const Duration(seconds: 60),
     );

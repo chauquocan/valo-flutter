@@ -70,63 +70,6 @@ class ProfilePic extends StatelessWidget {
               }
             },
           ),
-          //pick image button
-          Positioned(
-            right: -16,
-            bottom: 0,
-            child: SizedBox(
-              height: 46,
-              width: 46,
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
-                    side: const BorderSide(color: Colors.white),
-                  ),
-                  primary: Colors.white,
-                  backgroundColor: const Color(0xFFF5F6F9),
-                ),
-                onPressed: () {
-                  Get.bottomSheet(
-                    Container(
-                      decoration: const BoxDecoration(
-                        color: AppColors.light,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(16.0),
-                          topRight: Radius.circular(16.0),
-                        ),
-                      ),
-                      child: Wrap(
-                        alignment: WrapAlignment.end,
-                        crossAxisAlignment: WrapCrossAlignment.end,
-                        children: [
-                          //pick image from camera
-                          ListTile(
-                            leading: const Icon(Icons.camera),
-                            title: const Text('Camera'),
-                            onTap: () {
-                              Get.back();
-                              controller.uploadImage(ImageSource.camera);
-                            },
-                          ),
-                          //pick image from gallery
-                          ListTile(
-                            leading: const Icon(Icons.image),
-                            title: const Text('Gallery'),
-                            onTap: () {
-                              Get.back();
-                              controller.uploadImage(ImageSource.gallery);
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-                child: SvgPicture.asset("assets/icons/Camera Icon.svg"),
-              ),
-            ),
-          )
         ],
       ),
     );
