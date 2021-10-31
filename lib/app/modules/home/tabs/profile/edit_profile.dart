@@ -24,10 +24,6 @@ class EditProfileScreen extends StatelessWidget {
           },
           child: ListView(
             children: [
-              Text(
-                "Edit profile",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-              ),
               SizedBox(
                 height: 15,
               ),
@@ -168,7 +164,7 @@ class EditProfileScreen extends StatelessWidget {
               buildTextField("Address", '${Storage.getUser()?.address}',
                   controller.inputAdress),
               SizedBox(
-                height: 35,
+                height: 10,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -218,12 +214,13 @@ class EditProfileScreen extends StatelessWidget {
     TextEditingController txtController,
   ) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 35.0),
+      padding: const EdgeInsets.only(bottom: 25.0),
       child: TextField(
         controller: txtController..text = placeholder,
         decoration: InputDecoration(
             labelText: labelText,
             floatingLabelBehavior: FloatingLabelBehavior.always,
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
             hintStyle: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,

@@ -14,36 +14,28 @@ class CustomContact extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {},
-      child: Row(
+      child: Column(
         children: [
-          CircleAvatar(
-            backgroundColor: Colors.blueGrey,
-            radius: 30,
-            child: SvgPicture.asset(
-              'assets/icons/logo.svg',
-              color: AppColors.secondary,
-              height: 38,
-              width: 38,
+          ListTile(
+            leading: CircleAvatar(
+              backgroundColor: Colors.blueGrey,
+              radius: 30,
+              child: SvgPicture.asset(
+                'assets/icons/${contact.icon}',
+                height: 38,
+                width: 38,
+              ),
             ),
+            title: Text(
+              contact.name,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text(contact.phone),
           ),
-          Text(
-            contact.name,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          IconButton(
-            alignment: Alignment.centerRight,
-            onPressed: () {},
-            icon: Icon(Icons.call),
-          ),
-          IconButton(
-            alignment: Alignment.centerRight,
-            onPressed: () {},
-            icon: Icon(Icons.video_call),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 20, left: 80),
+          const Padding(
+            padding: EdgeInsets.only(right: 20, left: 80),
             child: Divider(
-              thickness: 2,
+              thickness: 1,
             ),
           ),
         ],
