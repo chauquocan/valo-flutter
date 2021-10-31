@@ -174,27 +174,13 @@ class EditProfileScreen extends StatelessWidget {
               ),
               //bottom buttons
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  //cancel button
-                  OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(horizontal: 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                    onPressed: () {},
-                    child: Text("CANCEL",
-                        style: TextStyle(
-                            fontSize: 14,
-                            letterSpacing: 2.2,
-                            color: Colors.black)),
-                  ),
                   //save button
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.green,
+                      primary: Colors.blue,
+                      alignment: Alignment.centerRight,
                       padding: EdgeInsets.symmetric(horizontal: 50),
                       elevation: 2,
                       shape: RoundedRectangleBorder(
@@ -209,7 +195,7 @@ class EditProfileScreen extends StatelessWidget {
                     child: Text(
                       "SAVE",
                       style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 16,
                           letterSpacing: 2.2,
                           color: Colors.white),
                     ),

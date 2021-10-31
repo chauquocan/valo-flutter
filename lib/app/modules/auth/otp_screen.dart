@@ -117,7 +117,7 @@ class _OtpScreenState extends State<OtpScreen> {
               //Resend button
               enableResend
                   ? Container(
-                      width: size.width * 0.3,
+                      width: size.width * 0.5,
                       decoration: BoxDecoration(
                         color: AppColors.primary,
                         borderRadius: BorderRadius.circular(10),

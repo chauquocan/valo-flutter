@@ -10,7 +10,9 @@ import 'package:valo_chat_app/app/lang/lang.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  //firebase auth
   await Firebase.initializeApp();
+  //storage service
   await Storage.init();
   runApp(MyApp());
 }
@@ -19,8 +21,10 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    //status bar
     SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.blue));
+    //current user store in local
     print('current username: ${Storage.getToken()?.username}');
     return GetMaterialApp(
       title: 'Valo chat app',

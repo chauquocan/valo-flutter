@@ -5,6 +5,7 @@ import 'package:valo_chat_app/app/themes/theme.dart';
 
 import 'body.dart';
 
+//Profile tab view
 class TabProfile extends GetView<TabProfileController> {
   const TabProfile({Key? key}) : super(key: key);
 

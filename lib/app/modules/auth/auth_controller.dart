@@ -34,12 +34,14 @@ class AuthController extends GetxController {
         if (Get.currentRoute == '/otp') {
           Get.snackbar("Resend code", "please wait");
         } else {
+          Get.snackbar("Sending OTP", "Please wait for OTP code");
           Get.to(() => OtpScreen(phoneNumber: phoneNumber));
         }
       },
       //thời gian code hết hạn
       codeAutoRetrievalTimeout: (id) {
         verificationID = id;
+        Get.snackbar("OTP Code expired", "PLease try resend OTP");
       },
       timeout: const Duration(seconds: 60),
     );
