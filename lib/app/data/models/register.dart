@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'user.dart';
-
+//Register response mess
 class RegisterMessage {
   RegisterMessage({
     // required this.code,

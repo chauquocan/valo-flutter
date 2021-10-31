@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:valo_chat_app/app/data/models/chat.dart';
 import 'package:valo_chat_app/app/modules/chat/ui/own_message.dart';
 import 'package:valo_chat_app/app/modules/chat/ui/reply_message.dart';
-import 'package:valo_chat_app/app/modules/home/tabs/profile/profile_friend.dart';
+import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_friend.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'chat_controller.dart';
 

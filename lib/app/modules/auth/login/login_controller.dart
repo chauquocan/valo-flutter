@@ -1,15 +1,21 @@
 part of 'login.dart';
 
+//Controller for login view
 class LoginController extends GetxController {
+  //User service
   final UserProvider userProvider;
+  //Controller text field
   final TextEditingController _phoneInput = TextEditingController();
   final TextEditingController _passwordInput = TextEditingController();
+  //Form key for valid
   final _loginFormKey = GlobalKey<FormState>();
+  //pass's state
   final _showPass = true.obs;
-  var _isLoading = false.obs;
+  //loading
+  final _isLoading = false.obs;
   // final _isLoading = false.obs;
   LoginController({required this.userProvider});
-
+  //Validator
   String? phoneValidator(String value) {
     if (value.isEmpty) {
       return 'Please enter phone number';
@@ -24,6 +30,7 @@ class LoginController extends GetxController {
     return null;
   }
 
+  //Login function
   Future login(String phoneNumber, String password) async {
     _isLoading.value = true;
     if (_loginFormKey.currentState!.validate()) {
@@ -70,5 +77,6 @@ class LoginController extends GetxController {
     ));
   }
 
+  //Show pass
   void onShowPass() => _showPass.value = !_showPass.value;
 }

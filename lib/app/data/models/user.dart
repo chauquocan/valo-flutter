@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+//User respone
 class LoginRespone {
   LoginRespone({
     // required this.id,
@@ -60,7 +61,8 @@ class ProfileResponse {
 
   String toRawJson() => json.encode(toJson());
 
-  factory ProfileResponse.fromJson(Map<String, dynamic> json) => ProfileResponse(
+  factory ProfileResponse.fromJson(Map<String, dynamic> json) =>
+      ProfileResponse(
         id: json['id'],
         name: json['name'],
         gender: json['gender'],

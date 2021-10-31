@@ -1,14 +1,16 @@
 part of 'register.dart';
 
 class RegisterController extends GetxController {
+  //user service
   final UserProvider userProvider;
+  //controller field
   final TextEditingController _fullNameInput = TextEditingController();
   final TextEditingController _phoneInput = TextEditingController();
   final TextEditingController _emailInput = TextEditingController();
   final TextEditingController _passwordInput = TextEditingController();
 
   RegisterController({required this.userProvider});
-
+  //Sign up
   Future register(
     // String fullname,
     String phoneNumber,

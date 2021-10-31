@@ -54,7 +54,7 @@ class AuthScreen extends StatelessWidget {
                         child: CountryCodePicker(
                           textStyle: const TextStyle(color: AppColors.dark),
                           initialSelection: 'VN',
-                          favorite: const ['+84', 'VN', 'US'],
+                          favorite: ['+84', 'VN'],
                           dialogSize: Size(size.width * 0.8, size.height * 0.4),
                           showCountryOnly: true,
                           onChanged: (value) {

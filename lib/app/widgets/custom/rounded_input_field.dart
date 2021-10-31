@@ -1,5 +1,6 @@
 part of '../widgets.dart';
 
+//custom input field for app
 class RoundedInputField extends StatelessWidget {
   final TextEditingController controller;
   final TextInputType keyboardType;

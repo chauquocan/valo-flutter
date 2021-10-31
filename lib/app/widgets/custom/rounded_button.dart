@@ -1,5 +1,5 @@
 part of '../widgets.dart';
-
+//custom rounded button for app
 class RoundedButton extends StatelessWidget {
   final String buttonText;
   final double width;

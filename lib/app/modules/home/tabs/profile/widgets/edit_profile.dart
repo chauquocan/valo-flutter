@@ -30,6 +30,7 @@ class EditProfileScreen extends StatelessWidget {
               Center(
                 child: Stack(
                   children: [
+                    //avatar
                     Obx(() {
                       if (controller.isLoading.value) {
                         return Container(
@@ -85,6 +86,7 @@ class EditProfileScreen extends StatelessWidget {
                         }
                       }
                     }),
+                    //pick image button
                     Positioned(
                       right: 0,
                       bottom: 0,
@@ -148,57 +150,52 @@ class EditProfileScreen extends StatelessWidget {
               SizedBox(
                 height: 30,
               ),
-              //Tên
+              //Name input
               buildTextField(
                 "Name",
                 '${Storage.getUser()?.name}',
                 controller.inputName,
               ),
-              //Số điện thoại
+              //Phone numbers input
               buildTextField("Phone", '${Storage.getUser()?.phone}',
                   controller.inputPhone),
-              //Email
+              //Email input
               buildTextField("E-mail", '${Storage.getUser()?.email}',
                   controller.inputEmail),
-              //Địa chỉ
+              //Address input
               buildTextField("Address", '${Storage.getUser()?.address}',
                   controller.inputAdress),
               SizedBox(
                 height: 10,
               ),
+              //bottom buttons
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  OutlineButton(
-                    padding: EdgeInsets.symmetric(horizontal: 50),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    onPressed: () {},
-                    child: Text("CANCEL",
-                        style: TextStyle(
-                            fontSize: 14,
-                            letterSpacing: 2.2,
-                            color: Colors.black)),
-                  ),
-                  RaisedButton(
+                  //save button
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.blue,
+                      alignment: Alignment.centerRight,
+                      padding: EdgeInsets.symmetric(horizontal: 50),
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
                     onPressed: () => controller.editProfileInfo(
                         controller.inputName.text,
                         controller.inputPhone.text,
                         controller.inputEmail.text,
                         controller.inputAdress.text),
-                    color: Colors.green,
-                    padding: EdgeInsets.symmetric(horizontal: 50),
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
                     child: Text(
                       "SAVE",
                       style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 16,
                           letterSpacing: 2.2,
                           color: Colors.white),
                     ),
-                  )
+                  ),
                 ],
               )
             ],

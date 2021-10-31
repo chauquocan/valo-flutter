@@ -5,6 +5,7 @@ import 'package:valo_chat_app/app/themes/theme.dart';
 
 import 'body.dart';
 
+//Profile tab view
 class TabProfile extends GetView<TabProfileController> {
   const TabProfile({Key? key}) : super(key: key);
 
@@ -12,10 +13,12 @@ class TabProfile extends GetView<TabProfileController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar(),
+      //body view
       body: Body(),
     );
   }
 
+  //app bar
   AppBar _appBar() {
     return AppBar(
       title: Text(

@@ -8,12 +8,18 @@ import 'package:valo_chat_app/app/modules/home/tabs/profile/tab_profile_controll
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
+//profile Avatar widget
 class ProfilePic extends StatelessWidget {
+  //contructor
   ProfilePic({
     Key? key,
   }) : super(key: key);
-  TabProfileController controller =
-      Get.put(TabProfileController(provider: UserProvider()));
+  //controller
+  TabProfileController controller = Get.put(
+    TabProfileController(
+      provider: UserProvider(),
+    ),
+  );
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -23,6 +29,7 @@ class ProfilePic extends StatelessWidget {
         fit: StackFit.expand,
         clipBehavior: Clip.none,
         children: [
+          //user avatar
           Obx(
             () {
               if (controller.isLoading.value) {
@@ -63,6 +70,7 @@ class ProfilePic extends StatelessWidget {
               }
             },
           ),
+          //pick image button
           Positioned(
             right: -16,
             bottom: 0,
@@ -92,6 +100,7 @@ class ProfilePic extends StatelessWidget {
                         alignment: WrapAlignment.end,
                         crossAxisAlignment: WrapCrossAlignment.end,
                         children: [
+                          //pick image from camera
                           ListTile(
                             leading: const Icon(Icons.camera),
                             title: const Text('Camera'),
@@ -100,6 +109,7 @@ class ProfilePic extends StatelessWidget {
                               controller.uploadImage(ImageSource.camera);
                             },
                           ),
+                          //pick image from gallery
                           ListTile(
                             leading: const Icon(Icons.image),
                             title: const Text('Gallery'),

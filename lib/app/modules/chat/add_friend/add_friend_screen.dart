@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/chat/add_friend/add_friend_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';

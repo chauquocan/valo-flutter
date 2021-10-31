@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+//loading animation dialog
 class DialogLoading extends StatelessWidget {
   const DialogLoading({Key? key}) : super(key: key);
 

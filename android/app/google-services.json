@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "962582765710-qb038kdj1nujsfi84vu5vo9e56k642co.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nhom23.valo_chat_app",
+            "certificate_hash": "72264b9f9c37781fd4ce7ca5963399d6017d8a10"
+          }
+        },
+        {
+          "client_id": "962582765710-ultmkcplu14d894cr86ver0t1s27mab9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nhom23.valo_chat_app",
+            "certificate_hash": "d9a1d955c3734cba8a619fa9ffbeac08d295a6c6"
+          }
+        },
+        {
           "client_id": "962582765710-c3as8bhcr7pfh8nr1iibcnt74773aest.apps.googleusercontent.com",
           "client_type": 3
         }

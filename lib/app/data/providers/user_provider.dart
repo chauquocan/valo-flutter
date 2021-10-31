@@ -7,13 +7,17 @@ import '../models/register.dart';
 import '../models/user.dart';
 
 class UserProvider extends ConnectService {
+  //end point
   static const String loginURL = 'auth/signin';
   static const String registerURL = 'auth/register';
   static const String userURL = 'users/';
 
-  var _token = Storage.getToken()?.accessToken;
-  var _userId = Storage.getUser()?.id;
+  //current token
+  final _token = Storage.getToken()?.accessToken;
+  //curent userId
+  final _userId = Storage.getUser()?.id;
 
+  //Đăng nhập
   Future<NetworkResponse<LoginRespone>> login(Map map) async {
     try {
       final response = await post(loginURL, data: map);
@@ -27,6 +31,7 @@ class UserProvider extends ConnectService {
     }
   }
 
+  //Đăng ký
   Future<NetworkResponse<RegisterMessage>> register(Map map) async {
     try {
       final response = await post(registerURL, data: map);
@@ -40,6 +45,7 @@ class UserProvider extends ConnectService {
     }
   }
 
+  //Get user bằng số điện thoại
   Future<NetworkResponse<ProfileResponse>> getUser(String accessToken) async {
     try {
       final response = await get(userURL + Storage.getToken()!.username,
@@ -56,11 +62,11 @@ class UserProvider extends ConnectService {
     }
   }
 
+  //Update user info
   Future updateUserInfo(Map map) async {
-    var _token = Storage.getToken()?.accessToken;
-    var _userId = Storage.getUser()?.id;
     try {
-      final response = await patch(
+      // final response =
+      await patch(
         userURL + _userId!,
         data: map,
         options: Options(
@@ -81,10 +87,8 @@ class UserProvider extends ConnectService {
     }
   }
 
+  //upload hình
   Future<NetworkResponse<ProfileResponse>> uploadFile(filePath) async {
-    var _token = Storage.getToken()?.accessToken;
-    var _userId = Storage.getUser()?.id;
-
     try {
       FormData formData = FormData.fromMap(
           {"image": await MultipartFile.fromFile(filePath, filename: "dp")});

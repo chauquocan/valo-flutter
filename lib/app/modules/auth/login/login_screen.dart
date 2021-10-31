@@ -1,5 +1,6 @@
 part of 'login.dart';
 
+//Login view
 class LoginScreen extends GetView<LoginController> {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -26,6 +27,7 @@ class LoginScreen extends GetView<LoginController> {
                     color: AppColors.light,
                   ),
                   SizedBox(height: size.height * 0.05),
+                  //Phone input
                   RoundedInputField(
                     controller: controller._phoneInput,
                     hintText: "Enter phone number",
@@ -36,7 +38,7 @@ class LoginScreen extends GetView<LoginController> {
                     icon: Icons.phone,
                     validator: (value) => controller.phoneValidator(value!),
                   ),
-                  //thay đổi state
+                  //Password's state
                   Obx(
                     () => RoundedInputField(
                       controller: controller._passwordInput,
@@ -47,7 +49,7 @@ class LoginScreen extends GetView<LoginController> {
                       textColor: AppColors.light,
                       validator: (value) =>
                           controller.passwordValidator(value!),
-                      //thay đổi state chữ khi bấm vào icon mắt
+                      //show password button
                       suffixIcon: IconButton(
                         onPressed: () {
                           controller.onShowPass();
@@ -61,6 +63,7 @@ class LoginScreen extends GetView<LoginController> {
                       ),
                     ),
                   ),
+                  //Sign in button
                   Obx(
                     () => controller._isLoading.value
                         ? CircularProgressIndicator(
@@ -78,6 +81,7 @@ class LoginScreen extends GetView<LoginController> {
                           ),
                   ),
                   SizedBox(height: size.height * 0.03),
+                  //Check
                   AlreadyHaveAnAccountCheck(press: () => Get.offNamed('/auth')),
                 ],
               ),

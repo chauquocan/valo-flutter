@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//Cusom appbar
 class WidgetAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final List<Widget>? actions;
