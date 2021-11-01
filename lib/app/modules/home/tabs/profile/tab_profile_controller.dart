@@ -59,26 +59,25 @@ class TabProfileController extends GetxController {
       'name': name,
       'phone': phone,
       'email': email,
-      'address': address
+      'address': address,
     };
-    // final response =
     try {
-      await UserProvider().updateUserInfo(map);
-    } on Exception catch (e) {
+      final response = await UserProvider().updateUserInfo(map);
+      print('Update Response: ${response.toString()}');
+      if (response.ok) {
+        Get.snackbar('update thanh cong', 'yeah');
+      } else {
+        if (response.code == HttpStatus.forbidden) {
+          Get.snackbar('fail', 'fdgdfg');
+        } else if (response.code == HttpStatus.unauthorized) {
+          Get.snackbar('failed', 'fdsfsd');
+        } else {
+          Get.snackbar('failed', 'Sometihing went wrong, try again');
+        }
+      }
+    } finally {
       // TODO
     }
-    // print('Update Response: ${response.toString()}');
-    // if (response.code) {
-    //   Get.snackbar('update thanh cong', 'yeah');
-    // } else {
-    //   if (response.code == HttpStatus.forbidden) {
-    //     Get.snackbar('fail', 'fdgdfg');
-    //   } else if (response.code == HttpStatus.unauthorized) {
-    //     Get.snackbar('failed', 'fdsfsd');
-    //   } else {
-    //     Get.snackbar('failed', 'Sometihing went wrong, try again');
-    //   }
-    // }
   }
 
   void back() {

@@ -64,6 +64,48 @@ class UserProvider extends ConnectService {
     }
   }
 
+  //Get tat ca user
+  Future<List<ProfileResponse>> getAllUser(String accessToken) async {
+    try {
+      final response = await get(userURL,
+          options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
+      print(response.data);
+      // return NetworkResponse.fromResponse(
+      //   response,
+      // (json) => ProfileResponse.fromJson(json),
+      return (response.data as List)
+          .map((x) => ProfileResponse.fromJson(x))
+          .toList();
+      // );
+    } on DioError catch (e, s) {
+      print(e.error);
+      // return NetworkResponse.withError(e.response);
+      throw Exception("$e///////////$s");
+    }
+  }
+
+  //Update user info
+  Future<NetworkResponse<ProfileResponse>> updateUserInfo(Map map) async {
+    try {
+      final response = await patch(
+        userURL + _userId!,
+        data: map,
+        options: Options(
+          headers: <String, String>{'Authorization': 'Bearer $_token'},
+        ),
+      );
+      // (map) => ProfileResponse.fromJson(map);
+      // return response.statusCode;
+      print(response.statusCode);
+      return NetworkResponse.fromResponse(
+          response, (json) => ProfileResponse.fromJson(json));
+    } on DioError catch (e) {
+      print(e.error);
+      return NetworkResponse.withError(e.response);
+    }
+  }
+
+  //Search
   Future<NetworkResponse<ProfileResponse>> searchUser(
       String numberPhone, String accessToken) async {
     try {
@@ -78,31 +120,6 @@ class UserProvider extends ConnectService {
     } on DioError catch (e, s) {
       print(e.error);
       return NetworkResponse.withError(e.response);
-    }
-  }
-
-  //Update user info
-  Future updateUserInfo(Map map) async {
-    try {
-      // final response =
-      await patch(
-        userURL + _userId!,
-        data: map,
-        options: Options(
-          headers: <String, String>{
-            'Authorization': 'Bearer $_token',
-          },
-        ),
-      );
-      (map) => ProfileResponse.fromJson(map);
-      // return response.statusCode;
-      // return NetworkResponse.fromResponse(
-      //   response,
-      //   (json) => ProfileResponse.fromJson(json),
-      // );
-    } on DioError catch (e) {
-      print(e.error);
-      // return NetworkResponse.withError(e.response);
     }
   }
 
@@ -125,24 +142,6 @@ class UserProvider extends ConnectService {
         (json) => ProfileResponse.fromJson(json),
       );
     } on DioError catch (e) {
-      print(e.error);
-      return NetworkResponse.withError(e.response);
-    }
-  }
-
-  //Get tat ca user
-  Future<NetworkResponse<ProfileResponse>> getAllUser(
-      String accessToken) async {
-    try {
-      final response = await get(userURL,
-          options:
-              Options(headers: {'Authorization': 'Bearer ${accessToken}'}));
-      print(userURL + Storage.getToken()!.username);
-      return NetworkResponse.fromResponse(
-        response,
-        (json) => ProfileResponse.fromJson(json),
-      );
-    } on DioError catch (e, s) {
       print(e.error);
       return NetworkResponse.withError(e.response);
     }

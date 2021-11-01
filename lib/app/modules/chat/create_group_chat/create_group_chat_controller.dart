@@ -35,6 +35,12 @@ class CreateGroupChatController extends GetxController {
     _selected.value = value;
   }
 
+  @override
+  void onInit() {
+    getAllUser();
+    super.onInit();
+  }
+
 // them minh la user dau tien
 // @override
 //   void onInit() async {
@@ -70,20 +76,8 @@ class CreateGroupChatController extends GetxController {
     final getAllResponse = await userProvider.getAllUser(
       Storage.getToken()!.accessToken,
     );
-    print('Search respone: ${getAllResponse.toString()}');
-    if (getAllResponse.ok) {
-      isLoading.value = true;
-      users.add(ProfileResponse(
-        id: getAllResponse.data!.id,
-        name: getAllResponse.data!.name,
-        gender: getAllResponse.data!.gender,
-        dateOfBirth: getAllResponse.data!.dateOfBirth,
-        phone: getAllResponse.data!.phone,
-        email: getAllResponse.data!.email,
-        address: getAllResponse.data!.address,
-        imgUrl: getAllResponse.data!.imgUrl,
-        status: getAllResponse.data!.status,
-      ));
+    if (getAllResponse != null) {
+      users.addAll(getAllResponse);
       print(users.length);
     } else {
       Get.snackbar('Search failed', 'Something wrong');

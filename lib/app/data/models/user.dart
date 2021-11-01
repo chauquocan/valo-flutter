@@ -34,6 +34,10 @@ class LoginRespone {
       };
 }
 
+List<ProfileResponse> profileResponseFromJson(String str) => List<ProfileResponse>.from(json.decode(str).map((x) => ProfileResponse.fromJson(x)));
+
+String profileResponseToJson(List<ProfileResponse> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 class ProfileResponse {
   String id;
   String name;

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/chat/create_group_chat/create_group_chat_controller.dart';
-import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:valo_chat_app/app/widgets/widget_appbar.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
 
@@ -9,7 +8,7 @@ class CreateGroupChatScreen extends GetView<CreateGroupChatController> {
   @override
   Widget build(BuildContext context) {
     return GetX<CreateGroupChatController>(
-      builder: (_) {
+      builder: (controller) {
         return Scaffold(
           backgroundColor: Colors.white,
           appBar: WidgetAppBar(
