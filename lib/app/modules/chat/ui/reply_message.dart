@@ -17,7 +17,7 @@ class ReplyMessage extends StatelessWidget {
         child: Stack(
           children: [
             CircleAvatar(
-              radius: 10,
+              radius: 12,
               backgroundImage: AssetImage("assets/images/place_avatar.png"),
             ),
             Card(
