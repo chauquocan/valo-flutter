@@ -14,6 +14,7 @@ class LoginController extends GetxController {
   //loading
   final _isLoading = false.obs;
   // final _isLoading = false.obs;
+
   LoginController({required this.userProvider});
   //Validator
   String? phoneValidator(String value) {
@@ -39,8 +40,8 @@ class LoginController extends GetxController {
       print('Respone: ${response.toString()}');
       if (response.ok) {
         await Storage.saveToken(response.data!);
-        final userResponse =
-            await userProvider.getUser(response.data!.accessToken);
+        final userResponse = await userProvider.getUser(
+            response.data!.username, response.data!.accessToken);
         print('User respone: ${userResponse.toString()}');
         if (userResponse.ok) {
           _isLoading.value = false;

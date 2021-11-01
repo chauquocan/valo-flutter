@@ -4,7 +4,7 @@ import 'package:valo_chat_app/app/modules/chat/add_friend/add_friend_screen.dart
 import 'package:valo_chat_app/app/modules/chat/create_group_chat/create_group_chat_screen.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
-import 'package:valo_chat_app/app/widgets/custom/customcard.dart';
+import 'package:valo_chat_app/app/widgets/custom/custom_chat.dart';
 
 class ConversationTab extends GetView<TabConversationController> {
   ConversationTab({Key? key}) : super(key: key);
@@ -26,7 +26,7 @@ class ConversationTab extends GetView<TabConversationController> {
                   Get.toNamed('/creategroup');
                   break;
                 case ("newfriend"):
-                  Get.to(() => AddFriendScreen());
+                  Get.toNamed('/newfriend');
                   break;
               }
             }, itemBuilder: (BuildContext context) {
@@ -42,7 +42,7 @@ class ConversationTab extends GetView<TabConversationController> {
           ],
         ),
         body: ListView.builder(
-          itemBuilder: (context, index) => CustomCard(
+          itemBuilder: (context, index) => CustomChatCard(
             chat: controller.chats[index],
           ),
           itemCount: controller.chats.length,

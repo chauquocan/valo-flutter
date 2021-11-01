@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:valo_chat_app/app/data/models/contact.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
 import '../connect_service.dart';
@@ -46,9 +47,27 @@ class UserProvider extends ConnectService {
   }
 
   //Get user bằng số điện thoại
-  Future<NetworkResponse<ProfileResponse>> getUser(String accessToken) async {
+  Future<NetworkResponse<ProfileResponse>> getUser(
+      String numberPhone, String accessToken) async {
     try {
-      final response = await get(userURL + Storage.getToken()!.username,
+      final response = await get(userURL + numberPhone,
+          options:
+              Options(headers: {'Authorization': 'Bearer ${accessToken}'}));
+      print(userURL + Storage.getToken()!.username);
+      return NetworkResponse.fromResponse(
+        response,
+        (json) => ProfileResponse.fromJson(json),
+      );
+    } on DioError catch (e, s) {
+      print(e.error);
+      return NetworkResponse.withError(e.response);
+    }
+  }
+
+  Future<NetworkResponse<ProfileResponse>> searchUser(
+      String numberPhone, String accessToken) async {
+    try {
+      final response = await get(userURL + numberPhone,
           options:
               Options(headers: {'Authorization': 'Bearer ${accessToken}'}));
       print(userURL + Storage.getToken()!.username);
