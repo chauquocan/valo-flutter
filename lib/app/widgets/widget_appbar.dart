@@ -14,15 +14,15 @@ class WidgetAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.blue,
       elevation: 0,
       shadowColor: Colors.transparent,
-      iconTheme: const IconThemeData(color: Colors.black87),
+      iconTheme: const IconThemeData(color: Colors.white),
       title: Text(
         title,
-        style: TextStyle(color: Colors.black87),
+        style: TextStyle(color: Colors.white),
       ),
-      actionsIconTheme: IconThemeData(color: Colors.black87),
+      actionsIconTheme: IconThemeData(color: Colors.white),
       actions: actions,
     );
   }

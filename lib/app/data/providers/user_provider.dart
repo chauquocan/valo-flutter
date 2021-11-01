@@ -129,4 +129,22 @@ class UserProvider extends ConnectService {
       return NetworkResponse.withError(e.response);
     }
   }
+
+  //Get tat ca user
+  Future<NetworkResponse<ProfileResponse>> getAllUser(
+      String accessToken) async {
+    try {
+      final response = await get(userURL,
+          options:
+              Options(headers: {'Authorization': 'Bearer ${accessToken}'}));
+      print(userURL + Storage.getToken()!.username);
+      return NetworkResponse.fromResponse(
+        response,
+        (json) => ProfileResponse.fromJson(json),
+      );
+    } on DioError catch (e, s) {
+      print(e.error);
+      return NetworkResponse.withError(e.response);
+    }
+  }
 }

@@ -19,7 +19,11 @@ class ContactTab extends GetView<TabContactController> {
           backgroundColor: Colors.lightBlue,
           actions: [
             IconButton(onPressed: () {}, icon: Icon(Icons.search)),
-            IconButton(onPressed: () {}, icon: Icon(Icons.person_add))
+            IconButton(
+                onPressed: () {
+                  Get.toNamed('/newfriend');
+                },
+                icon: Icon(Icons.person_add))
           ],
         ),
         body: ListView.builder(
