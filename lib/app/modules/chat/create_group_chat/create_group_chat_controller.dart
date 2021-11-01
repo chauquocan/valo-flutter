@@ -65,9 +65,8 @@ class CreateGroupChatController extends GetxController {
     Get.back();
   }
 
-  //loading
+  // lay all user //userProvider.getAllUser
   Future getAllUser() async {
-    isLoading.value = true;
     final getAllResponse = await userProvider.getAllUser(
       Storage.getToken()!.accessToken,
     );
