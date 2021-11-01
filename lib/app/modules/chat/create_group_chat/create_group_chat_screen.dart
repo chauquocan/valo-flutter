@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/chat/create_group_chat/create_group_chat_controller.dart';
+import 'package:valo_chat_app/app/utils/store_service.dart';
 import 'package:valo_chat_app/app/widgets/widget_appbar.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
 
@@ -49,7 +50,7 @@ class CreateGroupChatScreen extends GetView<CreateGroupChatController> {
                             ),
                           ),
                           SizedBox(height: 10),
-                          //buildListSelected(),
+                          _buildListSelected(),
                           SizedBox(height: 10),
                           _buildListUser(),
                         ],
@@ -101,5 +102,70 @@ class CreateGroupChatScreen extends GetView<CreateGroupChatController> {
         },
       ),
     );
+  }
+
+  Widget _buildListSelected() {
+    if (controller.selected.isEmpty) {
+      return Container(
+        height: 90,
+        child: Center(child: Text('Choose up to 2 person')),
+      );
+    } else {
+      return Container(
+        height: 90,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          itemCount: controller.selected.length,
+          itemBuilder: (context, i) {
+            final item = controller.selected[i];
+            return Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: GestureDetector(
+                onTap: () {
+                  if (item.id != Storage.getUser()?.id) {
+                    controller.onSelect(item);
+                  }
+                },
+                child: Column(
+                  children: [
+                    Stack(
+                      children: [
+                        WidgetAvatar(
+                          size: 60,
+                          isActive: false,
+                          url: item.imgUrl,
+                        ),
+                        item.id == Storage.getUser()?.id
+                            ? SizedBox()
+                            : Positioned(
+                                top: 0,
+                                right: 0,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                        color: Colors.white, width: 2),
+                                  ),
+                                  child: Icon(
+                                    Icons.close,
+                                    color: Colors.white,
+                                    size: 14,
+                                  ),
+                                ),
+                              ),
+                      ],
+                    ),
+                    SizedBox(height: 4),
+                    Text(item.name.split(' ').last),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      );
+    }
   }
 }

@@ -38,6 +38,11 @@ class Body extends StatelessWidget {
             press: () {},
           ),
           ProfileMenu(
+            text: "Settings",
+            icon: "assets/icons/Settings.svg",
+            press: () {},
+          ),
+          ProfileMenu(
             text: "Log Out",
             icon: "assets/icons/Log out.svg",
             press: () {
