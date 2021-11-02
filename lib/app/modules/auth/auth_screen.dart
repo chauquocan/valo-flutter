@@ -21,7 +21,7 @@ class AuthScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  'enterphonenumber'.tr,
+                  'authTitle'.tr,
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
