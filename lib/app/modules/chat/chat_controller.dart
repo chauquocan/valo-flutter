@@ -8,7 +8,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:valo_chat_app/app/data/models/message.dart';
 import 'package:valo_chat_app/app/data/models/user.dart';
 import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
-import 'package:valo_chat_app/app/data/providers/user_provider.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
 class ChatController extends GetxController {

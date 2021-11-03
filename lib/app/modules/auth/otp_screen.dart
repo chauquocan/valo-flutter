@@ -44,6 +44,26 @@ class _OtpScreenState extends State<OtpScreen> {
     );
   }
 
+  final BoxDecoration pinPutDecoration = BoxDecoration(
+    color: const Color.fromRGBO(235, 236, 237, 1),
+    borderRadius: BorderRadius.circular(5.0),
+  );
+
+  void _resendCode() {
+    //other code here
+    setState(() {
+      authController._verifyPhoneNumber(widget.phoneNumber);
+      secondsRemaining = 60;
+      enableResend = false;
+    });
+  }
+
+  @override
+  dispose() {
+    timer.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -123,10 +143,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: TextButton(
-                        onPressed: enableResend
-                            ? _resendCode
-                            : () => (authController
-                                ._verifyPhoneNumber(widget.phoneNumber)),
+                        onPressed: enableResend ? _resendCode : () {},
                         child: Text(
                           'resendOTP'.tr,
                           style: TextStyle(color: AppColors.light),
@@ -152,24 +169,5 @@ class _OtpScreenState extends State<OtpScreen> {
         ),
       ),
     );
-  }
-
-  final BoxDecoration pinPutDecoration = BoxDecoration(
-    color: const Color.fromRGBO(235, 236, 237, 1),
-    borderRadius: BorderRadius.circular(5.0),
-  );
-
-  void _resendCode() {
-    //other code here
-    setState(() {
-      secondsRemaining = 60;
-      enableResend = false;
-    });
-  }
-
-  @override
-  dispose() {
-    timer.cancel();
-    super.dispose();
   }
 }

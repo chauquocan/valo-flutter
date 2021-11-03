@@ -27,13 +27,15 @@ class RegisterController extends GetxController {
     final response = await userProvider.register(RegisterRequest);
     print('Respone: ${response.toString()}');
     if (response.ok) {
-      showInfoDialog('Sign up susscessfully', 'lets sign in');
+      // showInfoDialog('Sign up susscessfully', 'lets sign in');
+      Get.snackbar('Sign up susscessfully', 'lets sign in');
       Get.offAll(
         () => WelcomeScreen(),
       );
     } else {
       Get.back();
-      showInfoDialog('Sign up failed', 'something went wrong');
+      // showInfoDialog('Sign up failed', 'something went wrong');
+      Get.snackbar('Sign up failed', 'something went wrong');
     }
   }
 

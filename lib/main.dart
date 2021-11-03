@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.blue));
     //current user store in local
-    print('current username: ${Storage.getToken()?.username}');
+    // print('current username: ${Storage.getToken()?.username}');
     return GetMaterialApp(
       title: 'Valo chat app',
       debugShowCheckedModeBanner: false,

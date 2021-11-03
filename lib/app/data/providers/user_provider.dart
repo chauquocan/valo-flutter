@@ -12,11 +12,28 @@ class UserProvider extends ConnectService {
   static const String loginURL = 'auth/signin';
   static const String registerURL = 'auth/register';
   static const String userURL = 'users/';
+  static const String refreshTokenUrl = 'auth/refresh_token';
 
   //current token
   final _token = Storage.getToken()?.accessToken;
+  //current rfToken
+  // final _refreshToken = Storage.getToken()?.refreshToken;
   //curent userId
   final _userId = Storage.getUser()?.id;
+
+  //Refresh token
+  // Future<NetworkResponse<LoginRespone>> refreshToken(Map map) async {
+  //   try {
+  //     final response = await post(refreshTokenUrl, data: map);
+  //     return NetworkResponse.fromResponse(
+  //       response,
+  //       (json) => LoginRespone.fromJson(json),
+  //     );
+  //   } on DioError catch (e, s) {
+  //     print(e.error);
+  //     return NetworkResponse.withError(e.response);
+  //   }
+  // }
 
   //Đăng nhập
   Future<NetworkResponse<LoginRespone>> login(Map map) async {
