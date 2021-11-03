@@ -46,8 +46,16 @@ class RegisterScreen extends GetView<RegisterController> {
                 RoundedInputField(
                   controller: controller._passwordInput,
                   hintText: "Please enter password",
+                  password: true,
                   textColor: AppColors.light,
-                  icon: Icons.email,
+                  icon: Icons.lock,
+                ),
+                RoundedInputField(
+                  controller: controller._passwordInput,
+                  hintText: "Cofirm password",
+                  password: true,
+                  textColor: AppColors.light,
+                  icon: Icons.lock,
                 ),
                 //Sign up submit button
                 RoundedButton(

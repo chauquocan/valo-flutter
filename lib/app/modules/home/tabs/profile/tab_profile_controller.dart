@@ -65,12 +65,20 @@ class TabProfileController extends GetxController {
       final response = await UserProvider().updateUserInfo(map);
       print('Update Response: ${response.toString()}');
       if (response.ok) {
-        Get.snackbar('update thanh cong', 'yeah');
+        final userResponse = await UserProvider()
+            .getUser('${phone}', '${Storage.getToken()!.accessToken}');
+        Get.snackbar('update susscessfully', '');
+        if (userResponse.ok) {
+          await Storage.saveUser(userResponse.data!);
+          Get.reload();
+        } else {
+          Get.back();
+        }
       } else {
         if (response.code == HttpStatus.forbidden) {
-          Get.snackbar('fail', 'fdgdfg');
+          Get.snackbar('failed', 'Sometihing went wrong, try again');
         } else if (response.code == HttpStatus.unauthorized) {
-          Get.snackbar('failed', 'fdsfsd');
+          Get.snackbar('failed', 'Sometihing went wrong, try again');
         } else {
           Get.snackbar('failed', 'Sometihing went wrong, try again');
         }

@@ -31,12 +31,9 @@ class AuthController extends GetxController {
         loading.value = false;
         verificationID = id;
         authState.value = "Login Sucess";
-        if (Get.currentRoute == '/otp') {
-          Get.snackbar("Resend code", "please wait");
-        } else {
-          Get.snackbar("Sending OTP", "Please wait for OTP code");
-          Get.to(() => OtpScreen(phoneNumber: phoneNumber));
-        }
+        Get.to(() => OtpScreen(phoneNumber: phoneNumber));
+        Get.snackbar("Sending OTP", "Please wait for OTP code",
+            backgroundColor: AppColors.light);
       },
       //thời gian code hết hạn
       codeAutoRetrievalTimeout: (id) {

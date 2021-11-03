@@ -52,6 +52,7 @@ class _OtpScreenState extends State<OtpScreen> {
   void _resendCode() {
     //other code here
     setState(() {
+      authController._verifyPhoneNumber(widget.phoneNumber);
       secondsRemaining = 60;
       enableResend = false;
     });
@@ -142,10 +143,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: TextButton(
-                        onPressed: enableResend
-                            ? _resendCode
-                            : () => (authController
-                                ._verifyPhoneNumber(widget.phoneNumber)),
+                        onPressed: enableResend ? _resendCode : () {},
                         child: Text(
                           'resendOTP'.tr,
                           style: TextStyle(color: AppColors.light),
