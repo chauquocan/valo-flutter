@@ -1,11 +1,12 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decode/jwt_decode.dart';
+import 'package:valo_chat_app/app/data/providers/user_provider.dart';
 import '../data/models/user.dart';
 
 //Storage service for storing local data
 class Storage {
   Storage._();
-
+  // static late UserProvider _userProvider;
   static late SharedPreferences _pref;
   //init
   static Future init() async {
@@ -40,10 +41,17 @@ class Storage {
   static bool ExpireToken() {
     if (getToken() != null) {
       String token = Storage.getToken()!.accessToken.toString();
+      // String rfToken = Storage.getToken()!.accessToken.toString();
       bool isExpire = Jwt.isExpired(token);
+      // bool refresh = Jwt.isExpired(rfToken);
       if (!isExpire) {
         return true;
-      } else {
+      }
+      // else if(isExpire && !refresh){
+      //   final map = {'refreshToken': rfToken};
+      //   _userProvider.refreshToken(map);
+      // }
+      else {
         _pref.remove('user');
         _pref.remove('token');
         return false;

@@ -7,12 +7,14 @@ class LoginRespone {
     required this.username,
     // required this.password,
     required this.accessToken,
+    // required this.refreshToken,
   });
 
   // final int id;
   final String username;
   // final String password;
   final String accessToken;
+  // final String refreshToken;
 
   factory LoginRespone.fromRawJson(String str) =>
       LoginRespone.fromJson(json.decode(str));
@@ -24,6 +26,7 @@ class LoginRespone {
         username: json["username"],
         // password: json["password"],
         accessToken: json["accessToken"],
+        // refreshToken: json["refreshToken"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -31,12 +34,16 @@ class LoginRespone {
         "username": username,
         // "password": password,
         "accessToken": accessToken,
+        // "refreshToken": refreshToken,
       };
 }
 
-List<ProfileResponse> profileResponseFromJson(String str) => List<ProfileResponse>.from(json.decode(str).map((x) => ProfileResponse.fromJson(x)));
+List<ProfileResponse> profileResponseFromJson(String str) =>
+    List<ProfileResponse>.from(
+        json.decode(str).map((x) => ProfileResponse.fromJson(x)));
 
-String profileResponseToJson(List<ProfileResponse> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String profileResponseToJson(List<ProfileResponse> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ProfileResponse {
   String id;
