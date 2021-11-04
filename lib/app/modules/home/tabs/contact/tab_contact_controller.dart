@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/data/models/contact.dart';
 
