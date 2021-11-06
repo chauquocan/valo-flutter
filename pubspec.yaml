@@ -49,6 +49,7 @@ dependencies:
 
   #socket
   web_socket_channel: ^2.1.0
+  stomp_dart_client: ^0.4.3
   persistent_bottom_nav_bar: ^4.0.2
   
   #phone permission

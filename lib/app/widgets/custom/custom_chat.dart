@@ -10,13 +10,14 @@ class CustomChatCard extends StatelessWidget {
   final ChatModel chat;
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Get.toNamed("/chat");
-      },
+    return Container(
+      padding: EdgeInsets.only(top: 18),
       child: Column(
         children: [
           ListTile(
+            onTap: () {
+              Get.toNamed("/chat");
+            },
             leading: CircleAvatar(
               backgroundColor: Colors.blueGrey,
               radius: 30,
@@ -25,8 +26,8 @@ class CustomChatCard extends StatelessWidget {
                     ? 'assets/icons/group.svg'
                     : 'assets/icons/${chat.icon}',
                 //color: AppColors.secondary,
-                height: 38,
-                width: 38,
+                height: 40,
+                width: 40,
               ),
             ),
             title: Text(
@@ -48,7 +49,7 @@ class CustomChatCard extends StatelessWidget {
             ),
           ),
           const Padding(
-            padding: EdgeInsets.only(right: 20, left: 80),
+            padding: EdgeInsets.zero,
             child: Divider(
               thickness: 1,
             ),

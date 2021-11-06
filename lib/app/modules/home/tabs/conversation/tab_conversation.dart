@@ -19,7 +19,9 @@ class ConversationTab extends GetView<TabConversationController> {
           ),
           backgroundColor: Colors.lightBlue,
           actions: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+            IconButton(
+                onPressed: () => Get.toNamed('/newfriend'),
+                icon: Icon(Icons.search)),
             PopupMenuButton<String>(onSelected: (value) {
               switch (value) {
                 case ("newgroup"):
@@ -36,7 +38,6 @@ class ConversationTab extends GetView<TabConversationController> {
                   value: "newfriend",
                 ),
                 PopupMenuItem(child: Text("New group"), value: "newgroup"),
-                PopupMenuItem(child: Text("Setting"), value: "setting"),
               ];
             })
           ],

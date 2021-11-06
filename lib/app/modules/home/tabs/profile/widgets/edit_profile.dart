@@ -17,6 +17,7 @@ class EditProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: _appBar(),
       body: Container(
+        color: Color.fromRGBO(240, 245, 245, 1),
         padding: EdgeInsets.only(left: 16, top: 25, right: 16),
         child: GestureDetector(
           onTap: () {
@@ -24,9 +25,6 @@ class EditProfileScreen extends StatelessWidget {
           },
           child: ListView(
             children: [
-              SizedBox(
-                height: 15,
-              ),
               Center(
                 child: Stack(
                   children: [
@@ -147,24 +145,19 @@ class EditProfileScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 30,
-              ),
-              //Name input
-              buildTextField(
-                "Name",
-                '${Storage.getUser()?.name}',
-                controller.inputName,
-              ),
+              SizedBox(height: 30),
               //Phone numbers input
               buildTextField("Phone", '${Storage.getUser()?.phone}',
-                  controller.inputPhone),
+                  controller.inputPhone, false),
+              //Name input
+              buildTextField("Name", '${Storage.getUser()?.name}',
+                  controller.inputName, true),
               //Email input
               buildTextField("E-mail", '${Storage.getUser()?.email}',
-                  controller.inputEmail),
+                  controller.inputEmail, true),
               //Address input
               buildTextField("Address", '${Storage.getUser()?.address}',
-                  controller.inputAdress),
+                  controller.inputAdress, true),
               SizedBox(
                 height: 10,
               ),
@@ -183,11 +176,14 @@ class EditProfileScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
-                    onPressed: () => controller.editProfileInfo(
-                        controller.inputName.text,
-                        controller.inputPhone.text,
-                        controller.inputEmail.text,
-                        controller.inputAdress.text),
+                    onPressed: () => {
+                      FocusScope.of(context).unfocus(),
+                      controller.editProfileInfo(
+                          controller.inputName.text,
+                          controller.inputPhone.text,
+                          controller.inputEmail.text,
+                          controller.inputAdress.text)
+                    },
                     child: Text(
                       "SAVE",
                       style: TextStyle(
@@ -209,20 +205,24 @@ class EditProfileScreen extends StatelessWidget {
     String labelText,
     String placeholder,
     TextEditingController txtController,
+    bool enable,
   ) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 25.0),
       child: TextField(
         controller: txtController..text = placeholder,
         decoration: InputDecoration(
-            labelText: labelText,
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-            hintStyle: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            )),
+          enabled: enable,
+          // suffixIcon: IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+          labelText: labelText,
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+          hintStyle: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
       ),
     );
   }

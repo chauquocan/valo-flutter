@@ -23,7 +23,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     //status bar
     SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.blue));
+      SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.blue),
+    );
     //current user store in local
     // print('current username: ${Storage.getToken()?.username}');
     return GetMaterialApp(

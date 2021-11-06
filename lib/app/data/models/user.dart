@@ -7,14 +7,14 @@ class LoginRespone {
     required this.username,
     // required this.password,
     required this.accessToken,
-    // required this.refreshToken,
+    required this.refreshToken,
   });
 
   // final int id;
   final String username;
   // final String password;
   final String accessToken;
-  // final String refreshToken;
+  final String refreshToken;
 
   factory LoginRespone.fromRawJson(String str) =>
       LoginRespone.fromJson(json.decode(str));
@@ -26,7 +26,7 @@ class LoginRespone {
         username: json["username"],
         // password: json["password"],
         accessToken: json["accessToken"],
-        // refreshToken: json["refreshToken"],
+        refreshToken: json["refreshToken"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -34,7 +34,33 @@ class LoginRespone {
         "username": username,
         // "password": password,
         "accessToken": accessToken,
-        // "refreshToken": refreshToken,
+        "refreshToken": refreshToken,
+      };
+}
+
+class RefreshTokenResponse {
+  RefreshTokenResponse({
+    required this.accessToken,
+    required this.refreshToken,
+  });
+
+  final String accessToken;
+  final String refreshToken;
+
+  factory RefreshTokenResponse.fromRawJson(String str) =>
+      RefreshTokenResponse.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory RefreshTokenResponse.fromJson(Map<String, dynamic> json) =>
+      RefreshTokenResponse(
+        accessToken: json["accessToken"],
+        refreshToken: json["refreshToken"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "accessToken": accessToken,
+        "refreshToken": refreshToken,
       };
 }
 
