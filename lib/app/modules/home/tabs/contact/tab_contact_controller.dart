@@ -1,15 +1,70 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:valo_chat_app/app/data/models/contact.dart';
+import 'package:contacts_service/contacts_service.dart';
+import 'package:valo_chat_app/app/data/models/contact_app.dart';
 
 class TabContactController extends GetxController {
-  List<Contact> contacts = [
-    Contact(name: "An", icon: 'group.svg', phone: "04343333333"),
-    Contact(name: "Long Tran", icon: 'group.svg', phone: '0667435445'),
-    Contact(name: "Chau Quoc An", icon: 'logo.svg', phone: '077722323'),
-    Contact(name: "Nguyen Ngoc Ha", icon: 'group.svg', phone: '0983435353'),
-    Contact(name: "HAHAHAHA", icon: 'group.svg', phone: '0284335323'),
-    Contact(name: "Phan Tan Trung", icon: 'logo.svg', phone: '077722323'),
-    Contact(name: "Phung Thanh DO ", icon: 'group.svg', phone: '0983435353'),
-    Contact(name: "Nguyen Ngoc Ha", icon: 'logo.svg', phone: '0284335323')
-  ];
+  List<ContactModel> contacts = [];
+  List<ContactModel> contactsFiltered = [];
+  TextEditingController searchController = new TextEditingController();
+
+  bool contactsLoaded = false;
+
+  @override
+  void onInit() {
+    getPermissions();
+    super.onInit();
+  }
+
+  getPermissions() async {
+    if (await Permission.contacts.request().isGranted) {
+      getAllContacts();
+      searchController.addListener(() {
+        filterContacts();
+      });
+    }
+  }
+
+  String flattenPhoneNumber(String phoneStr) {
+    return phoneStr.replaceAllMapped(RegExp(r'^(\+)|\D'), (Match m) {
+      return m[0] == "+" ? "+" : "";
+    });
+  }
+
+// lay contact tu dt
+  Future getAllContacts() async {
+    List<ContactModel> _contacts =
+        (await ContactsService.getContacts()).map((contact) {
+      return ContactModel(
+          name: contact.displayName, phone: contact.phones!.elementAt(0).value);
+    }).toList();
+    contacts = _contacts;
+    contactsLoaded = true;
+  }
+
+  filterContacts() {
+    List<ContactModel> _contacts = [];
+    _contacts.addAll(contacts);
+    if (searchController.text.isNotEmpty) {
+      _contacts.retainWhere((contact) {
+        String searchTerm = searchController.text.toLowerCase();
+        String searchTermFlatten = flattenPhoneNumber(searchTerm);
+        String contactName = contact.name!.toLowerCase();
+        bool nameMatches = contactName.contains(searchTerm);
+
+        if (nameMatches == true) {
+          return true;
+        }
+        if (searchTermFlatten.isEmpty) {
+          return false;
+        }
+
+        String phnFlattened = contact.phone!.toLowerCase();
+        return phnFlattened.contains(searchTermFlatten);
+      });
+    }
+    contactsFiltered = _contacts;
+  }
 }
