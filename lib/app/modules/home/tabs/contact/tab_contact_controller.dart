@@ -10,7 +10,8 @@ class TabContactController extends GetxController {
   final _contactsFiltered = <ContactModel>[].obs;
   final _contactsLoaded = false.obs;
 
-  final searchController = TextEditingController();
+  TextEditingController searchController = TextEditingController();
+
   get contactsLoaded => _contactsLoaded.value;
 
   set contactsLoaded(value) {
@@ -57,15 +58,16 @@ class TabContactController extends GetxController {
       return ContactModel(
           name: contact.displayName, phone: contact.phones!.elementAt(0).value);
     }).toList();
+
     contacts = _contacts;
     contactsLoaded = true;
   }
 
   filterContacts() {
-    List<ContactModel> contacts = [];
-    contacts.addAll(_contacts);
+    List<ContactModel> contactsearch = [];
+    contactsearch.addAll(_contacts);
     if (searchController.text.isNotEmpty) {
-      contacts.retainWhere((_contact) {
+      contactsearch.retainWhere((_contact) {
         String searchTerm = searchController.text.toLowerCase();
         String searchTermFlatten = flattenPhoneNumber(searchTerm);
         String contactName = _contact.name!.toLowerCase();
@@ -82,6 +84,6 @@ class TabContactController extends GetxController {
         return phnFlattened.contains(searchTermFlatten);
       });
     }
-    contactsFiltered = _contacts;
+    contactsFiltered = contactsearch;
   }
 }

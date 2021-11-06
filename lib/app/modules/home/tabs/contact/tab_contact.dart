@@ -47,9 +47,9 @@ class ContactTab extends GetView<TabContactController> {
                         color: Theme.of(context).primaryColor)),
               ),
             ),
-            Obx(() => controller.contactsLoaded == true
-                ? // if the contacts have not been loaded yet
-                listItemsExist == true
+            Obx(() => controller.contactsLoaded
+                    // ? // if the contacts have not been loaded yet
+                    // listItemsExist == true
                     ? // if we have contacts to show
                     ContactsList(
                         reloadContacts: () {
@@ -67,13 +67,14 @@ class ContactTab extends GetView<TabContactController> {
                               : 'No contacts exist',
                           style: TextStyle(color: Colors.grey, fontSize: 20),
                         ))
-                : Container(
-                    // still loading contacts
-                    padding: EdgeInsets.only(top: 40),
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  ))
+                // : Container(
+                //     // still loading contacts
+                //     padding: EdgeInsets.only(top: 40),
+                //     child: Center(
+                //       child: CircularProgressIndicator(),
+                //     ),
+                //   )
+                )
           ],
         ),
       ),
