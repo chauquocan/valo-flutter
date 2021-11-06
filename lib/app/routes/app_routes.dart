@@ -5,6 +5,7 @@ abstract class Routes {
   //
   static const WELCOME = '/';
   static const HOME = '/home';
+  
   //auth
   static const AUTH = '/auth';
   static const OTP = '/otp';

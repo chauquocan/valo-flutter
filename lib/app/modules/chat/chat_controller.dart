@@ -42,6 +42,15 @@ class ChatController extends GetxController {
   }
 
   /*------------------------*/
+  // Socketchannel
+  @override
+  void onInit() {
+    // provider.connectChannel();
+    provider.stompClient.activate();
+    super.onInit();
+  }
+
+  /*------------------------*/
   final _tagging = false.obs;
   final _members = <ProfileResponse>[].obs;
   final _listTagged = <ProfileResponse>[].obs;
@@ -184,6 +193,7 @@ class ChatController extends GetxController {
   // }
 
   void sendMessage() {
+    // provider.channel.sink.add('${textController.text}');
     // if (textController.text.isNotEmpty) {
     //   // TODO(ff3105): need to optimize
     //   if (listTagged.isNotEmpty) {

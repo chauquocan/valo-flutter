@@ -152,8 +152,12 @@ class ChatScreen extends GetView<ChatController> {
       elevation: 0,
       shadowColor: Colors.transparent,
       iconTheme: IconThemeData(color: Colors.white),
+      actions: [],
       title: Row(
         children: [
+          // SizedBox(
+          //   width: 200,
+          // child:
           Hero(
             tag: controller.id,
             child: WidgetAvatarChat(
@@ -162,6 +166,7 @@ class ChatScreen extends GetView<ChatController> {
               size: 40,
               avatarSize: 28,
             ),
+            // ),
           ),
           SizedBox(width: 12),
           Text(

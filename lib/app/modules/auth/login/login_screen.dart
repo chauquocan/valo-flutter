@@ -21,6 +21,7 @@ class LoginScreen extends GetView<LoginController> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  //image
                   SvgPicture.asset(
                     'assets/icons/logo.svg',
                     width: size.width * 0.5,

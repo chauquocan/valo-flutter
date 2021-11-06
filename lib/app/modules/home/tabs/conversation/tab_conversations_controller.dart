@@ -2,15 +2,8 @@ import 'package:get/get.dart';
 import 'package:valo_chat_app/app/data/models/chat.dart';
 
 class TabConversationController extends GetxController {
+  final isLoading = false.obs;
   List<ChatModel> chats = [
-    // ChatModel(
-    //   name: "Cong Nghe Moi",
-    //   icon: '',
-    //   isGroup: true,
-    //   time: '18:30',
-    //   currentMessage: 'Em an com chua',
-    //   status: 'logo.svg',
-    // ),
     ChatModel(
       name: "Chau Quoc An",
       icon: 'logo.svg',

@@ -17,23 +17,23 @@ class UserProvider extends ConnectService {
   //current token
   final _token = Storage.getToken()?.accessToken;
   //current rfToken
-  // final _refreshToken = Storage.getToken()?.refreshToken;
+  final _refreshToken = Storage.getToken()?.refreshToken;
   //curent userId
   final _userId = Storage.getUser()?.id;
 
-  //Refresh token
-  // Future<NetworkResponse<LoginRespone>> refreshToken(Map map) async {
-  //   try {
-  //     final response = await post(refreshTokenUrl, data: map);
-  //     return NetworkResponse.fromResponse(
-  //       response,
-  //       (json) => LoginRespone.fromJson(json),
-  //     );
-  //   } on DioError catch (e, s) {
-  //     print(e.error);
-  //     return NetworkResponse.withError(e.response);
-  //   }
-  // }
+  // Refresh token
+  Future<NetworkResponse<LoginRespone>> refreshToken(Map refreshToken) async {
+    try {
+      final response = await post(refreshTokenUrl, data: refreshToken);
+      return NetworkResponse.fromResponse(
+        response,
+        (json) => LoginRespone.fromJson(json),
+      );
+    } on DioError catch (e, s) {
+      print(e.error);
+      return NetworkResponse.withError(e.response);
+    }
+  }
 
   //Đăng nhập
   Future<NetworkResponse<LoginRespone>> login(Map map) async {

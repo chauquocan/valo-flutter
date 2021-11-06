@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:valo_chat_app/app/themes/theme.dart';
 
 //Custom menu button
 class ProfileMenu extends StatelessWidget {
@@ -15,29 +16,27 @@ class ProfileMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: TextButton(
-        style: TextButton.styleFrom(
-          primary: Colors.lightBlue,
-          padding: EdgeInsets.all(20),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          // backgroundColor: Color(0xFFF5F6F9),
-          backgroundColor: Colors.lightBlue.shade50,
+    return Container(
+      color: Colors.white,
+      margin: EdgeInsets.only(top: 10),
+      padding: EdgeInsets.all(10),
+      child: ListTile(
+        onTap: press,
+        leading: CircleAvatar(
+          backgroundColor: Colors.transparent,
+          radius: 30,
+          child: SvgPicture.asset(
+            icon,
+            fit: BoxFit.cover,
+            color: AppColors.dark,
+            height: 40,
+            width: 40,
+          ),
         ),
-        onPressed: press,
-        child: Row(
-          children: [
-            SvgPicture.asset(
-              icon,
-              color: Colors.lightBlue,
-              width: 22,
-            ),
-            SizedBox(width: 20),
-            Expanded(child: Text(text)),
-            Icon(Icons.arrow_forward_ios),
-          ],
+        trailing: Icon(Icons.arrow_forward),
+        title: Text(
+          text,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
       ),
     );

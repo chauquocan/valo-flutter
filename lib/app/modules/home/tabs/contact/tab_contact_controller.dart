@@ -60,7 +60,7 @@ class TabContactController extends GetxController {
     }).toList();
 
     contacts = _contacts;
-    contactsLoaded = true;
+    contactsLoaded.value = true;
   }
 
   filterContacts() {
