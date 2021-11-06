@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/contacts_list.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
-import 'package:valo_chat_app/app/widgets/custom/custom_contact.dart';
 
 class ContactTab extends GetView<TabContactController> {
   const ContactTab({Key? key}) : super(key: key);
@@ -38,6 +37,7 @@ class ContactTab extends GetView<TabContactController> {
             Container(
               child: TextField(
                 controller: controller.searchController,
+                onChanged: (value) => value == controller.searchController.text,
                 decoration: InputDecoration(
                     labelText: 'Search',
                     border: new OutlineInputBorder(
@@ -47,7 +47,7 @@ class ContactTab extends GetView<TabContactController> {
                         color: Theme.of(context).primaryColor)),
               ),
             ),
-            Obx(() => controller.contactsLoaded.value == true
+            Obx(() => controller.contactsLoaded.value
                 ? // if the contacts have not been loaded yet
                 controller.listItemsExist.value
                     ? // if we have contacts to show
@@ -55,14 +55,14 @@ class ContactTab extends GetView<TabContactController> {
                         reloadContacts: () {
                           controller.getAllContacts();
                         },
-                        contacts: controller.isSearching.value
-                            ? controller.contactsFiltered.value
-                            : controller.contacts.value,
+                        contacts: controller.isSearching()
+                            ? controller.contactsFiltered
+                            : controller.contacts,
                       )
                     : Container(
                         padding: EdgeInsets.only(top: 40),
                         child: Text(
-                          controller.isSearching.value
+                          controller.isSearching()
                               ? 'No search results to show'
                               : 'No contacts exist',
                           style: TextStyle(color: Colors.grey, fontSize: 20),

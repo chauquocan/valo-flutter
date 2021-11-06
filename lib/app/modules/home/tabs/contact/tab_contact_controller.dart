@@ -9,16 +9,25 @@ class TabContactController extends GetxController {
   final contacts = <ContactModel>[].obs;
   final contactsFiltered = <ContactModel>[].obs;
   final contactsLoaded = false.obs;
+  // late RxBool isSearching = true.obs;
 
-  late final isSearching = searchController.text.isNotEmpty.obs;
-  late final listItemsExist =
-      ((isSearching == true && contactsFiltered.value.length > 0) ||
-              (isSearching != true && contacts.value.length > 0))
+  late RxBool listItemsExist =
+      ((isSearching() && contactsFiltered.value.length > 0) ||
+              (!isSearching() && contacts.value.length > 0))
           .obs;
   final searchController = TextEditingController();
 
+  bool isSearching() {
+    if (searchController.text.isNotEmpty) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   @override
   void onInit() {
+    print(isSearching());
     getPermissions();
     super.onInit();
   }
@@ -26,10 +35,9 @@ class TabContactController extends GetxController {
   Future getPermissions() async {
     if (await Permission.contacts.request().isGranted) {
       getAllContacts();
-      // searchController.addListener(() {
-      //   filterContacts();
-      // },
-      // );
+      searchController.addListener(() {
+        filterContacts();
+      });
     }
   }
 
@@ -48,11 +56,12 @@ class TabContactController extends GetxController {
     }).toList();
     contacts.value = _contacts;
     contactsLoaded.value = true;
+    update();
   }
 
-  filterContacts() {
+  filterContacts() async {
     List<ContactModel> contactSearch = [];
-    contactSearch.addAll(contacts.value);
+    contactSearch.addAll(contacts);
     if (searchController.text.isNotEmpty) {
       contactSearch.retainWhere((_contact) {
         String searchTerm = searchController.text.toLowerCase();
@@ -72,17 +81,17 @@ class TabContactController extends GetxController {
       });
     }
     contactsFiltered.value = contactSearch;
+    update();
   }
 
-  @override
-  void onReady() {
-    // TODO: implement onReady
-    searchController.addListener(() {
-      filterContacts();
-    });
-    super.onReady();
-  }
-
+  // @override
+  // void onReady() {
+  //   // TODO: implement onReady
+  //   searchController.addListener(() {
+  //     filterContacts();
+  //   });
+  //   super.onReady();
+  // }
   @override
   void onClose() {
     // TODO: implement onClose
