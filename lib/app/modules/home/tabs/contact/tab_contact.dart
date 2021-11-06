@@ -10,10 +10,10 @@ class ContactTab extends GetView<TabContactController> {
 
   @override
   Widget build(BuildContext context) {
-    bool isSearching = controller.searchController.text.isNotEmpty;
-    bool listItemsExist =
-        ((isSearching == true && controller.contactsFiltered.length > 0) ||
-            (isSearching != true && controller.contacts.length > 0));
+    // bool isSearching = controller.searchController.text.isNotEmpty;
+    // bool listItemsExist = ((isSearching == true &&
+    //         controller.contactsFiltered.value.length > 0) ||
+    //     (isSearching != true && controller.contacts.value.length > 0));
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
@@ -47,34 +47,34 @@ class ContactTab extends GetView<TabContactController> {
                         color: Theme.of(context).primaryColor)),
               ),
             ),
-            Obx(() => controller.contactsLoaded
-                    // ? // if the contacts have not been loaded yet
-                    // listItemsExist == true
+            Obx(() => controller.contactsLoaded.value == true
+                ? // if the contacts have not been loaded yet
+                controller.listItemsExist.value
                     ? // if we have contacts to show
                     ContactsList(
                         reloadContacts: () {
                           controller.getAllContacts();
                         },
-                        contacts: isSearching == true
-                            ? controller.contactsFiltered
-                            : controller.contacts,
+                        contacts: controller.isSearching.value
+                            ? controller.contactsFiltered.value
+                            : controller.contacts.value,
                       )
                     : Container(
                         padding: EdgeInsets.only(top: 40),
                         child: Text(
-                          isSearching
+                          controller.isSearching.value
                               ? 'No search results to show'
                               : 'No contacts exist',
                           style: TextStyle(color: Colors.grey, fontSize: 20),
-                        ))
-                // : Container(
-                //     // still loading contacts
-                //     padding: EdgeInsets.only(top: 40),
-                //     child: Center(
-                //       child: CircularProgressIndicator(),
-                //     ),
-                //   )
-                )
+                        ),
+                      )
+                : Container(
+                    // still loading contacts
+                    padding: EdgeInsets.only(top: 40),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ))
           ],
         ),
       ),
