@@ -9,7 +9,7 @@ class TabContactController extends GetxController {
   final contacts = <ContactModel>[].obs;
   final contactsFiltered = <ContactModel>[].obs;
   final contactsLoaded = false.obs;
-  // late RxBool isSearching = true.obs;
+  var isSearh = true.obs;
 
   late RxBool listItemsExist =
       ((isSearching() && contactsFiltered.value.length > 0) ||
@@ -19,15 +19,14 @@ class TabContactController extends GetxController {
 
   bool isSearching() {
     if (searchController.text.isNotEmpty) {
-      return true;
+      return isSearh(true);
     } else {
-      return false;
+      return isSearh(false);
     }
   }
 
   @override
   void onInit() {
-    print(isSearching());
     getPermissions();
     super.onInit();
   }
@@ -35,9 +34,7 @@ class TabContactController extends GetxController {
   Future getPermissions() async {
     if (await Permission.contacts.request().isGranted) {
       getAllContacts();
-      searchController.addListener(() {
-        filterContacts();
-      });
+      searchController.addListener(() => filterContacts());
     }
   }
 
@@ -54,7 +51,9 @@ class TabContactController extends GetxController {
       return ContactModel(
           name: contact.displayName, phone: contact.phones!.elementAt(0).value);
     }).toList();
-    contacts.value = _contacts;
+    // contacts.value = _contacts;
+    contacts.assignAll(_contacts);
+
     contactsLoaded.value = true;
     update();
   }
@@ -80,7 +79,8 @@ class TabContactController extends GetxController {
         return phnFlattened.contains(searchTermFlatten);
       });
     }
-    contactsFiltered.value = contactSearch;
+    contactsFiltered.assignAll(contactSearch);
+    // contactsFiltered.value = contactSearch;
     update();
   }
 

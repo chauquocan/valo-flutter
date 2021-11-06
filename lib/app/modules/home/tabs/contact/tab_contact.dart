@@ -56,13 +56,13 @@ class ContactTab extends GetView<TabContactController> {
                           controller.getAllContacts();
                         },
                         contacts: controller.isSearching()
-                            ? controller.contactsFiltered
-                            : controller.contacts,
+                            ? controller.contactsFiltered.value
+                            : controller.contacts.value,
                       )
                     : Container(
                         padding: EdgeInsets.only(top: 40),
                         child: Text(
-                          controller.isSearching()
+                          controller.isSearching == true
                               ? 'No search results to show'
                               : 'No contacts exist',
                           style: TextStyle(color: Colors.grey, fontSize: 20),
