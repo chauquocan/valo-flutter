@@ -32,8 +32,8 @@ class WidgetAvatarChat extends StatelessWidget {
         child: Stack(
           fit: StackFit.loose,
           children: [
-            _buildImage(members[0].imgUrl!, Alignment.topRight),
-            _buildImage(members[1].imgUrl!, Alignment.bottomLeft),
+            _buildImage(members[0].imgUrl, Alignment.topRight),
+            _buildImage(members[1].imgUrl, Alignment.bottomLeft),
           ],
         ),
       );
@@ -45,8 +45,8 @@ class WidgetAvatarChat extends StatelessWidget {
           fit: StackFit.loose,
           children: [
             _buildCount(),
-            _buildImage(members[1].imgUrl!, Alignment.topCenter),
-            _buildImage(members[0].imgUrl!, Alignment.bottomLeft),
+            _buildImage(members[1].imgUrl, Alignment.topCenter),
+            _buildImage(members[0].imgUrl, Alignment.bottomLeft),
           ],
         ),
       );
