@@ -10,7 +10,7 @@ class TabContactController extends GetxController {
   List<ContactModel> contactsFiltered = [];
   TextEditingController searchController = new TextEditingController();
 
-  bool contactsLoaded = false;
+  final contactsLoaded = false.obs;
 
   @override
   void onInit() {
@@ -41,11 +41,13 @@ class TabContactController extends GetxController {
           name: contact.displayName, phone: contact.phones!.elementAt(0).value);
     }).toList();
     contacts = _contacts;
-    contactsLoaded = true;
+    contactsLoaded.value = true;
   }
 
   filterContacts() {
-    List<ContactModel> _contacts = [];
+    // List<ContactModel> _contacts = [];.
+    final _contacts = <ContactModel>[].obs;
+
     _contacts.addAll(contacts);
     if (searchController.text.isNotEmpty) {
       _contacts.retainWhere((contact) {

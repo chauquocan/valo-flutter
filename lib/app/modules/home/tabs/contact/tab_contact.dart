@@ -48,7 +48,7 @@ class ContactTab extends GetView<TabContactController> {
                         color: Theme.of(context).primaryColor)),
               ),
             ),
-            controller.contactsLoaded == true
+            Obx(() => controller.contactsLoaded.value == true
                 ? // if the contacts have not been loaded yet
                 listItemsExist == true
                     ? // if we have contacts to show
@@ -74,7 +74,7 @@ class ContactTab extends GetView<TabContactController> {
                     child: Center(
                       child: CircularProgressIndicator(),
                     ),
-                  )
+                  ))
           ],
         ),
       ),
