@@ -1,3 +1,4 @@
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/contacts_list.dart';
@@ -25,8 +26,20 @@ class ContactTab extends GetView<TabContactController> {
         actions: [
           IconButton(onPressed: () {}, icon: Icon(Icons.search)),
           IconButton(
-              onPressed: () {
-                Get.toNamed('/newfriend');
+              onPressed: () async {
+                try {
+                  Contact contact = await ContactsService.openContactForm();
+                  if (contact != null) {
+                    controller.getAllContacts();
+                  }
+                } on FormOperationException catch (e) {
+                  switch (e.errorCode) {
+                    case FormOperationErrorCode.FORM_OPERATION_CANCELED:
+                    case FormOperationErrorCode.FORM_COULD_NOT_BE_OPEN:
+                    case FormOperationErrorCode.FORM_OPERATION_UNKNOWN_ERROR:
+                      print(e.toString());
+                  }
+                }
               },
               icon: Icon(Icons.person_add))
         ],
