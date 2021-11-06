@@ -1,4 +1,3 @@
-import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/contacts_list.dart';
@@ -48,7 +47,7 @@ class ContactTab extends GetView<TabContactController> {
                         color: Theme.of(context).primaryColor)),
               ),
             ),
-            Obx(() => controller.contactsLoaded.value == true
+            Obx(() => controller.contactsLoaded == true
                 ? // if the contacts have not been loaded yet
                 listItemsExist == true
                     ? // if we have contacts to show

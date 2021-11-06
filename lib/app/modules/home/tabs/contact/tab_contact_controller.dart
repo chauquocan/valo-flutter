@@ -6,11 +6,28 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:valo_chat_app/app/data/models/contact_app.dart';
 
 class TabContactController extends GetxController {
-  List<ContactModel> contacts = [];
-  List<ContactModel> contactsFiltered = [];
-  TextEditingController searchController = new TextEditingController();
+  final _contacts = <ContactModel>[].obs;
+  final _contactsFiltered = <ContactModel>[].obs;
+  final _contactsLoaded = false.obs;
 
-  final contactsLoaded = false.obs;
+  final searchController = TextEditingController();
+  get contactsLoaded => _contactsLoaded.value;
+
+  set contactsLoaded(value) {
+    _contactsLoaded.value = value;
+  }
+
+  List<ContactModel> get contacts => _contacts;
+
+  set contacts(value) {
+    _contacts.value = value;
+  }
+
+  List<ContactModel> get contactsFiltered => _contactsFiltered;
+
+  set contactsFiltered(value) {
+    _contactsFiltered.value = value;
+  }
 
   @override
   void onInit() {
@@ -45,15 +62,13 @@ class TabContactController extends GetxController {
   }
 
   filterContacts() {
-    // List<ContactModel> _contacts = [];.
-    final _contacts = <ContactModel>[].obs;
-
-    _contacts.addAll(contacts);
+    List<ContactModel> contacts = [];
+    contacts.addAll(_contacts);
     if (searchController.text.isNotEmpty) {
-      _contacts.retainWhere((contact) {
+      contacts.retainWhere((_contact) {
         String searchTerm = searchController.text.toLowerCase();
         String searchTermFlatten = flattenPhoneNumber(searchTerm);
-        String contactName = contact.name!.toLowerCase();
+        String contactName = _contact.name!.toLowerCase();
         bool nameMatches = contactName.contains(searchTerm);
 
         if (nameMatches == true) {
@@ -63,7 +78,7 @@ class TabContactController extends GetxController {
           return false;
         }
 
-        String phnFlattened = contact.phone!.toLowerCase();
+        String phnFlattened = _contact.phone!.toLowerCase();
         return phnFlattened.contains(searchTermFlatten);
       });
     }
