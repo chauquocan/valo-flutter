@@ -6,28 +6,16 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:valo_chat_app/app/data/models/contact_app.dart';
 
 class TabContactController extends GetxController {
-  final _contacts = <ContactModel>[].obs;
-  final _contactsFiltered = <ContactModel>[].obs;
-  final _contactsLoaded = false.obs;
+  final contacts = <ContactModel>[].obs;
+  final contactsFiltered = <ContactModel>[].obs;
+  final contactsLoaded = false.obs;
 
+  late final isSearching = searchController.text.isNotEmpty.obs;
+  late final listItemsExist =
+      ((isSearching == true && contactsFiltered.value.length > 0) ||
+              (isSearching != true && contacts.value.length > 0))
+          .obs;
   final searchController = TextEditingController();
-  get contactsLoaded => _contactsLoaded.value;
-
-  set contactsLoaded(value) {
-    _contactsLoaded.value = value;
-  }
-
-  List<ContactModel> get contacts => _contacts;
-
-  set contacts(value) {
-    _contacts.value = value;
-  }
-
-  List<ContactModel> get contactsFiltered => _contactsFiltered;
-
-  set contactsFiltered(value) {
-    _contactsFiltered.value = value;
-  }
 
   @override
   void onInit() {
@@ -35,12 +23,13 @@ class TabContactController extends GetxController {
     super.onInit();
   }
 
-  getPermissions() async {
+  Future getPermissions() async {
     if (await Permission.contacts.request().isGranted) {
       getAllContacts();
-      searchController.addListener(() {
-        filterContacts();
-      });
+      // searchController.addListener(() {
+      //   filterContacts();
+      // },
+      // );
     }
   }
 
@@ -57,15 +46,15 @@ class TabContactController extends GetxController {
       return ContactModel(
           name: contact.displayName, phone: contact.phones!.elementAt(0).value);
     }).toList();
-    contacts = _contacts;
+    contacts.value = _contacts;
     contactsLoaded.value = true;
   }
 
   filterContacts() {
-    List<ContactModel> contacts = [];
-    contacts.addAll(_contacts);
+    List<ContactModel> contactSearch = [];
+    contactSearch.addAll(contacts.value);
     if (searchController.text.isNotEmpty) {
-      contacts.retainWhere((_contact) {
+      contactSearch.retainWhere((_contact) {
         String searchTerm = searchController.text.toLowerCase();
         String searchTermFlatten = flattenPhoneNumber(searchTerm);
         String contactName = _contact.name!.toLowerCase();
@@ -82,6 +71,21 @@ class TabContactController extends GetxController {
         return phnFlattened.contains(searchTermFlatten);
       });
     }
-    contactsFiltered = _contacts;
+    contactsFiltered.value = contactSearch;
+  }
+
+  @override
+  void onReady() {
+    // TODO: implement onReady
+    searchController.addListener(() {
+      filterContacts();
+    });
+    super.onReady();
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    super.onClose();
   }
 }
