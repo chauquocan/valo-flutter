@@ -34,7 +34,9 @@ class TabProfileController extends GetxController {
         if (response.ok) {
           //get image url from api response
           imageURL = response.data!.imgUrl;
+          print(response.data);
           print(imageURL);
+          await Storage.updateUser(response.data!);
           Get.snackbar('Success', 'Image uploaded successfully',
               margin: EdgeInsets.only(top: 5, left: 10, right: 10));
         } else if (response.code == HttpStatus.unauthorized) {

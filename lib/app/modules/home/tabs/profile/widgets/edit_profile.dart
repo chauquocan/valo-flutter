@@ -46,12 +46,15 @@ class EditProfileScreen extends StatelessWidget {
                       } else {
                         if (controller.imageURL.length != 0) {
                           return CachedNetworkImage(
+                            height: 130,
+                            width: 120,
                             imageUrl: controller.imageURL,
                             fit: BoxFit.cover,
                             imageBuilder: (context, imageProvider) =>
                                 CircleAvatar(
                               backgroundColor: AppColors.light,
                               backgroundImage: imageProvider,
+                              // radius: 50,
                             ),
                             placeholder: (context, url) => CircleAvatar(
                               backgroundImage:
@@ -76,14 +79,13 @@ class EditProfileScreen extends StatelessWidget {
                                 image: DecorationImage(
                                   fit: BoxFit.cover,
                                   image: NetworkImage(
-                                    '${Storage.getUser()?.imgUrl}',
-                                  ),
+                                      '${Storage.getUser()?.imgUrl}'),
                                 )),
                           );
                         }
                       }
                     }),
-                    //pick image button
+                    // pick image button
                     Positioned(
                       right: 0,
                       bottom: 0,

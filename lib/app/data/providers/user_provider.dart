@@ -143,10 +143,11 @@ class UserProvider extends ConnectService {
   //upload hình
   Future<NetworkResponse<ProfileResponse>> uploadFile(filePath) async {
     try {
-      FormData formData = FormData.fromMap(
-          {"image": await MultipartFile.fromFile(filePath, filename: "dp")});
-      Response response = await patch(
-        userURL + _userId!,
+      FormData formData = FormData.fromMap({
+        "multipartFile": await MultipartFile.fromFile(filePath, filename: 'avt')
+      });
+      Response response = await put(
+        userURL + '/me/changeImage',
         data: formData,
         options: Options(
           headers: <String, String>{

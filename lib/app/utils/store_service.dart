@@ -30,6 +30,11 @@ class Storage {
     await _pref.setString('user', user.toRawJson());
   }
 
+  static Future updateUser(ProfileResponse user) async {
+    _pref.remove('user');
+    await _pref.setString('user', user.toRawJson());
+  }
+
   //get user
   static ProfileResponse? getUser() {
     final raw = _pref.getString('user');

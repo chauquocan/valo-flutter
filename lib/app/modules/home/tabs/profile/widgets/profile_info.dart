@@ -22,6 +22,7 @@ class ProfileInforWidget extends StatelessWidget {
           () {
             if (controller.isLoading.value) {
               return const CircleAvatar(
+                radius: 40,
                 backgroundImage: AssetImage("assets/images/place_avatar.png"),
                 child: Center(
                   child: CircularProgressIndicator(
@@ -35,13 +36,17 @@ class ProfileInforWidget extends StatelessWidget {
                   imageUrl: controller.imageURL,
                   fit: BoxFit.cover,
                   imageBuilder: (context, imageProvider) => CircleAvatar(
+                    radius: 40,
                     backgroundColor: AppColors.light,
                     child: ClipOval(
-                      child: Image(image: imageProvider),
+                      child: Image(
+                        image: imageProvider,
+                      ),
                     ),
                     // backgroundImage: imageProvider,
                   ),
                   placeholder: (context, url) => const CircleAvatar(
+                    radius: 40,
                     backgroundImage:
                         AssetImage("assets/images/place_avatar.png"),
                     child: Center(
