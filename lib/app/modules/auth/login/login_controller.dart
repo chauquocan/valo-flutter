@@ -52,7 +52,7 @@ class LoginController extends GetxController {
         //save Token
         await Storage.saveToken(response.data!);
         // dio get user
-        final userResponse = await userProvider.getUser(
+        final userResponse = await userProvider.getUserByPhone(
             response.data!.username, response.data!.accessToken);
         //
         print('User respone: ${userResponse.toString()}');

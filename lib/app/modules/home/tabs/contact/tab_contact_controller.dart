@@ -1,16 +1,27 @@
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+
 import 'package:valo_chat_app/app/data/models/contact.dart';
-import 'package:contacts_service/contacts_service.dart';
+import 'package:valo_chat_app/app/data/models/user.dart';
+import 'package:valo_chat_app/app/data/providers/friend_provider.dart';
+import 'package:valo_chat_app/app/data/providers/user_provider.dart';
+import 'package:valo_chat_app/app/utils/store_service.dart';
 
 class TabContactController extends GetxController {
+  final FriendProvider friendProvider;
+  final UserProvider userProvider;
+
+  TabContactController(
+      {required this.friendProvider, required this.userProvider});
   //all contact list
   RxList<ContactModel> contacts = <ContactModel>[].obs;
   //fitlered contact list
   RxList<ContactModel> contactsFiltered = <ContactModel>[].obs;
 
   TextEditingController searchController = TextEditingController();
+  final friendIdList = <ProfileResponse>[].obs;
 
   RxBool contactsLoaded = false.obs;
 
@@ -22,8 +33,30 @@ class TabContactController extends GetxController {
 
   @override
   void onInit() {
+    // getAllContacts();
+    getContacts();
     super.onInit();
-    getPermissions();
+  }
+
+  //Lay friend tu api
+  Future getContacts() async {
+    List<ContactModel> _contact = [];
+    final response =
+        await friendProvider.GetFriends(Storage.getToken()!.accessToken);
+    if (response != null) {
+      for (var i = 0; i < response.length; i++) {
+        final user = await userProvider.getUserById(
+            '${response[i].friendId}', Storage.getToken()!.accessToken);
+        friendIdList.add(user.data!);
+        _contact.add(ContactModel(
+            id: user.data!.id, name: user.data!.name, phone: user.data!.phone));
+      }
+      contacts.value.addAll(_contact);
+      contactsLoaded.value = true;
+      update();
+    } else {
+      print('loi khi lay danh sach ban');
+    }
   }
 
   getPermissions() async {
@@ -46,9 +79,9 @@ class TabContactController extends GetxController {
       return ContactModel(
           name: contact.displayName, phone: contact.phones!.elementAt(0).value);
     }).toList();
-    contacts.value = _contacts;
-    // contacts.assignAll(_contacts);
+    contacts.value.addAll(_contacts);
     contactsLoaded.value = true;
+    update();
   }
 
   filterContacts() async {
@@ -72,8 +105,8 @@ class TabContactController extends GetxController {
         return phnFlattened.contains(searchTermFlatten);
       });
     }
-    contactsFiltered.value = contactSearch;
-    // contactsFiltered.assignAll(contactSearch);
+    contactsFiltered.value.addAll(contactSearch);
+    update();
   }
 
   @override

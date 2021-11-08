@@ -18,6 +18,7 @@ class AddFriendController extends GetxController {
 
   List<ProfileResponse> searchResults = [];
   final friendReqList = <Content>[].obs;
+  final userIdList = <ProfileResponse>[].obs;
 
   //loading
   final isLoading = false.obs;
@@ -28,21 +29,27 @@ class AddFriendController extends GetxController {
     super.onInit();
   }
 
+  //Gửi lời mời
   Future SendFriendReq(String toId) async {
     final response = await friendProvider.SendFriendRequest(
         Storage.getToken()!.accessToken, toId);
     if (response.ok) {
-      print('da gui loi moi ket ban');
+      Get.snackbar('Success', 'Request sent');
     } else {
-      print(response.code);
-      print('xay ra loi khi gui loi moi ket ban');
+      Get.snackbar('Fail', 'Something wrong');
     }
   }
 
+  //Lấy danh sách lời mời
   Future getFriendReqList() async {
     final response =
         await friendProvider.GetFriendRequests(Storage.getToken()!.accessToken);
     if (response != null) {
+      for (var i = 0; i < response.length; i++) {
+        final user = await userProvider.getUserById(
+            '${response[i].fromId}', Storage.getToken()!.accessToken);
+        userIdList.add(user.data!);
+      }
       friendReqList.addAll(response);
       print(friendReqList.toString());
     } else {
@@ -50,6 +57,25 @@ class AddFriendController extends GetxController {
     }
   }
 
+  //Chấp nhận lời mời
+  Future acceptFriendRequest(String id) async {
+    final response = await friendProvider.AcceptFriendRequest(
+        Storage.getToken()!.accessToken, id);
+    if (response.ok) {
+      Get.snackbar('Thanh cong', '${response.data}');
+      friendReqList.value.clear();
+    } else {
+      Get.snackbar('That bai', '${response.data}');
+    }
+  }
+
+  Future getUserById(String id) async {
+    final response =
+        await userProvider.getUserById(id, Storage.getToken()!.accessToken);
+    if (response.ok) {}
+  }
+
+  //Tìm user
   Future searchUser(String phoneNumber) async {
     isLoading.value = true;
     final searchResponse = await userProvider.searchUser(

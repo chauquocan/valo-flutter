@@ -10,9 +10,25 @@ class FriendProvider extends ConnectService {
   static const String getFriendRequestUrl = '/friend-request';
   static const String sendfriendRequestUrl = '/friend-request/to/';
   static const String accpectFriendRequestUrl = '/friend-request';
+  static const String getFriendsUrl = '/friends';
 
   //curent userId
   final _userId = Storage.getUser()?.id;
+
+  //Get frineds
+  Future<List<FriendModel>> GetFriends(String accessToken) async {
+    try {
+      final response = await get(
+        '${getFriendsUrl}',
+        options: Options(headers: {'Authorization': 'Bearer ${accessToken}'}),
+      );
+      return (response.data['content'] as List)
+          .map((e) => FriendModel.fromJson(e))
+          .toList();
+    } on DioError catch (e, s) {
+      throw Exception("$e///////////$s");
+    }
+  }
 
   //Get friend request
   // Future<NetworkResponse<List<Content>>> GetFriendRequests(
@@ -35,7 +51,7 @@ class FriendProvider extends ConnectService {
   }
 
   //Send friend request
-  Future<NetworkResponse<RegisterMessage>> SendFriendRequest(
+  Future<NetworkResponse<ResponseMessage>> SendFriendRequest(
       String accessToken, String toId) async {
     try {
       final response = await post(
@@ -43,10 +59,26 @@ class FriendProvider extends ConnectService {
         options: Options(headers: {'Authorization': 'Bearer ${accessToken}'}),
       );
       return NetworkResponse.fromResponse(
-          response, (json) => RegisterMessage.fromJson(json));
+          response, (json) => ResponseMessage.fromJson(json));
     } on DioError catch (e, s) {
       return NetworkResponse.withError(e.response);
     }
   }
+
   //Accept friend request
+  Future<NetworkResponse<ResponseMessage>> AcceptFriendRequest(
+      String accessToken, String id) async {
+    try {
+      final response = await put(
+        '${accpectFriendRequestUrl}/${id}',
+        options: Options(headers: {'Authorization': 'Bearer ${accessToken}'}),
+      );
+      return NetworkResponse.fromResponse(
+        response,
+        (json) => ResponseMessage.fromJson(json),
+      );
+    } on DioError catch (e, s) {
+      return NetworkResponse.withError(e.response);
+    }
+  }
 }

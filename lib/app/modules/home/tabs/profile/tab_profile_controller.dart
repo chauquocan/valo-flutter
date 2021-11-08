@@ -68,7 +68,7 @@ class TabProfileController extends GetxController {
       print('Update Response: ${response.toString()}');
       if (response.ok) {
         final userResponse = await UserProvider()
-            .getUser('${phone}', '${Storage.getToken()!.accessToken}');
+            .getUserByPhone('${phone}', '${Storage.getToken()!.accessToken}');
         Get.snackbar('update susscessfully', '');
         if (userResponse.ok) {
           await Storage.saveUser(userResponse.data!);

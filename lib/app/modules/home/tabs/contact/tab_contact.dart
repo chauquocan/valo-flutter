@@ -1,4 +1,3 @@
-import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/contacts_list.dart';
@@ -32,8 +31,13 @@ class _ContactTabState extends State<ContactTab> {
                 icon: Icon(Icons.person_add))
           ],
         ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          isExtended: true,
+          onPressed: () => controller.getPermissions(),
+        ),
         body: GetBuilder<TabContactController>(
-          init: TabContactController(),
+          // init: TabContactController(),
           builder: (TabContactController) => Container(
             padding: EdgeInsets.all(20),
             child: Column(
@@ -59,7 +63,6 @@ class _ContactTabState extends State<ContactTab> {
                 ),
                 Obx(() => controller.contactsLoaded.value
                     ? // if the contacts have not been loaded yet
-                    // controller.isListItemsExist()
                     ((controller.searchController.text.isNotEmpty &&
                                 controller.contactsFiltered.value.length > 0) ||
                             (!controller.searchController.text.isNotEmpty &&
@@ -87,7 +90,7 @@ class _ContactTabState extends State<ContactTab> {
                         // still loading contacts
                         padding: EdgeInsets.only(top: 40),
                         child: Center(
-                          child: CircularProgressIndicator(),
+                          child: Text('No contacts'),
                         ),
                       ))
               ],
@@ -96,22 +99,3 @@ class _ContactTabState extends State<ContactTab> {
         ));
   }
 }
-
-
-
-
-
-
-
-// body: Container(
-//           child: Column(
-//             children: [
-//               ListView.builder(
-//                 itemBuilder: (context, index) => CustomContact(
-//                   contact: controller.contacts[index],
-//                 ),
-//                 itemCount: controller.contacts.length,
-//               ),
-//             ],
-//           ),
-//         ));

@@ -50,12 +50,30 @@ class UserProvider extends ConnectService {
   }
 
   //Đăng ký
-  Future<NetworkResponse<RegisterMessage>> register(Map map) async {
+  Future<NetworkResponse<ResponseMessage>> register(Map map) async {
     try {
       final response = await post(registerURL, data: map);
       return NetworkResponse.fromResponse(
         response,
-        (json) => RegisterMessage.fromJson(json),
+        (json) => ResponseMessage.fromJson(json),
+      );
+    } on DioError catch (e, s) {
+      print(e.error);
+      return NetworkResponse.withError(e.response);
+    }
+  }
+
+  //Get user bằng số id
+  Future<NetworkResponse<ProfileResponse>> getUserById(
+      String id, String accessToken) async {
+    try {
+      final response = await get('${userURL}${id}',
+          options:
+              Options(headers: {'Authorization': 'Bearer ${accessToken}'}));
+      print(userURL + Storage.getToken()!.username);
+      return NetworkResponse.fromResponse(
+        response,
+        (json) => ProfileResponse.fromJson(json),
       );
     } on DioError catch (e, s) {
       print(e.error);
@@ -64,10 +82,10 @@ class UserProvider extends ConnectService {
   }
 
   //Get user bằng số điện thoại
-  Future<NetworkResponse<ProfileResponse>> getUser(
+  Future<NetworkResponse<ProfileResponse>> getUserByPhone(
       String numberPhone, String accessToken) async {
     try {
-      final response = await get(userURL + numberPhone,
+      final response = await get('${userURL}phone=${numberPhone}',
           options:
               Options(headers: {'Authorization': 'Bearer ${accessToken}'}));
       print(userURL + Storage.getToken()!.username);
@@ -126,7 +144,7 @@ class UserProvider extends ConnectService {
   Future<NetworkResponse<ProfileResponse>> searchUser(
       String numberPhone, String accessToken) async {
     try {
-      final response = await get(userURL + numberPhone,
+      final response = await get('${userURL}phone=${numberPhone}',
           options:
               Options(headers: {'Authorization': 'Bearer ${accessToken}'}));
       print(userURL + Storage.getToken()!.username);

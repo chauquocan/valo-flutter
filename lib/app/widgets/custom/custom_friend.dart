@@ -6,8 +6,9 @@ import 'package:valo_chat_app/app/modules/chat/add_friend/add_friend_controller.
 
 //Custom contact card in contact tab
 class CustomFriendReq extends StatelessWidget {
-  const CustomFriendReq({Key? key, required this.friendReq}) : super(key: key);
+  const CustomFriendReq({Key? key, required this.friendReq,required this.user}) : super(key: key);
   final Content friendReq;
+  final ProfileResponse user;
   @override
   Widget build(BuildContext context) {
     AddFriendController controller = Get.find();
@@ -19,16 +20,16 @@ class CustomFriendReq extends StatelessWidget {
             leading: CircleAvatar(
               backgroundColor: Colors.blueGrey,
               radius: 30,
-              // backgroundImage: NetworkImage('${friendReq.}'),
+              backgroundImage: NetworkImage('${user.imgUrl}'),
             ),
             title: Text(
-              friendReq.fromId,
+              user.name,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(friendReq.sendAt),
             trailing: IconButton(
-                onPressed: () => print('Chap nhan'),
-                // controller.SendFriendReq('${friendReq.id}'),
+                onPressed: () =>
+                    controller.acceptFriendRequest('${friendReq.fromId}'),
                 icon: Icon(Icons.add)),
           ),
           const Padding(

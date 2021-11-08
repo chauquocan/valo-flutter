@@ -5,7 +5,7 @@ class ContactModel {
   String? phone;
   String? email;
   String? address;
-  int? id;
+  String? id;
   String? icon;
   ContactModel(
       {this.name,
@@ -16,8 +16,8 @@ class ContactModel {
       this.icon = "assets/icons/User Icon.svg"});
 }
 
-class AutoGenerate {
-  AutoGenerate({
+class FriendPage {
+  FriendPage({
     required this.content,
     required this.pageable,
     required this.last,
@@ -42,7 +42,7 @@ class AutoGenerate {
   late final int numberOfElements;
   late final bool empty;
 
-  AutoGenerate.fromJson(Map<String, dynamic> json) {
+  FriendPage.fromJson(Map<String, dynamic> json) {
     content =
         List.from(json['content']).map((e) => Content.fromJson(e)).toList();
     pageable = Pageable.fromJson(json['pageable']);
@@ -167,6 +167,35 @@ class Sort {
     _data['empty'] = empty;
     _data['sorted'] = sorted;
     _data['unsorted'] = unsorted;
+    return _data;
+  }
+}
+
+class FriendModel {
+  FriendModel({
+    required this.id,
+    required this.userId,
+    required this.friendId,
+    required this.addDateAt,
+  });
+  late final String id;
+  late final String userId;
+  late final String friendId;
+  late final String addDateAt;
+
+  FriendModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['userId'];
+    friendId = json['friendId'];
+    addDateAt = json['addDateAt'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['id'] = id;
+    _data['userId'] = userId;
+    _data['friendId'] = friendId;
+    _data['addDateAt'] = addDateAt;
     return _data;
   }
 }

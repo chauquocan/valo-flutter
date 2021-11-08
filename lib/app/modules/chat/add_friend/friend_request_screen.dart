@@ -6,13 +6,14 @@ import 'package:valo_chat_app/app/widgets/custom/custom_friend.dart';
 class FriendRequest extends GetView<AddFriendController> {
   // AddFriendController controller = Get.find();
   FriendRequest({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return GetX<AddFriendController>(
       builder: (controller) {
         return Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            title: Text('Lời mời kết bạn'),
+          ),
           body: SafeArea(
             child: Column(
               children: [
@@ -21,6 +22,7 @@ class FriendRequest extends GetView<AddFriendController> {
                     itemCount: controller.friendReqList.length,
                     itemBuilder: (context, index) => CustomFriendReq(
                       friendReq: controller.friendReqList[index],
+                      user: controller.userIdList[index],
                     ),
                   ),
                 )
