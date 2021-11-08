@@ -16,7 +16,9 @@ class CustomChatCard extends StatelessWidget {
         children: [
           ListTile(
             onTap: () {
-              Get.toNamed("/chat");
+              Get.to(() => ChatScreen(
+                    chatModel: chat,
+                  ));
             },
             leading: CircleAvatar(
               backgroundColor: Colors.blueGrey,

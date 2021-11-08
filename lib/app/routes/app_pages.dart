@@ -64,10 +64,10 @@ abstract class AppPages {
       page: () => AddFriendScreen(),
       binding: AddFriendBinding(),
     ),
-    GetPage(
-      name: Routes.CONVERSATION,
-      page: () => ChatScreen(),
-      binding: ChatBinding(),
-    ),
+    // GetPage(
+    //   name: Routes.CONVERSATION,
+    //   page: () => ChatScreen(),
+    //   binding: ChatBinding(),
+    // ),
   ];
 }
