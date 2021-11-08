@@ -9,18 +9,41 @@ class RegisterController extends GetxController {
   final TextEditingController _emailInput = TextEditingController();
   final TextEditingController _passwordInput = TextEditingController();
 
+  //Form key for valid
+  final _RegisterFormKey = GlobalKey<FormState>();
+
+  //pass's state
+  final _showPass = true.obs;
+
   RegisterController({required this.userProvider});
+  String? fullNameValidator(String value) {
+    if (value.isEmpty) {
+      return 'Please enter your name';
+    }
+    return null;
+  }
+
+  String? emailValidator(String value) {
+    if (value.isEmpty) {
+      return 'Please enter your email';
+    }
+    return null;
+  }
+
+  String? passwordValidator(String value) {
+    if (value.isEmpty) {
+      return 'Please enter password';
+    }
+    return null;
+  }
+
   //Sign up
-  Future register(
-    // String fullname,
-    String phoneNumber,
-    String password,
-    String email,
-  ) async {
+  Future register(String phoneNumber, String fullName, String password,
+      String email) async {
     _showLoading();
     final RegisterRequest = {
-      // 'name': fullname,
       'username': phoneNumber,
+      'fullname': fullName,
       'password': password,
       'email': email,
     };
@@ -49,6 +72,9 @@ class RegisterController extends GetxController {
       content: Text(content),
     ));
   }
+
+  //Show pass
+  void onShowPass() => _showPass.value = !_showPass.value;
 
   @override
   void onClose() {

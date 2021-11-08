@@ -45,7 +45,9 @@ abstract class AppPages {
     ),
     GetPage(
       name: Routes.REGISTER,
-      page: () => RegisterScreen(),
+      page: () => RegisterScreen(
+        numberPhone: '',
+      ),
       binding: AuthBinding(),
     ),
     GetPage(

@@ -14,7 +14,7 @@ class HomeController extends GetxController {
   set currentTab(int value) {
     _currentTab.value = value;
   }
-  
+
   //tabs
   final items = [
     //Chats/Conversations tab
@@ -43,6 +43,4 @@ class HomeController extends GetxController {
     ContactTab(),
     TabProfile(),
   ];
-
-  
 }

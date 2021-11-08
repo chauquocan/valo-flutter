@@ -53,7 +53,7 @@ class AuthController extends GetxController {
     if (credential.user != null) {
       loading.value = false;
       Get.snackbar('OTP Verify successfully', 'Please inform your profile');
-      Get.offAllNamed('/register');
+      Get.offAll(RegisterScreen(numberPhone: _phoneController.text));
     } else {
       loading.value = false;
       Get.snackbar('Error', 'Wrong OTP');

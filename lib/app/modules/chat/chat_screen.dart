@@ -12,7 +12,14 @@ import 'package:valo_chat_app/app/utils/store_service.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
 import 'chat_controller.dart';
 
-class ChatScreen extends GetView<ChatController> {
+class ChatScreen extends StatefulWidget {
+  @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  ChatController controller = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -23,7 +30,19 @@ class ChatScreen extends GetView<ChatController> {
         body: Column(
           children: [
             Expanded(
-              child: GetX<ChatController>(
+              child:
+                  //  StreamBuilder(
+                  //   stream: controller.provider.channel.stream,
+                  //   builder: (context, snapshot) {
+                  //     if (snapshot.hasError) {
+                  //       return Text('${snapshot.hasError}');
+                  //     } else if (!snapshot.hasData) {
+                  //       return Text('Nothing');
+                  //     }
+                  //     return Text('${snapshot.data}');
+                  //   },
+                  // )
+                  GetX<ChatController>(
                 builder: (_) {
                   if (controller.isLoading) {
                     return Center(child: CircularProgressIndicator());
@@ -158,16 +177,16 @@ class ChatScreen extends GetView<ChatController> {
           // SizedBox(
           //   width: 200,
           // child:
-          Hero(
-            tag: controller.id,
-            child: WidgetAvatarChat(
-              members: controller.members,
-              isGroup: controller.id.length <= 20,
-              size: 40,
-              avatarSize: 28,
-            ),
-            // ),
-          ),
+          // Hero(
+          //   tag: controller.id,
+          //   child: WidgetAvatarChat(
+          //     members: controller.members,
+          //     isGroup: controller.id.length <= 20,
+          //     size: 40,
+          //     avatarSize: 28,
+          //   ),
+          //   // ),
+          // ),
           SizedBox(width: 12),
           Text(
             controller.name,

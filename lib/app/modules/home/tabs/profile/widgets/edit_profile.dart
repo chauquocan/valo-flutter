@@ -10,7 +10,6 @@ import 'package:valo_chat_app/app/utils/store_service.dart';
 
 // sua profile cua minh
 class EditProfileScreen extends StatelessWidget {
-  bool showPassword = false;
   final controller = Get.put(TabProfileController(provider: UserProvider()));
   @override
   Widget build(BuildContext context) {

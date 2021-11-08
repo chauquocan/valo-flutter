@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:valo_chat_app/app/data/models/user.dart';
 
 //Custom contact card in contact tab
@@ -23,7 +22,11 @@ class CustomSearch extends StatelessWidget {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(user.phone),
-            trailing: IconButton(onPressed: () {}, icon: Icon(Icons.add)),
+            trailing: IconButton(
+                onPressed: () {
+                  print('gui ket ban');
+                },
+                icon: Icon(Icons.add)),
           ),
           const Padding(
             padding: EdgeInsets.only(right: 20, left: 80),
