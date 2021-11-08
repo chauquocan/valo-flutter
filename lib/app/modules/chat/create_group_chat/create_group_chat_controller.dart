@@ -78,7 +78,7 @@ class CreateGroupChatController extends GetxController {
     );
     if (getAllResponse != null) {
       users.addAll(getAllResponse);
-      print(users.length);
+      print(users.toString());
     } else {
       Get.snackbar('Search failed', 'Something wrong');
     }

@@ -20,4 +20,5 @@ abstract class Routes {
 
   static const CREATEGROUP = '/creategroup';
   static const NEWFRIEND = '/newfriend';
+  static const FRIENDREQUEST = '/friendrequest';
 }

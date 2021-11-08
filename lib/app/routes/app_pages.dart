@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/auth/auth.dart';
 import 'package:valo_chat_app/app/modules/chat/add_friend/add_friend_binding.dart';
 import 'package:valo_chat_app/app/modules/chat/add_friend/add_friend_screen.dart';
-import 'package:valo_chat_app/app/modules/chat/chat.dart';
+import 'package:valo_chat_app/app/modules/chat/add_friend/friend_request.dart';
 import 'package:valo_chat_app/app/modules/chat/create_group_chat/create_group_chat_bindings.dart';
 import 'package:valo_chat_app/app/modules/chat/create_group_chat/create_group_chat_screen.dart';
 import 'package:valo_chat_app/app/modules/home/home.dart';
@@ -64,9 +64,14 @@ abstract class AppPages {
       page: () => AddFriendScreen(),
       binding: AddFriendBinding(),
     ),
+    GetPage(
+      name: Routes.FRIENDREQUEST,
+      page: () => FriendRequest(),
+      binding: AddFriendBinding(),
+    ),
     // GetPage(
     //   name: Routes.CONVERSATION,
-    //   page: () => ChatScreen(),
+    //   page: () => ChatScreen(chatModel: ChatModel(),),
     //   binding: ChatBinding(),
     // ),
   ];

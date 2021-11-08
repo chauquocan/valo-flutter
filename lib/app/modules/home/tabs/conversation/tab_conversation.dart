@@ -12,6 +12,11 @@ class ConversationTab extends GetView<TabConversationController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          backgroundColor: AppColors.primary,
+          child: Icon(Icons.add),
+        ),
         appBar: AppBar(
           title: Text(
             'chat'.tr,
@@ -30,6 +35,9 @@ class ConversationTab extends GetView<TabConversationController> {
                 case ("newfriend"):
                   Get.toNamed('/newfriend');
                   break;
+                case ("friendrequest"):
+                  Get.toNamed('/friendrequest');
+                  break;
               }
             }, itemBuilder: (BuildContext context) {
               return [
@@ -37,16 +45,23 @@ class ConversationTab extends GetView<TabConversationController> {
                   child: Text("New friend"),
                   value: "newfriend",
                 ),
-                PopupMenuItem(child: Text("New group"), value: "newgroup"),
+                PopupMenuItem(
+                  child: Text("New group"),
+                  value: "newgroup",
+                ),
+                PopupMenuItem(
+                  child: Text("Friend Request"),
+                  value: "friendrequest",
+                ),
               ];
             })
           ],
         ),
         body: ListView.builder(
           itemBuilder: (context, index) => CustomChatCard(
-            chat: controller.chats[index],
+            chat: controller.conversations[index],
           ),
-          itemCount: controller.chats.length,
+          itemCount: controller.conversations.length,
         ));
   }
 }

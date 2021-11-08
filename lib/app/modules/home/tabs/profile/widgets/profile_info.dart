@@ -15,14 +15,14 @@ class ProfileInforWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      padding: EdgeInsets.only(top: 18, bottom: 18),
+      padding: EdgeInsets.only(top: 18, bottom: 18, left: 10),
       child: ListTile(
         onTap: () => Get.toNamed('/editprofile'),
         leading: Obx(
           () {
             if (controller.isLoading.value) {
               return const CircleAvatar(
-                radius: 40,
+                radius: 32,
                 backgroundImage: AssetImage("assets/images/place_avatar.png"),
                 child: Center(
                   child: CircularProgressIndicator(
@@ -36,17 +36,12 @@ class ProfileInforWidget extends StatelessWidget {
                   imageUrl: controller.imageURL,
                   fit: BoxFit.cover,
                   imageBuilder: (context, imageProvider) => CircleAvatar(
-                    radius: 40,
+                    radius: 32,
                     backgroundColor: AppColors.light,
-                    child: ClipOval(
-                      child: Image(
-                        image: imageProvider,
-                      ),
-                    ),
-                    // backgroundImage: imageProvider,
+                    backgroundImage: imageProvider,
                   ),
                   placeholder: (context, url) => const CircleAvatar(
-                    radius: 40,
+                    radius: 32,
                     backgroundImage:
                         AssetImage("assets/images/place_avatar.png"),
                     child: Center(
@@ -60,13 +55,8 @@ class ProfileInforWidget extends StatelessWidget {
               } else {
                 return CircleAvatar(
                   backgroundColor: Colors.transparent,
-                  child: ClipOval(
-                    child: Image(
-                      image: NetworkImage('${Storage.getUser()?.imgUrl}'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  radius: 40,
+                  backgroundImage: NetworkImage('${Storage.getUser()?.imgUrl}'),
+                  radius: 32,
                 );
               }
             }

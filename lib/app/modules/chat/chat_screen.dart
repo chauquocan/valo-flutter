@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:valo_chat_app/app/data/models/chat.dart';
+import 'package:valo_chat_app/app/data/models/conversation.dart';
 import 'package:valo_chat_app/app/data/providers/user_provider.dart';
 import 'package:valo_chat_app/app/modules/chat/widgets/own_message.dart';
 import 'package:valo_chat_app/app/modules/chat/widgets/reply_message.dart';
@@ -16,7 +16,7 @@ import 'chat_controller.dart';
 
 class ChatScreen extends GetView<ChatController> {
   const ChatScreen({Key? key, required this.chatModel}) : super(key: key);
-  final ChatModel chatModel;
+  final ConversationModel chatModel;
 
   @override
   Widget build(BuildContext context) {
@@ -91,6 +91,7 @@ class ChatScreen extends GetView<ChatController> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(25)),
                           child: TextFormField(
+                            controller: controller.textController,
                             textAlignVertical: TextAlignVertical.center,
                             keyboardType: TextInputType.multiline,
                             maxLines: 5,
@@ -124,7 +125,8 @@ class ChatScreen extends GetView<ChatController> {
                         child: CircleAvatar(
                           radius: 25,
                           child: IconButton(
-                              onPressed: () {}, icon: Icon(Icons.send)),
+                              onPressed: () => controller.sendMessage(),
+                              icon: Icon(Icons.send)),
                         ),
                       )
                     ],

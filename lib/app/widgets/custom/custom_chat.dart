@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:valo_chat_app/app/data/models/chat.dart';
+import 'package:valo_chat_app/app/data/models/conversation.dart';
 import 'package:valo_chat_app/app/modules/chat/chat.dart';
 import 'package:get/get.dart';
 
 //Custom card in conversation tab
 class CustomChatCard extends StatelessWidget {
   const CustomChatCard({Key? key, required this.chat}) : super(key: key);
-  final ChatModel chat;
+  final ConversationModel chat;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -16,9 +16,11 @@ class CustomChatCard extends StatelessWidget {
         children: [
           ListTile(
             onTap: () {
-              Get.to(() => ChatScreen(
-                    chatModel: chat,
-                  ));
+              Get.to(
+                  () => ChatScreen(
+                        chatModel: chat,
+                      ),
+                  binding: ChatBinding());
             },
             leading: CircleAvatar(
               backgroundColor: Colors.blueGrey,

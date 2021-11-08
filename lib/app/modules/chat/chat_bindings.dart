@@ -5,8 +5,6 @@ import 'package:valo_chat_app/app/modules/chat/chat_controller.dart';
 class ChatBinding implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => ChatController(
-          provider: ChatProvider(),
-        ));
+    Get.put<ChatController>(ChatController(provider: ChatProvider()));
   }
 }

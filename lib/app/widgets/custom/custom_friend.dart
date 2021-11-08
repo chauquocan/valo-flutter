@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:valo_chat_app/app/data/models/contact.dart';
 import 'package:valo_chat_app/app/data/models/user.dart';
 import 'package:valo_chat_app/app/modules/chat/add_friend/add_friend_controller.dart';
 
 //Custom contact card in contact tab
-class CustomSearch extends StatelessWidget {
-  const CustomSearch({Key? key, required this.user}) : super(key: key);
-  final ProfileResponse user;
+class CustomFriendReq extends StatelessWidget {
+  const CustomFriendReq({Key? key, required this.friendReq}) : super(key: key);
+  final Content friendReq;
   @override
   Widget build(BuildContext context) {
     AddFriendController controller = Get.find();
@@ -18,15 +19,16 @@ class CustomSearch extends StatelessWidget {
             leading: CircleAvatar(
               backgroundColor: Colors.blueGrey,
               radius: 30,
-              backgroundImage: NetworkImage('${user.imgUrl}'),
+              // backgroundImage: NetworkImage('${friendReq.}'),
             ),
             title: Text(
-              user.name,
+              friendReq.fromId,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-            subtitle: Text(user.phone),
+            subtitle: Text(friendReq.sendAt),
             trailing: IconButton(
-                onPressed: () => controller.SendFriendReq('${user.id}'),
+                onPressed: () => print('Chap nhan'),
+                // controller.SendFriendReq('${friendReq.id}'),
                 icon: Icon(Icons.add)),
           ),
           const Padding(

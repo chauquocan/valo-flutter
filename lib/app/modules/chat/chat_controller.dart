@@ -58,6 +58,7 @@ class ChatController extends GetxController {
   void onClose() {
     // TODO: implement onClose
     super.onClose();
+    StompService().desTroyStomp();
     // provider.channel.sink.close();
   }
 
