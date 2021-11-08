@@ -12,20 +12,7 @@ class AddFriendController extends GetxController {
 
   var searchController = TextEditingController();
 
-  List<ProfileResponse> searchResults = [
-    // ProfileResponse(
-    //   id: '312312',
-    //   name: 'quoc an',
-    //   gender: 'dsda',
-    //   dateOfBirth: 'dasd',
-    //   phone: '0213124',
-    //   email: 'email',
-    //   address: 'address',
-    //   imgUrl:
-    //       'https://files.worldwildlife.org/wwfcmsprod/images/Panda_in_Tree/hero_full/2wgwt9z093_Large_WW170579.jpg',
-    //   status: 'status',
-    // )
-  ];
+  List<ProfileResponse> searchResults = [];
   //loading
   final isLoading = false.obs;
 
@@ -38,6 +25,7 @@ class AddFriendController extends GetxController {
     print('Search respone: ${searchResponse.toString()}');
     if (searchResponse.ok) {
       isLoading.value = false;
+      searchResults.clear();
       searchResults.add(ProfileResponse(
         id: searchResponse.data!.id,
         name: searchResponse.data!.name,

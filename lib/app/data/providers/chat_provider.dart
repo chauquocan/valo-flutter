@@ -9,6 +9,7 @@ import 'package:valo_chat_app/app/data/connect_service.dart';
 import 'package:valo_chat_app/app/data/models/message.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class ChatProvider extends ConnectService {
   static const String userURL = 'users/';
@@ -18,31 +19,11 @@ class ChatProvider extends ConnectService {
   // Stream<List<MessageModel>> getMessages(
   //     String id, String accessToken)  {
 
-  //   }
-  // late IOWebSocketChannel channel;
-  // connectChannel() {
-  //   try {
-  //     channel =
-  //         IOWebSocketChannel.connect(Uri.parse('ws://192.168.1.101:3000/ws'));
-  //     channel.stream.listen(
-  //       (message) {
-  //         print(message);
-  //       },
-  //       onDone: () {
-  //         //if WebSocket is disconnected
-  //         print("Web socket is closed");
-  //       },
-  //       onError: (error) {
-  //         print(error.toString());
-  //       },
-  //     );
-  //   } catch (_) {
-  //     print("error on connecting to websocket.");
-  //   }
   // }
+
   void onConnect(StompFrame frame) {
     stompClient.subscribe(
-      destination: '/topic/test/subscription',
+      destination: '/topic/user',
       callback: (frame) {
         List<dynamic>? result = json.decode(frame.body!);
         print(result);
@@ -57,10 +38,11 @@ class ChatProvider extends ConnectService {
     });
   }
 
-  final stompClient = StompClient(
+  late final stompClient = StompClient(
     config: StompConfig(
-      url: 'ws://192.168.1.101:3000/ws',
-      // onConnect: onConnect(),
+      url: 'ws://192.168.1.102:3000/ws/websocket',
+      onConnect: onConnect,
+      // onDisconnect: onDisconnect,
       beforeConnect: () async {
         print('waiting to connect...');
         await Future.delayed(Duration(milliseconds: 200));
@@ -68,11 +50,20 @@ class ChatProvider extends ConnectService {
       },
       onWebSocketError: (dynamic error) => print(error.toString()),
       stompConnectHeaders: {
-        'Authorization': '${Storage.getToken()!.accessToken}'
+        'Authorization': 'Bearer ${Storage.getToken()!.accessToken}'
       },
       webSocketConnectHeaders: {
-        'Authorization': '${Storage.getToken()!.accessToken}'
+        'Authorization': 'Bearer ${Storage.getToken()!.accessToken}'
       },
     ),
   );
+
+  dynamic onDisconnect(StompFrame frame) {
+    print("--onDisconnect---");
+  }
+
+  dynamic onStompError(StompFrame frame) {
+    print("--onStompError---");
+    // print(json.decode(frame.body));
+  }
 }

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
@@ -8,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:valo_chat_app/app/data/models/message.dart';
 import 'package:valo_chat_app/app/data/models/user.dart';
 import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
+import 'package:valo_chat_app/app/utils/stomp_service.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
 class ChatController extends GetxController {
@@ -45,9 +47,18 @@ class ChatController extends GetxController {
   // Socketchannel
   @override
   void onInit() {
-    // provider.connectChannel();
-    provider.stompClient.activate();
     super.onInit();
+    // provider.stompClient.activate();
+    StompService().startStomp();
+    // provider.connectChannel();
+    print('socket client running');
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    super.onClose();
+    // provider.channel.sink.close();
   }
 
   /*------------------------*/
@@ -193,7 +204,18 @@ class ChatController extends GetxController {
   // }
 
   void sendMessage() {
-    // provider.channel.sink.add('${textController.text}');
+    if (textController.text.isNotEmpty) {
+      StompService.stompClient.send(
+          destination: "/app/chat",
+          body: json.encode({
+            "replyId": Storage.getUser()!.id,
+            "conversationId": "fsdfsdf",
+            "messageType": "TEXT",
+            "content": '${textController.text}'
+          }));
+      // provider.channel.sink.add(textController.text);
+      // textController.
+    }
     // if (textController.text.isNotEmpty) {
     //   // TODO(ff3105): need to optimize
     //   if (listTagged.isNotEmpty) {

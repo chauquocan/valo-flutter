@@ -17,7 +17,6 @@ class ContactsList extends StatelessWidget {
         itemCount: contacts.length,
         itemBuilder: (context, index) {
           ContactModel contact = contacts[index];
-
           return ListTile(
               onTap: () {},
               title: Text(contact.name.toString()),

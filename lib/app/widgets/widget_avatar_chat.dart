@@ -19,11 +19,7 @@ class WidgetAvatarChat extends StatelessWidget {
     if (!isGroup) {
       final user =
           members.firstWhere((element) => element.id != Storage.getUser()?.id);
-      return WidgetAvatar(
-          url: //user.imgUrl
-
-              "assets/icons/logo.svg",
-          size: size);
+      return WidgetAvatar(url: "assets/icons/logo.svg", size: size);
     }
     if (members.length <= 2) {
       return Container(

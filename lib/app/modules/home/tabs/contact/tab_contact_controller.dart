@@ -3,33 +3,33 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:valo_chat_app/app/data/models/contact.dart';
 import 'package:contacts_service/contacts_service.dart';
-import 'package:valo_chat_app/app/data/models/contact_app.dart';
 
 class TabContactController extends GetxController {
-  final contacts = <ContactModel>[].obs;
-  final contactsFiltered = <ContactModel>[].obs;
-  final contactsLoaded = false.obs;
+  //all contact list
+  RxList<ContactModel> contacts = <ContactModel>[].obs;
+  //fitlered contact list
+  RxList<ContactModel> contactsFiltered = <ContactModel>[].obs;
 
-  late final isSearching = searchController.text.isNotEmpty.obs;
-  late final listItemsExist =
-      ((isSearching == true && contactsFiltered.value.length > 0) ||
-              (isSearching != true && contacts.value.length > 0))
-          .obs;
-  final searchController = TextEditingController();
+  TextEditingController searchController = TextEditingController();
+
+  RxBool contactsLoaded = false.obs;
+
+  final isSearch = false.obs;
+
+  functionPass() {
+    isSearch(!isSearch.value);
+  }
 
   @override
   void onInit() {
-    getPermissions();
     super.onInit();
+    getPermissions();
   }
 
-  Future getPermissions() async {
+  getPermissions() async {
     if (await Permission.contacts.request().isGranted) {
       getAllContacts();
-      // searchController.addListener(() {
-      //   filterContacts();
-      // },
-      // );
+      searchController.addListener(() => filterContacts());
     }
   }
 
@@ -40,19 +40,20 @@ class TabContactController extends GetxController {
   }
 
 // lay contact tu dt
-  Future getAllContacts() async {
+  getAllContacts() async {
     List<ContactModel> _contacts =
         (await ContactsService.getContacts()).map((contact) {
       return ContactModel(
           name: contact.displayName, phone: contact.phones!.elementAt(0).value);
     }).toList();
     contacts.value = _contacts;
+    // contacts.assignAll(_contacts);
     contactsLoaded.value = true;
   }
 
-  filterContacts() {
+  filterContacts() async {
     List<ContactModel> contactSearch = [];
-    contactSearch.addAll(contacts.value);
+    contactSearch.addAll(contacts);
     if (searchController.text.isNotEmpty) {
       contactSearch.retainWhere((_contact) {
         String searchTerm = searchController.text.toLowerCase();
@@ -72,15 +73,7 @@ class TabContactController extends GetxController {
       });
     }
     contactsFiltered.value = contactSearch;
-  }
-
-  @override
-  void onReady() {
-    // TODO: implement onReady
-    searchController.addListener(() {
-      filterContacts();
-    });
-    super.onReady();
+    // contactsFiltered.assignAll(contactSearch);
   }
 
   @override

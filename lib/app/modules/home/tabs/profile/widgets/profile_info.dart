@@ -68,7 +68,7 @@ class ProfileInforWidget extends StatelessWidget {
           },
         ),
         title: Text(
-          '${Storage.getUser()!.name}',
+          '${Storage.getUser()?.name}',
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         subtitle: Row(
