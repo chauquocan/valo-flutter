@@ -11,7 +11,12 @@ class FriendRequest extends GetView<AddFriendController> {
     return GetX<AddFriendController>(
       builder: (controller) {
         return Scaffold(
+          // floatingActionButton: FloatingActionButton(
+          //   // onPressed: () =>Get.toNamed('/'),
+          //   child: Icon(Icons.arrow_back),
+          // ),
           appBar: AppBar(
+            // leading: Text('Lời mời kết bạn'),
             title: Text('Lời mời kết bạn'),
           ),
           body: SafeArea(

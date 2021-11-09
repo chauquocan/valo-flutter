@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:valo_chat_app/app/data/models/contact.dart';
-import 'package:valo_chat_app/app/data/models/user.dart';
+import 'package:valo_chat_app/app/data/models/contact_model.dart';
+import 'package:valo_chat_app/app/data/models/user_model.dart';
+import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
 import 'package:valo_chat_app/app/data/providers/friend_provider.dart';
 import 'package:valo_chat_app/app/data/providers/user_provider.dart';
+import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
 class AddFriendController extends GetxController {
+  TabConversationController chatController = Get.find();
   //User service
   final UserProvider userProvider;
   final FriendProvider friendProvider;
@@ -17,11 +20,13 @@ class AddFriendController extends GetxController {
   var searchController = TextEditingController();
 
   List<ProfileResponse> searchResults = [];
-  final friendReqList = <Content>[].obs;
+  final friendReqList = <FriendContent>[].obs;
   final userIdList = <ProfileResponse>[].obs;
 
   //loading
   final isLoading = false.obs;
+  //isSent
+  final isSent = false.obs;
 
   @override
   void onInit() {
@@ -34,6 +39,7 @@ class AddFriendController extends GetxController {
     final response = await friendProvider.SendFriendRequest(
         Storage.getToken()!.accessToken, toId);
     if (response.ok) {
+      isSent.value = true;
       Get.snackbar('Success', 'Request sent');
     } else {
       Get.snackbar('Fail', 'Something wrong');
@@ -55,6 +61,7 @@ class AddFriendController extends GetxController {
     } else {
       print('loi khi lay loi moi ket ban');
     }
+    update();
   }
 
   //Chấp nhận lời mời
@@ -63,6 +70,7 @@ class AddFriendController extends GetxController {
         Storage.getToken()!.accessToken, id);
     if (response.ok) {
       Get.snackbar('Thanh cong', '${response.data}');
+      chatController.onReady();
       friendReqList.value.clear();
     } else {
       Get.snackbar('That bai', '${response.data}');

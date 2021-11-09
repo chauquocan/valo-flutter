@@ -1,4 +1,3 @@
-import 'package:valo_chat_app/app/data/models/message.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
 class GroupChatProvider {

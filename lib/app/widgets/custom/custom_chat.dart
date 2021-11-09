@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:valo_chat_app/app/data/models/conversation.dart';
+import 'package:valo_chat_app/app/data/models/conversation_model.dart';
 import 'package:valo_chat_app/app/modules/chat/chat.dart';
 import 'package:get/get.dart';
 
@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 class CustomChatCard extends StatelessWidget {
   const CustomChatCard({Key? key, required this.chat}) : super(key: key);
   final ConversationModel chat;
-  
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -43,7 +43,7 @@ class CustomChatCard extends StatelessWidget {
             trailing: Text(chat.time),
             subtitle: Row(
               children: [
-                Icon(Icons.done_all),
+                // Icon(Icons.done_all),
                 const SizedBox(
                   width: 3,
                 ),

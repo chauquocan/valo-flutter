@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'user.dart';
+import 'user_model.dart';
 
 //Register response mess
 class ResponseMessage {

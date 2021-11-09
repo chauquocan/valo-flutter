@@ -30,7 +30,7 @@ class FriendPage {
     required this.numberOfElements,
     required this.empty,
   });
-  late final List<Content> content;
+  late final List<FriendContent> content;
   late final Pageable pageable;
   late final bool last;
   late final int totalPages;
@@ -43,8 +43,9 @@ class FriendPage {
   late final bool empty;
 
   FriendPage.fromJson(Map<String, dynamic> json) {
-    content =
-        List.from(json['content']).map((e) => Content.fromJson(e)).toList();
+    content = List.from(json['content'])
+        .map((e) => FriendContent.fromJson(e))
+        .toList();
     pageable = Pageable.fromJson(json['pageable']);
     last = json['last'];
     totalPages = json['totalPages'];
@@ -74,14 +75,8 @@ class FriendPage {
   }
 }
 
-List<Content> profileResponseFromJson(String str) =>
-    List<Content>.from(json.decode(str).map((x) => Content.fromJson(x)));
-
-String profileResponseToJson(List<Content> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
-class Content {
-  Content({
+class FriendContent {
+  FriendContent({
     required this.id,
     required this.fromId,
     required this.toId,
@@ -92,7 +87,7 @@ class Content {
   late final String toId;
   late final String sendAt;
 
-  Content.fromJson(Map<String, dynamic> json) {
+  FriendContent.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     fromId = json['fromId'];
     toId = json['toId'];

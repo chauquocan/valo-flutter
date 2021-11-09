@@ -18,6 +18,7 @@ class ConversationModel {
     this.id,
   });
 }
+
 class ConversationsPage {
   ConversationsPage({
     required this.content,
@@ -32,7 +33,7 @@ class ConversationsPage {
     required this.numberOfElements,
     required this.empty,
   });
-  late final List<Content> content;
+  late final List<ConversationContent> content;
   late final Pageable pageable;
   late final bool last;
   late final int totalElements;
@@ -43,9 +44,11 @@ class ConversationsPage {
   late final bool first;
   late final int numberOfElements;
   late final bool empty;
-  
-  ConversationsPage.fromJson(Map<String, dynamic> json){
-    content = List.from(json['content']).map((e)=>Content.fromJson(e)).toList();
+
+  ConversationsPage.fromJson(Map<String, dynamic> json) {
+    content = List.from(json['content'])
+        .map((e) => ConversationContent.fromJson(e))
+        .toList();
     pageable = Pageable.fromJson(json['pageable']);
     last = json['last'];
     totalElements = json['totalElements'];
@@ -60,7 +63,7 @@ class ConversationsPage {
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
-    _data['content'] = content.map((e)=>e.toJson()).toList();
+    _data['content'] = content.map((e) => e.toJson()).toList();
     _data['pageable'] = pageable.toJson();
     _data['last'] = last;
     _data['totalElements'] = totalElements;
@@ -75,8 +78,8 @@ class ConversationsPage {
   }
 }
 
-class Content {
-  Content({
+class ConversationContent {
+  ConversationContent({
     required this.id,
     required this.createAt,
     required this.conversationType,
@@ -86,12 +89,14 @@ class Content {
   late final String createAt;
   late final String conversationType;
   late final List<Participants> participants;
-  
-  Content.fromJson(Map<String, dynamic> json){
+
+  ConversationContent.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     createAt = json['createAt'];
     conversationType = json['conversationType'];
-    participants = List.from(json['participants']).map((e)=>Participants.fromJson(e)).toList();
+    participants = List.from(json['participants'])
+        .map((e) => Participants.fromJson(e))
+        .toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -99,7 +104,7 @@ class Content {
     _data['id'] = id;
     _data['createAt'] = createAt;
     _data['conversationType'] = conversationType;
-    _data['participants'] = participants.map((e)=>e.toJson()).toList();
+    _data['participants'] = participants.map((e) => e.toJson()).toList();
     return _data;
   }
 }
@@ -111,8 +116,8 @@ class Participants {
   });
   late final String userId;
   late final bool admin;
-  
-  Participants.fromJson(Map<String, dynamic> json){
+
+  Participants.fromJson(Map<String, dynamic> json) {
     userId = json['userId'];
     admin = json['admin'];
   }
@@ -140,8 +145,8 @@ class Pageable {
   late final int pageNumber;
   late final bool unpaged;
   late final bool paged;
-  
-  Pageable.fromJson(Map<String, dynamic> json){
+
+  Pageable.fromJson(Map<String, dynamic> json) {
     sort = Sort.fromJson(json['sort']);
     offset = json['offset'];
     pageSize = json['pageSize'];
@@ -171,8 +176,8 @@ class Sort {
   late final bool empty;
   late final bool sorted;
   late final bool unsorted;
-  
-  Sort.fromJson(Map<String, dynamic> json){
+
+  Sort.fromJson(Map<String, dynamic> json) {
     empty = json['empty'];
     sorted = json['sorted'];
     unsorted = json['unsorted'];

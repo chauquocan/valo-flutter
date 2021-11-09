@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:valo_chat_app/app/data/models/conversation.dart';
+import 'package:valo_chat_app/app/data/models/conversation_model.dart';
 import 'package:valo_chat_app/app/data/providers/user_provider.dart';
 import 'package:valo_chat_app/app/modules/chat/widgets/own_message.dart';
 import 'package:valo_chat_app/app/modules/chat/widgets/reply_message.dart';
@@ -37,48 +37,7 @@ class ChatScreen extends GetView<ChatController> {
             child: Stack(
               children: [
                 ListView(
-                  children: [
-                    OwnMessage(
-                      message: "mesageadsada",
-                      time: "12:0",
-                    ),
-                    ReplyMessage(
-                      message: "okeee",
-                      time: "12:0",
-                    ),
-                    OwnMessage(
-                      message: "mesageadsada",
-                      time: "12:0",
-                    ),
-                    ReplyMessage(
-                      message: "okeee",
-                      time: "12:0",
-                    ),
-                    OwnMessage(
-                      message: "mesageadsada",
-                      time: "12:0",
-                    ),
-                    ReplyMessage(
-                      message: "okeee",
-                      time: "12:0",
-                    ),
-                    OwnMessage(
-                      message: "mesageadsada",
-                      time: "12:0",
-                    ),
-                    ReplyMessage(
-                      message: "okeee",
-                      time: "12:0",
-                    ),
-                    OwnMessage(
-                      message: "mesageadsada",
-                      time: "12:0",
-                    ),
-                    ReplyMessage(
-                      message: "okeee",
-                      time: "12:0",
-                    ),
-                  ],
+                  children: [],
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,

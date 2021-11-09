@@ -6,10 +6,8 @@ import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
 import 'package:valo_chat_app/app/data/connect_service.dart';
-import 'package:valo_chat_app/app/data/models/conversation.dart';
+import 'package:valo_chat_app/app/data/models/conversation_model.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
-import 'package:web_socket_channel/io.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 
 class ChatProvider extends ConnectService {
   static const String userURL = 'users/';
@@ -68,14 +66,14 @@ class ChatProvider extends ConnectService {
   }
 
   //Get conversation
-  Future<List<Content>> GetConversations(String accessToken) async {
+  Future<List<ConversationContent>> GetConversations(String accessToken) async {
     try {
       final response = await get(
         '${conversationURL}',
         options: Options(headers: {'Authorization': 'Bearer ${accessToken}'}),
       );
       return (response.data['content'] as List)
-          .map((e) => Content.fromJson(e))
+          .map((e) => ConversationContent.fromJson(e))
           .toList();
     } on DioError catch (e, s) {
       throw Exception("$e///////////$s");

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:valo_chat_app/app/data/models/contact.dart';
+import 'package:valo_chat_app/app/data/models/contact_model.dart';
 
 //Custom contact card in contact tab
 class CustomContact extends StatelessWidget {

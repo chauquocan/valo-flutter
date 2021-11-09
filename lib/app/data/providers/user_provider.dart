@@ -1,11 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:valo_chat_app/app/data/models/contact.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
 import '../connect_service.dart';
 import '../models/network_response.dart';
-import '../models/register.dart';
-import '../models/user.dart';
+import '../models/register_model.dart';
+import '../models/user_model.dart';
 
 class UserProvider extends ConnectService {
   //end point
@@ -123,7 +122,7 @@ class UserProvider extends ConnectService {
   Future<NetworkResponse<ProfileResponse>> updateUserInfo(Map map) async {
     try {
       final response = await patch(
-        userURL + _userId!,
+        '${userURL}/update',
         data: map,
         options: Options(
           headers: <String, String>{'Authorization': 'Bearer $_token'},

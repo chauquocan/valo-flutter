@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import 'package:valo_chat_app/app/data/models/contact.dart';
-import 'package:valo_chat_app/app/data/models/user.dart';
+import 'package:valo_chat_app/app/data/models/contact_model.dart';
+import 'package:valo_chat_app/app/data/models/user_model.dart';
 import 'package:valo_chat_app/app/data/providers/friend_provider.dart';
 import 'package:valo_chat_app/app/data/providers/user_provider.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';

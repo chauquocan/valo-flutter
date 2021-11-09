@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:valo_chat_app/app/data/models/message.dart';
+import 'package:valo_chat_app/app/data/models/message_model.dart';
 
 class Group {
   final String uid;

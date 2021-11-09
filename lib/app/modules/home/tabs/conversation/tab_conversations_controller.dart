@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-import 'package:valo_chat_app/app/data/models/conversation.dart';
-import 'package:valo_chat_app/app/data/models/user.dart';
+import 'package:valo_chat_app/app/data/models/conversation_model.dart';
+import 'package:valo_chat_app/app/data/models/user_model.dart';
 import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
 import 'package:valo_chat_app/app/data/providers/user_provider.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
@@ -15,16 +15,22 @@ class TabConversationController extends GetxController {
     required this.userProvider,
   });
 
-  final isLoading = false.obs;
-  final contentList = <Content>[].obs;
+  final isLoading = true.obs;
+  final contentList = <ConversationContent>[].obs;
   final conversations = <ConversationModel>[].obs;
   final userList = <ProfileResponse>[].obs;
-  // final userChat = ProfileResponse().obs;
+
   @override
   void onInit() {
     getConversations();
     super.onInit();
   }
+
+  // @override
+  // void onReady() {
+  //   getConversations();
+  //   super.onInit();
+  // }
 
   Future getConversations() async {
     conversations.value.clear();
@@ -46,7 +52,6 @@ class TabConversationController extends GetxController {
                 isGroup: false,
                 time: '',
                 currentMessage: ''));
-            ;
           }
         }
       }
@@ -54,6 +59,7 @@ class TabConversationController extends GetxController {
       isLoading.value = false;
       update();
     } else {
+      print('loi khi lay danh sach');
       isLoading.value = true;
     }
   }

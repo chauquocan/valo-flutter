@@ -1,8 +1,7 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:valo_chat_app/app/data/models/contact.dart';
-import 'package:valo_chat_app/app/data/models/contact_app.dart';
+import 'package:valo_chat_app/app/data/models/contact_model.dart';
 
 class ContactsList extends StatelessWidget {
   final List<ContactModel> contacts;

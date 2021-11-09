@@ -12,11 +12,11 @@ class ConversationTab extends GetView<TabConversationController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: AppColors.primary,
-        child: Icon(Icons.add),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {},
+      //   backgroundColor: AppColors.primary,
+      //   child: Icon(Icons.add),
+      // ),
       appBar: AppBar(
         title: Text(
           'chat'.tr,
@@ -57,14 +57,20 @@ class ConversationTab extends GetView<TabConversationController> {
           })
         ],
       ),
-      body: Obx(() => controller.isLoading.value
-          ? Center(child: Text('No coversation yet'))
-          : ListView.builder(
-              itemBuilder: (context, index) => CustomChatCard(
-                chat: controller.conversations[index],
-              ),
-              itemCount: controller.conversations.length,
-            )),
+      body: SafeArea(
+        child: Obx(() => controller.isLoading.value
+            ? Center(
+                child: Text(
+                'No conversation yet',
+                style: TextStyle(color: AppColors.dark, fontSize: 18),
+              ))
+            : ListView.builder(
+                itemBuilder: (context, index) => CustomChatCard(
+                  chat: controller.conversations[index],
+                ),
+                itemCount: controller.conversations.length,
+              )),
+      ),
     );
   }
 }
