@@ -10,6 +10,7 @@ class HomeBinding implements Bindings {
     Get.lazyPut(() => TabProfileController(provider: UserProvider()));
     Get.lazyPut(() => TabContactController(
         friendProvider: FriendProvider(), userProvider: UserProvider()));
-    Get.lazyPut(() => TabConversationController());
+    Get.lazyPut(() => TabConversationController(
+        chatProvider: ChatProvider(), userProvider: UserProvider()));
   }
 }

@@ -12,56 +12,59 @@ class ConversationTab extends GetView<TabConversationController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          backgroundColor: AppColors.primary,
-          child: Icon(Icons.add),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: AppColors.primary,
+        child: Icon(Icons.add),
+      ),
+      appBar: AppBar(
+        title: Text(
+          'chat'.tr,
+          style: TextStyle(color: AppColors.light),
         ),
-        appBar: AppBar(
-          title: Text(
-            'chat'.tr,
-            style: TextStyle(color: AppColors.light),
-          ),
-          backgroundColor: Colors.lightBlue,
-          actions: [
-            IconButton(
-                onPressed: () => Get.toNamed('/newfriend'),
-                icon: Icon(Icons.search)),
-            PopupMenuButton<String>(onSelected: (value) {
-              switch (value) {
-                case ("newgroup"):
-                  Get.toNamed('/creategroup');
-                  break;
-                case ("newfriend"):
-                  Get.toNamed('/newfriend');
-                  break;
-                case ("friendrequest"):
-                  Get.toNamed('/friendrequest');
-                  break;
-              }
-            }, itemBuilder: (BuildContext context) {
-              return [
-                PopupMenuItem(
-                  child: Text("New friend"),
-                  value: "newfriend",
-                ),
-                PopupMenuItem(
-                  child: Text("New group"),
-                  value: "newgroup",
-                ),
-                PopupMenuItem(
-                  child: Text("Friend Request"),
-                  value: "friendrequest",
-                ),
-              ];
-            })
-          ],
-        ),
-        body: ListView.builder(
-          itemBuilder: (context, index) => CustomChatCard(
-            chat: controller.conversations[index],
-          ),
-          itemCount: controller.conversations.length,
-        ));
+        backgroundColor: Colors.lightBlue,
+        actions: [
+          IconButton(
+              onPressed: () => Get.toNamed('/newfriend'),
+              icon: Icon(Icons.search)),
+          PopupMenuButton<String>(onSelected: (value) {
+            switch (value) {
+              case ("newgroup"):
+                Get.toNamed('/creategroup');
+                break;
+              case ("newfriend"):
+                Get.toNamed('/newfriend');
+                break;
+              case ("friendrequest"):
+                Get.toNamed('/friendrequest');
+                break;
+            }
+          }, itemBuilder: (BuildContext context) {
+            return [
+              PopupMenuItem(
+                child: Text("New friend"),
+                value: "newfriend",
+              ),
+              PopupMenuItem(
+                child: Text("New group"),
+                value: "newgroup",
+              ),
+              PopupMenuItem(
+                child: Text("Friend Request"),
+                value: "friendrequest",
+              ),
+            ];
+          })
+        ],
+      ),
+      body: Obx(() => controller.isLoading.value
+          ? Center(child: Text('No coversation yet'))
+          : ListView.builder(
+              itemBuilder: (context, index) => CustomChatCard(
+                chat: controller.conversations[index],
+              ),
+              itemCount: controller.conversations.length,
+            )),
+    );
   }
 }

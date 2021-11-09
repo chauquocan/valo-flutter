@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 class CustomChatCard extends StatelessWidget {
   const CustomChatCard({Key? key, required this.chat}) : super(key: key);
   final ConversationModel chat;
+  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,14 +26,15 @@ class CustomChatCard extends StatelessWidget {
             leading: CircleAvatar(
               backgroundColor: Colors.blueGrey,
               radius: 30,
-              child: SvgPicture.asset(
-                chat.isGroup
-                    ? 'assets/icons/group.svg'
-                    : 'assets/icons/${chat.icon}',
-                //color: AppColors.secondary,
-                height: 40,
-                width: 40,
-              ),
+              backgroundImage: NetworkImage('${chat.icon}'),
+              // child: SvgPicture.asset(
+              //   chat.isGroup
+              //       ? 'assets/icons/group.svg'
+              //       : 'assets/icons/${chat.icon}',
+              //   //color: AppColors.secondary,
+              //   height: 40,
+              //   width: 40,
+              // ),
             ),
             title: Text(
               chat.name,
