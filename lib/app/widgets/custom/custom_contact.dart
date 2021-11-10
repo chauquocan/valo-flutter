@@ -5,7 +5,7 @@ import 'package:valo_chat_app/app/data/models/contact_model.dart';
 //Custom contact card in contact tab
 class CustomContact extends StatelessWidget {
   const CustomContact({Key? key, required this.contact}) : super(key: key);
-  final ContactModel contact;
+  final ContactCustom contact;
   @override
   Widget build(BuildContext context) {
     return InkWell(

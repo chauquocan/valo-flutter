@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'user_model.dart';
 
-//Register response mess
+//response mess
 class ResponseMessage {
   ResponseMessage({
     required this.message,

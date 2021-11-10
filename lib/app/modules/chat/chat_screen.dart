@@ -16,7 +16,7 @@ import 'chat_controller.dart';
 
 class ChatScreen extends GetView<ChatController> {
   const ChatScreen({Key? key, required this.chatModel}) : super(key: key);
-  final ConversationModel chatModel;
+  final ConversationCustom chatModel;
 
   @override
   Widget build(BuildContext context) {

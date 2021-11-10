@@ -15,7 +15,7 @@ class HomeBinding implements Bindings {
     Get.put<TabProfileController>(
         TabProfileController(provider: UserProvider()));
     Get.put<TabContactController>(TabContactController(
-        friendProvider: FriendProvider(), userProvider: UserProvider()));
+        friendProvider: ContactProvider(), userProvider: UserProvider()));
     Get.put<TabConversationController>(TabConversationController(
         chatProvider: ChatProvider(), userProvider: UserProvider()));
   }

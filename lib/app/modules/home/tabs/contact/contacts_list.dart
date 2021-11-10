@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:valo_chat_app/app/data/models/contact_model.dart';
 
 class ContactsList extends StatelessWidget {
-  final List<ContactModel> contacts;
+  final List<ContactCustom> contacts;
   Function() reloadContacts;
   ContactsList({Key? key, required this.contacts, required this.reloadContacts})
       : super(key: key);
@@ -15,7 +15,7 @@ class ContactsList extends StatelessWidget {
         shrinkWrap: true,
         itemCount: contacts.length,
         itemBuilder: (context, index) {
-          ContactModel contact = contacts[index];
+          ContactCustom contact = contacts[index];
           return ListTile(
               onTap: () {},
               title: Text(contact.name.toString()),

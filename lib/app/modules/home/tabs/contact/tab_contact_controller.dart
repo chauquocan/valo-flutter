@@ -5,63 +5,79 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'package:valo_chat_app/app/data/models/contact_model.dart';
 import 'package:valo_chat_app/app/data/models/user_model.dart';
-import 'package:valo_chat_app/app/data/providers/friend_provider.dart';
+import 'package:valo_chat_app/app/data/providers/contact_provider.dart';
 import 'package:valo_chat_app/app/data/providers/user_provider.dart';
-import 'package:valo_chat_app/app/utils/store_service.dart';
 
 class TabContactController extends GetxController {
-  final FriendProvider friendProvider;
+  final ContactProvider friendProvider;
   final UserProvider userProvider;
+  final searchController = TextEditingController();
 
   TabContactController(
       {required this.friendProvider, required this.userProvider});
+
   //all contact list
-  RxList<ContactModel> contacts = <ContactModel>[].obs;
+  final _contacts = <ContactCustom>[].obs;
   //fitlered contact list
-  RxList<ContactModel> contactsFiltered = <ContactModel>[].obs;
+  final _contactsFiltered = <ContactCustom>[].obs;
 
-  TextEditingController searchController = TextEditingController();
-  final friendIdList = <ProfileResponse>[].obs;
+  final _contactsLoaded = false.obs;
+  final _isSearch = false.obs;
 
-  RxBool contactsLoaded = false.obs;
+  List<ContactCustom> get contacts => _contacts.value;
+  set contacts(value) {
+    _contacts.value = value;
+  }
 
-  final isSearch = false.obs;
+  List<ContactCustom> get contactsFiltered => _contactsFiltered.value;
+  void setContactsFiltered(value) {
+    _contactsFiltered.value = value;
+  }
 
-  functionPass() {
-    isSearch(!isSearch.value);
+  get contactsLoaded => _contactsLoaded.value;
+  SetContactsLoaded(value) {
+    _contactsLoaded.value = value;
+  }
+
+  get isSearch => _isSearch.value;
+  setIsSearch(value) {
+    _isSearch.value = value;
   }
 
   @override
   void onInit() {
-    // getAllContacts();
-    getContacts();
+    getContactsFromAPI();
     super.onInit();
   }
 
   //Lay friend tu api
-  Future getContacts() async {
-    List<ContactModel> _contact = [];
-    final response =
-        await friendProvider.GetFriends(Storage.getToken()!.accessToken);
-    if (response != null) {
-      for (var i = 0; i < response.length; i++) {
-        final user = await userProvider.getUserById(
-            '${response[i].friendId}', Storage.getToken()!.accessToken);
-        friendIdList.add(user.data!);
-        _contact.add(ContactModel(
+  Future getContactsFromAPI() async {
+    List<ContactCustom> _contactsTemp = [];
+    final response = await friendProvider.getFriends();
+    if (response.ok) {
+      for (var contact in response.data!.content) {
+        final user = await userProvider.getUserById(contact.friendId);
+        _contactsTemp.add(ContactCustom(
             id: user.data!.id, name: user.data!.name, phone: user.data!.phone));
       }
-      contacts.value.addAll(_contact);
-      contactsLoaded.value = true;
+      _contacts.value = _contactsTemp;
+      _contactsLoaded.value = true;
+      getContactsFromPhone();
       update();
     } else {
       print('loi khi lay danh sach ban');
     }
   }
 
+  //get contactInfo
+  Future<ProfileResponse?> getContact(String id) async {
+    final user = await userProvider.getUserById(id);
+    return user.data;
+  }
+
   getPermissions() async {
     if (await Permission.contacts.request().isGranted) {
-      getAllContacts();
+      getContactsFromPhone();
       searchController.addListener(() => filterContacts());
     }
   }
@@ -73,20 +89,20 @@ class TabContactController extends GetxController {
   }
 
 // lay contact tu dt
-  getAllContacts() async {
-    List<ContactModel> _contacts =
+  getContactsFromPhone() async {
+    List<ContactCustom> _contactsTemp =
         (await ContactsService.getContacts()).map((contact) {
-      return ContactModel(
+      return ContactCustom(
           name: contact.displayName, phone: contact.phones!.elementAt(0).value);
     }).toList();
-    contacts.value.addAll(_contacts);
-    contactsLoaded.value = true;
+    _contacts.value.addAll(_contactsTemp);
+    _contactsLoaded.value = true;
     update();
   }
 
   filterContacts() async {
-    List<ContactModel> contactSearch = [];
-    contactSearch.addAll(contacts);
+    List<ContactCustom> contactSearch = [];
+    contactSearch.addAll(_contacts);
     if (searchController.text.isNotEmpty) {
       contactSearch.retainWhere((_contact) {
         String searchTerm = searchController.text.toLowerCase();
@@ -105,13 +121,13 @@ class TabContactController extends GetxController {
         return phnFlattened.contains(searchTermFlatten);
       });
     }
-    contactsFiltered.value.addAll(contactSearch);
+    _contactsFiltered.value = contactSearch;
     update();
   }
 
   @override
   void onClose() {
-    // TODO: implement onClose
+    searchController.clear();
     super.onClose();
   }
 }

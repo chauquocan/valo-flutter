@@ -16,8 +16,9 @@ class TabConversationController extends GetxController {
   });
 
   final isLoading = true.obs;
-  final contentList = <ConversationContent>[].obs;
-  final conversations = <ConversationModel>[].obs;
+  final conversationsLoaded = false.obs;
+  final contentList = <Conversation>[].obs;
+  final conversations = <ConversationCustom>[].obs;
   final userList = <ProfileResponse>[].obs;
 
   @override
@@ -25,39 +26,36 @@ class TabConversationController extends GetxController {
     getConversations();
     super.onInit();
   }
-
-  // @override
-  // void onReady() {
-  //   getConversations();
-  //   super.onInit();
-  // }
-
+  
   Future getConversations() async {
     conversations.value.clear();
-    List<ConversationModel> _conversations = [];
+    List<ConversationCustom> _conversations = [];
     String currentUserId = Storage.getUser()!.id;
-    final response =
-        await chatProvider.GetConversations(Storage.getToken()!.accessToken);
-    if (response != null) {
-      for (var i = 0; i < response.length; i++) {
-        List<Participants> participants = response[i].participants;
-        for (var j = 0; j < participants.length; j++) {
-          String userId = participants[j].userId;
+    final response = await chatProvider.GetConversations();
+    print(response.data);
+    if (response.ok) {
+      for (var conversation in response.data!.content) {
+        List<Participants> participants = conversation.participants;
+        for (var participant in participants) {
+          String userId = participant.userId;
           if (currentUserId != userId) {
             final user = await userProvider.getUserById(
-                userId, Storage.getToken()!.accessToken);
-            _conversations.add(ConversationModel(
-                name: user.data!.name,
-                icon: user.data!.imgUrl,
-                isGroup: false,
-                time: '',
-                currentMessage: ''));
+                userId);
+            _conversations.add(
+              ConversationCustom(
+                  name: user.data!.name,
+                  icon: user.data!.imgUrl,
+                  isGroup: false,
+                  time: '',
+                  currentMessage: ''),
+            );
           }
         }
+        conversations.value = _conversations;
+        isLoading.value = false;
+        conversationsLoaded.value = true;
+        update();
       }
-      conversations.value.addAll(_conversations);
-      isLoading.value = false;
-      update();
     } else {
       print('loi khi lay danh sach');
       isLoading.value = true;

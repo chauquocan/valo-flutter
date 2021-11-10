@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 //Custom card in conversation tab
 class CustomChatCard extends StatelessWidget {
   const CustomChatCard({Key? key, required this.chat}) : super(key: key);
-  final ConversationModel chat;
+  final ConversationCustom chat;
 
   @override
   Widget build(BuildContext context) {

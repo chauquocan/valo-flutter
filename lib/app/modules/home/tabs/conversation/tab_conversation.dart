@@ -58,18 +58,26 @@ class ConversationTab extends GetView<TabConversationController> {
         ],
       ),
       body: SafeArea(
-        child: Obx(() => controller.isLoading.value
-            ? Center(
-                child: Text(
-                'No conversation yet',
-                style: TextStyle(color: AppColors.dark, fontSize: 18),
-              ))
-            : ListView.builder(
-                itemBuilder: (context, index) => CustomChatCard(
-                  chat: controller.conversations[index],
-                ),
-                itemCount: controller.conversations.length,
-              )),
+        child: Obx(
+          () => controller.isLoading.value
+              ? const Center(child: CircularProgressIndicator())
+              : controller.conversationsLoaded.value
+                  ? ListView.builder(
+                      itemBuilder: (context, index) => CustomChatCard(
+                        chat: controller.conversations[index],
+                      ),
+                      itemCount: controller.conversations.length,
+                    )
+                  : const Center(
+                      child: Text(
+                        'No conversation yet',
+                        style: TextStyle(
+                          color: AppColors.dark,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+        ),
       ),
     );
   }

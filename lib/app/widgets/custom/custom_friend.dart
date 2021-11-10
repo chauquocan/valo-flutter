@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:valo_chat_app/app/data/models/contact_model.dart';
+import 'package:valo_chat_app/app/data/models/friend_request.dart';
 import 'package:valo_chat_app/app/data/models/user_model.dart';
 import 'package:valo_chat_app/app/modules/chat/add_friend/add_friend_controller.dart';
 
 //Custom contact card in contact tab
 class CustomFriendReq extends StatelessWidget {
-  const CustomFriendReq({Key? key, required this.friendReq,required this.user}) : super(key: key);
-  final FriendContent friendReq;
+  const CustomFriendReq({Key? key, required this.friendReq, required this.user})
+      : super(key: key);
+  final FriendRequest friendReq;
   final ProfileResponse user;
   @override
   Widget build(BuildContext context) {

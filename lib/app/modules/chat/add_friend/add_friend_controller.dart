@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/data/models/contact_model.dart';
+import 'package:valo_chat_app/app/data/models/friend_request.dart';
 import 'package:valo_chat_app/app/data/models/user_model.dart';
 import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
-import 'package:valo_chat_app/app/data/providers/friend_provider.dart';
+import 'package:valo_chat_app/app/data/providers/contact_provider.dart';
+import 'package:valo_chat_app/app/data/providers/friend_request_provider.dart';
 import 'package:valo_chat_app/app/data/providers/user_provider.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
@@ -12,7 +14,7 @@ class AddFriendController extends GetxController {
   TabConversationController chatController = Get.find();
   //User service
   final UserProvider userProvider;
-  final FriendProvider friendProvider;
+  final FriendRequestProvider friendProvider;
 
   AddFriendController(
       {required this.userProvider, required this.friendProvider});
@@ -20,7 +22,7 @@ class AddFriendController extends GetxController {
   var searchController = TextEditingController();
 
   List<ProfileResponse> searchResults = [];
-  final friendReqList = <FriendContent>[].obs;
+  final friendReqList = <FriendRequest>[].obs;
   final userIdList = <ProfileResponse>[].obs;
 
   //loading
@@ -53,7 +55,7 @@ class AddFriendController extends GetxController {
     if (response != null) {
       for (var i = 0; i < response.length; i++) {
         final user = await userProvider.getUserById(
-            '${response[i].fromId}', Storage.getToken()!.accessToken);
+            '${response[i].fromId}');
         userIdList.add(user.data!);
       }
       friendReqList.addAll(response);
@@ -79,7 +81,7 @@ class AddFriendController extends GetxController {
 
   Future getUserById(String id) async {
     final response =
-        await userProvider.getUserById(id, Storage.getToken()!.accessToken);
+        await userProvider.getUserById(id);
     if (response.ok) {}
   }
 
@@ -92,19 +94,21 @@ class AddFriendController extends GetxController {
     );
     print('Search respone: ${searchResponse.toString()}');
     if (searchResponse.ok) {
-      isLoading.value = false;
       searchResults.clear();
-      searchResults.add(ProfileResponse(
-        id: searchResponse.data!.id,
-        name: searchResponse.data!.name,
-        gender: searchResponse.data!.gender,
-        dateOfBirth: searchResponse.data!.dateOfBirth,
-        phone: searchResponse.data!.phone,
-        email: searchResponse.data!.email,
-        address: searchResponse.data!.address,
-        imgUrl: searchResponse.data!.imgUrl,
-        status: searchResponse.data!.status,
-      ));
+      searchResults.add(
+        ProfileResponse(
+          id: searchResponse.data!.id,
+          name: searchResponse.data!.name,
+          gender: searchResponse.data!.gender,
+          dateOfBirth: searchResponse.data!.dateOfBirth,
+          phone: searchResponse.data!.phone,
+          email: searchResponse.data!.email,
+          address: searchResponse.data!.address,
+          imgUrl: searchResponse.data!.imgUrl,
+          status: searchResponse.data!.status,
+        ),
+      );
+      isLoading.value = false;
       print(searchResults.length);
     } else {
       Get.snackbar('Search failed', 'Something wrong');

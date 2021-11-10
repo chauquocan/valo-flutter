@@ -1,12 +1,5 @@
 import 'dart:convert';
 
-List<MessageModel> profileResponseFromJson(String str) =>
-    List<MessageModel>.from(
-        json.decode(str).map((x) => MessageModel.fromJson(x)));
-
-String profileResponseToJson(List<MessageModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
 class MessageModel {
   final String? id;
   final String type;

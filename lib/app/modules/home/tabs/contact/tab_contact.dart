@@ -47,39 +47,39 @@ class _ContactTabState extends State<ContactTab> {
                     controller: controller.searchController,
                     onChanged: (value) {
                       if (value.isNotEmpty) {
-                        controller.functionPass();
+                        controller.setIsSearch(true);
                       } else {
-                        controller.functionPass();
+                        controller.setIsSearch(false);
                       }
                     },
                     decoration: InputDecoration(
                         labelText: 'Search',
-                        border: new OutlineInputBorder(
-                            borderSide: new BorderSide(
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(
                                 color: Theme.of(context).primaryColor)),
                         prefixIcon: Icon(Icons.search,
                             color: Theme.of(context).primaryColor)),
                   ),
                 ),
-                Obx(() => controller.contactsLoaded.value
+                Obx(() => controller.contactsLoaded
                     ? // if the contacts have not been loaded yet
                     ((controller.searchController.text.isNotEmpty &&
-                                controller.contactsFiltered.value.length > 0) ||
-                            (!controller.searchController.text.isNotEmpty &&
-                                controller.contacts.value.length > 0))
+                                controller.contactsFiltered.length > 0) ||
+                            (controller.searchController.text.isEmpty &&
+                                controller.contacts.length > 0))
                         ? // if we have contacts to show
                         ContactsList(
                             reloadContacts: () {
-                              controller.getAllContacts();
+                              controller.getContactsFromPhone();
                             },
-                            contacts: controller.isSearch.value
-                                ? controller.contactsFiltered.value
-                                : controller.contacts.value,
+                            contacts: controller.isSearch
+                                ? controller.contactsFiltered
+                                : controller.contacts,
                           )
                         : Container(
                             padding: EdgeInsets.only(top: 40),
                             child: Text(
-                              controller.isSearch.value
+                              controller.isSearch
                                   ? 'No search results to show'
                                   : 'No contacts exist',
                               style:

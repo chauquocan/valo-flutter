@@ -1,38 +1,17 @@
 import 'package:dio/dio.dart';
 import 'package:valo_chat_app/app/data/connect_service.dart';
-import 'package:valo_chat_app/app/data/models/contact_model.dart';
+import 'package:valo_chat_app/app/data/models/friend_request.dart';
 import 'package:valo_chat_app/app/data/models/network_response.dart';
-import 'package:valo_chat_app/app/data/models/register_model.dart';
-import 'package:valo_chat_app/app/utils/store_service.dart';
+import 'package:valo_chat_app/app/data/models/response_message_model.dart';
 
-class FriendProvider extends ConnectService {
-  //end point
+class FriendRequestProvider extends ConnectService{
   static const String getFriendRequestUrl = '/friend-request';
   static const String sendfriendRequestUrl = '/friend-request/to/';
   static const String accpectFriendRequestUrl = '/friend-request';
-  static const String getFriendsUrl = '/friends';
-
-  //curent userId
-  final _userId = Storage.getUser()?.id;
-
-  //Get frineds
-  Future<List<FriendModel>> GetFriends(String accessToken) async {
-    try {
-      final response = await get(
-        '${getFriendsUrl}',
-        options: Options(headers: {'Authorization': 'Bearer ${accessToken}'}),
-      );
-      return (response.data['content'] as List)
-          .map((e) => FriendModel.fromJson(e))
-          .toList();
-    } on DioError catch (e, s) {
-      throw Exception("$e///////////$s");
-    }
-  }
 
   //Get friend request
   // Future<NetworkResponse<List<Content>>> GetFriendRequests(
-  Future<List<FriendContent>> GetFriendRequests(String accessToken) async {
+  Future<List<FriendRequest>> GetFriendRequests(String accessToken) async {
     try {
       final response = await get(
         '$getFriendRequestUrl',
@@ -41,7 +20,7 @@ class FriendProvider extends ConnectService {
       // return NetworkResponse.fromResponse(
       //     response,
       return (response.data['content'] as List)
-          .map((e) => FriendContent.fromJson(e))
+          .map((e) => FriendRequest.fromJson(e))
           .toList();
       // );
     } on DioError catch (e, s) {

@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/chat/add_friend/add_friend_controller.dart';
 import 'package:valo_chat_app/app/widgets/custom/custom_friend.dart';
 
-class FriendRequest extends GetView<AddFriendController> {
+class FriendRequestScreen extends GetView<AddFriendController> {
   // AddFriendController controller = Get.find();
-  FriendRequest({Key? key}) : super(key: key);
+  FriendRequestScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return GetX<AddFriendController>(

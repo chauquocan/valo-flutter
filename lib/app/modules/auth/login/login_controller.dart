@@ -3,6 +3,7 @@ part of 'login.dart';
 //Controller for login view
 class LoginController extends GetxController {
   LoginController({required this.userProvider});
+  
   //User service
   final UserProvider userProvider;
 
@@ -52,25 +53,27 @@ class LoginController extends GetxController {
         //save Token
         await Storage.saveToken(response.data!);
         // dio get user
-        final userResponse = await userProvider.getUserByPhone(
-            response.data!.username, response.data!.accessToken);
-        //
+        String phoneNumber = Storage.getToken()!.username;
+        String token = Storage.getToken()!.accessToken;
+        final userResponse =
+            await userProvider.getUserByPhone(phoneNumber, token);
         print('User respone: ${userResponse.toString()}');
         //ok
         if (userResponse.ok) {
-          _isLoading.value = false;
           //save user
           await Storage.saveUser(userResponse.data!);
           //direct
           Get.offAllNamed('/home');
         } else {
-          Get.back();
+          Get.snackbar('Error', 'Get user information failed');
         }
+        _isLoading.value = false;
       } else {
         //exception http
         _isLoading.value = false;
         if (response.code == HttpStatus.forbidden) {
-          showInfoDialog('Login fail', 'Phone number or password incorrect');
+          Get.snackbar('Login failed', 'Phone number or password incorrect');
+          // showInfoDialog('Login fail', 'Phone number or password incorrect');
         } else if (response.code == HttpStatus.unauthorized) {
           showInfoDialog('Login failed', 'User not found, please register');
         } else {

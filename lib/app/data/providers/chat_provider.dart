@@ -1,23 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
 import 'package:valo_chat_app/app/data/connect_service.dart';
 import 'package:valo_chat_app/app/data/models/conversation_model.dart';
+import 'package:valo_chat_app/app/data/models/network_response.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
 class ChatProvider extends ConnectService {
   static const String userURL = 'users/';
   static const String messageURL = 'messages/';
-  static const String conversationURL = 'conversations/';
-
-  // Stream<List<MessageModel>> getMessages(
-  //     String id, String accessToken)  {
-
-  // }
+  static const String conversationURL = 'conversations';
 
   void onConnect(StompFrame frame) {
     stompClient.subscribe(
@@ -65,18 +60,24 @@ class ChatProvider extends ConnectService {
     // print(json.decode(frame.body));
   }
 
-  //Get conversation
-  Future<List<ConversationContent>> GetConversations(String accessToken) async {
+  //Get conversations
+  Future<NetworkResponse<ConversationPage>> GetConversations() async {
     try {
       final response = await get(
-        '${conversationURL}',
-        options: Options(headers: {'Authorization': 'Bearer ${accessToken}'}),
+        conversationURL,
+        options: Options(headers: {
+          'Authorization': 'Bearer ${Storage.getToken()!.accessToken}',
+        }),
       );
-      return (response.data['content'] as List)
-          .map((e) => ConversationContent.fromJson(e))
-          .toList();
+      print(response);
+      return NetworkResponse.fromResponse(
+        response,
+        (json) => ConversationPage.fromJson(json),
+      );
     } on DioError catch (e, s) {
-      throw Exception("$e///////////$s");
+      print(e.error);
+      print(e.response?.data);
+      return NetworkResponse.withError(e.response);
     }
   }
 }

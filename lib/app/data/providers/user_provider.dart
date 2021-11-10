@@ -3,7 +3,7 @@ import 'package:valo_chat_app/app/utils/store_service.dart';
 
 import '../connect_service.dart';
 import '../models/network_response.dart';
-import '../models/register_model.dart';
+import '../models/response_message_model.dart';
 import '../models/user_model.dart';
 
 class UserProvider extends ConnectService {
@@ -64,11 +64,11 @@ class UserProvider extends ConnectService {
 
   //Get user bằng số id
   Future<NetworkResponse<ProfileResponse>> getUserById(
-      String id, String accessToken) async {
+      String id) async {
     try {
       final response = await get('${userURL}${id}',
           options:
-              Options(headers: {'Authorization': 'Bearer ${accessToken}'}));
+              Options(headers: {'Authorization': 'Bearer ${Storage.getToken()?.accessToken}'}));
       print(userURL + Storage.getToken()!.username);
       return NetworkResponse.fromResponse(
         response,
@@ -98,25 +98,7 @@ class UserProvider extends ConnectService {
     }
   }
 
-  //Get tat ca user
-  Future<List<ProfileResponse>> getAllUser(String accessToken) async {
-    try {
-      final response = await get(userURL,
-          options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
-      print(response.data);
-      // return NetworkResponse.fromResponse(
-      //   response,
-      // (json) => ProfileResponse.fromJson(json),
-      return (response.data as List)
-          .map((x) => ProfileResponse.fromJson(x))
-          .toList();
-      // );
-    } on DioError catch (e, s) {
-      print(e.error);
-      // return NetworkResponse.withError(e.response);
-      throw Exception("$e///////////$s");
-    }
-  }
+
 
   //Update user info
   Future<NetworkResponse<ProfileResponse>> updateUserInfo(Map map) async {

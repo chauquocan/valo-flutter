@@ -66,7 +66,7 @@ abstract class AppPages {
     ),
     GetPage(
       name: Routes.FRIENDREQUEST,
-      page: () => FriendRequest(),
+      page: () => FriendRequestScreen(),
       binding: AddFriendBinding(),
     ),
     // GetPage(

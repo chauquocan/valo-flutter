@@ -6,6 +6,7 @@ class HomeController extends GetxController {
   final UserProvider provider;
 
   HomeController({required this.provider});
+
   //current tab in home nav bar
   final _currentTab = 0.obs;
 

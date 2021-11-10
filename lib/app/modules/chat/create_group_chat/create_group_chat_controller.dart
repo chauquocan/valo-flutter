@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/data/models/user_model.dart';
 import 'package:valo_chat_app/app/data/providers/user_provider.dart';
+import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
 class CreateGroupChatController extends GetxController {
+  TabContactController contactController = Get.find();
   final UserProvider userProvider;
 
   CreateGroupChatController({
@@ -37,7 +39,7 @@ class CreateGroupChatController extends GetxController {
 
   @override
   void onInit() {
-    getAllUser();
+    contactController.getContactsFromAPI();
     super.onInit();
   }
 
@@ -72,15 +74,15 @@ class CreateGroupChatController extends GetxController {
   }
 
   // lay all user //userProvider.getAllUser
-  Future getAllUser() async {
-    final getAllResponse = await userProvider.getAllUser(
-      Storage.getToken()!.accessToken,
-    );
-    if (getAllResponse != null) {
-      users.addAll(getAllResponse);
-      print(users.toString());
-    } else {
-      Get.snackbar('Search failed', 'Something wrong');
-    }
-  }
+  // Future getAllUser() async {
+  //   final response = await userProvider.getAllUser(
+  //     Storage.getToken()!.accessToken,
+  //   );
+  //   if (response.ok) {
+  //     users.addAll(response.data!);
+  //     print(users.toString());
+  //   } else {
+  //     Get.snackbar('Search failed', 'Something wrong');
+  //   }
+  // }
 }
