@@ -13,7 +13,6 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      decoration: const BoxDecoration(color: Color.fromRGBO(240, 245, 245, 1)),
       height: size.height,
       width: double.infinity,
       child: SingleChildScrollView(

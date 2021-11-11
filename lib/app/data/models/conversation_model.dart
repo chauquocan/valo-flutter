@@ -2,7 +2,7 @@ import 'page_model.dart';
 
 class ConversationCustom {
   String name;
-  String icon;
+  String avatar;
   bool isGroup;
   String time;
   String currentMessage;
@@ -11,7 +11,7 @@ class ConversationCustom {
   int? id;
   ConversationCustom({
     required this.name,
-    required this.icon,
+    required this.avatar,
     required this.isGroup,
     required this.time,
     required this.currentMessage,

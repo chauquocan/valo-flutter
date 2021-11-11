@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:valo_chat_app/app/data/models/conversation_model.dart';
 import 'package:valo_chat_app/app/modules/chat/chat.dart';
 import 'package:get/get.dart';
@@ -11,30 +10,21 @@ class CustomChatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(top: 18),
+    return InkWell(
+      onLongPress: () {},
+      onTap: () {
+        Get.to(
+          () => ChatScreen(chatModel: chat),
+          binding: ChatBinding(),
+        );
+      },
       child: Column(
         children: [
           ListTile(
-            onTap: () {
-              Get.to(
-                  () => ChatScreen(
-                        chatModel: chat,
-                      ),
-                  binding: ChatBinding());
-            },
             leading: CircleAvatar(
               backgroundColor: Colors.blueGrey,
               radius: 30,
-              backgroundImage: NetworkImage('${chat.icon}'),
-              // child: SvgPicture.asset(
-              //   chat.isGroup
-              //       ? 'assets/icons/group.svg'
-              //       : 'assets/icons/${chat.icon}',
-              //   //color: AppColors.secondary,
-              //   height: 40,
-              //   width: 40,
-              // ),
+              backgroundImage: NetworkImage('${chat.avatar}'),
             ),
             title: Text(
               chat.name,
@@ -43,7 +33,7 @@ class CustomChatCard extends StatelessWidget {
             trailing: Text(chat.time),
             subtitle: Row(
               children: [
-                // Icon(Icons.done_all),
+                Icon(Icons.done_all),
                 const SizedBox(
                   width: 3,
                 ),
@@ -52,12 +42,6 @@ class CustomChatCard extends StatelessWidget {
                   style: const TextStyle(fontSize: 13),
                 ),
               ],
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.zero,
-            child: Divider(
-              thickness: 1,
             ),
           ),
         ],

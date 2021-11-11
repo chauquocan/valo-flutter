@@ -2,7 +2,6 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 import 'package:valo_chat_app/app/data/models/contact_model.dart';
 import 'package:valo_chat_app/app/data/models/user_model.dart';
 import 'package:valo_chat_app/app/data/providers/contact_provider.dart';
@@ -60,8 +59,8 @@ class TabContactController extends GetxController {
       }
       contacts.value = _contactsTemp;
       contactsLoaded.value = true;
-      getContactsFromPhone();
       searchController.addListener(() => filterContacts());
+      getPermissions();
       update();
     } else {
       print('loi khi lay danh sach ban');
@@ -78,14 +77,9 @@ class TabContactController extends GetxController {
 
   /* Get permission to read/write contact */
   getPermissions() async {
-    var status = await Permission.contacts.status;
     if (await Permission.contacts.request().isGranted) {
-      if (!status.isGranted) {
-        getContactsFromPhone();
-        searchController.addListener(() => filterContacts());
-      } else {
-        Get.snackbar('Thong bao', 'Ban da nhap danh ba');
-      }
+      getContactsFromPhone();
+      searchController.addListener(() => filterContacts());
     }
   }
 
@@ -94,6 +88,14 @@ class TabContactController extends GetxController {
     return phoneStr.replaceAllMapped(RegExp(r'^(\+)|\D'), (Match m) {
       return m[0] == "+" ? "+" : "";
     });
+  }
+
+  Future<bool> getStatusPermission() async {
+    if (await Permission.contacts.isGranted) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /* 
@@ -120,22 +122,24 @@ class TabContactController extends GetxController {
     List<ContactCustom> contactSearch = [];
     contactSearch.addAll(contacts);
     if (searchController.text.isNotEmpty) {
-      contactSearch.retainWhere((_contact) {
-        String searchTerm = searchController.text.toLowerCase();
-        String searchTermFlatten = flattenPhoneNumber(searchTerm);
-        String contactName = _contact.name!.toLowerCase();
-        bool nameMatches = contactName.contains(searchTerm);
+      contactSearch.retainWhere(
+        (_contact) {
+          String searchTerm = searchController.text.toLowerCase();
+          String searchTermFlatten = flattenPhoneNumber(searchTerm);
+          String contactName = _contact.name!.toLowerCase();
+          bool nameMatches = contactName.contains(searchTerm);
+          if (nameMatches == true) {
+            return true;
+          }
 
-        if (nameMatches == true) {
-          return true;
-        }
-        if (searchTermFlatten.isEmpty) {
-          return false;
-        }
+          if (searchTermFlatten.isEmpty) {
+            return false;
+          }
 
-        String phnFlattened = _contact.phone!.toLowerCase();
-        return phnFlattened.contains(searchTermFlatten);
-      });
+          String phnFlattened = _contact.phone!.toLowerCase();
+          return phnFlattened.contains(searchTermFlatten);
+        },
+      );
     }
     contactsFiltered.value = contactSearch;
     update();

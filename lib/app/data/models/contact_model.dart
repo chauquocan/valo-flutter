@@ -8,14 +8,15 @@ class ContactCustom {
   String? id;
   String? imgUrl;
   String? icon;
-  ContactCustom(
-      {this.name,
-      this.phone,
-      this.email,
-      this.address,
-      this.id,
-      this.imgUrl,
-      this.icon,});
+  ContactCustom({
+    this.name,
+    this.phone,
+    this.email,
+    this.address,
+    this.id,
+    this.imgUrl,
+    this.icon,
+  });
 }
 
 class ContactPage {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/contacts_list.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
@@ -32,7 +33,36 @@ class _ContactTabState extends State<ContactTab> {
                 icon: Icon(Icons.person_add),
               ),
               IconButton(
-                onPressed: () => controller.getPermissions(),
+                onPressed: () {
+                  if (controller.getStatusPermission() == true) {
+                    print('Đã nhập');
+                    Get.snackbar('Thong bao', 'Ban da nhap danh ba');
+                  } else if (controller.getStatusPermission() == false) {
+                    print('Lấy danh sách');
+                    controller.getPermissions();
+                  } else {
+                    showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: Text('Thông báo'),
+                        content:
+                            Text('Bạn cần cấp quyền đọc danh bạ cho ứng dụng'),
+                        actions: [
+                          TextButton(
+                            style: TextButton.styleFrom(
+                                textStyle: TextStyle(
+                              color: AppColors.primary,
+                            )),
+                            onPressed: () => openAppSettings(),
+                            child: Text('Open setting'),
+                          ),
+                        ],
+                      ),
+                    );
+                    // openAppSettings();
+
+                  }
+                },
                 icon: Icon(Icons.contacts),
               ),
             ],

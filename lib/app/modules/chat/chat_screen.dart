@@ -2,16 +2,9 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:valo_chat_app/app/data/models/conversation_model.dart';
-import 'package:valo_chat_app/app/data/providers/user_provider.dart';
-import 'package:valo_chat_app/app/modules/chat/widgets/own_message.dart';
-import 'package:valo_chat_app/app/modules/chat/widgets/reply_message.dart';
-import 'package:valo_chat_app/app/modules/chat/widgets/widgets.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_friend.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
-import 'package:valo_chat_app/app/utils/store_service.dart';
-import 'package:valo_chat_app/app/widgets/widgets.dart';
 import 'chat_controller.dart';
 
 class ChatScreen extends GetView<ChatController> {

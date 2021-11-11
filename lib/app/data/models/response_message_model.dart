@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'user_model.dart';
-
 //response mess
 class ResponseMessage {
   ResponseMessage({

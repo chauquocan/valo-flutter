@@ -49,15 +49,16 @@ class WidgetAvatar extends StatelessWidget {
 
   Widget _buildAvatar() {
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey.shade200,
-        shape: BoxShape.circle,
-        border: Border.all(
+        decoration: BoxDecoration(
           color: Colors.grey.shade200,
-          width: borderSize ?? 2,
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: Colors.grey.shade200,
+            width: borderSize ?? 2,
+          ),
         ),
-      ),
-      child: ClipOval(child: Image.asset('assets/images/place_avatar.png')),
-    );
+        child: CircleAvatar(
+          backgroundImage: NetworkImage(url.toString()),
+        ));
   }
 }

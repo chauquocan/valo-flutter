@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:valo_chat_app/app/modules/chat/add_friend/add_friend_screen.dart';
-import 'package:valo_chat_app/app/modules/chat/create_group_chat/create_group_chat_screen.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:valo_chat_app/app/widgets/custom/custom_chat.dart';
@@ -12,11 +10,6 @@ class ConversationTab extends GetView<TabConversationController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {},
-      //   backgroundColor: AppColors.primary,
-      //   child: Icon(Icons.add),
-      // ),
       appBar: AppBar(
         title: Text(
           'chat'.tr,
@@ -67,6 +60,7 @@ class ConversationTab extends GetView<TabConversationController> {
                         chat: controller.conversations[index],
                       ),
                       itemCount: controller.conversations.length,
+                      
                     )
                   : const Center(
                       child: Text(

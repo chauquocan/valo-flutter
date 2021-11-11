@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-
 import 'package:valo_chat_app/app/data/models/conversation_model.dart';
 import 'package:valo_chat_app/app/data/models/user_model.dart';
 import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
@@ -35,32 +34,34 @@ class TabConversationController extends GetxController {
     List<ConversationCustom> _conversations = [];
     String currentUserId = Storage.getUser()!.id;
     final response = await chatProvider.GetConversations();
-    print(response.data);
     if (response.ok) {
-      for (var conversation in response.data!.content) {
-        List<Participants> participants = conversation.participants;
-        for (var participant in participants) {
-          String userId = participant.userId;
-          if (currentUserId != userId) {
-            final user = await userProvider.getUserById(userId);
-            _conversations.add(
-              ConversationCustom(
-                name: user.data!.name,
-                icon: user.data!.imgUrl,
-                isGroup: false,
-                time: '',
-                currentMessage: '',
-              ),
-            );
+      if (response.data!.content.length > 0) {
+        for (var conversation in response.data!.content) {
+          List<Participants> participants = conversation.participants;
+          for (var participant in participants) {
+            String userId = participant.userId;
+            if (currentUserId != userId) {
+              final user = await userProvider.getUserById(userId);
+              _conversations.add(
+                ConversationCustom(
+                  name: user.data!.name,
+                  avatar: user.data!.imgUrl,
+                  isGroup: false,
+                  time: '',
+                  currentMessage: '',
+                ),
+              );
+            }
           }
         }
         conversations.value = _conversations;
         isLoading.value = false;
         conversationsLoaded.value = true;
         update();
+      } else {
+        isLoading.value = false;
       }
     } else {
-      print('loi khi lay danh sach');
       isLoading.value = true;
     }
   }

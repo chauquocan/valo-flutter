@@ -73,19 +73,19 @@ class CreateGroupChatScreen extends GetView<CreateGroupChatController> {
       child: ListView.builder(
         itemCount: controller.users.length,
         itemBuilder: (context, i) {
-          final item = controller.users[i];
+          final user = controller.users[i];
           return ListTile(
-            onTap: () => controller.onSelect(item),
+            onTap: () => controller.onSelect(user),
             contentPadding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
             leading: WidgetAvatar(
-              url: item.imgUrl,
+              url: user.imgUrl,
               isActive: false,
             ),
-            title: Text(item.name),
+            title: Text(user.name),
             trailing: Container(
               padding: EdgeInsets.all(4),
               decoration: BoxDecoration(
-                color: l.contains(item) ? Colors.green : Colors.white,
+                color: l.contains(user) ? Colors.green : Colors.white,
                 shape: BoxShape.circle,
                 border: Border.all(
                   width: 2,
