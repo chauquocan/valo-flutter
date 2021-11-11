@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'page_model.dart';
 
 class ContactCustom {
@@ -8,6 +6,7 @@ class ContactCustom {
   String? email;
   String? address;
   String? id;
+  String? imgUrl;
   String? icon;
   ContactCustom(
       {this.name,
@@ -15,7 +14,8 @@ class ContactCustom {
       this.email,
       this.address,
       this.id,
-      this.icon = "assets/icons/User Icon.svg"});
+      this.imgUrl,
+      this.icon,});
 }
 
 class ContactPage {
@@ -32,7 +32,7 @@ class ContactPage {
     required this.size,
     required this.empty,
   });
-  late final List<Contact> content;
+  late final List<ContactContent> content;
   late final Pageable pageable;
   late final bool last;
   late final int totalPages;
@@ -45,8 +45,9 @@ class ContactPage {
   late final bool empty;
 
   ContactPage.fromJson(Map<String, dynamic> json) {
-    content =
-        List.from(json['content']).map((e) => Contact.fromJson(e)).toList();
+    content = List.from(json['content'])
+        .map((e) => ContactContent.fromJson(e))
+        .toList();
     pageable = Pageable.fromJson(json['pageable']);
     last = json['last'];
     totalPages = json['totalPages'];
@@ -76,8 +77,8 @@ class ContactPage {
   }
 }
 
-class Contact {
-  Contact({
+class ContactContent {
+  ContactContent({
     required this.id,
     required this.userId,
     required this.friendId,
@@ -88,7 +89,7 @@ class Contact {
   late final String friendId;
   late final String addDateAt;
 
-  Contact.fromJson(Map<String, dynamic> json) {
+  ContactContent.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['userId'];
     friendId = json['friendId'];

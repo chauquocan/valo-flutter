@@ -26,7 +26,10 @@ class TabConversationController extends GetxController {
     getConversations();
     super.onInit();
   }
-  
+
+  /* 
+    Get conversation
+   */
   Future getConversations() async {
     conversations.value.clear();
     List<ConversationCustom> _conversations = [];
@@ -39,15 +42,15 @@ class TabConversationController extends GetxController {
         for (var participant in participants) {
           String userId = participant.userId;
           if (currentUserId != userId) {
-            final user = await userProvider.getUserById(
-                userId);
+            final user = await userProvider.getUserById(userId);
             _conversations.add(
               ConversationCustom(
-                  name: user.data!.name,
-                  icon: user.data!.imgUrl,
-                  isGroup: false,
-                  time: '',
-                  currentMessage: ''),
+                name: user.data!.name,
+                icon: user.data!.imgUrl,
+                isGroup: false,
+                time: '',
+                currentMessage: '',
+              ),
             );
           }
         }

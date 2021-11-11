@@ -96,7 +96,7 @@ class EditProfileScreen extends StatelessWidget {
                           style: TextButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(50),
-                              side: BorderSide(color: Colors.white),
+                              side: BorderSide(color: Colors.grey),
                             ),
                             primary: Colors.white,
                             backgroundColor: Color(0xFFF5F6F9),

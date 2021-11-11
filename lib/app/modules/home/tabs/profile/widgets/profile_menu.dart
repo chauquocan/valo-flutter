@@ -17,7 +17,14 @@ class ProfileMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      decoration: BoxDecoration(
+        boxShadow: const [
+          BoxShadow(
+              color: Colors.black26, offset: Offset(0, 2), blurRadius: 5.0),
+        ],
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(7.0),
+      ),
       margin: EdgeInsets.only(top: 10),
       padding: EdgeInsets.all(10),
       child: ListTile(

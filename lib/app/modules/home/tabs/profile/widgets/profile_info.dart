@@ -14,9 +14,20 @@ class ProfileInforWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
-      padding: EdgeInsets.only(top: 18, bottom: 18, left: 10),
+      decoration: BoxDecoration(
+        boxShadow: const [
+          BoxShadow(
+              color: Colors.black26, offset: Offset(0, 2), blurRadius: 5.0),
+        ],
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(7), bottomRight: Radius.circular(7)),
+      ),
+      padding: EdgeInsets.only(top: 15, bottom: 15, left: 10, right: 10),
       child: ListTile(
+        trailing: Icon(
+          Icons.person,
+        ),
         onTap: () => Get.toNamed('/editprofile'),
         leading: Obx(
           () {

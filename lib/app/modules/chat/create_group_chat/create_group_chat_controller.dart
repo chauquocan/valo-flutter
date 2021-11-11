@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/data/models/user_model.dart';
+import 'package:valo_chat_app/app/data/providers/contact_provider.dart';
 import 'package:valo_chat_app/app/data/providers/user_provider.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
-import 'package:valo_chat_app/app/utils/store_service.dart';
 
 class CreateGroupChatController extends GetxController {
-  TabContactController contactController = Get.find();
   final UserProvider userProvider;
+  final ContactProvider contactProvider;
+
+  TabContactController contactController = Get.find();
 
   CreateGroupChatController({
     required this.userProvider,
+    required this.contactProvider,
   });
 
   final textCtrl = TextEditingController();
@@ -39,7 +42,7 @@ class CreateGroupChatController extends GetxController {
 
   @override
   void onInit() {
-    contactController.getContactsFromAPI();
+    getContacts();
     super.onInit();
   }
 
@@ -71,6 +74,25 @@ class CreateGroupChatController extends GetxController {
     //   textCtrl.text,
     // );
     Get.back();
+  }
+
+  Future getContacts() async {
+    contactController.getContactsFromAPI();
+    for (var contact in contactController.contactId) {
+      final user = await userProvider.getUserById(contact.friendId);
+      users.add(
+        ProfileResponse(
+            id: user.data!.id,
+            name: user.data!.name,
+            gender: user.data!.gender,
+            dateOfBirth: user.data!.dateOfBirth,
+            phone: user.data!.phone,
+            email: user.data!.email,
+            address: user.data!.address,
+            imgUrl: user.data!.imgUrl,
+            status: user.data!.status),
+      );
+    }
   }
 
   // lay all user //userProvider.getAllUser
