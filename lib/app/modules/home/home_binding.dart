@@ -5,7 +5,7 @@ class HomeBinding implements Bindings {
   @override
   void dependencies() {
     //home
-    Get.lazyPut(() => HomeController(provider: UserProvider()));
+    Get.lazyPut(() => HomeController(provider: ProfileProvider()));
     //tabs
     // Get.lazyPut(() => TabProfileController(provider: UserProvider()));
     // Get.lazyPut(() => TabContactController(
@@ -13,10 +13,10 @@ class HomeBinding implements Bindings {
     // Get.lazyPut(() => TabConversationController(
     //     chatProvider: ChatProvider(), userProvider: UserProvider()));
     Get.put<TabProfileController>(
-        TabProfileController(provider: UserProvider()));
+        TabProfileController(provider: ProfileProvider()));
     Get.put<TabContactController>(TabContactController(
-        contactProvider: ContactProvider(), userProvider: UserProvider()));
+        contactProvider: ContactProvider(), userProvider: ProfileProvider()));
     Get.put<TabConversationController>(TabConversationController(
-        chatProvider: ChatProvider(), userProvider: UserProvider()));
+        chatProvider: ChatProvider(), userProvider: ProfileProvider()));
   }
 }

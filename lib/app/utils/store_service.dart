@@ -1,13 +1,13 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:valo_chat_app/app/data/models/auth_model.dart';
-import 'package:valo_chat_app/app/data/providers/user_provider.dart';
+import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
 import '../data/models/profile_model.dart';
 
 //Storage service for storing local data
 class Storage {
   Storage._();
-  static late UserProvider _userProvider;
+  static late ProfileProvider _userProvider;
   static late SharedPreferences _pref;
   //init
   static Future init() async {

@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:valo_chat_app/app/data/providers/user_provider.dart';
+import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/profile/tab_profile_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
 class ProfileInforWidget extends StatelessWidget {
-  final controller = Get.put(TabProfileController(provider: UserProvider()));
+  final controller = Get.put(TabProfileController(provider: ProfileProvider()));
 
   ProfileInforWidget({Key? key}) : super(key: key);
 

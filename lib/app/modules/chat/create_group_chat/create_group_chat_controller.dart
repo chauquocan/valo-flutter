@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/data/models/profile_model.dart';
 import 'package:valo_chat_app/app/data/providers/contact_provider.dart';
-import 'package:valo_chat_app/app/data/providers/user_provider.dart';
+import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
 
 class CreateGroupChatController extends GetxController {
-  final UserProvider userProvider;
+  final ProfileProvider userProvider;
   final ContactProvider contactProvider;
 
   TabContactController contactController = Get.find();

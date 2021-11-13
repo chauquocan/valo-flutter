@@ -1,0 +1,62 @@
+import 'package:dio/dio.dart';
+import 'package:valo_chat_app/app/data/connect_service.dart';
+import 'package:valo_chat_app/app/data/models/auth_model.dart';
+import 'package:valo_chat_app/app/data/models/network_response.dart';
+import 'package:valo_chat_app/app/data/models/response_model.dart';
+import 'package:valo_chat_app/app/utils/store_service.dart';
+
+class AuthProvider extends ConnectService {
+  //end point
+  static const String loginURL = 'auth/signin';
+  static const String registerURL = 'auth/register';
+  static const String refreshTokenUrl = 'auth/refresh_token';
+
+  //current token
+  final _token = Storage.getToken()?.accessToken;
+  //current rfToken
+  final _refreshToken = Storage.getToken()?.refreshToken;
+  //curent userId
+  final _userId = Storage.getUser()?.id;
+
+  // Refresh token
+  Future<NetworkResponse<LoginRespone>> refreshToken(Map refreshToken) async {
+    try {
+      final response = await post(refreshTokenUrl, data: refreshToken);
+      return NetworkResponse.fromResponse(
+        response,
+        (json) => LoginRespone.fromJson(json),
+      );
+    } on DioError catch (e, s) {
+      print(e.error);
+      return NetworkResponse.withError(e.response);
+    }
+  }
+
+  //Đăng nhập
+  Future<NetworkResponse<LoginRespone>> login(Map map) async {
+    try {
+      final response = await post(loginURL, data: map);
+      return NetworkResponse.fromResponse(
+        response,
+        (json) => LoginRespone.fromJson(json),
+      );
+    } on DioError catch (e, s) {
+      print(e.error);
+      return NetworkResponse.withError(e.response);
+    }
+  }
+
+  //Đăng ký
+  Future<NetworkResponse<ResponseMessage>> register(Map map) async {
+    try {
+      final response = await post(registerURL, data: map);
+      return NetworkResponse.fromResponse(
+        response,
+        (json) => ResponseMessage.fromJson(json),
+      );
+    } on DioError catch (e, s) {
+      print(e.error);
+      return NetworkResponse.withError(e.response);
+    }
+  }
+}

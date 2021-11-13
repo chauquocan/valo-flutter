@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/status/http_status.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:valo_chat_app/app/data/providers/user_provider.dart';
+import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 import 'package:valo_chat_app/app/widgets/custom/dialog_loading.dart';
 
 class TabProfileController extends GetxController {
   //user service
-  final UserProvider provider;
+  final ProfileProvider provider;
 
   //text field controller
   final TextEditingController inputName = TextEditingController();
@@ -64,10 +64,10 @@ class TabProfileController extends GetxController {
       'address': address,
     };
     try {
-      final response = await UserProvider().updateUserInfo(map);
+      final response = await ProfileProvider().updateUserInfo(map);
       print('Update Response: ${response.toString()}');
       if (response.ok) {
-        final userResponse = await UserProvider()
+        final userResponse = await ProfileProvider()
             .getUserByPhone('${phone}', '${Storage.getToken()!.accessToken}');
         Get.snackbar('update susscessfully', '');
         if (userResponse.ok) {

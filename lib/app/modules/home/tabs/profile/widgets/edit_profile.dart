@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:valo_chat_app/app/data/providers/user_provider.dart';
+import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/profile/tab_profile_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
 // sua profile cua minh
 class EditProfileScreen extends StatelessWidget {
-  final controller = Get.put(TabProfileController(provider: UserProvider()));
+  final controller = Get.put(TabProfileController(provider: ProfileProvider()));
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/chat/add_friend/add_friend_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
-import 'package:valo_chat_app/app/widgets/custom/custom_search_card.dart';
 
 class AddFriendScreen extends StatelessWidget {
   AddFriendController controller = Get.find();
@@ -20,30 +19,66 @@ class AddFriendScreen extends StatelessWidget {
               ),
               child: TextFormField(
                 controller: controller.searchController,
+                onChanged: (value) {
+                  if (value.length > 0) {
+                    controller.searchUser(value);
+                  } else {
+                    controller.searchResults.value.clear();
+                  }
+                },
                 decoration: InputDecoration(
                     hintText: 'Enter phone number',
-                    suffixIcon: IconButton(
-                        onPressed: () {
-                          controller
-                              .searchUser(controller.searchController.text);
-                        },
-                        icon: Icon(Icons.search))),
+                    suffixIcon:
+                        IconButton(onPressed: () {}, icon: Icon(Icons.search))),
               ),
             ),
             Expanded(
-              child: Obx(
-                () => controller.isLoading.value
+              child: GetX<AddFriendController>(
+                builder: (_) => controller.isLoading.value
                     ? Center(
                         child: CircularProgressIndicator(
                           backgroundColor: Colors.white,
                         ),
                       )
-                    : ListView.builder(
-                        itemBuilder: (context, index) => CustomSearchCard(
-                          user: controller.searchResults[index],
-                        ),
-                        itemCount: controller.searchResults.length,
-                      ),
+                    : controller.usersLoadded.value
+                        ? ListView.builder(
+                            itemCount: controller.searchResults.length,
+                            itemBuilder: (context, index) {
+                              final user = controller.searchResults[index];
+                              return ListTile(
+                                onTap: () {},
+                                leading: Hero(
+                                  tag: user.id,
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.blueGrey,
+                                    radius: 30,
+                                    backgroundImage: NetworkImage(user.imgUrl),
+                                  ),
+                                ),
+                                title: Text(
+                                  user.name,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                subtitle: Text(user.phone),
+                                trailing: IconButton(
+                                    onPressed: () =>
+                                        controller.SendFriendReq('${user.id}'),
+                                    icon: Obx(() => controller.isSent.value
+                                        ? Icon(Icons.done)
+                                        : Icon(Icons.person_add))),
+                              );
+                            })
+                        : const Center(
+                            child: Text(
+                              'No conversation yet',
+                              style: TextStyle(
+                                color: AppColors.dark,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
               ),
             ),
           ],

@@ -2,10 +2,11 @@ part of 'login.dart';
 
 //Controller for login view
 class LoginController extends GetxController {
-  LoginController({required this.userProvider});
+  LoginController({required this.authProvider,required this.userProvider});
   
   //User service
-  final UserProvider userProvider;
+  final AuthProvider authProvider;
+  final ProfileProvider userProvider;
 
   //Controller text field
   final TextEditingController _phoneInput = TextEditingController();
@@ -45,7 +46,7 @@ class LoginController extends GetxController {
       //map request
       final map = {'username': phoneNumber, 'password': password};
       //dio login
-      final response = await userProvider.login(map);
+      final response = await authProvider.login(map);
       //
       print('Respone: ${response.toString()}');
       //ok

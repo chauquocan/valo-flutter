@@ -1,18 +1,15 @@
 import 'package:dio/dio.dart';
-import 'package:valo_chat_app/app/data/models/auth_model.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
-
 import '../connect_service.dart';
 import '../models/network_response.dart';
-import '../models/response_message_model.dart';
 import '../models/profile_model.dart';
 
-class UserProvider extends ConnectService {
-  //end point
-  static const String loginURL = 'auth/signin';
-  static const String registerURL = 'auth/register';
-  static const String userURL = 'users/';
-  static const String refreshTokenUrl = 'auth/refresh_token';
+class ProfileProvider extends ConnectService {
+  static const String userURL = 'users';
+  static const String searchURL = '${userURL}/search';
+  static const String userPhoneURL = '${userURL}/phone=';
+  static const String updateURL = '${userURL}/update';
+  static const String changImageURL = '${userURL}/me/changeImage';
 
   //current token
   final _token = Storage.getToken()?.accessToken;
@@ -21,52 +18,10 @@ class UserProvider extends ConnectService {
   //curent userId
   final _userId = Storage.getUser()?.id;
 
-  // Refresh token
-  Future<NetworkResponse<LoginRespone>> refreshToken(Map refreshToken) async {
-    try {
-      final response = await post(refreshTokenUrl, data: refreshToken);
-      return NetworkResponse.fromResponse(
-        response,
-        (json) => LoginRespone.fromJson(json),
-      );
-    } on DioError catch (e, s) {
-      print(e.error);
-      return NetworkResponse.withError(e.response);
-    }
-  }
-
-  //Đăng nhập
-  Future<NetworkResponse<LoginRespone>> login(Map map) async {
-    try {
-      final response = await post(loginURL, data: map);
-      return NetworkResponse.fromResponse(
-        response,
-        (json) => LoginRespone.fromJson(json),
-      );
-    } on DioError catch (e, s) {
-      print(e.error);
-      return NetworkResponse.withError(e.response);
-    }
-  }
-
-  //Đăng ký
-  Future<NetworkResponse<ResponseMessage>> register(Map map) async {
-    try {
-      final response = await post(registerURL, data: map);
-      return NetworkResponse.fromResponse(
-        response,
-        (json) => ResponseMessage.fromJson(json),
-      );
-    } on DioError catch (e, s) {
-      print(e.error);
-      return NetworkResponse.withError(e.response);
-    }
-  }
-
   //Get user bằng số id
   Future<NetworkResponse<Profile>> getUserById(String id) async {
     try {
-      final response = await get('${userURL}${id}',
+      final response = await get('${userURL}/${id}',
           options: Options(headers: {
             'Authorization': 'Bearer ${Storage.getToken()?.accessToken}'
           }));
@@ -85,7 +40,7 @@ class UserProvider extends ConnectService {
   Future<NetworkResponse<Profile>> getUserByPhone(
       String numberPhone, String accessToken) async {
     try {
-      final response = await get('${userURL}phone=${numberPhone}',
+      final response = await get('${userPhoneURL}${numberPhone}',
           options:
               Options(headers: {'Authorization': 'Bearer ${accessToken}'}));
       print(userURL + Storage.getToken()!.username);
@@ -103,14 +58,12 @@ class UserProvider extends ConnectService {
   Future<NetworkResponse<Profile>> updateUserInfo(Map map) async {
     try {
       final response = await patch(
-        '${userURL}/update',
+        '${updateURL}',
         data: map,
         options: Options(
           headers: <String, String>{'Authorization': 'Bearer $_token'},
         ),
       );
-      // (map) => ProfileResponse.fromJson(map);
-      // return response.statusCode;
       print(response.statusCode);
       return NetworkResponse.fromResponse(
           response, (json) => Profile.fromJson(json));
@@ -120,20 +73,21 @@ class UserProvider extends ConnectService {
     }
   }
 
-  //Search
-  Future<NetworkResponse<Profile>> searchUser(
-      String numberPhone, String accessToken) async {
+  //Search user
+  Future<NetworkResponse<ProfilePage>> searchUser(String textToSearch) async {
     try {
-      final response = await get('${userURL}phone=${numberPhone}',
-          options:
-              Options(headers: {'Authorization': 'Bearer ${accessToken}'}));
-      print(userURL + Storage.getToken()!.username);
+      final response = await get(searchURL,
+          queryParameters: {
+            'textToSearch': textToSearch,
+          },
+          options: Options(headers: {
+            'Authorization': 'Bearer ${Storage.getToken()?.accessToken}'
+          }));
       return NetworkResponse.fromResponse(
         response,
-        (json) => Profile.fromJson(json),
+        (json) => ProfilePage.fromJson(json),
       );
     } on DioError catch (e, s) {
-      print(e.error);
       return NetworkResponse.withError(e.response);
     }
   }
@@ -145,7 +99,7 @@ class UserProvider extends ConnectService {
         "multipartFile": await MultipartFile.fromFile(filePath, filename: 'avt')
       });
       Response response = await put(
-        userURL + '/me/changeImage',
+        changImageURL,
         data: formData,
         options: Options(
           headers: <String, String>{

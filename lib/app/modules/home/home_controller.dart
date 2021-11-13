@@ -3,7 +3,7 @@ part of 'home.dart';
 //Controller for home view
 class HomeController extends GetxController {
   //user service
-  final UserProvider provider;
+  final ProfileProvider provider;
 
   HomeController({required this.provider});
 

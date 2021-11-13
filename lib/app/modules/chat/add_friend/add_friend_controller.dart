@@ -3,14 +3,14 @@ import 'package:get/get.dart';
 import 'package:valo_chat_app/app/data/models/friend_request.dart';
 import 'package:valo_chat_app/app/data/models/profile_model.dart';
 import 'package:valo_chat_app/app/data/providers/friend_request_provider.dart';
-import 'package:valo_chat_app/app/data/providers/user_provider.dart';
+import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
 class AddFriendController extends GetxController {
   TabConversationController chatController = Get.find();
   //User service
-  final UserProvider userProvider;
+  final ProfileProvider userProvider;
   final FriendRequestProvider friendProvider;
 
   AddFriendController(
@@ -18,14 +18,17 @@ class AddFriendController extends GetxController {
 
   var searchController = TextEditingController();
 
-  List<Profile> searchResults = [];
+  final searchResults = <Profile>[].obs;
   final friendReqList = <FriendRequest>[].obs;
   final userList = <Profile>[].obs;
 
   //loading
   final isLoading = false.obs;
-  //listLoaded
+  //requestsLoaded
   final requestsLoaded = false.obs;
+  //usersLoaded
+  final usersLoadded = false.obs;
+  final isSearch = false.obs;
   //isSent
   final isSent = false.obs;
 
@@ -89,33 +92,29 @@ class AddFriendController extends GetxController {
     if (response.ok) {}
   }
 
-  //Tìm user
-  Future searchUser(String phoneNumber) async {
+  //Search user
+  Future searchUser(String textToSearch) async {
     isLoading.value = true;
+    List<Profile> _profiles = [];
     final searchResponse = await userProvider.searchUser(
-      phoneNumber,
-      Storage.getToken()!.accessToken,
+      textToSearch,
     );
-    print('Search respone: ${searchResponse.toString()}');
     if (searchResponse.ok) {
-      searchResults.clear();
-      searchResults.add(
-        Profile(
-          id: searchResponse.data!.id,
-          name: searchResponse.data!.name,
-          gender: searchResponse.data!.gender,
-          dateOfBirth: searchResponse.data!.dateOfBirth,
-          phone: searchResponse.data!.phone,
-          email: searchResponse.data!.email,
-          address: searchResponse.data!.address,
-          imgUrl: searchResponse.data!.imgUrl,
-          status: searchResponse.data!.status,
-        ),
-      );
-      isLoading.value = false;
-      print(searchResults.length);
+      if (searchResponse.data!.content.length > 0) {
+        Future.delayed(Duration(milliseconds: 200), () {
+          // Do something
+          _profiles.addAll(searchResponse.data!.content);
+          searchResults.value = _profiles;
+          isLoading.value = false;
+          usersLoadded.value = true;
+        });
+      } else {
+        isLoading.value = false;
+        usersLoadded.value = false;
+      }
     } else {
       Get.snackbar('Search failed', 'Something wrong');
+      isLoading.value = false;
     }
   }
 }

@@ -2,7 +2,7 @@ part of 'register.dart';
 
 class RegisterController extends GetxController {
   //user service
-  final UserProvider userProvider;
+  final AuthProvider authProvider;
   //controller field
   final TextEditingController _fullNameInput = TextEditingController();
   final TextEditingController _phoneInput = TextEditingController();
@@ -15,7 +15,7 @@ class RegisterController extends GetxController {
   //pass's state
   final _showPass = true.obs;
 
-  RegisterController({required this.userProvider});
+  RegisterController({required this.authProvider});
   String? fullNameValidator(String value) {
     if (value.isEmpty) {
       return 'Please enter your name';
@@ -47,7 +47,7 @@ class RegisterController extends GetxController {
       'password': password,
       'email': email,
     };
-    final response = await userProvider.register(RegisterRequest);
+    final response = await authProvider.register(RegisterRequest);
     print('Respone: ${response.toString()}');
     if (response.ok) {
       // showInfoDialog('Sign up susscessfully', 'lets sign in');

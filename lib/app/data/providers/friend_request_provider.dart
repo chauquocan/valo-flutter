@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:valo_chat_app/app/data/connect_service.dart';
 import 'package:valo_chat_app/app/data/models/friend_request.dart';
 import 'package:valo_chat_app/app/data/models/network_response.dart';
-import 'package:valo_chat_app/app/data/models/response_message_model.dart';
+import 'package:valo_chat_app/app/data/models/response_model.dart';
 
 class FriendRequestProvider extends ConnectService {
   static const String getFriendRequestUrl = '/friend-request';

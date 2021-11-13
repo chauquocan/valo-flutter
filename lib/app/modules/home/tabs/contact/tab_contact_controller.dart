@@ -5,11 +5,11 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:valo_chat_app/app/data/models/contact_model.dart';
 import 'package:valo_chat_app/app/data/models/profile_model.dart';
 import 'package:valo_chat_app/app/data/providers/contact_provider.dart';
-import 'package:valo_chat_app/app/data/providers/user_provider.dart';
+import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
 
 class TabContactController extends GetxController {
   final ContactProvider contactProvider;
-  final UserProvider userProvider;
+  final ProfileProvider userProvider;
   final searchController = TextEditingController();
 
   TabContactController(

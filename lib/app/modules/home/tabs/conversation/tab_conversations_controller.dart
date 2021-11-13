@@ -2,12 +2,12 @@ import 'package:get/get.dart';
 import 'package:valo_chat_app/app/data/models/conversation_model.dart';
 import 'package:valo_chat_app/app/data/models/profile_model.dart';
 import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
-import 'package:valo_chat_app/app/data/providers/user_provider.dart';
+import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
 class TabConversationController extends GetxController {
   final ChatProvider chatProvider;
-  final UserProvider userProvider;
+  final ProfileProvider userProvider;
 
   TabConversationController({
     required this.chatProvider,
