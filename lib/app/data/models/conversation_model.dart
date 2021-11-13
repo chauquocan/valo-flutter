@@ -1,6 +1,7 @@
 import 'page_model.dart';
 
 class ConversationCustom {
+  String id;
   String name;
   String avatar;
   bool isGroup;
@@ -8,16 +9,17 @@ class ConversationCustom {
   String currentMessage;
   String? status;
   bool select = false;
-  int? id;
+  String conversationType;
   ConversationCustom({
+    required this.id,
     required this.name,
     required this.avatar,
     required this.isGroup,
     required this.time,
     required this.currentMessage,
+    required this.conversationType,
     this.status,
     this.select = false,
-    this.id,
   });
 }
 
@@ -86,11 +88,26 @@ class Conversation {
     required this.createAt,
     required this.conversationType,
     required this.participants,
+    required this.avatar,
+    required this.isGroup,
+    required this.lastMessage,
+    required this.name,
+    this.select,
+    required this.time,
+    this.status,
   });
   late final String id;
   late final String createAt;
   late final String conversationType;
   late final List<Participants> participants;
+
+  late String name;
+  late String avatar;
+  late String lastMessage;
+  late String time;
+  late String? status;
+  late bool? select = false;
+  late bool isGroup;
 
   Conversation.fromJson(Map<String, dynamic> json) {
     id = json['id'];

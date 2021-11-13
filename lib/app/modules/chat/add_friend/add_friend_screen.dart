@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/chat/add_friend/add_friend_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
-import 'package:valo_chat_app/app/widgets/custom/custom_search.dart';
+import 'package:valo_chat_app/app/widgets/custom/custom_search_card.dart';
 
 class AddFriendScreen extends StatelessWidget {
   AddFriendController controller = Get.find();
@@ -39,7 +39,7 @@ class AddFriendScreen extends StatelessWidget {
                         ),
                       )
                     : ListView.builder(
-                        itemBuilder: (context, index) => CustomSearch(
+                        itemBuilder: (context, index) => CustomSearchCard(
                           user: controller.searchResults[index],
                         ),
                         itemCount: controller.searchResults.length,

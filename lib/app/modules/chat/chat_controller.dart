@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:valo_chat_app/app/data/models/message_model.dart';
-import 'package:valo_chat_app/app/data/models/user_model.dart';
+import 'package:valo_chat_app/app/data/models/profile_model.dart';
 import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
 import 'package:valo_chat_app/app/utils/stomp_service.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
@@ -23,8 +23,9 @@ class ChatController extends GetxController {
 
   final _id = ''.obs;
   final _name = ''.obs;
-  final _deviceToken = <dynamic>[].obs;
-  final _fromContact = false.obs;
+  final _avatar = ''.obs;
+  final _isGroup = false.obs;
+
   final _emojiShowing = false.obs;
   final _stickerShowing = false.obs;
   final _showMore = false.obs;
@@ -45,25 +46,25 @@ class ChatController extends GetxController {
   // Socketchannel
   @override
   void onInit() {
+    id = Get.arguments['id'];
+    name = Get.arguments['name'];
+    avatar = Get.arguments['avatar'];
+    isGroup = Get.arguments['isGroup'];
+
     super.onInit();
-    // provider.stompClient.activate();
     StompService().startStomp();
-    // provider.connectChannel();
-    print('socket client running');
   }
 
   @override
   void onClose() {
-    // TODO: implement onClose
     super.onClose();
     StompService().desTroyStomp();
-    // provider.channel.sink.close();
   }
 
   /*------------------------*/
   final _tagging = false.obs;
-  final _members = <ProfileResponse>[].obs;
-  final _listTagged = <ProfileResponse>[].obs;
+  final _members = <Profile>[].obs;
+  final _listTagged = <Profile>[].obs;
 
   get id => _id.value;
 
@@ -77,16 +78,16 @@ class ChatController extends GetxController {
     _name.value = value;
   }
 
-  get deviceToken => _deviceToken;
+  get avatar => _avatar.value;
 
-  set deviceToken(value) {
-    _deviceToken.value = value;
+  set avatar(value) {
+    _avatar.value = value;
   }
 
-  get fromContact => _fromContact.value;
+  get isGroup => _isGroup.value;
 
-  set fromContact(value) {
-    _fromContact.value = value;
+  set isGroup(value) {
+    _isGroup.value = value;
   }
 
   get emojiShowing => _emojiShowing.value;
@@ -135,19 +136,31 @@ class ChatController extends GetxController {
     _tagging.value = value;
   }
 
-  List<ProfileResponse> get members => _members;
+  List<Profile> get members => _members;
 
-  List<ProfileResponse> get membersWithoutMe =>
+  List<Profile> get membersWithoutMe =>
       _members.where((element) => element.id != Storage.getUser()?.id).toList();
 
   set members(value) {
     _members.value = value;
   }
 
-  List<ProfileResponse> get listTagged => _listTagged;
+  List<Profile> get listTagged => _listTagged;
 
   set listTagged(value) {
     _listTagged.value = value;
+  }
+
+  Future getMessages(String id) async {
+    List<MessageModel> _messages = [];
+    final response = await provider.GetMessages(id);
+    if (response.ok) {
+      if (response.data!.content.length > 0) {
+        for (var message in response.data!.content) {
+          // _messages.add(Mess);
+        }
+      }
+    }
   }
 
   // @override
@@ -202,19 +215,23 @@ class ChatController extends GetxController {
   //   _moveCursorToLast();
   // }
 
-  void sendMessage() {
+  void sendMessage(String id) {
     if (textController.text.isNotEmpty) {
       StompService.stompClient.send(
-          destination: "/app/chat",
-          body: json.encode({
-            "replyId": Storage.getUser()!.id,
-            "conversationId": "fsdfsdf",
-            "messageType": "TEXT",
-            "content": '${textController.text}'
-          }));
-      // provider.channel.sink.add(textController.text);
-      // textController.
+        destination: "/app/chat",
+        body: json.encode(
+          {
+            'replyId': Storage.getUser()!.id,
+            'conversationId': id,
+            'messageType': "TEXT",
+            'content': textController.text
+          },
+        ),
+      );
     }
+
+    // provider.channel.sink.add(textController.text);
+    // textController.
     // if (textController.text.isNotEmpty) {
     //   // TODO(ff3105): need to optimize
     //   if (listTagged.isNotEmpty) {

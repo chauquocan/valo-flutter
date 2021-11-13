@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/data/models/friend_request.dart';
-import 'package:valo_chat_app/app/data/models/user_model.dart';
+import 'package:valo_chat_app/app/data/models/profile_model.dart';
 import 'package:valo_chat_app/app/data/providers/friend_request_provider.dart';
 import 'package:valo_chat_app/app/data/providers/user_provider.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
@@ -18,12 +18,14 @@ class AddFriendController extends GetxController {
 
   var searchController = TextEditingController();
 
-  List<ProfileResponse> searchResults = [];
+  List<Profile> searchResults = [];
   final friendReqList = <FriendRequest>[].obs;
-  final userIdList = <ProfileResponse>[].obs;
+  final userList = <Profile>[].obs;
 
   //loading
   final isLoading = false.obs;
+  //listLoaded
+  final requestsLoaded = false.obs;
   //isSent
   final isSent = false.obs;
 
@@ -47,20 +49,26 @@ class AddFriendController extends GetxController {
 
   //Lấy danh sách lời mời
   Future getFriendReqList() async {
+    isLoading.value = true;
+    List<FriendRequest> _friendList = [];
     final response =
         await friendProvider.GetFriendRequests(Storage.getToken()!.accessToken);
-    if (response != null) {
-      for (var i = 0; i < response.length; i++) {
-        final user = await userProvider.getUserById(
-            '${response[i].fromId}');
-        userIdList.add(user.data!);
+    if (response.ok) {
+      if (response.data!.content.length > 0) {
+        for (var request in response.data!.content) {
+          final user = await userProvider.getUserById(request.fromId);
+          userList.add(user.data!);
+        }
+        friendReqList.value = response.data!.content;
+        isLoading.value = false;
+        requestsLoaded.value = true;
+        update();
+      } else {
+        isLoading.value = false;
       }
-      friendReqList.addAll(response);
-      print(friendReqList.toString());
     } else {
-      print('loi khi lay loi moi ket ban');
+      isLoading.value = true;
     }
-    update();
   }
 
   //Chấp nhận lời mời
@@ -77,8 +85,7 @@ class AddFriendController extends GetxController {
   }
 
   Future getUserById(String id) async {
-    final response =
-        await userProvider.getUserById(id);
+    final response = await userProvider.getUserById(id);
     if (response.ok) {}
   }
 
@@ -93,7 +100,7 @@ class AddFriendController extends GetxController {
     if (searchResponse.ok) {
       searchResults.clear();
       searchResults.add(
-        ProfileResponse(
+        Profile(
           id: searchResponse.data!.id,
           name: searchResponse.data!.name,
           gender: searchResponse.data!.gender,

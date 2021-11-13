@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/data/models/conversation_model.dart';
-import 'package:valo_chat_app/app/data/models/user_model.dart';
+import 'package:valo_chat_app/app/data/models/profile_model.dart';
 import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
 import 'package:valo_chat_app/app/data/providers/user_provider.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
@@ -16,9 +16,8 @@ class TabConversationController extends GetxController {
 
   final isLoading = true.obs;
   final conversationsLoaded = false.obs;
-  final contentList = <Conversation>[].obs;
-  final conversations = <ConversationCustom>[].obs;
-  final userList = <ProfileResponse>[].obs;
+  final conversations = <Conversation>[].obs;
+  final userList = <Profile>[].obs;
 
   @override
   void onInit() {
@@ -31,7 +30,7 @@ class TabConversationController extends GetxController {
    */
   Future getConversations() async {
     conversations.value.clear();
-    List<ConversationCustom> _conversations = [];
+    List<Conversation> _conversations = [];
     String currentUserId = Storage.getUser()!.id;
     final response = await chatProvider.GetConversations();
     if (response.ok) {
@@ -43,12 +42,16 @@ class TabConversationController extends GetxController {
             if (currentUserId != userId) {
               final user = await userProvider.getUserById(userId);
               _conversations.add(
-                ConversationCustom(
+                Conversation(
+                  id: conversation.id,
                   name: user.data!.name,
                   avatar: user.data!.imgUrl,
-                  isGroup: false,
                   time: '',
-                  currentMessage: '',
+                  lastMessage: '',
+                  isGroup: false,
+                  createAt: conversation.createAt,
+                  conversationType: conversation.conversationType,
+                  participants: conversation.participants,
                 ),
               );
             }

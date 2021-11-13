@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:valo_chat_app/app/data/models/auth_model.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
 import '../connect_service.dart';
 import '../models/network_response.dart';
 import '../models/response_message_model.dart';
-import '../models/user_model.dart';
+import '../models/profile_model.dart';
 
 class UserProvider extends ConnectService {
   //end point
@@ -63,16 +64,16 @@ class UserProvider extends ConnectService {
   }
 
   //Get user bằng số id
-  Future<NetworkResponse<ProfileResponse>> getUserById(
-      String id) async {
+  Future<NetworkResponse<Profile>> getUserById(String id) async {
     try {
       final response = await get('${userURL}${id}',
-          options:
-              Options(headers: {'Authorization': 'Bearer ${Storage.getToken()?.accessToken}'}));
+          options: Options(headers: {
+            'Authorization': 'Bearer ${Storage.getToken()?.accessToken}'
+          }));
       print(userURL + Storage.getToken()!.username);
       return NetworkResponse.fromResponse(
         response,
-        (json) => ProfileResponse.fromJson(json),
+        (json) => Profile.fromJson(json),
       );
     } on DioError catch (e, s) {
       print(e.error);
@@ -81,7 +82,7 @@ class UserProvider extends ConnectService {
   }
 
   //Get user bằng số điện thoại
-  Future<NetworkResponse<ProfileResponse>> getUserByPhone(
+  Future<NetworkResponse<Profile>> getUserByPhone(
       String numberPhone, String accessToken) async {
     try {
       final response = await get('${userURL}phone=${numberPhone}',
@@ -90,7 +91,7 @@ class UserProvider extends ConnectService {
       print(userURL + Storage.getToken()!.username);
       return NetworkResponse.fromResponse(
         response,
-        (json) => ProfileResponse.fromJson(json),
+        (json) => Profile.fromJson(json),
       );
     } on DioError catch (e, s) {
       print(e.error);
@@ -98,10 +99,8 @@ class UserProvider extends ConnectService {
     }
   }
 
-
-
   //Update user info
-  Future<NetworkResponse<ProfileResponse>> updateUserInfo(Map map) async {
+  Future<NetworkResponse<Profile>> updateUserInfo(Map map) async {
     try {
       final response = await patch(
         '${userURL}/update',
@@ -114,7 +113,7 @@ class UserProvider extends ConnectService {
       // return response.statusCode;
       print(response.statusCode);
       return NetworkResponse.fromResponse(
-          response, (json) => ProfileResponse.fromJson(json));
+          response, (json) => Profile.fromJson(json));
     } on DioError catch (e) {
       print(e.error);
       return NetworkResponse.withError(e.response);
@@ -122,7 +121,7 @@ class UserProvider extends ConnectService {
   }
 
   //Search
-  Future<NetworkResponse<ProfileResponse>> searchUser(
+  Future<NetworkResponse<Profile>> searchUser(
       String numberPhone, String accessToken) async {
     try {
       final response = await get('${userURL}phone=${numberPhone}',
@@ -131,7 +130,7 @@ class UserProvider extends ConnectService {
       print(userURL + Storage.getToken()!.username);
       return NetworkResponse.fromResponse(
         response,
-        (json) => ProfileResponse.fromJson(json),
+        (json) => Profile.fromJson(json),
       );
     } on DioError catch (e, s) {
       print(e.error);
@@ -140,7 +139,7 @@ class UserProvider extends ConnectService {
   }
 
   //upload hình
-  Future<NetworkResponse<ProfileResponse>> uploadFile(filePath) async {
+  Future<NetworkResponse<Profile>> uploadFile(filePath) async {
     try {
       FormData formData = FormData.fromMap({
         "multipartFile": await MultipartFile.fromFile(filePath, filename: 'avt')
@@ -156,7 +155,7 @@ class UserProvider extends ConnectService {
       );
       return NetworkResponse.fromResponse(
         response,
-        (json) => ProfileResponse.fromJson(json),
+        (json) => Profile.fromJson(json),
       );
     } on DioError catch (e) {
       print(e.error);

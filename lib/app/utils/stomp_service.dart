@@ -10,12 +10,24 @@ import 'package:valo_chat_app/app/utils/store_service.dart';
 class StompService {
   static var stompClient = null;
   static var wsUrl = dotenv.env['WS_URL'];
+
+  void startStomp() {
+    if (stompClient == null) {
+      initStomp();
+    }
+    stompClient.activate();
+  }
+
+  void desTroyStomp() {
+    if (stompClient != null) {
+      stompClient.deactivate();
+    }
+  }
+
   void initStomp() {
     stompClient = StompClient(
-      config: StompConfig(
-        url:
-            // 'ws://ec2-3-0-183-214.ap-southeast-1.compute.amazonaws.com:3000/ws/websocket',
-            '${wsUrl}',
+      config: StompConfig.SockJS(
+        url: '${wsUrl}',
         onConnect: onConnect,
         // onDisconnect: onDisconnect,
         beforeConnect: () async {
@@ -34,17 +46,18 @@ class StompService {
     );
   }
 
-  void startStomp() {
-    if (stompClient == null) {
-      initStomp();
-    }
-    stompClient.activate();
-  }
+  void onConnect(StompFrame frame) {
+    String mess = "";
+    print("--Connected---");
+    stompClient.subscribe(
+      destination: '/topic/message',
+      callback: (frame) {
+        Map<String, dynamic> result = json.decode(frame.body!);
+        print(result);
+      },
+    );
 
-  void desTroyStomp() {
-    if (stompClient != null) {
-      stompClient.deactivate();
-    }
+    print(mess);
   }
 
   dynamic onDisconnect(StompFrame frame) {
@@ -54,16 +67,5 @@ class StompService {
   dynamic onStompError(StompFrame frame) {
     print("--onStompError---");
     print(json.decode(frame.body.toString()));
-  }
-
-  void onConnect(StompFrame frame) {
-    stompClient.subscribe(
-      destination: '/topic/user',
-      callback: (frame) {
-        List<dynamic>? result = json.decode(frame.body!);
-        print(result);
-      },
-    );
-    
   }
 }

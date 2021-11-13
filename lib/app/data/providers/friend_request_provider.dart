@@ -4,28 +4,26 @@ import 'package:valo_chat_app/app/data/models/friend_request.dart';
 import 'package:valo_chat_app/app/data/models/network_response.dart';
 import 'package:valo_chat_app/app/data/models/response_message_model.dart';
 
-class FriendRequestProvider extends ConnectService{
+class FriendRequestProvider extends ConnectService {
   static const String getFriendRequestUrl = '/friend-request';
   static const String sendfriendRequestUrl = '/friend-request/to/';
   static const String accpectFriendRequestUrl = '/friend-request';
 
   //Get friend request
   // Future<NetworkResponse<List<Content>>> GetFriendRequests(
-  Future<List<FriendRequest>> GetFriendRequests(String accessToken) async {
+  Future<NetworkResponse<FriendRequestPage>> GetFriendRequests(
+      String accessToken) async {
     try {
       final response = await get(
         '$getFriendRequestUrl',
         options: Options(headers: {'Authorization': 'Bearer ${accessToken}'}),
       );
-      // return NetworkResponse.fromResponse(
-      //     response,
-      return (response.data['content'] as List)
-          .map((e) => FriendRequest.fromJson(e))
-          .toList();
-      // );
+      return NetworkResponse.fromResponse(
+        response,
+        (json) => FriendRequestPage.fromJson(json),
+      );
     } on DioError catch (e, s) {
-      // return NetworkResponse.withError(e.response);
-      throw Exception("$e///////////$s");
+      return NetworkResponse.withError(e.response);
     }
   }
 

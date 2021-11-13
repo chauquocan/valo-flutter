@@ -2,27 +2,14 @@ import 'dart:convert';
 
 import 'package:valo_chat_app/app/data/models/page_model.dart';
 
-class MessageModel {
-  final String? id;
-  final String type;
-  final String message;
-  final int time;
 
-  MessageModel({
-    this.id,
-    required this.message,
-    required this.type,
-    required this.time,
-  });
-}
-
-class MessagePage {
-  MessagePage({
+class ProfilePage {
+  ProfilePage({
     required this.content,
     required this.pageable,
     required this.last,
-    required this.totalPages,
     required this.totalElements,
+    required this.totalPages,
     required this.size,
     required this.number,
     required this.sort,
@@ -30,25 +17,24 @@ class MessagePage {
     required this.numberOfElements,
     required this.empty,
   });
-  late final List<Message> content;
+  late final List<Profile> content;
   late final Pageable pageable;
   late final bool last;
-  late final int totalPages;
   late final int totalElements;
+  late final int totalPages;
   late final int size;
   late final int number;
   late final Sort sort;
   late final bool first;
   late final int numberOfElements;
   late final bool empty;
-
-  MessagePage.fromJson(Map<String, dynamic> json) {
-    content =
-        List.from(json['content']).map((e) => Message.fromJson(e)).toList();
+  
+  ProfilePage.fromJson(Map<String, dynamic> json){
+    content = List.from(json['content']).map((e)=>Profile.fromJson(e)).toList();
     pageable = Pageable.fromJson(json['pageable']);
     last = json['last'];
-    totalPages = json['totalPages'];
     totalElements = json['totalElements'];
+    totalPages = json['totalPages'];
     size = json['size'];
     number = json['number'];
     sort = Sort.fromJson(json['sort']);
@@ -59,11 +45,11 @@ class MessagePage {
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
-    _data['content'] = content.map((e) => e.toJson()).toList();
+    _data['content'] = content.map((e)=>e.toJson()).toList();
     _data['pageable'] = pageable.toJson();
     _data['last'] = last;
-    _data['totalPages'] = totalPages;
     _data['totalElements'] = totalElements;
+    _data['totalPages'] = totalPages;
     _data['size'] = size;
     _data['number'] = number;
     _data['sort'] = sort.toJson();
@@ -74,35 +60,56 @@ class MessagePage {
   }
 }
 
-class Message {
-  Message({
+class Profile {
+  Profile({
     required this.id,
-    required this.conversationId,
-    required this.sendAt,
-    required this.messageType,
-    required this.content,
+    required this.name,
+    required this.gender,
+    required this.dateOfBirth,
+    required this.phone,
+    required this.email,
+    required this.address,
+    required this.imgUrl,
+    required this.status,
   });
   late final String id;
-  late final String conversationId;
-  late final String sendAt;
-  late final String messageType;
-  late final String content;
+  late final String name;
+  late final String gender;
+  late final String dateOfBirth;
+  late final String phone;
+  late final String email;
+  late final String address;
+  late final String imgUrl;
+  late final String status;
 
-  Message.fromJson(Map<String, dynamic> json) {
+  factory Profile.fromRawJson(String str) =>
+      Profile.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+  
+  Profile.fromJson(Map<String, dynamic> json){
     id = json['id'];
-    conversationId = json['conversationId'];
-    sendAt = json['sendAt'];
-    messageType = json['messageType'];
-    content = json['content'];
+    name = json['name'];
+    gender = json['gender'];
+    dateOfBirth = json['dateOfBirth'];
+    phone = json['phone'];
+    email = json['email'];
+    address = json['address'];
+    imgUrl = json['imgUrl'];
+    status = json['status'];
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['id'] = id;
-    _data['conversationId'] = conversationId;
-    _data['sendAt'] = sendAt;
-    _data['messageType'] = messageType;
-    _data['content'] = content;
+    _data['name'] = name;
+    _data['gender'] = gender;
+    _data['dateOfBirth'] = dateOfBirth;
+    _data['phone'] = phone;
+    _data['email'] = email;
+    _data['address'] = address;
+    _data['imgUrl'] = imgUrl;
+    _data['status'] = status;
     return _data;
   }
 }

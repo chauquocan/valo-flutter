@@ -1,7 +1,7 @@
 part of 'widgets.dart';
 
 class WidgetAvatarChat extends StatelessWidget {
-  final List<ProfileResponse> members;
+  final List<Profile> members;
   final bool isGroup;
   final double? size;
   final double? avatarSize;

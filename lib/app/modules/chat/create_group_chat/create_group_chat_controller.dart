@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:valo_chat_app/app/data/models/user_model.dart';
+import 'package:valo_chat_app/app/data/models/profile_model.dart';
 import 'package:valo_chat_app/app/data/providers/contact_provider.dart';
 import 'package:valo_chat_app/app/data/providers/user_provider.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
@@ -19,8 +19,8 @@ class CreateGroupChatController extends GetxController {
   final textCtrl = TextEditingController();
 
   final _isLoading = true.obs;
-  final _users = <ProfileResponse>[].obs;
-  final _selected = <ProfileResponse>[].obs;
+  final _users = <Profile>[].obs;
+  final _selected = <Profile>[].obs;
 
   get isLoading => _isLoading.value;
 
@@ -28,13 +28,13 @@ class CreateGroupChatController extends GetxController {
     _isLoading.value = value;
   }
 
-  List<ProfileResponse> get users => _users;
+  List<Profile> get users => _users;
 
   set users(value) {
     _users.value = value;
   }
 
-  List<ProfileResponse> get selected => _selected;
+  List<Profile> get selected => _selected;
 
   set selected(value) {
     _selected.value = value;
@@ -60,7 +60,7 @@ class CreateGroupChatController extends GetxController {
 //     super.onInit();
 //   }
 
-  void onSelect(ProfileResponse item) {
+  void onSelect(Profile item) {
     if (selected.contains(item)) {
       selected.removeWhere((element) => element == item);
     } else {
@@ -81,7 +81,7 @@ class CreateGroupChatController extends GetxController {
     for (var contact in contactController.contactId) {
       final user = await userProvider.getUserById(contact.friendId);
       users.add(
-        ProfileResponse(
+        Profile(
             id: user.data!.id,
             name: user.data!.name,
             gender: user.data!.gender,

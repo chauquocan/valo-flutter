@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:valo_chat_app/app/data/models/contact_model.dart';
-import 'package:valo_chat_app/app/data/models/user_model.dart';
+import 'package:valo_chat_app/app/data/models/profile_model.dart';
 import 'package:valo_chat_app/app/data/providers/contact_provider.dart';
 import 'package:valo_chat_app/app/data/providers/user_provider.dart';
 
@@ -70,7 +70,7 @@ class TabContactController extends GetxController {
   /* 
     Get contact info from id
    */
-  Future<ProfileResponse?> getContact(String id) async {
+  Future<Profile?> getContact(String id) async {
     final user = await userProvider.getUserById(id);
     return user.data;
   }

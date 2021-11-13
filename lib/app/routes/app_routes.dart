@@ -14,7 +14,7 @@ abstract class Routes {
 
   //tabs
   static const PROFILE = '/profile';
-  static const CONVERSATION = '/chat';
+  static const CHAT = '/chat';
   static const CONTACT = '/contact';
   static const EDITPROFILE = '/editprofile';
 

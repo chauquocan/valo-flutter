@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
-import 'package:valo_chat_app/app/widgets/custom/custom_chat.dart';
 
 class ConversationTab extends GetView<TabConversationController> {
-  ConversationTab({Key? key}) : super(key: key);
+  const ConversationTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -51,26 +50,66 @@ class ConversationTab extends GetView<TabConversationController> {
         ],
       ),
       body: SafeArea(
-        child: Obx(
-          () => controller.isLoading.value
-              ? const Center(child: CircularProgressIndicator())
-              : controller.conversationsLoaded.value
-                  ? ListView.builder(
-                      itemBuilder: (context, index) => CustomChatCard(
-                        chat: controller.conversations[index],
-                      ),
-                      itemCount: controller.conversations.length,
-                      
-                    )
-                  : const Center(
-                      child: Text(
-                        'No conversation yet',
-                        style: TextStyle(
-                          color: AppColors.dark,
-                          fontSize: 18,
+        child: GetX<TabConversationController>(
+          builder: (_) {
+            if (controller.isLoading.value) {
+              return const Center(child: CircularProgressIndicator());
+            } else {
+              if (controller.conversationsLoaded.value) {
+                return ListView.builder(
+                    itemCount: controller.conversations.length,
+                    itemBuilder: (context, i) {
+                      final conversation = controller.conversations[i];
+                      return ListTile(
+                        onLongPress: () {},
+                        onTap: () => Get.toNamed('/chat', arguments: {
+                          "id": conversation.id,
+                          "name": conversation.name,
+                          // "participants": conversation.participants,
+                          "avatar": conversation.avatar,
+                          "isGroup": conversation.isGroup,
+                        }),
+                        leading: Hero(
+                          tag: conversation.id,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.blueGrey,
+                            radius: 30,
+                            backgroundImage: NetworkImage(conversation.avatar),
+                          ),
                         ),
-                      ),
+                        title: Text(
+                          conversation.name,
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        trailing: Text(conversation.time),
+                        subtitle: Row(
+                          children: [
+                            Icon(Icons.done_all),
+                            const SizedBox(
+                              width: 3,
+                            ),
+                            Text(
+                              conversation.lastMessage,
+                              style: const TextStyle(fontSize: 13),
+                            ),
+                          ],
+                        ),
+                      );
+                    });
+              } else {
+                return const Center(
+                  child: Text(
+                    'No conversation yet',
+                    style: TextStyle(
+                      color: AppColors.dark,
+                      fontSize: 18,
                     ),
+                  ),
+                );
+              }
+            }
+          },
         ),
       ),
     );

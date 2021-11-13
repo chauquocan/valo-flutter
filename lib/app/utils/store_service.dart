@@ -1,7 +1,8 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decode/jwt_decode.dart';
+import 'package:valo_chat_app/app/data/models/auth_model.dart';
 import 'package:valo_chat_app/app/data/providers/user_provider.dart';
-import '../data/models/user_model.dart';
+import '../data/models/profile_model.dart';
 
 //Storage service for storing local data
 class Storage {
@@ -26,20 +27,20 @@ class Storage {
   }
 
   //save user
-  static Future saveUser(ProfileResponse user) async {
+  static Future saveUser(Profile user) async {
     await _pref.setString('user', user.toRawJson());
   }
 
-  static Future updateUser(ProfileResponse user) async {
+  static Future updateUser(Profile user) async {
     _pref.remove('user');
     await _pref.setString('user', user.toRawJson());
   }
 
   //get user
-  static ProfileResponse? getUser() {
+  static Profile? getUser() {
     final raw = _pref.getString('user');
     if (raw == null) return null;
-    return ProfileResponse.fromRawJson(raw);
+    return Profile.fromRawJson(raw);
   }
 
   //check token is expired
