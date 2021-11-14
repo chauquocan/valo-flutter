@@ -1,7 +1,6 @@
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/chat/widgets/widgets.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_friend.dart';
@@ -17,6 +16,7 @@ class ChatScreen extends GetView<ChatController> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      // backgroundColor: Colors.white70,
       appBar: _appBar(),
       body: Column(
         children: [
@@ -25,23 +25,24 @@ class ChatScreen extends GetView<ChatController> {
               builder: (_) {
                 if (controller.isLoading) {
                   return Center(child: CircularProgressIndicator());
+                } else {
+                  return ListView.builder(
+                    controller: controller.scrollController,
+                    reverse: true,
+                    itemCount: controller.messages.length,
+                    itemBuilder: (context, i) {
+                      final item = controller.messages[i];
+                      return WidgetBubble(
+                        message: item.content,
+                        isMe: item.id == Storage.getUser()?.id,
+                        dateTime: DateFormat('mm:ss dd-MM-yyyy')
+                            .format(DateTime.parse(item.sendAt)),
+                        type: item.messageType,
+                        avatar: controller.avatar,
+                      );
+                    },
+                  );
                 }
-                return ListView.builder(
-                  controller: controller.scrollController,
-                  reverse: true,
-                  itemCount: controller.messages.length,
-                  itemBuilder: (context, i) {
-                    final item = controller.messages[i];
-                    return WidgetBubble(
-                      message: item.message,
-                      isMe: item.id == Storage.getUser()?.id,
-                      dateTime:
-                          '${DateFormat('hh:mm a').format(DateTime.fromMillisecondsSinceEpoch(item.time))}',
-                      type: item.type,
-                      avatar: controller.avatar,
-                    );
-                  },
-                );
               },
             ),
           ),

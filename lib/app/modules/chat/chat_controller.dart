@@ -30,7 +30,7 @@ class ChatController extends GetxController {
   final _stickerShowing = false.obs;
   final _showMore = false.obs;
   final _isKeyboardVisible = false.obs;
-  final _messages = <MessageModel>[].obs;
+  final _messages = <Message>[].obs;
   final _isLoading = true.obs;
 
   get showMore => _showMore.value;
@@ -50,7 +50,7 @@ class ChatController extends GetxController {
     name = Get.arguments['name'];
     avatar = Get.arguments['avatar'];
     isGroup = Get.arguments['isGroup'];
-
+    getMessages(id);
     super.onInit();
     StompService().startStomp();
   }
@@ -124,7 +124,7 @@ class ChatController extends GetxController {
     _isLoading.value = value;
   }
 
-  List<MessageModel> get messages => _messages;
+  List<Message> get messages => _messages;
 
   set messages(value) {
     _messages.value = value;
@@ -152,14 +152,23 @@ class ChatController extends GetxController {
   }
 
   Future getMessages(String id) async {
-    List<MessageModel> _messages = [];
+    List<Message> _messages = [];
     final response = await provider.GetMessages(id);
     if (response.ok) {
       if (response.data!.content.length > 0) {
         for (var message in response.data!.content) {
-          // _messages.add(Mess);
+          _messages.add(message);
         }
+        messages = _messages;
+        isLoading = false;
+        print(messages);
+        update();
+      } else {
+        print('ko co mess');
+        isLoading = false;
       }
+    } else {
+      print(response);
     }
   }
 

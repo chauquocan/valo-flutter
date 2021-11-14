@@ -4,11 +4,13 @@ import 'package:valo_chat_app/app/data/models/friend_request.dart';
 import 'package:valo_chat_app/app/data/models/profile_model.dart';
 import 'package:valo_chat_app/app/data/providers/friend_request_provider.dart';
 import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
+import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
 class AddFriendController extends GetxController {
-  TabConversationController chatController = Get.find();
+  final chatController = Get.find<TabConversationController>();
+  final contactController = Get.find<TabContactController>();
   //User service
   final ProfileProvider userProvider;
   final FriendRequestProvider friendProvider;
@@ -29,6 +31,7 @@ class AddFriendController extends GetxController {
   //usersLoaded
   final usersLoadded = false.obs;
   final isSearch = false.obs;
+  final isAccepted = false.obs;
   //isSent
   final isSent = false.obs;
 
@@ -38,7 +41,9 @@ class AddFriendController extends GetxController {
     super.onInit();
   }
 
-  //Gửi lời mời
+  /* 
+    Gửi lời mời
+   */
   Future SendFriendReq(String toId) async {
     final response = await friendProvider.SendFriendRequest(
         Storage.getToken()!.accessToken, toId);
@@ -50,7 +55,9 @@ class AddFriendController extends GetxController {
     }
   }
 
-  //Lấy danh sách lời mời
+  /* 
+    Lấy danh sách lời mời
+   */
   Future getFriendReqList() async {
     isLoading.value = true;
     List<FriendRequest> _friendList = [];
@@ -74,25 +81,25 @@ class AddFriendController extends GetxController {
     }
   }
 
-  //Chấp nhận lời mời
+  /* 
+    Chấp nhận lời mời
+   */
   Future acceptFriendRequest(String id) async {
     final response = await friendProvider.AcceptFriendRequest(
         Storage.getToken()!.accessToken, id);
     if (response.ok) {
       Get.snackbar('Thanh cong', '${response.data}');
-      chatController.onReady();
-      friendReqList.value.clear();
+      chatController.getConversations();
+      contactController.getContactsFromAPI();
+      isAccepted.value = true;
     } else {
       Get.snackbar('That bai', '${response.data}');
     }
   }
 
-  Future getUserById(String id) async {
-    final response = await userProvider.getUserById(id);
-    if (response.ok) {}
-  }
-
-  //Search user
+  /* 
+    Search user
+   */
   Future searchUser(String textToSearch) async {
     isLoading.value = true;
     List<Profile> _profiles = [];

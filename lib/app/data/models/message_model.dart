@@ -2,19 +2,19 @@ import 'dart:convert';
 
 import 'package:valo_chat_app/app/data/models/page_model.dart';
 
-class MessageModel {
-  final String? id;
-  final String type;
-  final String message;
-  final int time;
+// class MessageModel {
+//   final String? id;
+//   final String type;
+//   final String message;
+//   final int time;
 
-  MessageModel({
-    this.id,
-    required this.message,
-    required this.type,
-    required this.time,
-  });
-}
+//   MessageModel({
+//     this.id,
+//     required this.message,
+//     required this.type,
+//     required this.time,
+//   });
+// }
 
 class MessagePage {
   MessagePage({

@@ -24,27 +24,32 @@ class FriendRequestScreen extends GetView<AddFriendController> {
                     final user = controller.userList[i];
                     final friendReq = controller.friendReqList[i];
                     return ListTile(
-                      onLongPress: () {},
-                      onTap: () {},
-                      leading: Hero(
-                          tag: user.id,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.blueGrey,
-                            radius: 30,
-                            backgroundImage: NetworkImage('${user.imgUrl}'),
-                          )),
-                      title: Text(
-                        user.name,
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text(friendReq.sendAt),
-                      trailing: IconButton(
-                        onPressed: () => controller
-                            .acceptFriendRequest('${friendReq.fromId}'),
-                        icon: Icon(Icons.add),
-                      ),
-                    );
+                        onLongPress: () {},
+                        onTap: () {},
+                        leading: Hero(
+                            tag: user.id,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.blueGrey,
+                              radius: 30,
+                              backgroundImage: NetworkImage('${user.imgUrl}'),
+                            )),
+                        title: Text(
+                          user.name,
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(friendReq.sendAt),
+                        trailing: TextButton(
+                          onPressed: () {
+                            controller
+                                .acceptFriendRequest('${friendReq.fromId}');
+                          },
+                          child: Obx(
+                            () => controller.isAccepted.value
+                                ? Text('Bạn bè')
+                                : Text('Chấp nhận'),
+                          ),
+                        ));
                   },
                 );
               } else {

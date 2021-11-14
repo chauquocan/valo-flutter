@@ -27,8 +27,9 @@ class WidgetBubble extends StatelessWidget {
         );
       }
     }
-
-    if (type == 0) {
+    if (type == 'SYSTEM') {
+      return _buildSystemBubble();
+    } else if (type == 'TEXT') {
       return _buildTextBubble();
     } else if (type == 1) {
       return _buildImageBubble(context);
@@ -42,6 +43,37 @@ class WidgetBubble extends StatelessWidget {
     } else {
       return SizedBox();
     }
+  }
+
+  Widget _buildSystemBubble() {
+    return Container(
+      margin: EdgeInsets.all(5),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: Text(
+              dateTime,
+              style: TextStyle(color: Colors.black26),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(15),
+            child: SelectableText(
+              message,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.black87,
+              ),
+              onTap: () {
+                Clipboard.setData(ClipboardData(text: message));
+              },
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   Widget _buildTextBubble() {
@@ -633,5 +665,3 @@ class _WidgetUrlPreviewState extends State<_WidgetUrlPreview> {
     );
   }
 }
-
-//hu

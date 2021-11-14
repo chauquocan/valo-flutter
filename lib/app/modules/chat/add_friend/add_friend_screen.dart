@@ -13,7 +13,7 @@ class AddFriendScreen extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.symmetric(
+              margin: const EdgeInsets.symmetric(
                 vertical: 10,
                 horizontal: 10,
               ),
@@ -22,8 +22,10 @@ class AddFriendScreen extends StatelessWidget {
                 onChanged: (value) {
                   if (value.length > 0) {
                     controller.searchUser(value);
+                    controller.isSearch.value = true;
                   } else {
                     controller.searchResults.value.clear();
+                    controller.isSearch.value = false;
                   }
                 },
                 decoration: InputDecoration(
@@ -35,7 +37,7 @@ class AddFriendScreen extends StatelessWidget {
             Expanded(
               child: GetX<AddFriendController>(
                 builder: (_) => controller.isLoading.value
-                    ? Center(
+                    ? const Center(
                         child: CircularProgressIndicator(
                           backgroundColor: Colors.white,
                         ),
@@ -62,17 +64,20 @@ class AddFriendScreen extends StatelessWidget {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 subtitle: Text(user.phone),
-                                trailing: IconButton(
-                                    onPressed: () =>
-                                        controller.SendFriendReq('${user.id}'),
-                                    icon: Obx(() => controller.isSent.value
-                                        ? Icon(Icons.done)
-                                        : Icon(Icons.person_add))),
+                                trailing: TextButton(
+                                  onPressed: () =>
+                                      controller.SendFriendReq('${user.id}'),
+                                  child: Obx(() => controller.isSent.value
+                                      ? Text('Đã gửi')
+                                      : Text('Kết bạn')),
+                                ),
                               );
                             })
-                        : const Center(
+                        : Center(
                             child: Text(
-                              'No conversation yet',
+                              controller.isSearch.value
+                                  ? 'No user found'
+                                  : 'No conversation yet',
                               style: TextStyle(
                                 color: AppColors.dark,
                                 fontSize: 18,
