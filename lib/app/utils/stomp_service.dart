@@ -29,7 +29,7 @@ class StompService {
       config: StompConfig.SockJS(
         url: '${wsUrl}',
         onConnect: onConnect,
-        // onDisconnect: onDisconnect,
+        onDisconnect: onDisconnect,
         beforeConnect: () async {
           print('waiting to connect...');
           await Future.delayed(Duration(milliseconds: 200));
@@ -37,27 +37,22 @@ class StompService {
         },
         onWebSocketError: (dynamic error) => print(error.toString()),
         stompConnectHeaders: {
-          'Authorization': 'Bearer ${Storage.getToken()!.accessToken}'
-        },
-        webSocketConnectHeaders: {
-          'Authorization': 'Bearer ${Storage.getToken()!.accessToken}'
+          'userId': '${Storage.getToken()!.username}',
+          'token': '${Storage.getToken()!.accessToken}'
         },
       ),
     );
   }
 
   void onConnect(StompFrame frame) {
-    String mess = "";
     print("--Connected---");
     stompClient.subscribe(
-      destination: '/topic/message',
+      destination: '/users/queue/message',
       callback: (frame) {
         Map<String, dynamic> result = json.decode(frame.body!);
         print(result);
       },
     );
-
-    print(mess);
   }
 
   dynamic onDisconnect(StompFrame frame) {

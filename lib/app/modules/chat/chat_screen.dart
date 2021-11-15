@@ -34,9 +34,9 @@ class ChatScreen extends GetView<ChatController> {
                       final item = controller.messages[i];
                       return WidgetBubble(
                         message: item.content,
-                        isMe: item.id == Storage.getUser()?.id,
-                        dateTime: DateFormat('mm:ss dd-MM-yyyy')
-                            .format(DateTime.parse(item.sendAt)),
+                        isMe: item.senderId == Storage.getUser()?.id,
+                        dateTime: DateFormat('hh:mm dd-MM-yyyy')
+                            .format(DateTime.parse(item.sendAt!)),
                         type: item.messageType,
                         avatar: controller.avatar,
                       );

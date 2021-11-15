@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:valo_chat_app/app/modules/chat/chat_controller.dart';
+import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
 
 part 'full_photo.dart';

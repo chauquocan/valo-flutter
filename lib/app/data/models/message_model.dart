@@ -74,19 +74,25 @@ class MessagePage {
   }
 }
 
+enum MessageType { TEXT, IMAGE, VIDEO, SYSTEM, FILE }
+
 class Message {
   Message({
-    required this.id,
+    this.id,
     required this.conversationId,
-    required this.sendAt,
+    this.sendAt,
     required this.messageType,
+    this.senderId,
     required this.content,
+    this.replyId,
   });
-  late final String id;
+  late final String? id;
   late final String conversationId;
-  late final String sendAt;
+  late final String? sendAt;
+  late final String? senderId;
   late final String messageType;
   late final String content;
+  late final String? replyId;
 
   Message.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -94,6 +100,8 @@ class Message {
     sendAt = json['sendAt'];
     messageType = json['messageType'];
     content = json['content'];
+    senderId = json['senderId'];
+    replyId = json['replyId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -103,6 +111,44 @@ class Message {
     _data['sendAt'] = sendAt;
     _data['messageType'] = messageType;
     _data['content'] = content;
+    _data['senderId'] = senderId;
+    _data['replyId'] = replyId;
+
+    return _data;
+  }
+}
+
+class MessageDTO {
+  late final String conversationId;
+  late final String? senderId;
+  late final String messageType;
+  late final String content;
+  late final String? replyId;
+
+  MessageDTO({
+    required this.conversationId,
+    required this.messageType,
+    this.senderId,
+    required this.content,
+    this.replyId,
+  });
+
+  MessageDTO.fromJson(Map<String, dynamic> json) {
+    conversationId = json['conversationId'];
+    messageType = json['messageType'];
+    content = json['content'];
+    senderId = json['senderId'];
+    replyId = json['replyId'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['conversationId'] = conversationId;
+    _data['messageType'] = messageType;
+    _data['content'] = content;
+    _data['senderId'] = senderId;
+    _data['replyId'] = replyId;
+
     return _data;
   }
 }

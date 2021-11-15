@@ -32,6 +32,7 @@ class ChatController extends GetxController {
   final _isKeyboardVisible = false.obs;
   final _messages = <Message>[].obs;
   final _isLoading = true.obs;
+  final _messagesLoaded = false.obs;
 
   get showMore => _showMore.value;
 
@@ -124,6 +125,12 @@ class ChatController extends GetxController {
     _isLoading.value = value;
   }
 
+  get messagesLoaded => _messagesLoaded.value;
+
+  set messagesLoaded(value) {
+    _messagesLoaded.value = value;
+  }
+
   List<Message> get messages => _messages;
 
   set messages(value) {
@@ -151,6 +158,9 @@ class ChatController extends GetxController {
     _listTagged.value = value;
   }
 
+  /* 
+    Get Messages
+   */
   Future getMessages(String id) async {
     List<Message> _messages = [];
     final response = await provider.GetMessages(id);
@@ -161,11 +171,11 @@ class ChatController extends GetxController {
         }
         messages = _messages;
         isLoading = false;
-        print(messages);
         update();
       } else {
         print('ko co mess');
         isLoading = false;
+        messagesLoaded = true;
       }
     } else {
       print(response);
@@ -226,20 +236,30 @@ class ChatController extends GetxController {
 
   void sendMessage(String id) {
     if (textController.text.isNotEmpty) {
+      // MessageDTO cm = MessageDTO(
+      //   conversationId: id,
+      //   messageType: 'TEXT',
+      //   content: '${textController.text}',
+      //   replyId: '',
+      //   senderId: '${Storage.getUser()!.id}',
+      // );
+      String body = json.encode({
+        "conversationId": '${id}',
+        "messageType": 0,
+        "content": '${textController.text}',
+        "senderId": '${Storage.getUser()!.id}',
+        "replyId": '',
+      });
+      // String mess = jsonEncode(body);
       StompService.stompClient.send(
-        destination: "/app/chat",
-        body: json.encode(
-          {
-            'replyId': Storage.getUser()!.id,
-            'conversationId': id,
-            'messageType': "TEXT",
-            'content': textController.text
-          },
-        ),
+        destination: "/app/message",
+        body: body,
       );
+      // print(body);
+      textController.text = '';
+      // getMessages(id);
     }
 
-    // provider.channel.sink.add(textController.text);
     // textController.
     // if (textController.text.isNotEmpty) {
     //   // TODO(ff3105): need to optimize

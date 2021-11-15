@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.blue),
     );
     //current user store in local
-    // print('current username: ${Storage.getToken()?.username}');
+    print('current id: ${Storage.getUser()?.id}');
     return GetMaterialApp(
       title: 'Valo chat app',
       debugShowCheckedModeBanner: false,

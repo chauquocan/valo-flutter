@@ -31,7 +31,7 @@ class WidgetBubble extends StatelessWidget {
       return _buildSystemBubble();
     } else if (type == 'TEXT') {
       return _buildTextBubble();
-    } else if (type == 1) {
+    } else if (type == 'IMAGE') {
       return _buildImageBubble(context);
     } else if (type == 2) {
       return _buildStickerBubble(context);
