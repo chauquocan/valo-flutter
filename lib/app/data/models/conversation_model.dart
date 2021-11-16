@@ -88,7 +88,7 @@ class Conversation {
     required this.createAt,
     required this.conversationType,
     required this.participants,
-    required this.avatar,
+    required this.imageUrl,
     required this.isGroup,
     required this.lastMessage,
     required this.name,
@@ -97,12 +97,12 @@ class Conversation {
     this.status,
   });
   late final String id;
+  late String name;
   late final String createAt;
   late final String conversationType;
   late final List<Participants> participants;
-
-  late String name;
-  late String avatar;
+  late String createdByUserId;
+  late String imageUrl;
   late String lastMessage;
   late String time;
   late String? status;
@@ -111,19 +111,25 @@ class Conversation {
 
   Conversation.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    name = json['name'] ?? "";
     createAt = json['createAt'];
     conversationType = json['conversationType'];
     participants = List.from(json['participants'])
         .map((e) => Participants.fromJson(e))
         .toList();
+    createdByUserId = json['createdByUserId'] ?? "";
+    imageUrl = json['imageUrl'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['id'] = id;
+    _data['name'] = name;
     _data['createAt'] = createAt;
     _data['conversationType'] = conversationType;
     _data['participants'] = participants.map((e) => e.toJson()).toList();
+    _data['createdByUserId'] = createdByUserId;
+    _data['imageUrl'] = imageUrl;
     return _data;
   }
 }
@@ -131,19 +137,27 @@ class Conversation {
 class Participants {
   Participants({
     required this.userId,
+    required this.addByUserId,
+    required this.addTime,
     required this.admin,
   });
   late final String userId;
+  late final String addByUserId;
+  late final String addTime;
   late final bool admin;
 
   Participants.fromJson(Map<String, dynamic> json) {
     userId = json['userId'];
+    addByUserId = json['addByUserId']??"";
+    addTime = json['addTime']??"";
     admin = json['admin'];
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['userId'] = userId;
+    _data['addByUserId'] = addByUserId;
+    _data['addTime'] = addTime;
     _data['admin'] = admin;
     return _data;
   }

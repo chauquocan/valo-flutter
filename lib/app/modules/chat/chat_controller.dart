@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:stomp_dart_client/stomp_frame.dart';
 import 'package:valo_chat_app/app/data/models/message_model.dart';
 import 'package:valo_chat_app/app/data/models/profile_model.dart';
 import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
@@ -43,26 +44,6 @@ class ChatController extends GetxController {
     _showMore.value = value;
   }
 
-  /*------------------------*/
-  // Socketchannel
-  @override
-  void onInit() {
-    id = Get.arguments['id'];
-    name = Get.arguments['name'];
-    avatar = Get.arguments['avatar'];
-    isGroup = Get.arguments['isGroup'];
-    getMessages(id);
-    super.onInit();
-    StompService().startStomp();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-    StompService().desTroyStomp();
-  }
-
-  /*------------------------*/
   final _tagging = false.obs;
   final _members = <Profile>[].obs;
   final _listTagged = <Profile>[].obs;
@@ -158,6 +139,44 @@ class ChatController extends GetxController {
     _listTagged.value = value;
   }
 
+  /*------------------------*/
+  // Socketchannel
+  @override
+  void onInit() {
+    id = Get.arguments['id'];
+    name = Get.arguments['name'];
+    avatar = Get.arguments['avatar'];
+    isGroup = Get.arguments['isGroup'];
+    super.onInit();
+    // StompService().startStomp();
+    getMessages(id);
+    StompService.stompClient.subscribe(
+        destination: '/users/queue/messages',
+        callback: (StompFrame frame) => OnMessageReceive(frame));
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+    // StompService().desTroyStomp();
+  }
+
+  /*------------------------*/
+  void AddMess(Message mess) {
+    _messages.value.add(mess);
+  }
+
+  Future OnMessageReceive(StompFrame frame) async {
+    Message mess = Message.fromJson(jsonDecode(frame.body!));
+    AddMess(mess);
+    isLoading = false;
+    messagesLoaded = true;
+    // print(mess.content);
+    // print(messages.length);
+    getMessages(id);
+    // update(["messages"]);
+  }
+
   /* 
     Get Messages
    */
@@ -169,63 +188,22 @@ class ChatController extends GetxController {
         for (var message in response.data!.content) {
           _messages.add(message);
         }
-        messages = _messages;
+        messages.assignAll(_messages);
         isLoading = false;
-        update();
+        messagesLoaded = true;
       } else {
         print('ko co mess');
         isLoading = false;
-        messagesLoaded = true;
+        messagesLoaded = false;
       }
     } else {
       print(response);
     }
   }
 
-  // @override
-  // void onInit() async {
-  //   id = Get.arguments['uID'];
-  //   name = Get.arguments['name'];
-  //   fromContact = Get.arguments['isFromContact'];
-  //   deviceToken = Get.arguments['deviceToken'];
-  //   members = List<ProfileResponse>.from(Get.arguments['members']);
-  //   /*-----------------------------------------------*/
-  //   textController.addListener(() {
-  //     textController.text.split(' ').forEach((e) {
-  //       if (e.startsWith('@')) {
-  //         tagging = true;
-  //       } else {
-  //         tagging = false;
-  //       }
-  //     });
-  //   });
-  //   if (fromContact) {
-  //     provider.getMessagesFromContact(id)
-  //       ..listen((event) {}).onData((data) {
-  //         messages = data;
-  //         isLoading = false;
-  //       });
-  //   } else {
-  //     provider.getMessages(id)
-  //       ..listen((event) {}).onData((data) {
-  //         messages = data;
-  //         isLoading = false;
-  //       });
-  //   }
-
-  //   var keyboardVisibilityController = KeyboardVisibilityController();
-  //   keyboardVisibilityController.onChange.listen((bool isKeyboardVisible) {
-  //     this.isKeyboardVisible = isKeyboardVisible;
-  //     if (isKeyboardVisible && emojiShowing) {
-  //       emojiShowing = false;
-  //     } else if (isKeyboardVisible && stickerShowing) {
-  //       stickerShowing = false;
-  //     } else if (isKeyboardVisible && showMore) {
-  //       showMore = false;
-  //     }
-  //   });
-  //   super.onInit();
-  // }
+  void paginateMessages() {
+    scrollController.addListener(() {});
+  }
 
   // void onTagSelect(ProfileResponse user) {
   //   tagging = !tagging;
@@ -252,12 +230,10 @@ class ChatController extends GetxController {
       });
       // String mess = jsonEncode(body);
       StompService.stompClient.send(
-        destination: "/app/message",
+        destination: "/app/chat",
         body: body,
       );
-      // print(body);
       textController.text = '';
-      // getMessages(id);
     }
 
     // textController.

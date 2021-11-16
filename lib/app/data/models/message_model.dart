@@ -74,8 +74,6 @@ class MessagePage {
   }
 }
 
-enum MessageType { TEXT, IMAGE, VIDEO, SYSTEM, FILE }
-
 class Message {
   Message({
     this.id,
@@ -148,7 +146,6 @@ class MessageDTO {
     _data['content'] = content;
     _data['senderId'] = senderId;
     _data['replyId'] = replyId;
-
     return _data;
   }
 }

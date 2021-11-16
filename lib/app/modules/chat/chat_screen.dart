@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/chat/widgets/widgets.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_friend.dart';
-import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
 import 'chat_controller.dart';
@@ -26,22 +25,27 @@ class ChatScreen extends GetView<ChatController> {
                 if (controller.isLoading) {
                   return Center(child: CircularProgressIndicator());
                 } else {
-                  return ListView.builder(
-                    controller: controller.scrollController,
-                    reverse: true,
-                    itemCount: controller.messages.length,
-                    itemBuilder: (context, i) {
-                      final item = controller.messages[i];
-                      return WidgetBubble(
-                        message: item.content,
-                        isMe: item.senderId == Storage.getUser()?.id,
-                        dateTime: DateFormat('hh:mm dd-MM-yyyy')
-                            .format(DateTime.parse(item.sendAt!)),
-                        type: item.messageType,
-                        avatar: controller.avatar,
-                      );
-                    },
-                  );
+                  if (controller.messagesLoaded) {
+                    return ListView.builder(
+                      // controller: controller.scrollController,
+                      reverse: true,
+                      shrinkWrap: true,
+                      itemCount: controller.messages.length,
+                      itemBuilder: (context, i) {
+                        final item = controller.messages[i];
+                        return Obx(() => WidgetBubble(
+                              message: item.content,
+                              isMe: item.senderId == Storage.getUser()?.id,
+                              dateTime: DateFormat('hh:mm dd-MM-yyyy')
+                                  .format(DateTime.parse(item.sendAt!)),
+                              type: item.messageType,
+                              avatar: controller.avatar,
+                            ));
+                      },
+                    );
+                  } else {
+                    return Center(child: Text('No messages'));
+                  }
                 }
               },
             ),

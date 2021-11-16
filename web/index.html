@@ -25,6 +25,25 @@
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
   <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+
+
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-auth.js"></script>
+  <script>
+    // TODO: Replace the following with your app's Firebase project configuration
+    // For Firebase JavaScript SDK v7.20.0 and later, `measurementId` is an optional field
+    var firebaseConfig = {
+      apiKey: "AIzaSyDPxM9br2y0orzPHHFmwFw3FougGX_hk04",
+      authDomain: "valo-flutter.firebaseapp.com",
+      projectId: "valo-flutter",
+      storageBucket: "valo-flutter.appspot.com",
+      messagingSenderId: "962582765710",
+      appId: "1:962582765710:web:570fc8a1f084dc8b8f29df"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
   <script>
     var serviceWorkerVersion = null;
     var scriptLoaded = false;
@@ -38,17 +57,7 @@
       scriptTag.type = 'application/javascript';
       document.body.append(scriptTag);
     }
-    const firebaseConfig = {
-      apiKey: "AIzaSyDPxM9br2y0orzPHHFmwFw3FougGX_hk04",
-      authDomain: "valo-flutter.firebaseapp.com",
-      projectId: "valo-flutter",
-      storageBucket: "valo-flutter.appspot.com",
-      messagingSenderId: "962582765710",
-      appId: "1:962582765710:web:570fc8a1f084dc8b8f29df"
-    };
 
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
     if ('serviceWorker' in navigator) {
       // Service workers are supported. Use them.
       window.addEventListener('load', function () {

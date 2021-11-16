@@ -66,7 +66,7 @@ class ConversationTab extends GetView<TabConversationController> {
                           "id": conversation.id,
                           "name": conversation.name,
                           // "participants": conversation.participants,
-                          "avatar": conversation.avatar,
+                          "avatar": conversation.imageUrl,
                           "isGroup": conversation.isGroup,
                         }),
                         leading: Hero(
@@ -74,7 +74,7 @@ class ConversationTab extends GetView<TabConversationController> {
                           child: CircleAvatar(
                             backgroundColor: Colors.blueGrey,
                             radius: 30,
-                            backgroundImage: NetworkImage(conversation.avatar),
+                            backgroundImage: NetworkImage(conversation.imageUrl),
                           ),
                         ),
                         title: Text(
