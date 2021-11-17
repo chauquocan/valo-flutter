@@ -12,14 +12,12 @@ import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
 import 'package:valo_chat_app/app/utils/stomp_service.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
-StreamController<Message> streamController = StreamController();
 
 class ChatController extends GetxController {
   final ChatProvider provider;
 
   ChatController({
     required this.provider,
-    required this.stream,
   });
 
   final textController = TextEditingController();
@@ -37,7 +35,6 @@ class ChatController extends GetxController {
   final _isKeyboardVisible = false.obs;
   final _messages = <Message>[].obs;
   final _messagesTemp = <Message>[].obs;
-  final Stream<Message> stream;
   final _isLoading = true.obs;
   final _messagesLoaded = false.obs;
 
@@ -160,21 +157,16 @@ class ChatController extends GetxController {
     avatar = Get.arguments['avatar'];
     isGroup = Get.arguments['isGroup'];
     super.onInit();
-    // StompService().startStomp();
     getMessages(id);
     StompService.stompClient.subscribe(
-        destination: '/users/queue/messages',
-        callback: (StompFrame frame) => OnMessageReceive(frame));
-    stream.listen((event) {
-      print('event: ${event}');
-      AddMess(event);
-    });
+      destination: '/users/queue/messages',
+      callback: (StompFrame frame) => OnMessageReceive(frame),
+    );
   }
 
   @override
   void onClose() {
     textController.clear();
-    streamController.close();
     super.onClose();
   }
 
@@ -187,7 +179,7 @@ class ChatController extends GetxController {
   void OnMessageReceive(StompFrame frame) {
     var response = jsonDecode(frame.body!);
     Message mess = Message.fromJson(response);
-    streamController.add(mess);
+    AddMess(mess);
     update();
   }
 

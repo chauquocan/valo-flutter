@@ -15,7 +15,6 @@ class ChatScreen extends GetView<ChatController> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      // backgroundColor: Colors.white70,
       appBar: _appBar(),
       body: Column(
         children: [
@@ -26,23 +25,23 @@ class ChatScreen extends GetView<ChatController> {
                   return Center(child: CircularProgressIndicator());
                 } else {
                   if (controller.messagesLoaded) {
-                    return Obx(() => ListView.builder(
-                          // controller: controller.scrollController,
-                          reverse: true,
-                          shrinkWrap: true,
-                          itemCount: controller.messages.length,
-                          itemBuilder: (context, i) {
-                            final item = controller.messages[i];
-                            return Obx(() => WidgetBubble(
-                                  message: item.content,
-                                  isMe: item.senderId == Storage.getUser()?.id,
-                                  dateTime: DateFormat('hh:mm dd-MM-yyyy')
-                                      .format(DateTime.parse(item.sendAt)),
-                                  type: item.messageType,
-                                  avatar: controller.avatar,
-                                ));
-                          },
-                        ));
+                    return ListView.builder(
+                      // controller: controller.scrollController,
+                      reverse: true,
+                      shrinkWrap: true,
+                      itemCount: controller.messages.length,
+                      itemBuilder: (context, i) {
+                        final item = controller.messages[i];
+                        return WidgetBubble(
+                          message: item.content,
+                          isMe: item.senderId == Storage.getUser()?.id,
+                          dateTime: DateFormat('hh:mm dd-MM-yyyy')
+                              .format(DateTime.parse(item.sendAt)),
+                          type: item.messageType,
+                          avatar: controller.avatar,
+                        );
+                      },
+                    );
                   } else {
                     return Center(child: Text('No messages'));
                   }
@@ -122,7 +121,7 @@ class ChatScreen extends GetView<ChatController> {
       titleSpacing: 0,
       leading: InkWell(
         onTap: () {
-          Get.back();
+          Get.offNamed('/home');
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

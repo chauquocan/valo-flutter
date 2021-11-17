@@ -5,7 +5,7 @@ abstract class Routes {
   //
   static const WELCOME = '/';
   static const HOME = '/home';
-  
+
   //auth
   static const AUTH = '/auth';
   static const OTP = '/otp';
@@ -14,9 +14,10 @@ abstract class Routes {
 
   //tabs
   static const PROFILE = '/profile';
-  static const CHAT = '/chat';
   static const CONTACT = '/contact';
+
   static const EDITPROFILE = '/editprofile';
+  static const CHAT = '/chat';
 
   static const CREATEGROUP = '/creategroup';
   static const NEWFRIEND = '/newfriend';
