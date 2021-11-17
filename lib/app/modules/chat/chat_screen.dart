@@ -26,9 +26,10 @@ class ChatScreen extends GetView<ChatController> {
                 } else {
                   if (controller.messagesLoaded) {
                     return ListView.builder(
-                      // controller: controller.scrollController,
+                      controller: controller.scrollController,
                       reverse: true,
                       shrinkWrap: true,
+                      physics: AlwaysScrollableScrollPhysics(),
                       itemCount: controller.messages.length,
                       itemBuilder: (context, i) {
                         final item = controller.messages[i];

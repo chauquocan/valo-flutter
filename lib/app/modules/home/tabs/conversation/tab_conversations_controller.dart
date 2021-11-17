@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/data/models/conversation_model.dart';
 import 'package:valo_chat_app/app/data/models/profile_model.dart';
@@ -14,7 +15,8 @@ class TabConversationController extends GetxController {
     required this.chatProvider,
     required this.userProvider,
   });
-
+  final scrollController = ScrollController();
+  final _page = 0.obs;
   final isLoading = true.obs;
   final conversationsLoaded = false.obs;
   final conversations = <Conversation>[].obs;
@@ -27,14 +29,19 @@ class TabConversationController extends GetxController {
     super.onInit();
   }
 
+  @override
+  void onReady() {
+    paginateMessages();
+    super.onReady();
+  }
+
   /* 
     Get conversation
    */
   Future getConversations() async {
-    conversations.value.clear();
     List<Conversation> _conversations = [];
     String currentUserId = Storage.getUser()!.id;
-    final response = await chatProvider.GetConversations();
+    final response = await chatProvider.GetConversations(_page.value);
     if (response.ok) {
       if (response.data!.content.length > 0) {
         for (var conversation in response.data!.content) {
@@ -77,12 +84,78 @@ class TabConversationController extends GetxController {
         conversations.value = _conversations;
         isLoading.value = false;
         conversationsLoaded.value = true;
-        update();
+        _page.value++;
       } else {
         isLoading.value = false;
       }
     } else {
       isLoading.value = true;
     }
+  }
+
+  Future getMoreConversation() async {
+    List<Conversation> _conversations = [];
+    String currentUserId = Storage.getUser()!.id;
+    final response = await chatProvider.GetConversations(_page.value);
+    if (response.ok) {
+      if (response.data!.content.length > 0) {
+        for (var conversation in response.data!.content) {
+          if (conversation.conversationType == 'GROUP') {
+            _conversations.add(
+              Conversation(
+                id: conversation.id,
+                name: conversation.name,
+                imageUrl: conversation.imageUrl,
+                time: '',
+                lastMessage: '',
+                isGroup: true,
+                createAt: conversation.createAt,
+                conversationType: conversation.conversationType,
+                participants: conversation.participants,
+              ),
+            );
+          } else {
+            for (var participant in conversation.participants) {
+              String userId = participant.userId;
+              if (currentUserId != userId) {
+                final user = await userProvider.getUserById(userId);
+                _conversations.add(
+                  Conversation(
+                    id: conversation.id,
+                    name: user.data!.name,
+                    imageUrl: user.data!.imgUrl,
+                    time: '',
+                    lastMessage: '',
+                    isGroup: false,
+                    createAt: conversation.createAt,
+                    conversationType: conversation.conversationType,
+                    participants: conversation.participants,
+                  ),
+                );
+              }
+            }
+          }
+        }
+        conversations.value.addAll(_conversations);
+        isLoading.value = false;
+        conversationsLoaded.value = true;
+        _page.value++;
+      }
+    } else {
+      isLoading.value = true;
+    }
+  }
+
+  /* 
+    Pagination
+   */
+  paginateMessages() async {
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent ==
+          scrollController.position.pixels) {
+        getMoreConversation();
+        update();
+      }
+    });
   }
 }

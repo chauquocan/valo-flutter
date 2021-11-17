@@ -16,10 +16,11 @@ class ChatProvider extends ConnectService {
   static const String conversationURL = 'conversations';
 
   //Get conversations
-  Future<NetworkResponse<ConversationPage>> GetConversations() async {
+  Future<NetworkResponse<ConversationPage>> GetConversations(int page) async {
     try {
       final response = await get(
         conversationURL,
+        queryParameters: {'page': page},
         options: Options(
           headers: {
             'Authorization': 'Bearer ${Storage.getToken()!.accessToken}',
@@ -38,10 +39,11 @@ class ChatProvider extends ConnectService {
   }
 
   //Get messages
-  Future<NetworkResponse<MessagePage>> GetMessages(String id) async {
+  Future<NetworkResponse<MessagePage>> GetMessages(String id,int page) async {
     try {
       final response = await get(
         messageURL + id,
+        queryParameters: {'page': page},
         options: Options(
           headers: {
             'Authorization': 'Bearer ${Storage.getToken()!.accessToken}',

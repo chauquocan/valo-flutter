@@ -12,7 +12,6 @@ import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
 import 'package:valo_chat_app/app/utils/stomp_service.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
-
 class ChatController extends GetxController {
   final ChatProvider provider;
 
@@ -28,15 +27,19 @@ class ChatController extends GetxController {
   final _name = ''.obs;
   final _avatar = ''.obs;
   final _isGroup = false.obs;
+  final _page = 0.obs;
 
   final _emojiShowing = false.obs;
   final _stickerShowing = false.obs;
   final _showMore = false.obs;
   final _isKeyboardVisible = false.obs;
   final _messages = <Message>[].obs;
-  final _messagesTemp = <Message>[].obs;
   final _isLoading = true.obs;
   final _messagesLoaded = false.obs;
+
+  final _tagging = false.obs;
+  final _members = <Profile>[].obs;
+  final _listTagged = <Profile>[].obs;
 
   get showMore => _showMore.value;
 
@@ -46,10 +49,6 @@ class ChatController extends GetxController {
     }
     _showMore.value = value;
   }
-
-  final _tagging = false.obs;
-  final _members = <Profile>[].obs;
-  final _listTagged = <Profile>[].obs;
 
   get id => _id.value;
 
@@ -121,12 +120,6 @@ class ChatController extends GetxController {
     _messages.value = value;
   }
 
-  List<Message> get messagesTemp => _messagesTemp;
-
-  set messagesTemp(value) {
-    _messagesTemp.value = value;
-  }
-
   get tagging => _tagging.value;
 
   set tagging(value) {
@@ -149,7 +142,6 @@ class ChatController extends GetxController {
   }
 
   /*------------------------*/
-  // Socketchannel
   @override
   void onInit() {
     id = Get.arguments['id'];
@@ -157,11 +149,17 @@ class ChatController extends GetxController {
     avatar = Get.arguments['avatar'];
     isGroup = Get.arguments['isGroup'];
     super.onInit();
-    getMessages(id);
+    getMessages(id, _page.value);
     StompService.stompClient.subscribe(
       destination: '/users/queue/messages',
       callback: (StompFrame frame) => OnMessageReceive(frame),
     );
+  }
+
+  @override
+  void onReady() {
+    paginateMessages();
+    super.onReady();
   }
 
   @override
@@ -186,19 +184,18 @@ class ChatController extends GetxController {
   /* 
     Get Messages
    */
-  Future getMessages(String id) async {
+  Future getMessages(String id, int page) async {
     List<Message> _messages = [];
-    final response = await provider.GetMessages(id);
+    final response = await provider.GetMessages(id, page);
     if (response.ok) {
       if (response.data!.content.length > 0) {
         for (var message in response.data!.content) {
           _messages.add(message);
-          messagesTemp.add(message);
         }
         messages.assignAll(_messages);
-        messagesTemp.assignAll(_messages);
         isLoading = false;
         messagesLoaded = true;
+        _page.value++;
       } else {
         print('ko co mess');
         isLoading = false;
@@ -209,8 +206,38 @@ class ChatController extends GetxController {
     }
   }
 
-  void paginateMessages() {
-    scrollController.addListener(() {});
+  /* 
+    Get more messages page
+   */
+  Future getMoreMessages(String id, int page) async {
+    List<Message> _messages = [];
+    final response = await provider.GetMessages(id, page);
+    if (response.ok) {
+      if (response.data!.content.length > 0) {
+        for (var message in response.data!.content) {
+          _messages.add(message);
+        }
+        messages.addAll(_messages);
+        isLoading = false;
+        messagesLoaded = true;
+        _page.value++;
+      }
+    } else {
+      print(response);
+    }
+  }
+
+  /* 
+    Pagination
+   */
+  paginateMessages() async {
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent ==
+          scrollController.position.pixels) {
+        getMoreMessages(id, _page.value);
+        update();
+      }
+    });
   }
 
   // void onTagSelect(ProfileResponse user) {
@@ -222,13 +249,6 @@ class ChatController extends GetxController {
 
   void sendMessage(String id) {
     if (textController.text.isNotEmpty) {
-      // MessageDTO cm = MessageDTO(
-      //   conversationId: id,
-      //   messageType: 'TEXT',
-      //   content: '${textController.text}',
-      //   replyId: '',
-      //   senderId: '${Storage.getUser()!.id}',
-      // );
       String body = json.encode({
         "conversationId": '${id}',
         "messageType": 0,
@@ -236,12 +256,15 @@ class ChatController extends GetxController {
         "senderId": '${Storage.getUser()!.id}',
         "replyId": '',
       });
-      // String mess = jsonEncode(body);
       StompService.stompClient.send(
         destination: "/app/chat",
         body: body,
       );
-      textController.text = '';
+      textController.clear();
+      if (messages.length >= 1) {
+        scrollController.animateTo(0,
+            duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+      }
     }
 
     // textController.
@@ -281,11 +304,7 @@ class ChatController extends GetxController {
     //         UserProvider.getCurrentUser().uid,
     //         deviceToken ?? []);
     //   }
-    //   textController.clear();
-    //   if (messages.length >= 1) {
-    //     scrollController.animateTo(0,
-    //         duration: Duration(milliseconds: 300), curve: Curves.easeOut);
-    //   }
+
     // }
   }
 

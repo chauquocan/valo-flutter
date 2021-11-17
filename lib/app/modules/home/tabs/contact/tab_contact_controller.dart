@@ -19,11 +19,10 @@ class TabContactController extends GetxController {
   final contacts = <ContactCustom>[].obs;
   //fitlered contact list
   final contactsFiltered = <ContactCustom>[].obs;
-
   final contactId = <ContactContent>[].obs;
-
   final contactsLoaded = false.obs;
   final isSearch = false.obs;
+  final _page = 0.obs;
 
   functionPass() {
     isSearch(!isSearch.value);
@@ -33,6 +32,11 @@ class TabContactController extends GetxController {
   void onInit() {
     getContactsFromAPI();
     super.onInit();
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
   }
 
   @override
@@ -46,7 +50,7 @@ class TabContactController extends GetxController {
    */
   Future getContactsFromAPI() async {
     List<ContactCustom> _contactsTemp = [];
-    final response = await contactProvider.getFriends();
+    final response = await contactProvider.getFriends(_page.value);
     if (response.ok) {
       contactId.value = response.data!.content;
       for (var contact in response.data!.content) {
@@ -66,6 +70,28 @@ class TabContactController extends GetxController {
       print('loi khi lay danh sach ban');
     }
   }
+
+  // Future getMoreContactAPI() async {
+  //   List<ContactCustom> _contactsTemp = [];
+  //   final response = await contactProvider.getFriends(_page.value);
+  //   if (response.ok) {
+  //     contactId.value = response.data!.content;
+  //     for (var contact in response.data!.content) {
+  //       final user = await userProvider.getUserById(contact.friendId);
+  //       _contactsTemp.add(ContactCustom(
+  //           id: user.data!.id,
+  //           name: user.data!.name,
+  //           phone: user.data!.phone,
+  //           imgUrl: user.data!.imgUrl));
+  //     }
+  //     contacts.value = _contactsTemp;
+  //     contactsLoaded.value = true;
+  //     searchController.addListener(() => filterContacts());
+  //     getPermissions();
+  //   } else {
+  //     print('loi khi lay danh sach ban');
+  //   }
+  // }
 
   /* 
     Get contact info from id

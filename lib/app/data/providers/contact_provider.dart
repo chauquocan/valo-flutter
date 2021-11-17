@@ -13,10 +13,11 @@ class ContactProvider extends ConnectService {
   final _userId = Storage.getUser()?.id;
 
   //Get frineds
-  Future<NetworkResponse<ContactPage>> getFriends() async {
+  Future<NetworkResponse<ContactPage>> getFriends(int page) async {
     try {
       final response = await get(
         '${getFriendsUrl}',
+        queryParameters: {'page': page},
         options: Options(headers: {
           'Authorization': 'Bearer ${Storage.getToken()!.accessToken}'
         }),
