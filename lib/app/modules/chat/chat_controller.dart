@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
@@ -11,11 +12,14 @@ import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
 import 'package:valo_chat_app/app/utils/stomp_service.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
+StreamController<Message> streamController = StreamController();
+
 class ChatController extends GetxController {
   final ChatProvider provider;
 
   ChatController({
     required this.provider,
+    required this.stream,
   });
 
   final textController = TextEditingController();
@@ -32,6 +36,8 @@ class ChatController extends GetxController {
   final _showMore = false.obs;
   final _isKeyboardVisible = false.obs;
   final _messages = <Message>[].obs;
+  final _messagesTemp = <Message>[].obs;
+  final Stream<Message> stream;
   final _isLoading = true.obs;
   final _messagesLoaded = false.obs;
 
@@ -118,6 +124,12 @@ class ChatController extends GetxController {
     _messages.value = value;
   }
 
+  List<Message> get messagesTemp => _messagesTemp;
+
+  set messagesTemp(value) {
+    _messagesTemp.value = value;
+  }
+
   get tagging => _tagging.value;
 
   set tagging(value) {
@@ -153,28 +165,30 @@ class ChatController extends GetxController {
     StompService.stompClient.subscribe(
         destination: '/users/queue/messages',
         callback: (StompFrame frame) => OnMessageReceive(frame));
+    stream.listen((event) {
+      print('event: ${event}');
+      AddMess(event);
+    });
   }
 
   @override
   void onClose() {
+    textController.clear();
+    streamController.close();
     super.onClose();
-    // StompService().desTroyStomp();
   }
 
   /*------------------------*/
   void AddMess(Message mess) {
-    _messages.value.add(mess);
+    messages.insert(0, mess);
+    update();
   }
 
-  Future OnMessageReceive(StompFrame frame) async {
-    Message mess = Message.fromJson(jsonDecode(frame.body!));
-    AddMess(mess);
-    isLoading = false;
-    messagesLoaded = true;
-    // print(mess.content);
-    // print(messages.length);
-    getMessages(id);
-    // update(["messages"]);
+  void OnMessageReceive(StompFrame frame) {
+    var response = jsonDecode(frame.body!);
+    Message mess = Message.fromJson(response);
+    streamController.add(mess);
+    update();
   }
 
   /* 
@@ -187,8 +201,10 @@ class ChatController extends GetxController {
       if (response.data!.content.length > 0) {
         for (var message in response.data!.content) {
           _messages.add(message);
+          messagesTemp.add(message);
         }
         messages.assignAll(_messages);
+        messagesTemp.assignAll(_messages);
         isLoading = false;
         messagesLoaded = true;
       } else {

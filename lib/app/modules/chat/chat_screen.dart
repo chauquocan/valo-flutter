@@ -26,23 +26,23 @@ class ChatScreen extends GetView<ChatController> {
                   return Center(child: CircularProgressIndicator());
                 } else {
                   if (controller.messagesLoaded) {
-                    return ListView.builder(
-                      // controller: controller.scrollController,
-                      reverse: true,
-                      shrinkWrap: true,
-                      itemCount: controller.messages.length,
-                      itemBuilder: (context, i) {
-                        final item = controller.messages[i];
-                        return Obx(() => WidgetBubble(
-                              message: item.content,
-                              isMe: item.senderId == Storage.getUser()?.id,
-                              dateTime: DateFormat('hh:mm dd-MM-yyyy')
-                                  .format(DateTime.parse(item.sendAt!)),
-                              type: item.messageType,
-                              avatar: controller.avatar,
-                            ));
-                      },
-                    );
+                    return Obx(() => ListView.builder(
+                          // controller: controller.scrollController,
+                          reverse: true,
+                          shrinkWrap: true,
+                          itemCount: controller.messages.length,
+                          itemBuilder: (context, i) {
+                            final item = controller.messages[i];
+                            return Obx(() => WidgetBubble(
+                                  message: item.content,
+                                  isMe: item.senderId == Storage.getUser()?.id,
+                                  dateTime: DateFormat('hh:mm dd-MM-yyyy')
+                                      .format(DateTime.parse(item.sendAt)),
+                                  type: item.messageType,
+                                  avatar: controller.avatar,
+                                ));
+                          },
+                        ));
                   } else {
                     return Center(child: Text('No messages'));
                   }
