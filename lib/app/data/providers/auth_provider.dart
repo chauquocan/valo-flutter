@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:valo_chat_app/app/data/connect_service.dart';
 import 'package:valo_chat_app/app/data/models/auth_model.dart';
@@ -7,6 +9,7 @@ import 'package:valo_chat_app/app/utils/store_service.dart';
 
 class AuthProvider extends ConnectService {
   //end point
+  static const String checkURL = 'auth/check/';
   static const String loginURL = 'auth/signin';
   static const String registerURL = 'auth/register';
   static const String refreshTokenUrl = 'auth/refresh_token';
@@ -18,16 +21,14 @@ class AuthProvider extends ConnectService {
   //curent userId
   final _userId = Storage.getUser()?.id;
 
-  // Refresh token
-  Future<NetworkResponse<LoginRespone>> refreshToken(Map refreshToken) async {
+  //Check phone number exist
+  Future<NetworkResponse<ResponseMessage>> checkPhoneExist(
+      String phoneNumber) async {
     try {
-      final response = await post(refreshTokenUrl, data: refreshToken);
+      final response = await get(checkURL + phoneNumber);
       return NetworkResponse.fromResponse(
-        response,
-        (json) => LoginRespone.fromJson(json),
-      );
-    } on DioError catch (e, s) {
-      print(e.error);
+          response, (json) => ResponseMessage.fromJson(json));
+    } on DioError catch (e) {
       return NetworkResponse.withError(e.response);
     }
   }
@@ -53,6 +54,19 @@ class AuthProvider extends ConnectService {
       return NetworkResponse.fromResponse(
         response,
         (json) => ResponseMessage.fromJson(json),
+      );
+    } on DioError catch (e, s) {
+      return NetworkResponse.withError(e.response);
+    }
+  }
+
+  // Refresh token
+  Future<NetworkResponse<LoginRespone>> refreshToken(Map refreshToken) async {
+    try {
+      final response = await post(refreshTokenUrl, data: refreshToken);
+      return NetworkResponse.fromResponse(
+        response,
+        (json) => LoginRespone.fromJson(json),
       );
     } on DioError catch (e, s) {
       print(e.error);

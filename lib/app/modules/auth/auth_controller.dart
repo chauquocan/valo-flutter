@@ -1,6 +1,8 @@
 part of 'auth.dart';
 
 class AuthController extends GetxController {
+  final AuthProvider authProvider;
+
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _otpController = TextEditingController();
 
@@ -10,6 +12,20 @@ class AuthController extends GetxController {
   String verificationID = '';
   var loading = false.obs;
   String countryCode = '';
+
+  AuthController({required this.authProvider});
+
+  Future<bool> CheckPhoneExist(String phoneNumber) async {
+    loading(true);
+    final response = await authProvider.checkPhoneExist(phoneNumber);
+    if (response.ok) {
+      loading(false);
+      return false;
+    } else {
+      loading(false);
+      return true;
+    }
+  }
 
   _verifyPhoneNumber(String phoneNumber) async {
     loading.value = true;
@@ -60,7 +76,7 @@ class AuthController extends GetxController {
     }
   }
 
-  void showInfoDialog(String title, String content) {
+  showInfoDialog(String title, String content) {
     Get.dialog(AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(29)),
       title: Text(title),

@@ -99,6 +99,5 @@ AppBar _appBar() {
       'Add new friend',
       style: TextStyle(color: AppColors.light),
     ),
-    backgroundColor: Colors.lightBlue,
   );
 }

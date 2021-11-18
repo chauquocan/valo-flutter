@@ -33,13 +33,13 @@ class ChatProvider extends ConnectService {
       );
     } on DioError catch (e, s) {
       print(e.error);
-      print(e.response?.data);
+      print(s);
       return NetworkResponse.withError(e.response);
     }
   }
 
   //Get messages
-  Future<NetworkResponse<MessagePage>> GetMessages(String id,int page) async {
+  Future<NetworkResponse<MessagePage>> GetMessages(String id, int page) async {
     try {
       final response = await get(
         messageURL + id,

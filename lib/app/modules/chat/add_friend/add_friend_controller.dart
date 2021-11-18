@@ -51,7 +51,8 @@ class AddFriendController extends GetxController {
       isSent.value = true;
       Get.snackbar('Success', 'Request sent');
     } else {
-      Get.snackbar('Fail', 'Something wrong');
+      Get.snackbar('Fail', 'You already sent request',
+          snackPosition: SnackPosition.BOTTOM);
     }
   }
 
@@ -103,6 +104,7 @@ class AddFriendController extends GetxController {
   Future searchUser(String textToSearch) async {
     isLoading.value = true;
     List<Profile> _profiles = [];
+    String userPhone = Storage.getUser()!.phone;
     final searchResponse = await userProvider.searchUser(
       textToSearch,
     );
@@ -110,7 +112,11 @@ class AddFriendController extends GetxController {
       if (searchResponse.data!.content.length > 0) {
         Future.delayed(Duration(milliseconds: 200), () {
           // Do something
-          _profiles.addAll(searchResponse.data!.content);
+          for (var item in searchResponse.data!.content) {
+            if (userPhone != item.phone) {
+              _profiles.add(item);
+            }
+          }
           searchResults.value = _profiles;
           isLoading.value = false;
           usersLoadded.value = true;

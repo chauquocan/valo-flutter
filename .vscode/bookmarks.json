@@ -1,0 +1,29 @@
+{
+	"files": [
+		{
+			"path": "lib/app/modules/chat/chat_controller.dart",
+			"bookmarks": [
+				{
+					"line": 176,
+					"column": 15,
+					"label": "On message receive"
+				},
+				{
+					"line": 187,
+					"column": 14,
+					"label": "Get messages"
+				},
+				{
+					"line": 212,
+					"column": 5,
+					"label": "Get more messages"
+				},
+				{
+					"line": 233,
+					"column": 10,
+					"label": "Pagination messages"
+				}
+			]
+		}
+	]
+}

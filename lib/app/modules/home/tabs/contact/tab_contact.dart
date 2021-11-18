@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/contacts_list.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
-import 'package:valo_chat_app/app/themes/theme.dart';
 
 class ContactTab extends StatefulWidget {
   const ContactTab({Key? key}) : super(key: key);
@@ -20,11 +18,12 @@ class _ContactTabState extends State<ContactTab> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
           appBar: AppBar(
-            title: Text(
-              'contact'.tr,
-              style: TextStyle(color: AppColors.light),
+            title: Text('contact'.tr),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(10),
+              ),
             ),
-            backgroundColor: Colors.lightBlue,
             actions: [
               IconButton(
                 onPressed: () {
@@ -33,36 +32,7 @@ class _ContactTabState extends State<ContactTab> {
                 icon: Icon(Icons.person_add),
               ),
               IconButton(
-                onPressed: () {
-                  if (controller.getStatusPermission() == true) {
-                    print('Đã nhập');
-                    Get.snackbar('Thong bao', 'Ban da nhap danh ba');
-                  } else if (controller.getStatusPermission() == false) {
-                    print('Lấy danh sách');
-                    controller.getPermissions();
-                  } else {
-                    showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        title: Text('Thông báo'),
-                        content:
-                            Text('Bạn cần cấp quyền đọc danh bạ cho ứng dụng'),
-                        actions: [
-                          TextButton(
-                            style: TextButton.styleFrom(
-                                textStyle: TextStyle(
-                              color: AppColors.primary,
-                            )),
-                            onPressed: () => openAppSettings(),
-                            child: Text('Open setting'),
-                          ),
-                        ],
-                      ),
-                    );
-                    // openAppSettings();
-
-                  }
-                },
+                onPressed: () {},
                 icon: Icon(Icons.contacts),
               ),
             ],
@@ -101,6 +71,7 @@ class _ContactTabState extends State<ContactTab> {
                           ? // if we have contacts to show
                           ContactsList(
                               reloadContacts: () {
+                                print('wut is this');
                                 controller.getContactsFromPhone();
                               },
                               contacts: controller.isSearch.value

@@ -2,6 +2,8 @@ part of 'home.dart';
 
 //Home screen
 class HomeScreen extends GetView<HomeController> {
+  const HomeScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

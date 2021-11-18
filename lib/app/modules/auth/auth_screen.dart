@@ -3,7 +3,7 @@ part of 'auth.dart';
 class AuthScreen extends StatelessWidget {
   AuthScreen({Key? key}) : super(key: key);
 
-  final authController = Get.put(AuthController());
+  final authController = Get.put(AuthController(authProvider: AuthProvider()));
 
   @override
   Widget build(BuildContext context) {
@@ -113,9 +113,16 @@ class AuthScreen extends StatelessWidget {
                       textColor: AppColors.dark,
                       onPressed: () async {
                         FocusScope.of(context).unfocus();
-                        authController._verifyPhoneNumber(
-                            authController.countryCode +
-                                authController._phoneController.text);
+                        if (await authController.CheckPhoneExist(
+                            authController._phoneController.text)) {
+                          Get.snackbar('Thông báo',
+                              'Số điện thoại này đã có người sử dụng!',
+                              backgroundColor: AppColors.light);
+                        } else {
+                          authController._verifyPhoneNumber(
+                              authController.countryCode +
+                                  authController._phoneController.text);
+                        }
                       },
                     );
                   }

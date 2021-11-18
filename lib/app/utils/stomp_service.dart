@@ -2,10 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get/get.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
-import 'package:valo_chat_app/app/data/models/message_model.dart';
+import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
 class StompService {
@@ -34,8 +35,6 @@ class StompService {
           onConnect: onConnect,
           onDisconnect: onDisconnect,
           beforeConnect: () async {
-            print('waiting to connect...');
-            await Future.delayed(Duration(milliseconds: 200));
             print('connecting...');
           },
           onWebSocketError: (dynamic error) => print(error.toString()),
@@ -52,27 +51,6 @@ class StompService {
 
   void onConnect(StompFrame frame) {
     print("--Connected---");
-    // stompClient.subscribe(
-    //   destination: '/users/queue/messages',
-    //   callback: (StompFrame frame) {
-    //     Map<String, dynamic> result = json.decode(frame.body!);
-    //     var mess = Message.fromJson(jsonDecode(frame.body!));
-    //     print(mess);
-    //     print('frame: ${result['content']}');
-    //     print('frame line');
-    //   },
-    // );
-    // stompClient.subscribe(
-    //   destination: '/users/queue/read',
-    //   callback: (StompFrame frame) {
-    //     Map<String, dynamic> result = json.decode(frame.body!);
-    //     var mess = Message.fromJson(jsonDecode(frame.body!));
-    //     print(mess);
-    //     print('frame read: ${result['content']}');
-    //     print('frame read');
-    //   },
-    // );
-    print("---Subscribe---");
   }
 
   dynamic onDisconnect(StompFrame frame) {

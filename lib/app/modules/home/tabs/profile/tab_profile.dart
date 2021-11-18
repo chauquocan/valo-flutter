@@ -20,11 +20,12 @@ class TabProfile extends GetView<TabProfileController> {
   //app bar
   AppBar _appBar() {
     return AppBar(
-      title: Text(
-        'personal'.tr,
-        style: TextStyle(color: AppColors.light),
+      title: Text('personal'.tr),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(10),
+        ),
       ),
-      backgroundColor: Colors.lightBlue,
     );
   }
 }

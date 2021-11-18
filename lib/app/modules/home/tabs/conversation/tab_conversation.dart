@@ -10,43 +10,45 @@ class ConversationTab extends GetView<TabConversationController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'chat'.tr,
-          style: TextStyle(color: AppColors.light),
+        title: Text('chat'.tr),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
         ),
-        backgroundColor: Colors.lightBlue,
         actions: [
           IconButton(
               onPressed: () => Get.toNamed('/newfriend'),
               icon: Icon(Icons.search)),
-          PopupMenuButton<String>(onSelected: (value) {
-            switch (value) {
-              case ("newgroup"):
-                Get.toNamed('/creategroup');
-                break;
-              case ("newfriend"):
-                Get.toNamed('/newfriend');
-                break;
-              case ("friendrequest"):
-                Get.toNamed('/friendrequest');
-                break;
-            }
-          }, itemBuilder: (BuildContext context) {
-            return [
-              PopupMenuItem(
-                child: Text("New friend"),
-                value: "newfriend",
-              ),
-              PopupMenuItem(
-                child: Text("New group"),
-                value: "newgroup",
-              ),
-              PopupMenuItem(
-                child: Text("Friend Request"),
-                value: "friendrequest",
-              ),
-            ];
-          })
+          PopupMenuButton<String>(
+            onSelected: (value) {
+              switch (value) {
+                case ("newgroup"):
+                  Get.toNamed('/creategroup');
+                  break;
+                case ("newfriend"):
+                  Get.toNamed('/newfriend');
+                  break;
+                case ("friendrequest"):
+                  Get.toNamed('/friendrequest');
+                  break;
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem(
+                  child: Text("New friend"),
+                  value: "newfriend",
+                ),
+                PopupMenuItem(
+                  child: Text("New group"),
+                  value: "newgroup",
+                ),
+                PopupMenuItem(
+                  child: Text("Friend Request"),
+                  value: "friendrequest",
+                ),
+              ];
+            },
+          )
         ],
       ),
       body: SafeArea(
@@ -74,7 +76,8 @@ class ConversationTab extends GetView<TabConversationController> {
                           child: CircleAvatar(
                             backgroundColor: Colors.blueGrey,
                             radius: 30,
-                            backgroundImage: NetworkImage(conversation.imageUrl),
+                            backgroundImage:
+                                NetworkImage(conversation.imageUrl),
                           ),
                         ),
                         title: Text(
@@ -85,13 +88,24 @@ class ConversationTab extends GetView<TabConversationController> {
                         trailing: Text(conversation.time),
                         subtitle: Row(
                           children: [
-                            Icon(Icons.done_all),
+                            conversation.unread > 0
+                                ? Icon(
+                                    Icons.fiber_manual_record,
+                                    color: AppColors.primary,
+                                  )
+                                : Icon(Icons.done),
                             const SizedBox(
                               width: 3,
                             ),
-                            Text(
-                              conversation.lastMessage,
-                              style: const TextStyle(fontSize: 13),
+                            Flexible(
+                              child: Text(
+                                conversation.lastMessage,
+                                style: conversation.unread > 0
+                                    ? TextStyle(fontWeight: FontWeight.bold)
+                                    : TextStyle(fontSize: 15),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ],
                         ),

@@ -176,6 +176,7 @@ class ChatController extends GetxController {
 
   void OnMessageReceive(StompFrame frame) {
     var response = jsonDecode(frame.body!);
+    print(response);
     Message mess = Message.fromJson(response);
     AddMess(mess);
     update();

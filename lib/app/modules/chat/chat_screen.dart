@@ -37,7 +37,7 @@ class ChatScreen extends GetView<ChatController> {
                           message: item.content,
                           isMe: item.senderId == Storage.getUser()?.id,
                           dateTime: DateFormat('hh:mm dd-MM-yyyy')
-                              .format(DateTime.parse(item.sendAt)),
+                              .format(item.sendAt),
                           type: item.messageType,
                           avatar: controller.avatar,
                         );
@@ -118,6 +118,9 @@ class ChatScreen extends GetView<ChatController> {
 
   AppBar _appBar() {
     return AppBar(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
+      ),
       leadingWidth: 70,
       titleSpacing: 0,
       leading: InkWell(
@@ -131,18 +134,13 @@ class ChatScreen extends GetView<ChatController> {
               Icons.arrow_back,
               size: 30,
             ),
-            CircleAvatar(
-              radius: 20,
-              backgroundColor: Colors.blueGrey,
-              backgroundImage: NetworkImage(controller.avatar),
-              // child: SvgPicture.asset(
-              //   controller.isGroup
-              //       ? 'assets/icons/logo.svg'
-              //       : 'assets/icons/signup.svg',
-              //   color: AppColors.secondary,
-              //   height: 36,
-              //   width: 36,
-              // ),
+            Hero(
+              tag: controller.id,
+              child: CircleAvatar(
+                radius: 20,
+                backgroundColor: Colors.blueGrey,
+                backgroundImage: NetworkImage(controller.avatar),
+              ),
             ),
           ],
         ),
@@ -172,7 +170,7 @@ class ChatScreen extends GetView<ChatController> {
       actions: [
         IconButton(
           onPressed: () {},
-          icon: Icon(Icons.video_call),
+          icon: Icon(Icons.videocam),
         ),
         IconButton(
           onPressed: () {},

@@ -60,76 +60,40 @@ class MessagePage {
 
 class Message {
   Message({
-    this.id,
+    required this.id,
     required this.conversationId,
     required this.sendAt,
     required this.messageType,
-    this.senderId,
     required this.content,
-    this.replyId,
-  });
-  late final String? id;
-  late final String conversationId;
-  late final String sendAt;
-  late final String? senderId;
-  late final String messageType;
-  late final String content;
-  late final String? replyId;
-
-  Message.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    conversationId = json['conversationId'];
-    sendAt = json['sendAt'];
-    messageType = json['messageType'];
-    content = json['content'];
-    senderId = json['senderId'];
-    replyId = json['replyId'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['id'] = id;
-    _data['conversationId'] = conversationId;
-    _data['sendAt'] = sendAt;
-    _data['messageType'] = messageType;
-    _data['content'] = content;
-    _data['senderId'] = senderId;
-    _data['replyId'] = replyId;
-
-    return _data;
-  }
-}
-
-class MessageDTO {
-  late final String conversationId;
-  late final String? senderId;
-  late final String messageType;
-  late final String content;
-  late final String? replyId;
-
-  MessageDTO({
-    required this.conversationId,
-    required this.messageType,
-    this.senderId,
-    required this.content,
-    this.replyId,
+    required this.senderId,
+    required this.replyId,
   });
 
-  MessageDTO.fromJson(Map<String, dynamic> json) {
-    conversationId = json['conversationId'];
-    messageType = json['messageType'];
-    content = json['content'];
-    senderId = json['senderId'];
-    replyId = json['replyId'];
-  }
+  final String id;
+  final String conversationId;
+  final DateTime sendAt;
+  final String messageType;
+  final String content;
+  final String senderId;
+  final String replyId;
 
-  Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['conversationId'] = conversationId;
-    _data['messageType'] = messageType;
-    _data['content'] = content;
-    _data['senderId'] = senderId;
-    _data['replyId'] = replyId;
-    return _data;
-  }
+  factory Message.fromJson(Map<String, dynamic> json) => Message(
+        id: json["id"] == null ? "" : json["id"],
+        conversationId: json["conversationId"],
+        sendAt: DateTime.parse(json["sendAt"]),
+        messageType: json["messageType"],
+        content: json["content"],
+        senderId: json["senderId"] == null ? "" : json["senderId"],
+        replyId: json["replyId"] == null ? "" : json["replyId"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "conversationId": conversationId,
+        "sendAt": sendAt.toIso8601String(),
+        "messageType": messageType,
+        "content": content,
+        "senderId": senderId == null ? "" : senderId,
+        "replyId": replyId == null ? "" : replyId,
+      };
 }

@@ -22,6 +22,7 @@ class TabContactController extends GetxController {
   final contactId = <ContactContent>[].obs;
   final contactsLoaded = false.obs;
   final isSearch = false.obs;
+  final isImported = false.obs;
   final _page = 0.obs;
 
   functionPass() {
@@ -106,6 +107,7 @@ class TabContactController extends GetxController {
     if (await Permission.contacts.request().isGranted) {
       getContactsFromPhone();
       searchController.addListener(() => filterContacts());
+      isImported.value = true;
     }
   }
 
@@ -114,14 +116,6 @@ class TabContactController extends GetxController {
     return phoneStr.replaceAllMapped(RegExp(r'^(\+)|\D'), (Match m) {
       return m[0] == "+" ? "+" : "";
     });
-  }
-
-  Future<bool> getStatusPermission() async {
-    if (await Permission.contacts.isGranted) {
-      return true;
-    } else {
-      return false;
-    }
   }
 
   /* 
@@ -138,12 +132,11 @@ class TabContactController extends GetxController {
     }).toList();
     contacts.value.addAll(_contactsTemp);
     contactsLoaded.value = true;
-    update();
   }
 
   /* 
     Filtered contacts from search
-   */
+  */
   filterContacts() async {
     List<ContactCustom> contactSearch = [];
     contactSearch.addAll(contacts);

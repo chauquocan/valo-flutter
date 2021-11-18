@@ -1,85 +1,86 @@
+import './message_model.dart';
 import 'page_model.dart';
-
-class ConversationCustom {
-  String id;
-  String name;
-  String avatar;
-  bool isGroup;
-  String time;
-  String currentMessage;
-  String? status;
-  bool select = false;
-  String conversationType;
-  ConversationCustom({
-    required this.id,
-    required this.name,
-    required this.avatar,
-    required this.isGroup,
-    required this.time,
-    required this.currentMessage,
-    required this.conversationType,
-    this.status,
-    this.select = false,
-  });
-}
 
 class ConversationPage {
   ConversationPage({
     required this.content,
     required this.pageable,
     required this.last,
-    required this.totalPages,
     required this.totalElements,
+    required this.totalPages,
+    required this.size,
+    required this.number,
     required this.sort,
     required this.first,
-    required this.number,
     required this.numberOfElements,
-    required this.size,
     required this.empty,
   });
-  late final List<Conversation> content;
-  late final Pageable pageable;
-  late final bool last;
-  late final int totalPages;
-  late final int totalElements;
-  late final Sort sort;
-  late final bool first;
-  late final int number;
-  late final int numberOfElements;
-  late final int size;
-  late final bool empty;
 
-  ConversationPage.fromJson(Map<String, dynamic> json) {
-    content = List.from(json['content'])
-        .map((e) => Conversation.fromJson(e))
-        .toList();
-    pageable = Pageable.fromJson(json['pageable']);
-    last = json['last'];
-    totalPages = json['totalPages'];
-    totalElements = json['totalElements'];
-    sort = Sort.fromJson(json['sort']);
-    first = json['first'];
-    number = json['number'];
-    numberOfElements = json['numberOfElements'];
-    size = json['size'];
-    empty = json['empty'];
-  }
+  final List<Content> content;
+  final Pageable pageable;
+  final bool last;
+  final int totalElements;
+  final int totalPages;
+  final int size;
+  final int number;
+  final Sort sort;
+  final bool first;
+  final int numberOfElements;
+  final bool empty;
 
-  Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['content'] = content.map((e) => e.toJson()).toList();
-    _data['pageable'] = pageable.toJson();
-    _data['last'] = last;
-    _data['totalPages'] = totalPages;
-    _data['totalElements'] = totalElements;
-    _data['sort'] = sort.toJson();
-    _data['first'] = first;
-    _data['number'] = number;
-    _data['numberOfElements'] = numberOfElements;
-    _data['size'] = size;
-    _data['empty'] = empty;
-    return _data;
-  }
+  factory ConversationPage.fromJson(Map<String, dynamic> json) =>
+      ConversationPage(
+        content:
+            List<Content>.from(json["content"].map((x) => Content.fromJson(x))),
+        pageable: Pageable.fromJson(json["pageable"]),
+        last: json["last"],
+        totalElements: json["totalElements"],
+        totalPages: json["totalPages"],
+        size: json["size"],
+        number: json["number"],
+        sort: Sort.fromJson(json["sort"]),
+        first: json["first"],
+        numberOfElements: json["numberOfElements"],
+        empty: json["empty"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "content": List<dynamic>.from(content.map((x) => x.toJson())),
+        "pageable": pageable.toJson(),
+        "last": last,
+        "totalElements": totalElements,
+        "totalPages": totalPages,
+        "size": size,
+        "number": number,
+        "sort": sort.toJson(),
+        "first": first,
+        "numberOfElements": numberOfElements,
+        "empty": empty,
+      };
+}
+
+class Content {
+  Content({
+    required this.conversation,
+    required this.message,
+    required this.unReadMessage,
+  });
+
+  final Conversation conversation;
+  final Message message;
+  final int unReadMessage;
+
+  factory Content.fromJson(Map<String, dynamic> json) => Content(
+        conversation: Conversation.fromJson(json["conversation"]),
+        message: Message.fromJson(json["message"]),
+        unReadMessage: json["unReadMessage"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "conversation": conversation.toJson(),
+        "message": message.toJson(),
+        "unReadMessage": unReadMessage,
+      };
 }
 
 class Conversation {
@@ -93,6 +94,7 @@ class Conversation {
     required this.lastMessage,
     required this.name,
     this.select,
+    this.unread =0,
     required this.time,
     this.status,
   });
@@ -103,9 +105,11 @@ class Conversation {
   late final List<Participants> participants;
   late String createdByUserId;
   late String imageUrl;
+  //custom
   late String lastMessage;
   late String time;
   late String? status;
+  late int unread;
   late bool? select = false;
   late bool isGroup;
 
@@ -148,8 +152,8 @@ class Participants {
 
   Participants.fromJson(Map<String, dynamic> json) {
     userId = json['userId'];
-    addByUserId = json['addByUserId']??"";
-    addTime = json['addTime']??"";
+    addByUserId = json['addByUserId'] ?? "";
+    addTime = json['addTime'] ?? "";
     admin = json['admin'];
   }
 

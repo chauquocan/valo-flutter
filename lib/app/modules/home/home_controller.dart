@@ -16,6 +16,12 @@ class HomeController extends GetxController {
     _currentTab.value = value;
   }
 
+  @override
+  void onInit() {
+    StompService().startStomp();
+    super.onInit();
+  }
+
   //tabs
   final items = [
     //Chats/Conversations tab

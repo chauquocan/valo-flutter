@@ -13,6 +13,7 @@ import 'package:valo_chat_app/app/modules/home/tabs/profile/tab_profile.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/profile/tab_profile_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:valo_chat_app/app/utils/stomp_service.dart';
 
 part 'home_screen.dart';
 part 'home_controller.dart';
