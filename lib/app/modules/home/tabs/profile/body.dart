@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:valo_chat_app/app/modules/home/tabs/profile/tab_profile_controller.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_info.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
@@ -11,6 +12,7 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<TabProfileController>();
     Size size = MediaQuery.of(context).size;
     return Container(
       height: size.height,
@@ -41,8 +43,7 @@ class Body extends StatelessWidget {
               text: "Log Out",
               icon: "assets/icons/Log out.svg",
               press: () {
-                Storage.logout();
-                Get.offAllNamed('/');
+                controller.logout();
               },
             ),
           ],

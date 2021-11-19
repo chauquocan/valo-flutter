@@ -12,6 +12,7 @@ class AuthProvider extends ConnectService {
   static const String checkURL = 'auth/check/';
   static const String loginURL = 'auth/signin';
   static const String registerURL = 'auth/register';
+  static const String logoutURL = 'auth/signout';
   static const String refreshTokenUrl = 'auth/refresh_token';
 
   //current token
@@ -61,15 +62,29 @@ class AuthProvider extends ConnectService {
   }
 
   // Refresh token
-  Future<NetworkResponse<LoginRespone>> refreshToken(Map refreshToken) async {
+  Future<NetworkResponse<LoginRespone>> refreshToken() async {
+    final map = {'refreshToken': _refreshToken};
     try {
-      final response = await post(refreshTokenUrl, data: refreshToken);
+      final response = await post(refreshTokenUrl, data: map);
       return NetworkResponse.fromResponse(
         response,
         (json) => LoginRespone.fromJson(json),
       );
     } on DioError catch (e, s) {
       print(e.error);
+      return NetworkResponse.withError(e.response);
+    }
+  }
+
+  Future<NetworkResponse<ResponseMessage>> logout() async {
+    Map map = {'refreshToken': _refreshToken};
+    try {
+      final response = await post(logoutURL, data: map);
+      return NetworkResponse.fromResponse(
+        response,
+        (json) => ResponseMessage.fromJson(json),
+      );
+    } on DioError catch (e, s) {
       return NetworkResponse.withError(e.response);
     }
   }

@@ -19,7 +19,7 @@ class ContactProvider extends ConnectService {
         '${getFriendsUrl}',
         queryParameters: {'page': page},
         options: Options(headers: {
-          'Authorization': 'Bearer ${Storage.getToken()!.accessToken}'
+          'Authorization': 'Bearer ${Storage.getToken()?.accessToken}'
         }),
       );
       return NetworkResponse.fromResponse(

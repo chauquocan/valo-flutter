@@ -61,7 +61,7 @@ class ChatScreen extends GetView<ChatController> {
               controller.stickerShowing = !controller.stickerShowing;
             },
             sendImage: () {
-              //controller.sendImage();
+              controller.sendImage();
             },
             isEmojiVisible: controller.emojiShowing,
             isKeyboardVisible: controller.isKeyboardVisible,

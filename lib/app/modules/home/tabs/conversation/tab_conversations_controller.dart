@@ -65,7 +65,7 @@ class TabConversationController extends GetxController {
    */
   Future getConversations() async {
     List<Conversation> _conversations = [];
-    String currentUserId = Storage.getUser()!.id;
+    String? currentUserId = Storage.getUser()?.id;
     final response = await chatProvider.GetConversations(_page.value);
     if (response.ok) {
       if (response.data!.content.length > 0) {

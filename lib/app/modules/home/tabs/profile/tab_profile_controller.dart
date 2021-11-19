@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/status/http_status.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:valo_chat_app/app/data/providers/auth_provider.dart';
 import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 import 'package:valo_chat_app/app/widgets/custom/dialog_loading.dart';
 
 class TabProfileController extends GetxController {
   //user service
-  final ProfileProvider provider;
+  final ProfileProvider userProvider;
+  final AuthProvider authProvider;
 
   //text field controller
   final TextEditingController inputName = TextEditingController();
@@ -16,12 +18,27 @@ class TabProfileController extends GetxController {
   final TextEditingController inputEmail = TextEditingController();
   final TextEditingController inputAdress = TextEditingController();
 
-  TabProfileController({required this.provider});
+  TabProfileController(
+      {required this.userProvider, required this.authProvider});
 
   var isLoading = false.obs;
   //image
   final ImagePicker _picker = ImagePicker();
   var imageURL = '';
+
+  @override
+  void onInit() {
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
+    inputName.clear();
+    inputPhone.clear();
+    inputEmail.clear();
+    inputAdress.clear();
+    super.onClose();
+  }
 
   //upload image function
   void uploadImage(ImageSource imageSource) async {
@@ -30,7 +47,7 @@ class TabProfileController extends GetxController {
           await _picker.pickImage(source: imageSource, imageQuality: 50);
       isLoading(true);
       if (pickedFile != null) {
-        var response = await provider.uploadFile(pickedFile.path);
+        var response = await userProvider.uploadFile(pickedFile.path);
         if (response.ok) {
           //get image url from api response
           imageURL = response.data!.imgUrl;
@@ -55,7 +72,7 @@ class TabProfileController extends GetxController {
   }
 
   //edit profile infomation function
-  void editProfileInfo(
+  Future editProfileInfo(
       String name, String phone, String email, String address) async {
     final map = {
       'name': name,
@@ -90,15 +107,15 @@ class TabProfileController extends GetxController {
     }
   }
 
-  void back() {
-    Get.dialog(const DialogLoading());
-    Get.back();
-  }
-
-  //log out function
-  void logout() {
+  Future logout() async {
+    // final response = await authProvider.logout();
+    // if (response.ok) {
+    //   print(response);
     Get.dialog(const DialogLoading());
     Storage.logout();
     Get.offAllNamed('/');
+    //   } else {
+    //     print(response);
+    //   }
   }
 }

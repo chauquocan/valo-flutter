@@ -1,9 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:stomp_dart_client/stomp.dart';
-import 'package:stomp_dart_client/stomp_config.dart';
-import 'package:stomp_dart_client/stomp_frame.dart';
 import 'package:valo_chat_app/app/data/connect_service.dart';
 import 'package:valo_chat_app/app/data/models/conversation_model.dart';
 import 'package:valo_chat_app/app/data/models/message_model.dart';
@@ -14,6 +11,10 @@ class ChatProvider extends ConnectService {
   static const String userURL = 'users/';
   static const String messageURL = 'messages/';
   static const String conversationURL = 'conversations';
+  static const String fileURL = '/upload';
+
+  //current token
+  final _token = Storage.getToken()?.accessToken;
 
   //Get conversations
   Future<NetworkResponse<ConversationPage>> GetConversations(int page) async {
@@ -23,7 +24,7 @@ class ChatProvider extends ConnectService {
         queryParameters: {'page': page},
         options: Options(
           headers: {
-            'Authorization': 'Bearer ${Storage.getToken()!.accessToken}',
+            'Authorization': 'Bearer ${_token}',
           },
         ),
       );
@@ -46,7 +47,7 @@ class ChatProvider extends ConnectService {
         queryParameters: {'page': page},
         options: Options(
           headers: {
-            'Authorization': 'Bearer ${Storage.getToken()!.accessToken}',
+            'Authorization': 'Bearer ${_token}',
           },
         ),
       );
@@ -56,6 +57,34 @@ class ChatProvider extends ConnectService {
       print(e.error);
       print(e.response?.data);
       return NetworkResponse.withError(e.response);
+    }
+  }
+
+  //Pick file
+  Future<Response> uploadFile(filePath) async {
+    try {
+      FormData formData = FormData.fromMap(
+        {
+          "files": await MultipartFile.fromFile(filePath, filename: 'image.jpg')
+        },
+      );
+      final response = await post(
+        fileURL,
+        data: formData,
+        options: Options(
+          headers: <String, String>{
+            'Authorization': 'Bearer $_token',
+          },
+        ),
+      );
+      print(response);
+      return response;
+      // return NetworkResponse.fromResponse(
+      //     response, (json) => fileModelFromJson(json));
+    } on DioError catch (e, s) {
+      print(e.message);
+      // return NetworkResponse.withError(e.response);
+      throw Exception(e);
     }
   }
 }
