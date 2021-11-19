@@ -108,14 +108,13 @@ class TabProfileController extends GetxController {
   }
 
   Future logout() async {
-    // final response = await authProvider.logout();
-    // if (response.ok) {
-    //   print(response);
-    Get.dialog(const DialogLoading());
-    Storage.logout();
-    Get.offAllNamed('/');
-    //   } else {
-    //     print(response);
-    //   }
+    final response = await authProvider.logout();
+    if (response.ok) {
+      Get.dialog(const DialogLoading());
+      Storage.logout();
+      Get.offAllNamed('/');
+    } else {
+      print(response);
+    }
   }
 }

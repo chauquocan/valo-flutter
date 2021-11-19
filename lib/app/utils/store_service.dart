@@ -74,6 +74,8 @@ class Storage {
 
   //Log out
   static Future logout() async {
+    _pref.remove('user');
+    _pref.remove('token');
     await _pref.clear();
   }
 }
