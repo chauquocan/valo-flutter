@@ -76,7 +76,7 @@ class TabConversationController extends GetxController {
                 id: content.conversation.id,
                 name: content.conversation.name,
                 imageUrl: content.conversation.imageUrl,
-                time: DateFormat('hh:mm').format(content.message.sendAt),
+                time: DateFormat("h:mm a d/MM").format(content.message.sendAt),
                 lastMessage: content.message.content,
                 isGroup: true,
                 createAt: content.conversation.createAt,
@@ -95,7 +95,8 @@ class TabConversationController extends GetxController {
                     id: content.conversation.id,
                     name: user.data!.name,
                     imageUrl: user.data!.imgUrl,
-                    time: DateFormat('hh:mm').format(content.message.sendAt),
+                    time: DateFormat("h:mm a d/MM")
+                        .format(content.message.sendAt),
                     lastMessage: content.message.content,
                     isGroup: false,
                     createAt: content.conversation.createAt,
@@ -109,6 +110,7 @@ class TabConversationController extends GetxController {
           }
         }
         conversations.value = _conversations;
+        conversations.sort((a, b) => a.time.compareTo(b.time));
         isLoading.value = false;
         conversationsLoaded.value = true;
         _page.value++;
@@ -133,7 +135,7 @@ class TabConversationController extends GetxController {
                 id: content.conversation.id,
                 name: content.conversation.name,
                 imageUrl: content.conversation.imageUrl,
-                time: DateFormat('hh:mm').format(content.message.sendAt),
+                time: DateFormat("h:mm a").format(content.message.sendAt),
                 lastMessage: content.message.content,
                 isGroup: true,
                 createAt: content.conversation.createAt,
@@ -152,7 +154,7 @@ class TabConversationController extends GetxController {
                     id: content.conversation.id,
                     name: user.data!.name,
                     imageUrl: user.data!.imgUrl,
-                    time: DateFormat('hh:mm').format(content.message.sendAt),
+                    time: DateFormat("h:mm a").format(content.message.sendAt),
                     lastMessage: content.message.content,
                     isGroup: false,
                     createAt: content.conversation.createAt,
@@ -166,6 +168,7 @@ class TabConversationController extends GetxController {
           }
         }
         conversations.value.addAll(_conversations);
+        conversations.value.sort((a, b) => a.time.compareTo(b.time));
         isLoading.value = false;
         conversationsLoaded.value = true;
         _page.value++;
