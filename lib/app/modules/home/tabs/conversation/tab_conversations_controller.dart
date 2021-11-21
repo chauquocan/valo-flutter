@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -110,7 +109,6 @@ class TabConversationController extends GetxController {
           }
         }
         conversations.value = _conversations;
-        conversations.sort((a, b) => a.time.compareTo(b.time));
         isLoading.value = false;
         conversationsLoaded.value = true;
         _page.value++;
@@ -122,6 +120,9 @@ class TabConversationController extends GetxController {
     }
   }
 
+  /* 
+    Get more conversation when scroll to end
+   */
   Future getMoreConversation() async {
     List<Conversation> _conversations = [];
     String currentUserId = Storage.getUser()!.id;
@@ -168,7 +169,6 @@ class TabConversationController extends GetxController {
           }
         }
         conversations.value.addAll(_conversations);
-        conversations.value.sort((a, b) => a.time.compareTo(b.time));
         isLoading.value = false;
         conversationsLoaded.value = true;
         _page.value++;

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:valo_chat_app/app/data/connect_service.dart';
 import 'package:valo_chat_app/app/data/models/auth_model.dart';
@@ -65,7 +63,15 @@ class AuthProvider extends ConnectService {
   Future<NetworkResponse<LoginRespone>> refreshToken() async {
     final map = {'refreshToken': _refreshToken};
     try {
-      final response = await post(refreshTokenUrl, data: map);
+      final response = await post(
+        refreshTokenUrl,
+        data: map,
+        options: Options(
+          headers: <String, String>{
+            'Authorization': 'Bearer $_token',
+          },
+        ),
+      );
       return NetworkResponse.fromResponse(
         response,
         (json) => LoginRespone.fromJson(json),
@@ -76,10 +82,20 @@ class AuthProvider extends ConnectService {
     }
   }
 
+  //Logout
   Future<NetworkResponse<ResponseMessage>> logout() async {
     Map map = {'refreshToken': _refreshToken};
     try {
-      final response = await post(logoutURL, data: map);
+      final response = await post(
+        logoutURL,
+        data: map,
+        options: Options(
+          headers: <String, String>{
+            'Authorization': 'Bearer $_token',
+          },
+        ),
+      );
+      print(response);
       return NetworkResponse.fromResponse(
         response,
         (json) => ResponseMessage.fromJson(json),

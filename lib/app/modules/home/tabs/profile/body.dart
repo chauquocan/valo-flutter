@@ -43,7 +43,42 @@ class Body extends StatelessWidget {
               text: "Log Out",
               icon: "assets/icons/Log out.svg",
               press: () {
-                controller.logout();
+                Get.dialog(
+                  AlertDialog(
+                    title: Center(child: Text('Lưu ý')),
+                    content: SingleChildScrollView(
+                      child: Text('Bạn có chắc chắn muốn thoát?'),
+                    ),
+                    actionsAlignment: MainAxisAlignment.spaceEvenly,
+                    actions: [
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          Get.back();
+                          controller.logout();
+                        },
+                        icon: Icon(Icons.check_circle),
+                        // style: ButtonStyle(backgroundColor: Colors.blue),
+                        label: Text(
+                          "Xác nhận",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        icon: Icon(Icons.cancel),
+                        // style: ButtonStyle(backgroundColor: Colors.blue),
+                        label: Text(
+                          "Hủy",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
+                    ],
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                  ),
+                );
               },
             ),
           ],

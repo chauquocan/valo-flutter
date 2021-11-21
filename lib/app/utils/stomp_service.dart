@@ -37,7 +37,10 @@ class StompService {
           beforeConnect: () async {
             print('connecting...');
           },
-          onWebSocketError: (dynamic error) => print(error.toString()),
+          onWebSocketError: (dynamic error) {
+            print('websocket error');
+            print(error.toString());
+          },
           stompConnectHeaders: {
             'userId': _userId.toString(),
             'token': _token.toString(),

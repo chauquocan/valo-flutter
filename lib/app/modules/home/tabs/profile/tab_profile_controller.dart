@@ -71,7 +71,7 @@ class TabProfileController extends GetxController {
     }
   }
 
-  //edit profile infomation function
+  //Edit profile infomation function
   Future editProfileInfo(
       String name, String phone, String email, String address) async {
     final map = {
@@ -107,12 +107,15 @@ class TabProfileController extends GetxController {
     }
   }
 
+  //Logout
   Future logout() async {
     final response = await authProvider.logout();
     if (response.ok) {
       Get.dialog(const DialogLoading());
-      Storage.logout();
-      Get.offAllNamed('/');
+      Future.delayed(Duration(milliseconds: 500), () {
+        Storage.logout();
+        Get.offAllNamed('/');
+      });
     } else {
       print(response);
     }
