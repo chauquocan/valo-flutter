@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-
 //Auth response
 class LoginRespone {
   LoginRespone({
@@ -24,7 +23,7 @@ class LoginRespone {
 
   factory LoginRespone.fromJson(Map<String, dynamic> json) => LoginRespone(
         // id: json["id"],
-        username: json["username"],
+        username: json["username"] == null ? "" : json["username"],
         // password: json["password"],
         accessToken: json["accessToken"],
         refreshToken: json["refreshToken"],
