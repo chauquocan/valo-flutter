@@ -1,13 +1,13 @@
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:valo_chat_app/app/data/models/auth_model.dart';
-import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
+import 'package:valo_chat_app/app/data/providers/auth_provider.dart';
 import '../data/models/profile_model.dart';
 
 //Storage service for storing local data
 class Storage {
   Storage._();
-  static late ProfileProvider _userProvider;
   static late SharedPreferences _pref;
   //init
   static Future init() async {
@@ -46,31 +46,36 @@ class Storage {
   //check token is expired
   static bool ExpireToken() {
     if (getToken() != null) {
-      String token = Storage.getToken()!.accessToken.toString();
-      // String rfToken = Storage.getToken()!.refreshToken.toString();
+      String token = getToken()!.accessToken.toString();
+      String rfToken = getToken()!.refreshToken.toString();
       bool isExpire = Jwt.isExpired(token);
-      // bool refresh = Jwt.isExpired(rfToken);
+      bool refresh = Jwt.isExpired(rfToken);
       if (!isExpire) {
         return true;
       }
       // else if (isExpire && !refresh) {
-      //   final map = {'refreshToken': rfToken};
-      //   final refreshResponse = await _userProvider.refreshToken(map);
-      //   if (refreshResponse.ok) {
-      //   print('token refreshed');
-      //     await Storage.saveToken(refreshResponse.data!);
-      //     return true;
-      //   }
+      //   // refreshToken(rfToken);
       // }
       else {
         print('token expired');
-        _pref.remove('user');
-        _pref.remove('token');
+        _pref.clear();
+        Get.offAllNamed('/welcome');
         return false;
       }
     }
     return false;
   }
+
+  // static refreshToken(String rfToken) async {
+  //   final map = {'refreshToken': rfToken};
+  //   final refreshResponse = await _authProvider.refreshToken();
+  //   if (refreshResponse.ok) {
+  //     print('token refreshed');
+  //     await Storage.saveToken(refreshResponse.data!);
+  //   } else {
+  //     print('Loi khi refresh token');
+  //   }
+  // }
 
   //Log out
   static Future logout() async {

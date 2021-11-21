@@ -17,7 +17,7 @@ class WidgetBubble extends StatelessWidget {
 
   Widget build(BuildContext context) {
     final uri = Uri.tryParse(message);
-    if (uri != null && type != 1 && type != 2) {
+    if (uri != null && type != 'IMAGE' && type != 2) {
       if (uri.isAbsolute) {
         return _WidgetUrlPreview(
           url: message,

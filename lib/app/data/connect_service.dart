@@ -22,5 +22,37 @@ class ConnectService extends DioForNative {
         ),
       ),
     );
+    // interceptors.add(
+    //   InterceptorsWrapper(
+    //     onError: (DioError e, handler)async  {
+    //       if(e.response!=null){
+    //         if (e.response?.statusCode == 401) {//catch the 401 here
+    //         this.interceptors.requestLock.lock();
+    //         this.interceptors.responseLock.lock();
+    //         RequestOptions requestOptions = e.requestOptions;
+    //         await refreshToken();
+    //         final opts = new Options(method: requestOptions.method);
+    //         this.options.headers["Authorization"] = "Bearer " + accessToken;
+    //         this.options.headers["Accept"] = "*/*";
+    //         this.interceptors.requestLock.unlock();
+    //         this.interceptors.responseLock.unlock();
+    //         final response = await this.request(requestOptions.path,
+    //             options: opts,
+    //             cancelToken: requestOptions.cancelToken,
+    //             onReceiveProgress: requestOptions.onReceiveProgress,
+    //             data: requestOptions.data,
+    //             queryParameters: requestOptions.queryParameters);
+    //         if (response != null) {
+    //           handler.resolve(response);
+    //         } else {
+    //           return null;
+    //         }
+    //       } else {
+    //         handler.next(e);
+    //       }
+    //     }
+    //       }
+    //   ),
+    // );
   }
 }
