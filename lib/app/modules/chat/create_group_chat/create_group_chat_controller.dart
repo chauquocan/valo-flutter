@@ -7,9 +7,11 @@ import 'package:valo_chat_app/app/data/providers/contact_provider.dart';
 import 'package:valo_chat_app/app/data/providers/group_chat_provider.dart';
 import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
+import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
 class CreateGroupChatController extends GetxController {
+  final chatController = Get.find<TabConversationController>();
   final ProfileProvider userProvider;
   final ContactProvider contactProvider;
   final GroupChatProvider groupChatProvider;
@@ -69,15 +71,21 @@ class CreateGroupChatController extends GetxController {
 
 //them minh la user dau tien
   @override
-  void onInit() async {
-    participants.add(Participants(
-      userId: Storage.getUser()!.id,
-      addByUserId: Storage.getUser()!.id,
-      addTime: DateTime.now().toString(),
-      admin: true,
-    ));
+  void onInit() {
+    // participants.add(Participants(
+    //   userId: Storage.getUser()!.id,
+    //   addByUserId: Storage.getUser()!.id,
+    //   addTime: DateTime.now().toString(),
+    //   admin: true,
+    // ));
     getContacts();
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    super.onClose();
   }
 
   void onSelect(Profile item) {
@@ -98,8 +106,12 @@ class CreateGroupChatController extends GetxController {
       ));
     }
     final map = {'name': textCtrl.text, 'participants': participants};
-    await groupChatProvider.createGroupChat(map);
-    Get.back();
+    final respones = await groupChatProvider.createGroupChat(map);
+    if (respones.ok) {
+      chatController.getConversations();
+      Get.back();
+    } else
+      (print(respones));
   }
 
   Future getContacts() async {
