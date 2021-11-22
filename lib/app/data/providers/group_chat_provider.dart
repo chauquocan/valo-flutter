@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:valo_chat_app/app/data/connect_service.dart';
+import 'package:valo_chat_app/app/data/models/conversation_model.dart';
 import 'package:valo_chat_app/app/data/models/group_model.dart';
 import 'package:valo_chat_app/app/data/models/network_response.dart';
 import 'package:valo_chat_app/app/data/models/response_model.dart';
@@ -15,7 +16,7 @@ class GroupChatProvider extends ConnectService {
   //curent userId
   final _userId = Storage.getUser()?.id;
 
-  Future<NetworkResponse<Group>> createGroupChat(Map map) async {
+  Future<NetworkResponse<Conversation>> createGroupChat(Map map) async {
     try {
       final response = await post(
         conversationURL,
@@ -23,7 +24,7 @@ class GroupChatProvider extends ConnectService {
         options: Options(headers: {'Authorization': 'Bearer ${_token}'}),
       );
       return NetworkResponse.fromResponse(
-          response, (json) => ResponseMessage.fromJson(json));
+          response, (json) => Conversation.fromJson(json));
     } on DioError catch (e, s) {
       return NetworkResponse.withError(e.response);
     }

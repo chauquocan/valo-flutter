@@ -310,7 +310,19 @@ class ChatController extends GetxController {
     // }
   }
 
-  void sendSticker(String? url) {
+  Future sendSticker(String? url) async {
+    String body = json.encode({
+      "conversationId": '${id}',
+      "messageType": 1,
+      "content": url,
+      "senderId": '${Storage.getUser()!.id}',
+      "replyId": '',
+    });
+    StompService.stompClient.send(
+      destination: "/app/chat",
+      body: body,
+    );
+
     // final message = Message(
     //     senderUID: UserProvider.getCurrentUser().uid,
     //     senderName: UserProvider.getCurrentUser().displayName!,

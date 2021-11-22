@@ -57,19 +57,6 @@ class ProfileFriend extends StatelessWidget {
                       fontSize: 14, letterSpacing: 2.2, color: Colors.white),
                 ),
               ),
-              RaisedButton(
-                onPressed: () {},
-                color: Colors.green[300],
-                padding: EdgeInsets.symmetric(horizontal: 30),
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                child: Text(
-                  "ADD FRIEND",
-                  style: TextStyle(
-                      fontSize: 14, letterSpacing: 2.2, color: Colors.white),
-                ),
-              )
             ],
           ),
         ],
@@ -93,14 +80,14 @@ class ProfileFriend extends StatelessWidget {
           children: [
             Text(
               labelText,
-              style: TextStyle(fontSize: 25, color: Colors.black38),
+              style: TextStyle(fontSize: 20, color: Colors.black38),
             ),
             SizedBox(width: 20),
             Align(
               alignment: Alignment.centerRight,
               child: Text(
                 text,
-                style: TextStyle(fontSize: 25),
+                style: TextStyle(fontSize: 20),
               ),
             ),
           ],
