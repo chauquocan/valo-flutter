@@ -8,7 +8,6 @@ import 'package:valo_chat_app/app/data/models/network_response.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
 class ChatProvider extends ConnectService {
-  static const String userURL = 'users/';
   static const String messageURL = 'messages/';
   static const String conversationURL = 'conversations';
   static const String fileURL = '/upload';
@@ -77,13 +76,27 @@ class ChatProvider extends ConnectService {
           },
         ),
       );
-      print(response);
       return response;
-      // return NetworkResponse.fromResponse(
-      //     response, (json) => fileModelFromJson(json));
     } on DioError catch (e, s) {
       print(e.message);
       // return NetworkResponse.withError(e.response);
+      throw Exception(e);
+    }
+  }
+
+  //delele mess
+  Future<Response> deleteMessage(String messageId) async {
+    try {
+      final response = await delete(
+        '$messageURL/cancel/$messageId',
+        options: Options(
+          headers: <String, String>{
+            'Authorization': 'Bearer $_token',
+          },
+        ),
+      );
+      return response;
+    } on DioError catch (e, s) {
       throw Exception(e);
     }
   }

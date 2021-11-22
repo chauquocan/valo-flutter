@@ -102,7 +102,9 @@ class WidgetBubble extends StatelessWidget {
                           child: Container(
                             padding: EdgeInsets.all(15),
                             decoration: BoxDecoration(
-                              color: isMe ? Colors.green : Colors.grey.shade200,
+                              color: isMe
+                                  ? AppColors.primary
+                                  : Colors.grey.shade200,
                               borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(15),
                                 topLeft: Radius.circular(15),

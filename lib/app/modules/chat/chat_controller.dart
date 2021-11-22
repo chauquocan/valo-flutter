@@ -22,6 +22,7 @@ class ChatController extends GetxController {
   final textController = TextEditingController();
   final keyboardController = KeyboardVisibilityController();
   final scrollController = ScrollController();
+  final currentUserId = Storage.getUser()?.id;
 
   final _id = ''.obs;
   final _name = ''.obs;
@@ -241,31 +242,31 @@ class ChatController extends GetxController {
     });
   }
 
-  // void onTagSelect(ProfileResponse user) {
-  //   tagging = !tagging;
-  //   textController.text += user.name;
-  //   listTagged.add(user);
-  //   _moveCursorToLast();
-  // }
+  void onTagSelect(Profile user) {
+    tagging = !tagging;
+    textController.text += user.name;
+    listTagged.add(user);
+    _moveCursorToLast();
+  }
 
-  void sendMessage(String id) {
+  void sendTextMessage(String id) {
     if (textController.text.isNotEmpty) {
       String body = json.encode({
         "conversationId": '${id}',
         "messageType": 0,
         "content": '${textController.text}',
-        "senderId": '${Storage.getUser()!.id}',
+        "senderId": '${currentUserId}',
         "replyId": '',
       });
       StompService.stompClient.send(
         destination: "/app/chat",
         body: body,
       );
-      textController.clear();
       if (messages.length >= 1) {
         scrollController.animateTo(0,
             duration: Duration(milliseconds: 300), curve: Curves.easeOut);
       }
+      textController.clear();
     }
 
     // textController.

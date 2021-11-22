@@ -33,12 +33,15 @@ class ChatScreen extends GetView<ChatController> {
                       itemCount: controller.messages.length,
                       itemBuilder: (context, i) {
                         final item = controller.messages[i];
-                        return WidgetBubble(
-                          message: item.content,
-                          isMe: item.senderId == Storage.getUser()?.id,
-                          dateTime: DateFormat('h:mm a').format(item.sendAt),
-                          type: item.messageType,
-                          avatar: controller.avatar,
+                        return GestureDetector(
+                          onLongPress: () {},
+                          child: WidgetBubble(
+                            message: item.content,
+                            isMe: item.senderId == controller.currentUserId,
+                            dateTime: DateFormat('h:mm a').format(item.sendAt),
+                            type: item.messageType,
+                            avatar: controller.avatar,
+                          ),
                         );
                       },
                     );
@@ -52,7 +55,7 @@ class ChatScreen extends GetView<ChatController> {
           buildListTag(),
           WidgetInputField(
             textEditingController: controller.textController,
-            onSubmit: () => controller.sendMessage(controller.id),
+            onSubmit: () => controller.sendTextMessage(controller.id),
             sendIcon: () {
               controller.emojiShowing = !controller.emojiShowing;
             },

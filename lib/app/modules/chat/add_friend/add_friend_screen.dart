@@ -20,7 +20,7 @@ class AddFriendScreen extends StatelessWidget {
               child: TextFormField(
                 controller: controller.searchController,
                 onChanged: (value) {
-                  if (value.length > 0) {
+                  if (value.isNotEmpty) {
                     controller.searchUser(value);
                     controller.isSearch.value = true;
                   } else {
@@ -77,7 +77,7 @@ class AddFriendScreen extends StatelessWidget {
                             child: Text(
                               controller.isSearch.value
                                   ? 'No user found'
-                                  : 'No conversation yet',
+                                  : 'Search friend',
                               style: TextStyle(
                                 color: AppColors.dark,
                                 fontSize: 18,

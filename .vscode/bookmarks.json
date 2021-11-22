@@ -4,22 +4,22 @@
 			"path": "lib/app/modules/chat/chat_controller.dart",
 			"bookmarks": [
 				{
-					"line": 176,
+					"line": 177,
 					"column": 15,
 					"label": "On message receive"
 				},
 				{
-					"line": 187,
+					"line": 188,
 					"column": 14,
 					"label": "Get messages"
 				},
 				{
-					"line": 212,
+					"line": 213,
 					"column": 5,
 					"label": "Get more messages"
 				},
 				{
-					"line": 233,
+					"line": 234,
 					"column": 10,
 					"label": "Pagination messages"
 				}

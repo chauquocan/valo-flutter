@@ -41,7 +41,6 @@ class TabConversationController extends GetxController {
   }
 
   SubscribeChannel() {
-    // StompService.stompClient.acctive
     StompService.stompClient.subscribe(
       destination: '/users/queue/messages',
       callback: (StompFrame frame) {

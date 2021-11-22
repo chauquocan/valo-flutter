@@ -169,13 +169,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.6"
-  device_info:
-    dependency: transitive
-    description:
-      name: device_info
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.4.2+6"
   dio:
     dependency: "direct main"
     description:
@@ -183,13 +176,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.3"
-  emoji_picker:
-    dependency: "direct main"
-    description:
-      name: emoji_picker
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.2"
   emoji_picker_flutter:
     dependency: "direct main"
     description:
