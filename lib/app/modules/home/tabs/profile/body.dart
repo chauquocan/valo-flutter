@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:valo_chat_app/app/modules/home/tabs/profile/tab_profile_controller.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_info.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
@@ -11,6 +12,7 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<TabProfileController>();
     Size size = MediaQuery.of(context).size;
     return Container(
       height: size.height,
@@ -41,8 +43,42 @@ class Body extends StatelessWidget {
               text: "Log Out",
               icon: "assets/icons/Log out.svg",
               press: () {
-                Storage.logout();
-                Get.offAllNamed('/');
+                Get.dialog(
+                  AlertDialog(
+                    title: Center(child: Text('Lưu ý')),
+                    content: SingleChildScrollView(
+                      child: Text('Bạn có chắc chắn muốn thoát?'),
+                    ),
+                    actionsAlignment: MainAxisAlignment.spaceEvenly,
+                    actions: [
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          Get.back();
+                          controller.logout();
+                        },
+                        icon: Icon(Icons.check_circle),
+                        // style: ButtonStyle(backgroundColor: Colors.blue),
+                        label: Text(
+                          "Xác nhận",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        icon: Icon(Icons.cancel),
+                        // style: ButtonStyle(backgroundColor: Colors.blue),
+                        label: Text(
+                          "Hủy",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
+                    ],
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                  ),
+                );
               },
             ),
           ],

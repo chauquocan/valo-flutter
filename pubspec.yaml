@@ -40,7 +40,7 @@ dependencies:
   firebase_auth: ^3.1.2
   jwt_decode: ^0.3.1
   #http dio
-  dio: ^4.0.0
+  dio: ^4.0.3
   #storage
   shared_preferences: ^2.0.8
   #otp
@@ -65,6 +65,7 @@ dependencies:
   photo_view: ^0.13.0
   flutter_keyboard_visibility: ^5.1.0
   contacts_service: ^0.6.3
+  connectivity_plus: ^2.0.3
   
 dev_dependencies:
   flutter_launcher_icons: ^0.9.2

@@ -365,9 +365,38 @@ class ChatController extends GetxController {
 
   Future sendImage() async {
     ImagePicker imagePicker = ImagePicker();
-    PickedFile? pickedFile;
-    pickedFile = await imagePicker.getImage(
-        source: ImageSource.gallery, imageQuality: 30);
+    final pickedFile = await imagePicker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50);
+    if (pickedFile != null) {
+      var response = await provider.uploadFile(pickedFile.path);
+      if (response.statusCode == 200) {
+        final listFile = [];
+        for (var file in response.data) {
+          String body = json.encode({
+            "conversationId": '${id}',
+            "messageType": 1,
+            "content": file,
+            "senderId": '${Storage.getUser()!.id}',
+            "replyId": '',
+          });
+          StompService.stompClient.send(
+            destination: "/app/chat",
+            body: body,
+          );
+        }
+        textController.clear();
+        if (messages.length >= 1) {
+          scrollController.animateTo(0,
+              duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+        }
+      } else {
+        print(response);
+        Get.snackbar('Loi', "Loi gui api");
+      }
+    } else {
+      Get.snackbar('Luu y ', "Vui long chon anh");
+    }
+
     // if (pickedFile != null) {
     //   final imageFile = File(pickedFile.path);
     //   final ref = await storageProvider.uploadFile(imageFile);

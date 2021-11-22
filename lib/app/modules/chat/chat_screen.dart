@@ -36,8 +36,7 @@ class ChatScreen extends GetView<ChatController> {
                         return WidgetBubble(
                           message: item.content,
                           isMe: item.senderId == Storage.getUser()?.id,
-                          dateTime: DateFormat('hh:mm dd-MM-yyyy')
-                              .format(item.sendAt),
+                          dateTime: DateFormat('h:mm a').format(item.sendAt),
                           type: item.messageType,
                           avatar: controller.avatar,
                         );
@@ -61,7 +60,7 @@ class ChatScreen extends GetView<ChatController> {
               controller.stickerShowing = !controller.stickerShowing;
             },
             sendImage: () {
-              //controller.sendImage();
+              controller.sendImage();
             },
             isEmojiVisible: controller.emojiShowing,
             isKeyboardVisible: controller.isKeyboardVisible,

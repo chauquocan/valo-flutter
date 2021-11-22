@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -65,7 +64,7 @@ class TabConversationController extends GetxController {
    */
   Future getConversations() async {
     List<Conversation> _conversations = [];
-    String currentUserId = Storage.getUser()!.id;
+    String? currentUserId = Storage.getUser()?.id;
     final response = await chatProvider.GetConversations(_page.value);
     if (response.ok) {
       if (response.data!.content.length > 0) {
@@ -76,7 +75,7 @@ class TabConversationController extends GetxController {
                 id: content.conversation.id,
                 name: content.conversation.name,
                 imageUrl: content.conversation.imageUrl,
-                time: DateFormat('hh:mm').format(content.message.sendAt),
+                time: DateFormat("h:mm a d/MM").format(content.message.sendAt),
                 lastMessage: content.message.content,
                 isGroup: true,
                 createAt: content.conversation.createAt,
@@ -95,7 +94,8 @@ class TabConversationController extends GetxController {
                     id: content.conversation.id,
                     name: user.data!.name,
                     imageUrl: user.data!.imgUrl,
-                    time: DateFormat('hh:mm').format(content.message.sendAt),
+                    time: DateFormat("h:mm a d/MM")
+                        .format(content.message.sendAt),
                     lastMessage: content.message.content,
                     isGroup: false,
                     createAt: content.conversation.createAt,
@@ -120,6 +120,9 @@ class TabConversationController extends GetxController {
     }
   }
 
+  /* 
+    Get more conversation when scroll to end
+   */
   Future getMoreConversation() async {
     List<Conversation> _conversations = [];
     String currentUserId = Storage.getUser()!.id;
@@ -133,7 +136,7 @@ class TabConversationController extends GetxController {
                 id: content.conversation.id,
                 name: content.conversation.name,
                 imageUrl: content.conversation.imageUrl,
-                time: DateFormat('hh:mm').format(content.message.sendAt),
+                time: DateFormat("h:mm a").format(content.message.sendAt),
                 lastMessage: content.message.content,
                 isGroup: true,
                 createAt: content.conversation.createAt,
@@ -152,7 +155,7 @@ class TabConversationController extends GetxController {
                     id: content.conversation.id,
                     name: user.data!.name,
                     imageUrl: user.data!.imgUrl,
-                    time: DateFormat('hh:mm').format(content.message.sendAt),
+                    time: DateFormat("h:mm a").format(content.message.sendAt),
                     lastMessage: content.message.content,
                     isGroup: false,
                     createAt: content.conversation.createAt,

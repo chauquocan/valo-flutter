@@ -1,6 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:valo_chat_app/app/data/models/conversation_model.dart';
-import 'package:valo_chat_app/app/data/models/message_model.dart';
 
 class Group {
   Group({

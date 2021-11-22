@@ -8,11 +8,11 @@ class AppBinding extends Bindings {
   @override
   void dependencies() async {
     Get.lazyPut(() => AuthController(authProvider: AuthProvider()));
-    Get.lazyPut(
-      () => HomeController(
-          provider: Get.put(
-        ProfileProvider(),
-      )),
-    );
+    // Get.lazyPut(
+    //   () => HomeController(
+    //       provider: Get.put(
+    //     ProfileProvider(),
+    //   )),
+    // );
   }
 }

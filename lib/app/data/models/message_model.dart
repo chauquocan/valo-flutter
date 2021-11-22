@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:valo_chat_app/app/data/models/page_model.dart';
 
 class MessagePage {
@@ -97,3 +99,8 @@ class Message {
         "replyId": replyId == null ? "" : replyId,
       };
 }
+
+
+List<String> fileModelFromJson(String str) => List<String>.from(json.decode(str).map((x) => x));
+
+String fileModelToJson(List<String> data) => json.encode(List<dynamic>.from(data.map((x) => x)));

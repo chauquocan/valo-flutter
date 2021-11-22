@@ -12,8 +12,8 @@ import 'package:valo_chat_app/app/utils/store_service.dart';
 class StompService {
   static var stompClient = null;
   static var wsUrl = dotenv.env['WS_URL'];
-  final _userId = Storage.getToken()!.username;
-  final _token = Storage.getToken()!.accessToken;
+  final _userId = Storage.getToken()?.username;
+  final _token = Storage.getToken()?.accessToken;
 
   void startStomp() {
     if (stompClient == null) {
@@ -37,10 +37,13 @@ class StompService {
           beforeConnect: () async {
             print('connecting...');
           },
-          onWebSocketError: (dynamic error) => print(error.toString()),
+          onWebSocketError: (dynamic error) {
+            print('websocket error');
+            print(error.toString());
+          },
           stompConnectHeaders: {
-            'userId': _userId,
-            'token': _token,
+            'userId': _userId.toString(),
+            'token': _token.toString(),
           },
           webSocketConnectHeaders: {
             'userId': _userId,
