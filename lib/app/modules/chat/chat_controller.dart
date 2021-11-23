@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
 import 'package:valo_chat_app/app/data/models/conversation_model.dart';
 import 'package:valo_chat_app/app/data/models/message_model.dart';
+import 'package:valo_chat_app/app/data/models/network_response.dart';
 import 'package:valo_chat_app/app/data/models/profile_model.dart';
 import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
 import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
@@ -16,10 +17,9 @@ import 'package:valo_chat_app/app/utils/store_service.dart';
 
 class ChatController extends GetxController {
   final ChatProvider provider;
+  final ProfileProvider profileProvider;
 
-  ChatController({
-    required this.provider,
-  });
+  ChatController({required this.provider, required this.profileProvider});
 
   final textController = TextEditingController();
   final keyboardController = KeyboardVisibilityController();
@@ -160,7 +160,7 @@ class ChatController extends GetxController {
     isGroup = Get.arguments['isGroup'];
 
     participants = Get.arguments['participants'];
-
+    getmember();
     super.onInit();
     getMessages(id, _page.value);
     StompService.stompClient.subscribe(
@@ -181,6 +181,29 @@ class ChatController extends GetxController {
     super.onClose();
   }
 
+  //get member in group
+  Future getmember() async {
+    for (Participants content in participants) {
+      Profile profile = getProfileById(content.userId) as Profile;
+      members.add(profile);
+    }
+  }
+
+  Future<Profile> getProfileById(String id) async {
+    final response = await profileProvider.getUserById(id);
+    return Profile(
+        id: response.data!.id,
+        name: response.data!.name,
+        gender: response.data!.gender,
+        dateOfBirth: response.data!.dateOfBirth,
+        phone: response.data!.phone,
+        email: response.data!.email,
+        address: response.data!.address,
+        imgUrl: response.data!.imgUrl,
+        status: response.data!.status);
+  }
+
+  ///
   /*------------------------*/
   void AddMess(Message mess) {
     messages.insert(0, mess);

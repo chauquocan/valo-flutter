@@ -8,7 +8,8 @@ import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_frie
 class ChatBinding implements Bindings {
   @override
   void dependencies() {
-    Get.put<ChatController>(ChatController(provider: ChatProvider()));
+    Get.put<ChatController>(ChatController(
+        provider: ChatProvider(), profileProvider: ProfileProvider()));
     Get.lazyPut(
         () => ProfileFriendController(profileProvider: ProfileProvider()));
   }
