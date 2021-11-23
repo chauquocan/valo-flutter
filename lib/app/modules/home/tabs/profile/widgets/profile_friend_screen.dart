@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:valo_chat_app/app/modules/chat/chat_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
 
-class ProfileFriend extends StatelessWidget {
-  const ProfileFriend({Key? key}) : super(key: key);
+class ProfileFriendScreen extends GetView<ChatController> {
+  const ProfileFriendScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,21 +14,25 @@ class ProfileFriend extends StatelessWidget {
       body: ListView(
         children: [
           Center(
-            child: Container(
-              padding: EdgeInsets.only(left: 16, top: 25, right: 16),
-              child: WidgetAvatar(
-                url: "assets/icons/logo",
-                size: 115,
-              ),
-            ),
-          ),
+              child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade200,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.grey.shade200,
+                    ),
+                  ),
+                  child: CircleAvatar(
+                    radius: 60,
+                    backgroundImage: NetworkImage(controller.avatar),
+                  ))),
           SizedBox(
             height: 30,
           ),
-          buildTextField("Name", "Long"),
-          buildTextField("Phone", "G"),
-          buildTextField("E-mail", "s2taaa@gmail.com"),
-          buildTextField("Address", "Gia Nghia"),
+          buildTextField("Name:    ", controller.name),
+          buildTextField("Phone:   ", "0772555445"),
+          buildTextField("E-mail:   ", "S2taaa@gmail.com"),
+          buildTextField("Address:", "Gia Nghia"),
           SizedBox(
             height: 20,
           ),
@@ -34,25 +40,13 @@ class ProfileFriend extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               RaisedButton(
-                color: Colors.red[300],
+                color: Colors.red[400],
                 padding: EdgeInsets.symmetric(horizontal: 30),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
+                    borderRadius: BorderRadius.circular(10)),
                 onPressed: () {},
                 child: Text(
                   "Block",
-                  style: TextStyle(
-                      fontSize: 14, letterSpacing: 2.2, color: Colors.white),
-                ),
-              ),
-              RaisedButton(
-                color: Colors.blue[300],
-                padding: EdgeInsets.symmetric(horizontal: 30),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                onPressed: () {},
-                child: Text(
-                  "Chat",
                   style: TextStyle(
                       fontSize: 14, letterSpacing: 2.2, color: Colors.white),
                 ),

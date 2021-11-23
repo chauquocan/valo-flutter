@@ -68,7 +68,7 @@ class ConversationTab extends GetView<TabConversationController> {
                         onTap: () => Get.toNamed('/chat', arguments: {
                           "id": conversation.id,
                           "name": conversation.name,
-                          // "participants": conversation.participants,
+                          "participants": conversation.participants,
                           "avatar": conversation.imageUrl,
                           "isGroup": conversation.isGroup,
                         }),

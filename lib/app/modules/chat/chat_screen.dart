@@ -3,8 +3,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:valo_chat_app/app/modules/chat/create_group_chat/profile_group/profile_group_creen.dart';
 import 'package:valo_chat_app/app/modules/chat/widgets/widgets.dart';
-import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_friend.dart';
+import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_friend_screen.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
 import 'chat_controller.dart';
 
@@ -179,7 +180,10 @@ class ChatScreen extends GetView<ChatController> {
         ),
         IconButton(
           onPressed: () {
-            Get.to(ProfileFriend());
+            if (controller.isGroup == true) {
+              Get.to(ProfileGroupScreen(), arguments: ['uid']);
+            } else
+              Get.to(ProfileFriendScreen());
           },
           icon: Icon(Icons.list_outlined),
         ),
