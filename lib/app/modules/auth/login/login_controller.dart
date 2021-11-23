@@ -2,8 +2,8 @@ part of 'login.dart';
 
 //Controller for login view
 class LoginController extends GetxController {
-  LoginController({required this.authProvider,required this.userProvider});
-  
+  LoginController({required this.authProvider, required this.userProvider});
+
   //User service
   final AuthProvider authProvider;
   final ProfileProvider userProvider;
@@ -53,11 +53,11 @@ class LoginController extends GetxController {
       if (response.ok) {
         //save Token
         await Storage.saveToken(response.data!);
+        String accessToken = response.data!.accessToken;
         // dio get user
         String phoneNumber = Storage.getToken()!.username;
-        String token = Storage.getToken()!.accessToken;
         final userResponse =
-            await userProvider.getUserByPhone(phoneNumber, token);
+            await userProvider.getUserByPhone(phoneNumber, accessToken);
         print('User respone: ${userResponse.toString()}');
         //ok
         if (userResponse.ok) {

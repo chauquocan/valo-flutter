@@ -17,7 +17,7 @@ class WidgetBubble extends StatelessWidget {
 
   Widget build(BuildContext context) {
     final uri = Uri.tryParse(message);
-    if (uri != null && type != 'IMAGE' && type != 2) {
+    if (uri != null && type != 'IMAGE' && type != 'STICKER') {
       if (uri.isAbsolute) {
         return _WidgetUrlPreview(
           url: message,
@@ -33,7 +33,7 @@ class WidgetBubble extends StatelessWidget {
       return _buildTextBubble();
     } else if (type == 'IMAGE') {
       return _buildImageBubble(context);
-    } else if (type == 2) {
+    } else if (type == 'STICKER') {
       return _buildStickerBubble(context);
     } else if (type == 3) {
       List<String> dataList = message.split(' ');
@@ -350,7 +350,7 @@ class WidgetBubble extends StatelessWidget {
                             ),
                             errorWidget: (context, url, error) => Material(
                               child: Image.asset(
-                                'assets/images/img_not_available.jpeg',
+                                'assets/images/img_not_available.jpg',
                                 fit: BoxFit.cover,
                               ),
                               borderRadius: BorderRadius.all(

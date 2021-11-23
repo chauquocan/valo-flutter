@@ -5,7 +5,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:valo_chat_app/app/data/providers/auth_provider.dart';
 import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
-import 'package:valo_chat_app/app/widgets/custom/dialog_loading.dart';
 
 class TabProfileController extends GetxController {
   //user service
@@ -22,6 +21,7 @@ class TabProfileController extends GetxController {
       {required this.userProvider, required this.authProvider});
 
   var isLoading = false.obs;
+  final _token = Storage.getToken()!.accessToken;
   //image
   final ImagePicker _picker = ImagePicker();
   var imageURL = '';
@@ -84,8 +84,8 @@ class TabProfileController extends GetxController {
       final response = await ProfileProvider().updateUserInfo(map);
       print('Update Response: ${response.toString()}');
       if (response.ok) {
-        final userResponse = await ProfileProvider()
-            .getUserByPhone('${phone}', '${Storage.getToken()!.accessToken}');
+        final userResponse =
+            await ProfileProvider().getUserByPhone('${phone}', _token);
         Get.snackbar('update susscessfully', '');
         if (userResponse.ok) {
           await Storage.saveUser(userResponse.data!);

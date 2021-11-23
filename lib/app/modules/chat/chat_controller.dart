@@ -9,14 +9,17 @@ import 'package:stomp_dart_client/stomp_frame.dart';
 import 'package:valo_chat_app/app/data/models/message_model.dart';
 import 'package:valo_chat_app/app/data/models/profile_model.dart';
 import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
+import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
 import 'package:valo_chat_app/app/utils/stomp_service.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
 class ChatController extends GetxController {
-  final ChatProvider provider;
+  final ChatProvider chatProvider;
+  final ProfileProvider profileProvider;
 
   ChatController({
-    required this.provider,
+    required this.chatProvider,
+    required this.profileProvider,
   });
 
   final textController = TextEditingController();
@@ -27,6 +30,7 @@ class ChatController extends GetxController {
   final _id = ''.obs;
   final _name = ''.obs;
   final _avatar = ''.obs;
+  final _senderAvatar = <String>[].obs;
   final _isGroup = false.obs;
   final _page = 0.obs;
 
@@ -67,6 +71,12 @@ class ChatController extends GetxController {
 
   set avatar(value) {
     _avatar.value = value;
+  }
+
+  get senderAvatar => _senderAvatar.value;
+
+  set senderAvatar(value) {
+    _senderAvatar.value = value;
   }
 
   get isGroup => _isGroup.value;
@@ -175,7 +185,7 @@ class ChatController extends GetxController {
     update();
   }
 
-  void OnMessageReceive(StompFrame frame) {
+  Future OnMessageReceive(StompFrame frame) async {
     var response = jsonDecode(frame.body!);
     print(response);
     Message mess = Message.fromJson(response);
@@ -188,11 +198,13 @@ class ChatController extends GetxController {
    */
   Future getMessages(String id, int page) async {
     List<Message> _messages = [];
-    final response = await provider.GetMessages(id, page);
+    final response = await chatProvider.GetMessages(id, page);
     if (response.ok) {
       if (response.data!.content.length > 0) {
         for (var message in response.data!.content) {
           _messages.add(message);
+          // final sender = await profileProvider.getUserById(message.senderId);
+          // senderAvatar.add(sender.data?.imgUrl);
         }
         messages.assignAll(_messages);
         isLoading = false;
@@ -213,11 +225,13 @@ class ChatController extends GetxController {
    */
   Future getMoreMessages(String id, int page) async {
     List<Message> _messages = [];
-    final response = await provider.GetMessages(id, page);
+    final response = await chatProvider.GetMessages(id, page);
     if (response.ok) {
       if (response.data!.content.length > 0) {
         for (var message in response.data!.content) {
           _messages.add(message);
+          // final sender = await profileProvider.getUserById(message.senderId);
+          // senderAvatar.add(sender.data?.imgUrl);
         }
         messages.addAll(_messages);
         isLoading = false;
@@ -313,9 +327,9 @@ class ChatController extends GetxController {
   Future sendSticker(String? url) async {
     String body = json.encode({
       "conversationId": '${id}',
-      "messageType": 1,
+      "messageType": 2,
       "content": url,
-      "senderId": '${Storage.getUser()!.id}',
+      "senderId": '${currentUserId}',
       "replyId": '',
     });
     StompService.stompClient.send(
@@ -376,19 +390,19 @@ class ChatController extends GetxController {
     return Future.value(false);
   }
 
-  Future sendImage() async {
+  Future sendImage(ImageSource imageSource) async {
     ImagePicker imagePicker = ImagePicker();
-    final pickedFile = await imagePicker.pickImage(
-        source: ImageSource.gallery, imageQuality: 50);
+    final pickedFile =
+        await imagePicker.pickImage(source: imageSource, imageQuality: 50);
     if (pickedFile != null) {
-      var response = await provider.uploadFile(pickedFile.path);
+      var response = await chatProvider.uploadFile(pickedFile.path);
       if (response.statusCode == 200) {
         final listFile = [];
-        for (var file in response.data) {
+        for (var image in response.data) {
           String body = json.encode({
             "conversationId": '${id}',
             "messageType": 1,
-            "content": file,
+            "content": image,
             "senderId": '${Storage.getUser()!.id}',
             "replyId": '',
           });

@@ -1,10 +1,10 @@
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/chat/widgets/widgets.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_friend.dart';
-import 'package:valo_chat_app/app/utils/store_service.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
 import 'chat_controller.dart';
 
@@ -56,15 +56,14 @@ class ChatScreen extends GetView<ChatController> {
           WidgetInputField(
             textEditingController: controller.textController,
             onSubmit: () => controller.sendTextMessage(controller.id),
-            sendIcon: () {
-              controller.emojiShowing = !controller.emojiShowing;
-            },
-            sendSticker: () {
-              controller.stickerShowing = !controller.stickerShowing;
-            },
-            sendImage: () {
-              controller.sendImage();
-            },
+            sendImageFromCamera: () => controller.sendImage(ImageSource.camera),
+            sendImageFromGallery: () =>
+                controller.sendImage(ImageSource.gallery),
+            sendIcon: () => controller.emojiShowing = !controller.emojiShowing,
+            sendSticker: () =>
+                controller.stickerShowing = !controller.stickerShowing,
+            sendGif: () {},
+            sendFile: () {},
             isEmojiVisible: controller.emojiShowing,
             isKeyboardVisible: controller.isKeyboardVisible,
           ),

@@ -22,9 +22,7 @@ class ProfileProvider extends ConnectService {
   Future<NetworkResponse<Profile>> getUserById(String id) async {
     try {
       final response = await get('${userURL}/${id}',
-          options: Options(headers: {
-            'Authorization': 'Bearer ${Storage.getToken()?.accessToken}'
-          }));
+          options: Options(headers: {'Authorization': 'Bearer $_token'}));
       print(userURL + Storage.getToken()!.username);
       return NetworkResponse.fromResponse(
         response,
@@ -80,9 +78,7 @@ class ProfileProvider extends ConnectService {
           queryParameters: {
             'textToSearch': textToSearch,
           },
-          options: Options(headers: {
-            'Authorization': 'Bearer ${Storage.getToken()?.accessToken}'
-          }));
+          options: Options(headers: {'Authorization': 'Bearer $_token'}));
       return NetworkResponse.fromResponse(
         response,
         (json) => ProfilePage.fromJson(json),
