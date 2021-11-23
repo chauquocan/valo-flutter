@@ -108,8 +108,8 @@ class CreateGroupChatController extends GetxController {
     final map = {'name': textCtrl.text, 'participants': participants};
     final respones = await groupChatProvider.createGroupChat(map);
     if (respones.ok) {
-      chatController.getConversations();
       Get.back();
+      chatController.getConversations();
     } else
       (print(respones));
   }
