@@ -41,12 +41,55 @@ class ProfileGroupScreen extends GetView<ChatController> {
                   SizedBox(
                     height: 30,
                   ),
-                  buildTextField("Name:    ", controller.name, Colors.black),
+                  buildTextField("Name:    ", controller.name, Colors.blue),
                   ProfileMenu(
                     text: "Members",
                     icon: "assets/icons/group.svg",
                     press: () {
                       Get.to(MemberScreen());
+                    },
+                  ),
+                  ProfileMenu(
+                    text: "Delete group",
+                    icon: "assets/icons/delete-group.svg",
+                    press: () {
+                      Get.dialog(
+                        AlertDialog(
+                          title: Center(child: Text('Lưu ý')),
+                          content: SingleChildScrollView(
+                            child: Text('Bạn có chắc chắn muốn xóa group?'),
+                          ),
+                          actionsAlignment: MainAxisAlignment.spaceEvenly,
+                          actions: [
+                            ElevatedButton.icon(
+                              onPressed: () {
+                                Get.back();
+                                //controller.logout();
+                              },
+                              icon: Icon(Icons.check_circle),
+                              // style: ButtonStyle(backgroundColor: Colors.blue),
+                              label: Text(
+                                "Xác nhận",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            ElevatedButton.icon(
+                              onPressed: () {
+                                Get.back();
+                              },
+                              icon: Icon(Icons.cancel),
+                              // style: ButtonStyle(backgroundColor: Colors.blue),
+                              label: Text(
+                                "Hủy",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            )
+                          ],
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                        ),
+                      );
                     },
                   ),
                   ProfileMenu(
@@ -107,7 +150,7 @@ class ProfileGroupScreen extends GetView<ChatController> {
           padding: EdgeInsets.all(25),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          backgroundColor: Color(0xFFF5F6F9),
+          backgroundColor: Color(0xFFF2F4FB),
         ),
         onPressed: () {},
         child: Row(
@@ -135,6 +178,9 @@ class ProfileGroupScreen extends GetView<ChatController> {
       title: Text(
         'Group profile',
         style: TextStyle(color: AppColors.light),
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
       ),
       backgroundColor: Colors.lightBlue,
     );

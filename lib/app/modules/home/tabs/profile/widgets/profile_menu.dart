@@ -20,7 +20,7 @@ class ProfileMenu extends StatelessWidget {
       decoration: BoxDecoration(
         boxShadow: const [
           BoxShadow(
-              color: Colors.black26, offset: Offset(0, 2), blurRadius: 5.0),
+              color: Colors.lightBlue, offset: Offset(0, 2), blurRadius: 5.0),
         ],
         color: Colors.white,
         borderRadius: BorderRadius.circular(7.0),
@@ -35,7 +35,7 @@ class ProfileMenu extends StatelessWidget {
           child: SvgPicture.asset(
             icon,
             fit: BoxFit.cover,
-            color: AppColors.dark,
+            color: Colors.blue,
             height: 40,
             width: 40,
           ),

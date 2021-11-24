@@ -233,6 +233,9 @@ class EditProfileScreen extends StatelessWidget {
         'My account',
         style: TextStyle(color: AppColors.light),
       ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
+      ),
       backgroundColor: Colors.lightBlue,
     );
   }

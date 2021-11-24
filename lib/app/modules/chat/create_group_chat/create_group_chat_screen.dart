@@ -15,7 +15,8 @@ class CreateGroupChatScreen extends GetView<CreateGroupChatController> {
           appBar: WidgetAppBar(
             title: 'Create group chat',
             actions: [
-              controller.selected.length >= 2
+              controller.selected.length >= 2 &&
+                      controller.textCtrl.toString() != ""
                   ? IconButton(
                       onPressed: () => controller.onSubmit(),
                       icon: Icon(Icons.add),
@@ -25,7 +26,8 @@ class CreateGroupChatScreen extends GetView<CreateGroupChatController> {
                       onPressed: () {
                         Get.rawSnackbar(
                           title: 'Something wrong',
-                          message: 'Members must be up to 2',
+                          message:
+                              'Members must be up to 2 or Group names not null',
                         );
                       },
                       icon: Icon(Icons.add),

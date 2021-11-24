@@ -24,6 +24,9 @@ class WidgetAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       actionsIconTheme: IconThemeData(color: Colors.white),
       actions: actions,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
+      ),
     );
   }
 
