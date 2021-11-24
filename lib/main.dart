@@ -16,7 +16,7 @@ Future main() async {
   await Firebase.initializeApp();
   //storage service
   await Storage.init();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

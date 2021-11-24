@@ -62,11 +62,37 @@ class ChatProvider extends ConnectService {
   //Pick file
   Future<Response> uploadFile(filePath) async {
     try {
-      FormData formData = FormData.fromMap(
-        {
-          "files": await MultipartFile.fromFile(filePath, filename: 'image.jpg')
-        },
+      FormData formData =
+          FormData.fromMap({"files": await MultipartFile.fromFile(filePath)});
+      final response = await post(
+        fileURL,
+        data: formData,
+        options: Options(
+          headers: <String, String>{
+            'Authorization': 'Bearer $_token',
+          },
+        ),
       );
+      return response;
+    } on DioError catch (e, s) {
+      print(e.message);
+      // return NetworkResponse.withError(e.response);
+      throw Exception(e);
+    }
+  }
+
+  //Pick file
+  Future<Response> uploadFiles(List filePath) async {
+    try {
+      // var formData = FormData();
+      // for (var file in filePath) {
+      //   formData.files.addAll([
+      //     MapEntry("files", await MultipartFile.fromFile(file)),
+      //   ]);
+      // }
+      List<MultipartFile> files =
+          filePath.map((e) => MultipartFile.fromFileSync(e)).toList();
+      var formData = FormData.fromMap({"files": files});
       final response = await post(
         fileURL,
         data: formData,

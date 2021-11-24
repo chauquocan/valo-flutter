@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -195,7 +196,7 @@ class ChatController extends GetxController {
   //get member in group
   Future getmember() async {
     for (Participants content in participants) {
-      Profile profile = getProfileById(content.userId) as Profile;
+      final profile = await getProfileById(content.userId);
       members.add(profile);
     }
   }
@@ -360,7 +361,7 @@ class ChatController extends GetxController {
     // }
   }
 
-  Future sendSticker(String? url) async {
+  void sendSticker(String? url) async {
     String body = json.encode({
       "conversationId": '${id}',
       "messageType": 2,
@@ -397,39 +398,10 @@ class ChatController extends GetxController {
     // }
   }
 
-  void onEmojiSelected(Emoji emoji) {
-    textController.text += emoji.emoji;
-    _moveCursorToLast();
-  }
-
-  void onBackspacePressed() {
-    textController.text = textController.text.characters.skipLast(1).string;
-    _moveCursorToLast();
-  }
-
-  void toggleEmojiKeyboard() {
-    if (isKeyboardVisible) {
-      FocusScope.of(Get.context!).unfocus();
-    }
-  }
-
-  Future<bool> onBackPress() {
-    if (emojiShowing) {
-      toggleEmojiKeyboard();
-      emojiShowing = !emojiShowing;
-    } else if (stickerShowing) {
-      toggleEmojiKeyboard();
-      stickerShowing = !stickerShowing;
-    } else {
-      Navigator.pop(Get.context!);
-    }
-    return Future.value(false);
-  }
-
-  Future sendImage(ImageSource imageSource) async {
+  void pickImageFromCamera() async {
     ImagePicker imagePicker = ImagePicker();
-    final pickedFile =
-        await imagePicker.pickImage(source: imageSource, imageQuality: 50);
+    final pickedFile = await imagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 50);
     if (pickedFile != null) {
       var response = await chatProvider.uploadFile(pickedFile.path);
       if (response.statusCode == 200) {
@@ -459,35 +431,103 @@ class ChatController extends GetxController {
     } else {
       Get.snackbar('Luu y ', "Vui long chon anh");
     }
+  }
 
-    // if (pickedFile != null) {
-    //   final imageFile = File(pickedFile.path);
-    //   final ref = await storageProvider.uploadFile(imageFile);
-    //   ref.getDownloadURL().then((url) {
-    //     final message = Message(
-    //         senderUID: UserProvider.getCurrentUser().uid,
-    //         senderName: UserProvider.getCurrentUser().displayName!,
-    //         senderAvatar: UserProvider.getCurrentUser().photoURL,
-    //         message: url,
-    //         createdAt: DateTime.now().millisecondsSinceEpoch,
-    //         type: 1);
-    //     if (fromContact) {
-    //       provider.sendMessageFromContact(id, message);
-    //       ntfProvider.pushNotifyToPeer(
-    //           UserProvider.getCurrentUser().displayName!,
-    //           UserProvider.getCurrentUser().displayName! + ' send a photo',
-    //           UserProvider.getCurrentUser().uid,
-    //           deviceToken ?? []);
-    //     } else {
-    //       provider.sendMessage(id, message);
-    //       ntfProvider.pushNotifyToPeer(
-    //           name,
-    //           UserProvider.getCurrentUser().displayName! + ' send a photo ',
-    //           UserProvider.getCurrentUser().uid,
-    //           deviceToken ?? []);
-    //     }
-    //   });
-    // }
+  void pickImagesFromGallery() async {
+    FilePickerResult? result = await FilePicker.platform
+        .pickFiles(type: FileType.image, allowMultiple: true);
+
+    if (result != null) {
+      var response = await chatProvider.uploadFiles(result.paths);
+      if (response.statusCode == 200) {
+        for (var image in response.data) {
+          String body = json.encode({
+            "conversationId": '${id}',
+            "messageType": 1,
+            "content": image,
+            "senderId": '${Storage.getUser()!.id}',
+            "replyId": '',
+          });
+          StompService.stompClient.send(
+            destination: "/app/chat",
+            body: body,
+          );
+        }
+        textController.clear();
+        if (messages.length >= 1) {
+          scrollController.animateTo(0,
+              duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+        }
+      } else {
+        print(response);
+        Get.snackbar('Loi', "Loi gui api");
+      }
+    } else {
+      // User canceled the picker
+    }
+  }
+
+  void pickFilesFromGallery() async {
+    FilePickerResult? result = await FilePicker.platform
+        .pickFiles(type: FileType.any, allowMultiple: true);
+
+    if (result != null) {
+      var response = await chatProvider.uploadFiles(result.paths);
+      if (response.statusCode == 200) {
+        for (var image in response.data) {
+          String body = json.encode({
+            "conversationId": '${id}',
+            "messageType": 5,
+            "content": image,
+            "senderId": '${Storage.getUser()!.id}',
+            "replyId": '',
+          });
+          StompService.stompClient.send(
+            destination: "/app/chat",
+            body: body,
+          );
+        }
+        textController.clear();
+        if (messages.length >= 1) {
+          scrollController.animateTo(0,
+              duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+        }
+      } else {
+        print(response);
+        Get.snackbar('Loi', "Loi gui api");
+      }
+    } else {
+      // User canceled the picker
+    }
+  }
+
+  void onEmojiSelected(Emoji emoji) {
+    textController.text += emoji.emoji;
+    _moveCursorToLast();
+  }
+
+  void onBackspacePressed() {
+    textController.text = textController.text.characters.skipLast(1).string;
+    _moveCursorToLast();
+  }
+
+  void toggleEmojiKeyboard() {
+    if (isKeyboardVisible) {
+      FocusScope.of(Get.context!).unfocus();
+    }
+  }
+
+  Future<bool> onBackPress() {
+    if (emojiShowing) {
+      toggleEmojiKeyboard();
+      emojiShowing = !emojiShowing;
+    } else if (stickerShowing) {
+      toggleEmojiKeyboard();
+      stickerShowing = !stickerShowing;
+    } else {
+      Navigator.pop(Get.context!);
+    }
+    return Future.value(false);
   }
 
   void _moveCursorToLast() {

@@ -57,14 +57,15 @@ class ChatScreen extends GetView<ChatController> {
           WidgetInputField(
             textEditingController: controller.textController,
             onSubmit: () => controller.sendTextMessage(controller.id),
-            sendImageFromCamera: () => controller.sendImage(ImageSource.camera),
+            sendImageFromCamera: () => controller.pickImageFromCamera(),
             sendImageFromGallery: () =>
-                controller.sendImage(ImageSource.gallery),
+                // controller.pickImageFromCamera(ImageSource.gallery),
+                controller.pickImagesFromGallery(),
             sendIcon: () => controller.emojiShowing = !controller.emojiShowing,
             sendSticker: () =>
                 controller.stickerShowing = !controller.stickerShowing,
             sendGif: () {},
-            sendFile: () {},
+            sendFile: () => controller.pickFilesFromGallery(),
             isEmojiVisible: controller.emojiShowing,
             isKeyboardVisible: controller.isKeyboardVisible,
           ),
