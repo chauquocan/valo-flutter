@@ -4,9 +4,9 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'package:agora_rtc_engine/rtc_engine.dart';
 
-const appId = "1deadac84abf45be8c6facc990870ddf";
+const appId = "a26be3d4d5e640a994c6dc0ffbaf1b43";
 const token =
-    "006a26be3d4d5e640a994c6dc0ffbaf1b43IAC/yRC+u/lbjdo06EcmfZSnA7zR+bZyI8j/G3KFJSpDg0D6g3QAAAAAEAAGMGkoW6ugYQEAAQBaq6Bh";
+    "006a26be3d4d5e640a994c6dc0ffbaf1b43IADBS4pDaWAPe7pIPJEw7sTpo73O9UNylJ0Tw36CM7da3UD6g3QAAAAAEABf0ripMcagYQEAAQAwxqBh";
 
 class CallController extends GetxController {
   final _remoteUid = null.obs;
@@ -27,6 +27,7 @@ class CallController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+    _engine.destroy();
   }
 
   Future<void> initForAgora() async {
