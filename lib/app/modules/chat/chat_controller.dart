@@ -12,17 +12,22 @@ import 'package:valo_chat_app/app/data/models/message_model.dart';
 import 'package:valo_chat_app/app/data/models/network_response.dart';
 import 'package:valo_chat_app/app/data/models/profile_model.dart';
 import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
+import 'package:valo_chat_app/app/data/providers/group_chat_provider.dart';
 import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
+import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
 import 'package:valo_chat_app/app/utils/stomp_service.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
 class ChatController extends GetxController {
+  final conversationController = Get.find<TabConversationController>();
   final ChatProvider chatProvider;
   final ProfileProvider profileProvider;
+  final GroupChatProvider groupChatProvider;
 
   ChatController({
     required this.chatProvider,
     required this.profileProvider,
+    required this.groupChatProvider,
   });
 
   final textController = TextEditingController();
@@ -213,6 +218,26 @@ class ChatController extends GetxController {
         address: response.data!.address,
         imgUrl: response.data!.imgUrl,
         status: response.data!.status);
+  }
+
+  // kick member
+  Future kickMember(userId, conversationId) async {
+    final map = {'userId': userId, 'conversationId': conversationId};
+    final respones = await groupChatProvider.kickMember(map);
+    if (respones.ok) {
+      Get.back();
+    } else
+      (print(respones));
+  }
+
+  // add member
+  Future addMember(userId, conversationId) async {
+    final map = {'userId': userId, 'conversationId': conversationId};
+    final respones = await groupChatProvider.addMember(map);
+    if (respones.ok) {
+      Get.back();
+    } else
+      (print(respones));
   }
 
   ///

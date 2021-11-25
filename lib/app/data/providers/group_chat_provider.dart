@@ -29,4 +29,32 @@ class GroupChatProvider extends ConnectService {
       return NetworkResponse.withError(e.response);
     }
   }
+
+  Future<NetworkResponse<Participants>> addMember(Map map) async {
+    try {
+      final response = await put(
+        '$conversationURL/add',
+        data: map,
+        options: Options(headers: {'Authorization': 'Bearer ${_token}'}),
+      );
+      return NetworkResponse.fromResponse(
+          response, (json) => Conversation.fromJson(json));
+    } on DioError catch (e, s) {
+      return NetworkResponse.withError(e.response);
+    }
+  }
+
+  Future<NetworkResponse<Participants>> kickMember(Map map) async {
+    try {
+      final response = await put(
+        '$conversationURL/kick',
+        data: map,
+        options: Options(headers: {'Authorization': 'Bearer ${_token}'}),
+      );
+      return NetworkResponse.fromResponse(
+          response, (json) => Conversation.fromJson(json));
+    } on DioError catch (e, s) {
+      return NetworkResponse.withError(e.response);
+    }
+  }
 }
