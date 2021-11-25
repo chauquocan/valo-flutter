@@ -5,11 +5,11 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:giphy_get/giphy_get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
 import 'package:valo_chat_app/app/data/models/conversation_model.dart';
 import 'package:valo_chat_app/app/data/models/message_model.dart';
-import 'package:valo_chat_app/app/data/models/network_response.dart';
 import 'package:valo_chat_app/app/data/models/profile_model.dart';
 import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
 import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
@@ -47,6 +47,7 @@ class ChatController extends GetxController {
 
   final _emojiShowing = false.obs;
   final _stickerShowing = false.obs;
+  final _gifShowing = false.obs;
   final _showMore = false.obs;
   final _isKeyboardVisible = false.obs;
   final _messages = <Message>[].obs;
@@ -101,8 +102,9 @@ class ChatController extends GetxController {
   set emojiShowing(value) {
     if (value && Get.window.viewInsets.bottom != 0) {
       FocusScope.of(Get.context!).requestFocus(FocusNode());
-    } else if (value && stickerShowing) {
+    } else if (value && stickerShowing || value && gifShowing) {
       stickerShowing = false;
+      gifShowing = false;
     }
     _emojiShowing.value = value;
   }
@@ -112,10 +114,23 @@ class ChatController extends GetxController {
   set stickerShowing(value) {
     if (value && Get.window.viewInsets.bottom != 0) {
       FocusScope.of(Get.context!).requestFocus(FocusNode());
-    } else if (value && emojiShowing) {
+    } else if (value && emojiShowing || value && gifShowing) {
       emojiShowing = false;
+      gifShowing = false;
     }
     _stickerShowing.value = value;
+  }
+
+  get gifShowing => _gifShowing.value;
+
+  set gifShowing(value) {
+    if (value && Get.window.viewInsets.bottom != 0) {
+      FocusScope.of(Get.context!).requestFocus(FocusNode());
+    } else if (value && stickerShowing || value && emojiShowing) {
+      emojiShowing = false;
+      stickerShowing = false;
+    }
+    _gifShowing.value = value;
   }
 
   get isKeyboardVisible => _isKeyboardVisible.value;
@@ -166,19 +181,32 @@ class ChatController extends GetxController {
   /*------------------------*/
   @override
   void onInit() {
+    super.onInit();
     id = Get.arguments['id'];
     name = Get.arguments['name'];
     avatar = Get.arguments['avatar'];
     isGroup = Get.arguments['isGroup'];
-
     participants = Get.arguments['participants'];
     getmember();
-    super.onInit();
     getMessages(id, _page.value);
     StompService.stompClient.subscribe(
       destination: '/users/queue/messages',
       callback: (StompFrame frame) => OnMessageReceive(frame),
     );
+
+    var keyboardVisibilityController = KeyboardVisibilityController();
+    keyboardVisibilityController.onChange.listen((bool isKeyboardVisible) {
+      this.isKeyboardVisible = isKeyboardVisible;
+      if (isKeyboardVisible && emojiShowing) {
+        emojiShowing = false;
+      } else if (isKeyboardVisible && stickerShowing) {
+        stickerShowing = false;
+      } else if (isKeyboardVisible && gifShowing) {
+        gifShowing = false;
+      } else if (isKeyboardVisible && showMore) {
+        showMore = false;
+      }
+    });
   }
 
   @override
@@ -300,7 +328,7 @@ class ChatController extends GetxController {
     _moveCursorToLast();
   }
 
-  void sendTextMessage(String id) {
+  void sendTextMessage() {
     if (textController.text.isNotEmpty) {
       String body = json.encode({
         "conversationId": '${id}',
@@ -396,6 +424,31 @@ class ChatController extends GetxController {
     //       UserProvider.getCurrentUser().uid,
     //       deviceToken ?? []);
     // }
+  }
+
+  void sendGif(context) async {
+    final gif = await GiphyGet.getGif(
+      context: context, //Required
+      apiKey: "uBomexw9lSfEywwVUChAqN3JnyPEZiaK", //Required.
+      lang: GiphyLanguage.english, //Optional - Language for query.
+      randomID: "abcd", // Optional - An ID/proxy for a specific user.
+      searchText: "Search GIPHY", //Optional - AppBar search hint text.
+      tabColor: Colors.teal, // Optional- default accent color.
+    );
+    if (gif != null) {
+      // print(gif);
+      String body = json.encode({
+        "conversationId": '${id}',
+        "messageType": 2,
+        "content": gif.images?.original?.webp,
+        "senderId": '${currentUserId}',
+        "replyId": '',
+      });
+      StompService.stompClient.send(
+        destination: "/app/chat",
+        body: body,
+      );
+    }
   }
 
   void pickImageFromCamera() async {
@@ -524,6 +577,9 @@ class ChatController extends GetxController {
     } else if (stickerShowing) {
       toggleEmojiKeyboard();
       stickerShowing = !stickerShowing;
+    } else if (gifShowing) {
+      toggleEmojiKeyboard();
+      gifShowing = !gifShowing;
     } else {
       Navigator.pop(Get.context!);
     }

@@ -1,9 +1,9 @@
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/chat/create_group_chat/profile_group/profile_group_creen.dart';
+import 'package:valo_chat_app/app/modules/chat/video/video_call.dart';
 import 'package:valo_chat_app/app/modules/chat/widgets/widgets.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_friend_screen.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
@@ -23,13 +23,12 @@ class ChatScreen extends GetView<ChatController> {
             child: GetX<ChatController>(
               builder: (_) {
                 if (controller.isLoading) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else {
                   if (controller.messagesLoaded) {
                     return ListView.builder(
                       controller: controller.scrollController,
                       reverse: true,
-                      shrinkWrap: true,
                       physics: AlwaysScrollableScrollPhysics(),
                       itemCount: controller.messages.length,
                       itemBuilder: (context, i) {
@@ -47,7 +46,7 @@ class ChatScreen extends GetView<ChatController> {
                       },
                     );
                   } else {
-                    return Center(child: Text('No messages'));
+                    return const Center(child: Text('No messages'));
                   }
                 }
               },
@@ -56,7 +55,7 @@ class ChatScreen extends GetView<ChatController> {
           buildListTag(),
           WidgetInputField(
             textEditingController: controller.textController,
-            onSubmit: () => controller.sendTextMessage(controller.id),
+            onSubmit: () => controller.sendTextMessage(),
             sendImageFromCamera: () => controller.pickImageFromCamera(),
             sendImageFromGallery: () =>
                 // controller.pickImageFromCamera(ImageSource.gallery),
@@ -64,20 +63,36 @@ class ChatScreen extends GetView<ChatController> {
             sendIcon: () => controller.emojiShowing = !controller.emojiShowing,
             sendSticker: () =>
                 controller.stickerShowing = !controller.stickerShowing,
-            sendGif: () {},
+            // sendGif: () => controller.gifShowing = !controller.gifShowing,
+            sendGif: () => controller.sendGif(context),
+
             sendFile: () => controller.pickFilesFromGallery(),
             isEmojiVisible: controller.emojiShowing,
             isKeyboardVisible: controller.isKeyboardVisible,
           ),
           _buildEmoji(),
-          GetX<ChatController>(
-            builder: (_) {
-              return Visibility(
-                  visible: controller.stickerShowing, child: WidgetSticker());
-            },
-          ),
+          _buildSticker(),
+          _buildGif(),
         ],
       ),
+    );
+  }
+
+  Widget _buildGif() {
+    return GetX<ChatController>(
+      builder: (_) {
+        return Visibility(
+            visible: controller.gifShowing, child: WidgetSticker());
+      },
+    );
+  }
+
+  Widget _buildSticker() {
+    return GetX<ChatController>(
+      builder: (_) {
+        return Visibility(
+            visible: controller.stickerShowing, child: WidgetSticker());
+      },
     );
   }
 
@@ -172,7 +187,9 @@ class ChatScreen extends GetView<ChatController> {
       ),
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.to(VideoCallScreen());
+          },
           icon: Icon(Icons.videocam),
         ),
         IconButton(

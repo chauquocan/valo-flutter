@@ -50,6 +50,7 @@ dependencies:
 
   #socket
   stomp_dart_client: ^0.4.3
+  agora_rtc_engine: ^4.0.7
   persistent_bottom_nav_bar: ^4.0.2
   
   #phone permission
@@ -57,16 +58,20 @@ dependencies:
 
   cached_network_image: ^3.1.0
   flutter_svg: ^0.23.0+1
-  flutter_link_previewer: ^2.5.2
-  google_maps_flutter: ^2.0.11
-  emoji_picker_flutter: ^1.0.7
-  image_picker: ^0.8.4+2
-  photo_view: ^0.13.0
   flutter_keyboard_visibility: ^5.1.0
   contacts_service: ^0.6.3
   connectivity_plus: ^2.0.3
   connectivity_plus_web: ^1.1.0+1
+
   file_picker: ^4.2.4
+  photo_view: ^0.13.0
+  image_picker: ^0.8.4+2
+  giphy_get: ^2.0.3
+  flutter_link_previewer: ^2.5.2
+  emoji_picker_flutter: ^1.0.7
+  google_maps_flutter: ^2.1.1
+
+
   
 dev_dependencies:
   flutter_launcher_icons: ^0.9.2
