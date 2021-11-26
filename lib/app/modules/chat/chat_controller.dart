@@ -12,17 +12,25 @@ import 'package:valo_chat_app/app/data/models/conversation_model.dart';
 import 'package:valo_chat_app/app/data/models/message_model.dart';
 import 'package:valo_chat_app/app/data/models/profile_model.dart';
 import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
+import 'package:valo_chat_app/app/data/providers/group_chat_provider.dart';
 import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
+import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
+import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
 import 'package:valo_chat_app/app/utils/stomp_service.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
 class ChatController extends GetxController {
+  final conversationController = Get.find<TabConversationController>();
   final ChatProvider chatProvider;
   final ProfileProvider profileProvider;
+  final GroupChatProvider groupChatProvider;
+
+  TabContactController contactController = Get.find();
 
   ChatController({
     required this.chatProvider,
     required this.profileProvider,
+    required this.groupChatProvider,
   });
 
   final textController = TextEditingController();
@@ -36,6 +44,15 @@ class ChatController extends GetxController {
   final _senderAvatar = <String>[].obs;
   final _isGroup = false.obs;
   final _page = 0.obs;
+
+  final _users = <Profile>[].obs;
+
+  List<Profile> get users => _users;
+
+  set users(value) {
+    _users.value = value;
+  }
+
   //
   final _participants = <Participants>[].obs;
 
@@ -189,6 +206,7 @@ class ChatController extends GetxController {
     participants = Get.arguments['participants'];
     getmember();
     getMessages(id, _page.value);
+    getContacts();
     StompService.stompClient.subscribe(
       destination: '/users/queue/messages',
       callback: (StompFrame frame) => OnMessageReceive(frame),
@@ -241,6 +259,49 @@ class ChatController extends GetxController {
         address: response.data!.address,
         imgUrl: response.data!.imgUrl,
         status: response.data!.status);
+  }
+
+  // kick member
+  Future kickMember(userId, conversationId) async {
+    final map = {'userId': userId, 'conversationId': conversationId};
+    final respones = await groupChatProvider.kickMember(map);
+    if (respones.ok) {
+      Get.back();
+    } else
+      (print(respones));
+  }
+
+  // add member
+  Future addMember(userId, conversationId) async {
+    final map = {'userId': userId, 'conversationId': conversationId};
+    final respones = await groupChatProvider.addMember(map);
+    if (respones.ok) {
+      Get.back();
+    } else
+      (print(respones));
+  }
+
+  Future getContacts() async {
+    contactController.getContactsFromAPI();
+    for (var contact in contactController.contactId) {
+      final user = await profileProvider.getUserById(contact.friendId);
+      for (Profile content in members) {
+        if (content.id != user.data!.id) {
+          users.add(
+            Profile(
+                id: user.data!.id,
+                name: user.data!.name,
+                gender: user.data!.gender,
+                dateOfBirth: user.data!.dateOfBirth,
+                phone: user.data!.phone,
+                email: user.data!.email,
+                address: user.data!.address,
+                imgUrl: user.data!.imgUrl,
+                status: user.data!.status),
+          );
+        }
+      }
+    }
   }
 
   ///

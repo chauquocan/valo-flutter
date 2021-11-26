@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+import 'package:valo_chat_app/app/modules/chat/create_group_chat/profile_group/add_member_screen.dart';
 import 'package:valo_chat_app/app/modules/chat/create_group_chat/profile_group/member_screen.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_menu.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
@@ -47,6 +48,13 @@ class ProfileGroupScreen extends GetView<ChatController> {
                     icon: "assets/icons/group.svg",
                     press: () {
                       Get.to(MemberScreen());
+                    },
+                  ),
+                  ProfileMenu(
+                    text: "Add members",
+                    icon: "assets/icons/group.svg",
+                    press: () {
+                      Get.to(AddMemberScreen());
                     },
                   ),
                   ProfileMenu(

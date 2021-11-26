@@ -44,8 +44,10 @@ class MemberScreen extends GetView<ChatController> {
                         actions: [
                           ElevatedButton.icon(
                             onPressed: () {
+                              controller.kickMember(member.id, controller.id);
                               Get.back();
-                              //controller.logout();
+                              Get.back();
+                              Get.back();
                             },
                             icon: Icon(Icons.check_circle),
                             // style: ButtonStyle(backgroundColor: Colors.blue),
