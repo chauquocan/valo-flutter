@@ -36,11 +36,13 @@ class ChatScreen extends GetView<ChatController> {
                         return GestureDetector(
                           onLongPress: () {},
                           child: WidgetBubble(
-                            message: item.content,
-                            isMe: item.senderId == controller.currentUserId,
-                            dateTime: DateFormat('h:mm a').format(item.sendAt),
-                            type: item.messageType,
-                            avatar: controller.avatar,
+                            message: item.message.content,
+                            isMe: item.message.senderId ==
+                                controller.currentUserId,
+                            dateTime: DateFormat('h:mm a')
+                                .format(DateTime.parse(item.message.sendAt)),
+                            type: item.message.messageType,
+                            avatar: item.userImgUrl,
                           ),
                         );
                       },
@@ -188,7 +190,7 @@ class ChatScreen extends GetView<ChatController> {
       actions: [
         IconButton(
           onPressed: () {
-            Get.to(VideoCallScreen());
+            // Get.to(VideoCallScreen());
           },
           icon: Icon(Icons.videocam),
         ),

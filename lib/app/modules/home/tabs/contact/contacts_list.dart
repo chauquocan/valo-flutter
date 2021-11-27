@@ -4,8 +4,7 @@ import 'package:valo_chat_app/app/data/models/contact_model.dart';
 
 class ContactsList extends StatelessWidget {
   final List<ContactCustom> contacts;
-  Function() reloadContacts;
-  ContactsList({Key? key, required this.contacts, required this.reloadContacts})
+  ContactsList({Key? key, required this.contacts})
       : super(key: key);
   @override
   Widget build(BuildContext context) {

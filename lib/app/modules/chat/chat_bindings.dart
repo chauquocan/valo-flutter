@@ -19,6 +19,6 @@ class ChatBinding implements Bindings {
         groupChatProvider: GroupChatProvider()));
     Get.lazyPut(
         () => ProfileFriendController(profileProvider: ProfileProvider()));
-    Get.lazyPut(() => CallController());
+    // Get.lazyPut(() => CallController());
   }
 }

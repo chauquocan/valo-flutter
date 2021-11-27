@@ -38,7 +38,7 @@ class _ContactTabState extends State<ContactTab> {
             ],
           ),
           body: GetBuilder<TabContactController>(
-            builder: (TabContactController) => Container(
+            builder: (_) => Container(
               padding: EdgeInsets.all(10),
               child: Column(
                 children: <Widget>[
@@ -70,10 +70,6 @@ class _ContactTabState extends State<ContactTab> {
                                   controller.contacts.length > 0))
                           ? // if we have contacts to show
                           ContactsList(
-                              reloadContacts: () {
-                                print('wut is this');
-                                controller.getContactsFromPhone();
-                              },
                               contacts: controller.isSearch.value
                                   ? controller.contactsFiltered
                                   : controller.contacts,

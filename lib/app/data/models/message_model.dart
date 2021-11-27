@@ -16,91 +16,175 @@ class MessagePage {
     required this.numberOfElements,
     required this.empty,
   });
-  late final List<Message> content;
-  late final Pageable pageable;
-  late final bool last;
-  late final int totalPages;
-  late final int totalElements;
-  late final int size;
-  late final int number;
-  late final Sort sort;
-  late final bool first;
-  late final int numberOfElements;
-  late final bool empty;
 
-  MessagePage.fromJson(Map<String, dynamic> json) {
-    content =
-        List.from(json['content']).map((e) => Message.fromJson(e)).toList();
-    pageable = Pageable.fromJson(json['pageable']);
-    last = json['last'];
-    totalPages = json['totalPages'];
-    totalElements = json['totalElements'];
-    size = json['size'];
-    number = json['number'];
-    sort = Sort.fromJson(json['sort']);
-    first = json['first'];
-    numberOfElements = json['numberOfElements'];
-    empty = json['empty'];
-  }
+  final List<MessageContent> content;
+  final Pageable pageable;
+  final bool last;
+  final int totalPages;
+  final int totalElements;
+  final int size;
+  final int number;
+  final Sort sort;
+  final bool first;
+  final int numberOfElements;
+  final bool empty;
 
-  Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['content'] = content.map((e) => e.toJson()).toList();
-    _data['pageable'] = pageable.toJson();
-    _data['last'] = last;
-    _data['totalPages'] = totalPages;
-    _data['totalElements'] = totalElements;
-    _data['size'] = size;
-    _data['number'] = number;
-    _data['sort'] = sort.toJson();
-    _data['first'] = first;
-    _data['numberOfElements'] = numberOfElements;
-    _data['empty'] = empty;
-    return _data;
-  }
+  factory MessagePage.fromRawJson(String str) =>
+      MessagePage.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory MessagePage.fromJson(Map<String, dynamic> json) => MessagePage(
+        content: List<MessageContent>.from(
+            json["content"].map((x) => MessageContent.fromJson(x))),
+        pageable: Pageable.fromJson(json["pageable"]),
+        last: json["last"],
+        totalPages: json["totalPages"],
+        totalElements: json["totalElements"],
+        size: json["size"],
+        number: json["number"],
+        sort: Sort.fromJson(json["sort"]),
+        first: json["first"],
+        numberOfElements: json["numberOfElements"],
+        empty: json["empty"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "content": List<dynamic>.from(content.map((x) => x.toJson())),
+        "pageable": pageable.toJson(),
+        "last": last,
+        "totalPages": totalPages,
+        "totalElements": totalElements,
+        "size": size,
+        "number": number,
+        "sort": sort.toJson(),
+        "first": first,
+        "numberOfElements": numberOfElements,
+        "empty": empty,
+      };
+}
+
+class MessageContent {
+  MessageContent({
+    required this.message,
+    required this.userName,
+    required this.userImgUrl,
+    this.select,
+    this.status,
+  });
+
+  final Message message;
+  final String userName;
+  final String userImgUrl;
+  late String? status;
+  late bool? select = false;
+
+  factory MessageContent.fromRawJson(String str) =>
+      MessageContent.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory MessageContent.fromJson(Map<String, dynamic> json) => MessageContent(
+        message: Message.fromJson(json["message"]),
+        userName: json["userName"] ?? "",
+        userImgUrl: json["userImgUrl"] ?? "",
+      );
+
+  Map<String, dynamic> toJson() => {
+        "message": message.toJson(),
+        "userName": userName == null ? null : userName,
+        "userImgUrl": userImgUrl == null ? null : userImgUrl,
+      };
 }
 
 class Message {
   Message({
     required this.id,
     required this.conversationId,
+    required this.senderId,
     required this.sendAt,
     required this.messageType,
     required this.content,
-    required this.senderId,
+    required this.messageStatus,
     required this.replyId,
+    required this.reactions,
+    required this.pin,
   });
 
   final String id;
   final String conversationId;
-  final DateTime sendAt;
+  final String senderId;
+  final String sendAt;
   final String messageType;
   final String content;
-  final String senderId;
+  final String messageStatus;
   final String replyId;
+  final List<Reaction>? reactions;
+  final bool pin;
+
+  factory Message.fromRawJson(String str) => Message.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
-        id: json["id"] == null ? "" : json["id"],
+        id: json["id"],
         conversationId: json["conversationId"],
-        sendAt: DateTime.parse(json["sendAt"]),
+        senderId: json["senderId"] ?? "",
+        sendAt: json["sendAt"],
         messageType: json["messageType"],
         content: json["content"],
-        senderId: json["senderId"] == null ? "" : json["senderId"],
-        replyId: json["replyId"] == null ? "" : json["replyId"],
+        messageStatus: json["messageStatus"] ?? "",
+        replyId: json["replyId"] ?? "",
+        reactions: json["reactions"] == null
+            ? null
+            : List<Reaction>.from(
+                json["reactions"].map((x) => Reaction.fromJson(x))),
+        pin: json["pin"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "conversationId": conversationId,
-        "sendAt": sendAt.toIso8601String(),
+        "senderId": senderId == null ? null : senderId,
+        "sendAt": sendAt,
         "messageType": messageType,
         "content": content,
-        "senderId": senderId == null ? "" : senderId,
-        "replyId": replyId == null ? "" : replyId,
+        "messageStatus": messageStatus == null ? null : messageStatus,
+        "replyId": replyId == null ? null : replyId,
+        "reactions": reactions == null
+            ? null
+            : List<dynamic>.from(reactions!.map((x) => x.toJson())),
+        "pin": pin,
       };
 }
 
+class Reaction {
+  Reaction({
+    required this.userId,
+    required this.reactionType,
+  });
 
-List<String> fileModelFromJson(String str) => List<String>.from(json.decode(str).map((x) => x));
+  final String userId;
+  final String reactionType;
 
-String fileModelToJson(List<String> data) => json.encode(List<dynamic>.from(data.map((x) => x)));
+  factory Reaction.fromRawJson(String str) =>
+      Reaction.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory Reaction.fromJson(Map<String, dynamic> json) => Reaction(
+        userId: json["userId"],
+        reactionType: json["reactionType"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "userId": userId,
+        "reactionType": reactionType,
+      };
+}
+
+List<String> fileModelFromJson(String str) =>
+    List<String>.from(json.decode(str).map((x) => x));
+
+String fileModelToJson(List<String> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x)));

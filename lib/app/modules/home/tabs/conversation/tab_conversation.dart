@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
+import 'package:valo_chat_app/app/utils/date.dart';
 
 class ConversationTab extends GetView<TabConversationController> {
   const ConversationTab({Key? key}) : super(key: key);
@@ -11,7 +12,7 @@ class ConversationTab extends GetView<TabConversationController> {
     return Scaffold(
       appBar: AppBar(
         title: Text('chat'.tr),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
         ),
         actions: [
@@ -66,30 +67,34 @@ class ConversationTab extends GetView<TabConversationController> {
                       return ListTile(
                         onLongPress: () {},
                         onTap: () => Get.toNamed('/chat', arguments: {
-                          "id": conversation.id,
-                          "name": conversation.name,
-                          "participants": conversation.participants,
-                          "avatar": conversation.imageUrl,
+                          "id": conversation.conversation.id,
+                          "name": conversation.conversation.name,
+                          "participants":
+                              conversation.conversation.participants,
+                          "avatar": conversation.conversation.imageUrl,
                           "isGroup": conversation.isGroup,
                         }),
                         leading: Hero(
-                          tag: conversation.id,
+                          tag: conversation.conversation.id,
                           child: CircleAvatar(
                             backgroundColor: Colors.blueGrey,
                             radius: 30,
-                            backgroundImage:
-                                NetworkImage(conversation.imageUrl),
+                            backgroundImage: NetworkImage(
+                                conversation.conversation.imageUrl),
                           ),
                         ),
                         title: Text(
-                          conversation.name,
+                          conversation.conversation.name,
                           style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
-                        trailing: Text(conversation.time),
+                        trailing: Text(
+                          formatDate(conversation.lastMessage.message.sendAt)
+                              .toString(),
+                        ),
                         subtitle: Row(
                           children: [
-                            conversation.unread > 0
+                            conversation.unReadMessage > 0
                                 ? Icon(
                                     Icons.fiber_manual_record,
                                     color: AppColors.primary,
@@ -100,8 +105,9 @@ class ConversationTab extends GetView<TabConversationController> {
                             ),
                             Flexible(
                               child: Text(
-                                conversation.lastMessage,
-                                style: conversation.unread > 0
+                                controller
+                                    .lastMess(conversation.lastMessage.message),
+                                style: conversation.unReadMessage > 0
                                     ? TextStyle(fontWeight: FontWeight.bold)
                                     : TextStyle(fontSize: 15),
                                 maxLines: 1,

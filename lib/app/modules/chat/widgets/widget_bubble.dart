@@ -1,6 +1,6 @@
 part of 'widgets.dart';
 
-class WidgetBubble extends StatelessWidget {
+class WidgetBubble extends GetView<ChatController> {
   final bool isMe;
   final String message;
   final String dateTime;
@@ -91,37 +91,53 @@ class WidgetBubble extends StatelessWidget {
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(5),
-                          child: Text(
-                            dateTime,
-                            style: TextStyle(color: Colors.black26),
-                          ),
-                        ),
                         Flexible(
-                          child: Container(
-                            padding: EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                              color: isMe
-                                  ? AppColors.primary
-                                  : Colors.grey.shade200,
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(15),
-                                topLeft: Radius.circular(15),
-                                bottomRight: Radius.circular(isMe ? 0 : 15),
-                                bottomLeft: Radius.circular(!isMe ? 0 : 15),
-                              ),
-                            ),
-                            child: SelectableText(
-                              message,
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                color: isMe ? Colors.white : Colors.black87,
-                              ),
-                              onTap: () {
-                                Clipboard.setData(ClipboardData(text: message));
-                              },
-                            ),
+                          child: GetX<ChatController>(
+                            builder: (_) {
+                              return Column(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(15),
+                                    decoration: BoxDecoration(
+                                      color: controller.showMoreMess
+                                          ? AppColors.primary
+                                          : AppColors.primary,
+                                      borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(15),
+                                        topLeft: Radius.circular(15),
+                                        bottomRight:
+                                            Radius.circular(isMe ? 0 : 15),
+                                        bottomLeft:
+                                            Radius.circular(!isMe ? 0 : 15),
+                                      ),
+                                    ),
+                                    child: SelectableText(
+                                      message,
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(color: Colors.white),
+                                      onTap: () {
+                                        Clipboard.setData(
+                                            ClipboardData(text: message));
+                                        controller.showMoreMess =
+                                            !controller.showMoreMess;
+                                      },
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: controller.showMoreMess,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(5),
+                                      child: Text(
+                                        dateTime,
+                                        style: TextStyle(
+                                          color: Colors.black26,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              );
+                            },
                           ),
                         )
                       ],
@@ -136,35 +152,51 @@ class WidgetBubble extends StatelessWidget {
                         ),
                         SizedBox(width: 5),
                         Flexible(
-                          child: Container(
-                            padding: EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                              color: isMe ? Colors.green : Colors.grey.shade200,
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(15),
-                                topLeft: Radius.circular(15),
-                                bottomRight: Radius.circular(isMe ? 0 : 15),
-                                bottomLeft: Radius.circular(!isMe ? 0 : 15),
-                              ),
-                            ),
-                            child: SelectableText(
-                              message,
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                color: isMe ? Colors.white : Colors.black87,
-                              ),
-                              onTap: () {
-                                Clipboard.setData(ClipboardData(text: message));
-                              },
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(5),
-                          child: Text(
-                            dateTime,
-                            style: TextStyle(color: Colors.black26),
-                          ),
+                          child: GetX<ChatController>(builder: (_) {
+                            return Column(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(15),
+                                  decoration: BoxDecoration(
+                                    color: controller.showMoreMess
+                                        ? Colors.grey.shade200
+                                        : Colors.grey.shade200,
+                                    borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(15),
+                                      topLeft: Radius.circular(15),
+                                      bottomRight:
+                                          Radius.circular(isMe ? 0 : 15),
+                                      bottomLeft:
+                                          Radius.circular(!isMe ? 0 : 15),
+                                    ),
+                                  ),
+                                  child: SelectableText(
+                                    message,
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      color: Colors.black87,
+                                    ),
+                                    onTap: () {
+                                      Clipboard.setData(
+                                          ClipboardData(text: message));
+                                      controller.showMoreMess =
+                                          !controller.showMoreMess;
+                                    },
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: controller.showMoreMess,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(5),
+                                    child: Text(
+                                      dateTime,
+                                      style: TextStyle(color: Colors.black26),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }),
                         ),
                       ],
                     ),

@@ -6,12 +6,13 @@ class HomeScreen extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        //bottom nav bar
-        body: PersistentTabView(
+    return Scaffold(
+      //bottom nav bar
+      body: SafeArea(
+        child: PersistentTabView(
           context,
           backgroundColor: AppColors.light,
+          stateManagement: true,
           screens: controller.tabs,
           items: controller.items,
           popActionScreens: PopActionScreensType.all,

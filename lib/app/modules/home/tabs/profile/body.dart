@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/profile/tab_profile_controller.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_info.dart';
-import 'package:valo_chat_app/app/utils/store_service.dart';
 
 import './widgets/profile_menu.dart';
 

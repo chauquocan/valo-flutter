@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
 import 'package:valo_chat_app/app/data/models/conversation_model.dart';
+import 'package:valo_chat_app/app/data/models/message_model.dart';
 import 'package:valo_chat_app/app/data/models/profile_model.dart';
 import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
 import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
+import 'package:valo_chat_app/app/utils/date.dart';
 import 'package:valo_chat_app/app/utils/stomp_service.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
@@ -22,7 +23,7 @@ class TabConversationController extends GetxController {
   final _page = 0.obs;
   final isLoading = true.obs;
   final conversationsLoaded = false.obs;
-  final conversations = <Conversation>[].obs;
+  final conversations = <ConversationContent>[].obs;
   final userList = <Profile>[].obs;
 
   @override
@@ -43,11 +44,7 @@ class TabConversationController extends GetxController {
   SubscribeChannel() {
     StompService.stompClient.subscribe(
       destination: '/users/queue/messages',
-      callback: (StompFrame frame) {
-        var response = jsonDecode(frame.body!);
-        print(response);
-        getConversations();
-      },
+      callback: (StompFrame frame) => onMessagesReceive(frame),
     );
     StompService.stompClient.subscribe(
       destination: '/users/queue/read',
@@ -58,11 +55,43 @@ class TabConversationController extends GetxController {
     );
   }
 
+  String lastMess(Message? last) {
+    if (last == null) return 'Send your first message';
+    var mess = last.content;
+    if (last.content.length > 10) {
+      mess = last.content.substring(0, 10) + ' ...  ';
+    }
+    if (last.senderId != "") {
+      if (last.senderId == Storage.getUser()?.id) {
+        if (last.messageType == 'IMAGE') {
+          return 'You send a photo';
+        } else if (last.messageType == 'STICKER') {
+          return 'You send a sticker';
+        } else if (last.messageType == 3) {
+          return 'You send a location';
+        }
+        return 'You : $mess  •  ${formatDate(last.sendAt)}';
+      } else {
+        if (last.messageType == 'IMAGE') {
+          return '${last.senderId} send a photo';
+        } else if (last.messageType == 'STICKER') {
+          return '${last.senderId} send a sticker';
+        } else if (last.messageType == 3) {
+          return '${last.senderId} send a location';
+        }
+        return '${last.senderId} : $mess  •  ${formatDate(last.sendAt)}';
+      }
+    }
+    return '$mess • ${formatDate(last.sendAt)}';
+  }
+
+  Future onMessagesReceive(StompFrame frame) async {}
+
   /* 
     Get conversation
    */
   Future getConversations() async {
-    List<Conversation> _conversations = [];
+    List<ConversationContent> _conversations = [];
     String? currentUserId = Storage.getUser()?.id;
     final response = await chatProvider.GetConversations(_page.value);
     if (response.ok) {
@@ -70,17 +99,11 @@ class TabConversationController extends GetxController {
         for (var content in response.data!.content) {
           if (content.conversation.conversationType == 'GROUP') {
             _conversations.add(
-              Conversation(
-                id: content.conversation.id,
-                name: content.conversation.name,
-                imageUrl: content.conversation.imageUrl,
-                time: DateFormat("h:mm a d/MM").format(content.message.sendAt),
-                lastMessage: content.message.content,
+              ConversationContent(
+                conversation: content.conversation,
+                lastMessage: content.lastMessage,
+                unReadMessage: content.unReadMessage,
                 isGroup: true,
-                createAt: content.conversation.createAt,
-                conversationType: content.conversation.conversationType,
-                participants: content.conversation.participants,
-                unread: content.unReadMessage,
               ),
             );
           } else {
@@ -89,18 +112,18 @@ class TabConversationController extends GetxController {
               if (currentUserId != userId) {
                 final user = await userProvider.getUserById(userId);
                 _conversations.add(
-                  Conversation(
-                    id: content.conversation.id,
-                    name: user.data!.name,
-                    imageUrl: user.data!.imgUrl,
-                    time: DateFormat("h:mm a d/MM")
-                        .format(content.message.sendAt),
-                    lastMessage: content.message.content,
+                  ConversationContent(
+                    conversation: Conversation(
+                        id: content.conversation.id,
+                        createAt: content.conversation.createAt,
+                        conversationType: content.conversation.conversationType,
+                        participants: content.conversation.participants,
+                        name: user.data!.name,
+                        createdByUserId: content.conversation.createdByUserId,
+                        imageUrl: user.data!.imgUrl),
+                    lastMessage: content.lastMessage,
+                    unReadMessage: content.unReadMessage,
                     isGroup: false,
-                    createAt: content.conversation.createAt,
-                    conversationType: content.conversation.conversationType,
-                    participants: content.conversation.participants,
-                    unread: content.unReadMessage,
                   ),
                 );
               }
@@ -123,7 +146,7 @@ class TabConversationController extends GetxController {
     Get more conversation when scroll to end
    */
   Future getMoreConversation() async {
-    List<Conversation> _conversations = [];
+    List<ConversationContent> _conversations = [];
     String currentUserId = Storage.getUser()!.id;
     final response = await chatProvider.GetConversations(_page.value);
     if (response.ok) {
@@ -131,17 +154,11 @@ class TabConversationController extends GetxController {
         for (var content in response.data!.content) {
           if (content.conversation.conversationType == 'GROUP') {
             _conversations.add(
-              Conversation(
-                id: content.conversation.id,
-                name: content.conversation.name,
-                imageUrl: content.conversation.imageUrl,
-                time: DateFormat("h:mm a").format(content.message.sendAt),
-                lastMessage: content.message.content,
+              ConversationContent(
+                conversation: content.conversation,
+                lastMessage: content.lastMessage,
+                unReadMessage: content.unReadMessage,
                 isGroup: true,
-                createAt: content.conversation.createAt,
-                conversationType: content.conversation.conversationType,
-                participants: content.conversation.participants,
-                unread: content.unReadMessage,
               ),
             );
           } else {
@@ -150,17 +167,18 @@ class TabConversationController extends GetxController {
               if (currentUserId != userId) {
                 final user = await userProvider.getUserById(userId);
                 _conversations.add(
-                  Conversation(
-                    id: content.conversation.id,
-                    name: user.data!.name,
-                    imageUrl: user.data!.imgUrl,
-                    time: DateFormat("h:mm a").format(content.message.sendAt),
-                    lastMessage: content.message.content,
+                  ConversationContent(
+                    conversation: Conversation(
+                        id: content.conversation.id,
+                        createAt: content.conversation.createAt,
+                        conversationType: content.conversation.conversationType,
+                        participants: content.conversation.participants,
+                        name: user.data!.name,
+                        createdByUserId: content.conversation.createdByUserId,
+                        imageUrl: user.data!.imgUrl),
+                    lastMessage: content.lastMessage,
+                    unReadMessage: content.unReadMessage,
                     isGroup: false,
-                    createAt: content.conversation.createAt,
-                    conversationType: content.conversation.conversationType,
-                    participants: content.conversation.participants,
-                    unread: content.unReadMessage,
                   ),
                 );
               }

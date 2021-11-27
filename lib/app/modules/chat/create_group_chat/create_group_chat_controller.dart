@@ -26,7 +26,7 @@ class CreateGroupChatController extends GetxController {
   final textCtrl = TextEditingController();
   //
   final _name = ''.obs;
-  final _participants = <Participants>[].obs;
+  final _participants = <Participant>[].obs;
   //
   final _isLoading = true.obs;
   final _users = <Profile>[].obs;
@@ -38,7 +38,7 @@ class CreateGroupChatController extends GetxController {
     _name.value = value;
   }
 
-  List<Participants> get participants => _participants;
+  List<Participant> get participants => _participants;
 
   set participants(value) {
     _participants.value = value;
@@ -98,7 +98,7 @@ class CreateGroupChatController extends GetxController {
 
   Future onSubmit() async {
     for (var content in selected) {
-      participants.add(Participants(
+      participants.add(Participant(
         userId: content.id,
         addByUserId: Storage.getUser()!.id,
         addTime: DateTime.now().toString(),

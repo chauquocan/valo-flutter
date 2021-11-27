@@ -30,7 +30,7 @@ class GroupChatProvider extends ConnectService {
     }
   }
 
-  Future<NetworkResponse<Participants>> addMember(Map map) async {
+  Future<NetworkResponse<Participant>> addMember(Map map) async {
     try {
       final response = await put(
         '$conversationURL/add',
@@ -44,7 +44,7 @@ class GroupChatProvider extends ConnectService {
     }
   }
 
-  Future<NetworkResponse<Participants>> kickMember(Map map) async {
+  Future<NetworkResponse<Participant>> kickMember(Map map) async {
     try {
       final response = await put(
         '$conversationURL/kick',

@@ -6,11 +6,11 @@ class Group {
     required this.participants,
   });
   late final String name;
-  late final List<Participants> participants;
+  late final List<Participant> participants;
   Group.fromJson(Map<String, dynamic> json) {
     name = json['name'] ?? "";
     participants = List.from(json['participants'])
-        .map((e) => Participants.fromJson(e))
+        .map((e) => Participant.fromJson(e))
         .toList();
   }
   Map<String, dynamic> toJson() {

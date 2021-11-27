@@ -54,9 +54,9 @@ class ChatController extends GetxController {
   }
 
   //
-  final _participants = <Participants>[].obs;
+  final _participants = <Participant>[].obs;
 
-  List<Participants> get participants => _participants;
+  List<Participant> get participants => _participants;
 
   set participants(value) {
     _participants.value = value;
@@ -66,8 +66,9 @@ class ChatController extends GetxController {
   final _stickerShowing = false.obs;
   final _gifShowing = false.obs;
   final _showMore = false.obs;
+  final _showMoreMess = false.obs;
   final _isKeyboardVisible = false.obs;
-  final _messages = <Message>[].obs;
+  final _messages = <MessageContent>[].obs;
   final _isLoading = true.obs;
   final _messagesLoaded = false.obs;
 
@@ -82,6 +83,14 @@ class ChatController extends GetxController {
       FocusScope.of(Get.context!).requestFocus(FocusNode());
     }
     _showMore.value = value;
+  }
+  get showMoreMess => _showMoreMess.value;
+
+  set showMoreMess(value) {
+    if (value && Get.window.viewInsets.bottom != 0) {
+      FocusScope.of(Get.context!).requestFocus(FocusNode());
+    }
+    _showMoreMess.value = value;
   }
 
   get id => _id.value;
@@ -168,7 +177,7 @@ class ChatController extends GetxController {
     _messagesLoaded.value = value;
   }
 
-  List<Message> get messages => _messages;
+  List<MessageContent> get messages => _messages;
 
   set messages(value) {
     _messages.value = value;
@@ -204,9 +213,11 @@ class ChatController extends GetxController {
     avatar = Get.arguments['avatar'];
     isGroup = Get.arguments['isGroup'];
     participants = Get.arguments['participants'];
+
     getmember();
     getMessages(id, _page.value);
     getContacts();
+
     StompService.stompClient.subscribe(
       destination: '/users/queue/messages',
       callback: (StompFrame frame) => OnMessageReceive(frame),
@@ -241,7 +252,7 @@ class ChatController extends GetxController {
 
   //get member in group
   Future getmember() async {
-    for (Participants content in participants) {
+    for (var content in participants) {
       final profile = await getProfileById(content.userId);
       members.add(profile);
     }
@@ -306,7 +317,7 @@ class ChatController extends GetxController {
 
   ///
   /*------------------------*/
-  void AddMess(Message mess) {
+  void AddMess(MessageContent mess) {
     messages.insert(0, mess);
     update();
   }
@@ -314,7 +325,7 @@ class ChatController extends GetxController {
   Future OnMessageReceive(StompFrame frame) async {
     var response = jsonDecode(frame.body!);
     print(response);
-    Message mess = Message.fromJson(response);
+    MessageContent mess = MessageContent.fromJson(response);
     AddMess(mess);
     update();
   }
@@ -323,14 +334,12 @@ class ChatController extends GetxController {
     Get Messages
    */
   Future getMessages(String id, int page) async {
-    List<Message> _messages = [];
+    List<MessageContent> _messages = [];
     final response = await chatProvider.GetMessages(id, page);
     if (response.ok) {
       if (response.data!.content.length > 0) {
-        for (var message in response.data!.content) {
-          _messages.add(message);
-          // final sender = await profileProvider.getUserById(message.senderId);
-          // senderAvatar.add(sender.data?.imgUrl);
+        for (var content in response.data!.content) {
+          _messages.add(content);
         }
         messages.assignAll(_messages);
         isLoading = false;
@@ -350,12 +359,12 @@ class ChatController extends GetxController {
     Get more messages page
    */
   Future getMoreMessages(String id, int page) async {
-    List<Message> _messages = [];
+    List<MessageContent> _messages = [];
     final response = await chatProvider.GetMessages(id, page);
     if (response.ok) {
       if (response.data!.content.length > 0) {
-        for (var message in response.data!.content) {
-          _messages.add(message);
+        for (var content in response.data!.content) {
+          _messages.add(content);
           // final sender = await profileProvider.getUserById(message.senderId);
           // senderAvatar.add(sender.data?.imgUrl);
         }
