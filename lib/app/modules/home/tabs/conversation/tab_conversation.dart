@@ -105,11 +105,12 @@ class ConversationTab extends GetView<TabConversationController> {
                             ),
                             Flexible(
                               child: Text(
-                                controller
-                                    .lastMess(conversation.lastMessage.message),
+                                controller.lastMess(conversation.lastMessage),
                                 style: conversation.unReadMessage > 0
-                                    ? TextStyle(fontWeight: FontWeight.bold)
-                                    : TextStyle(fontSize: 15),
+                                    ? TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold)
+                                    : TextStyle(fontSize: 13),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),

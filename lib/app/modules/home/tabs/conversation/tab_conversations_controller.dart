@@ -55,34 +55,34 @@ class TabConversationController extends GetxController {
     );
   }
 
-  String lastMess(Message? last) {
-    if (last == null) return 'Send your first message';
-    var mess = last.content;
-    if (last.content.length > 10) {
-      mess = last.content.substring(0, 10) + ' ...  ';
+  String lastMess(LastMessage? lastMess) {
+    if (lastMess == null) return 'Send your first message';
+    var mess = lastMess.message.content;
+    if (lastMess.message.content.length > 10) {
+      mess = lastMess.message.content.substring(0, 10) + ' ...  ';
     }
-    if (last.senderId != "") {
-      if (last.senderId == Storage.getUser()?.id) {
-        if (last.messageType == 'IMAGE') {
+    if (lastMess.message.senderId != "") {
+      if (lastMess.message.senderId == Storage.getUser()?.id) {
+        if (lastMess.message.messageType == 'IMAGE') {
           return 'You send a photo';
-        } else if (last.messageType == 'STICKER') {
+        } else if (lastMess.message.messageType == 'STICKER') {
           return 'You send a sticker';
-        } else if (last.messageType == 3) {
+        } else if (lastMess.message.messageType == 3) {
           return 'You send a location';
         }
-        return 'You : $mess  •  ${formatDate(last.sendAt)}';
+        return 'You : $mess  •  ${formatDate(lastMess.message.sendAt)}';
       } else {
-        if (last.messageType == 'IMAGE') {
-          return '${last.senderId} send a photo';
-        } else if (last.messageType == 'STICKER') {
-          return '${last.senderId} send a sticker';
-        } else if (last.messageType == 3) {
-          return '${last.senderId} send a location';
+        if (lastMess.message.messageType == 'IMAGE') {
+          return '${lastMess.userName} send a photo';
+        } else if (lastMess.message.messageType == 'STICKER') {
+          return '${lastMess.userName} send a sticker';
+        } else if (lastMess.message.messageType == 3) {
+          return '${lastMess.userName} send a location';
         }
-        return '${last.senderId} : $mess  •  ${formatDate(last.sendAt)}';
+        return '${lastMess.userName} : $mess';
       }
     }
-    return '$mess • ${formatDate(last.sendAt)}';
+    return '$mess • ${formatDate(lastMess.message.sendAt)}';
   }
 
   Future onMessagesReceive(StompFrame frame) async {}
