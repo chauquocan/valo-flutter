@@ -105,7 +105,7 @@ class TabContactController extends GetxController {
   /* Get permission to read/write contact */
   getPermissions() async {
     if (await Permission.contacts.request().isGranted) {
-      getContactsFromPhone();
+      // getContactsFromPhone();
       searchController.addListener(() => filterContacts());
       isImported.value = true;
     }

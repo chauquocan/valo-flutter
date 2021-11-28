@@ -217,7 +217,6 @@ class ChatController extends GetxController {
 
     getmember();
     getMessages(id, _page.value);
-    getContacts();
 
     StompService.stompClient.subscribe(
       destination: '/users/queue/messages',
@@ -282,43 +281,50 @@ class ChatController extends GetxController {
     final map = {'userId': userId, 'conversationId': conversationId};
     final respones = await groupChatProvider.kickMember(map);
     if (respones.ok) {
+      Get.snackbar('Sucessful', 'Member has been kicked');
       Get.back();
-    } else
-      (print(respones));
-  }
-
-  // add member
-  Future addMember(userId, conversationId) async {
-    final map = {'userId': userId, 'conversationId': conversationId};
-    final respones = await groupChatProvider.addMember(map);
-    if (respones.ok) {
-      Get.back();
-    } else
-      (print(respones));
-  }
-
-  Future getContacts() async {
-    contactController.getContactsFromAPI();
-    for (var contact in contactController.contactId) {
-      final user = await profileProvider.getUserById(contact.friendId);
-      for (Profile content in members) {
-        if (content.id != user.data!.id) {
-          users.add(
-            Profile(
-                id: user.data!.id,
-                name: user.data!.name,
-                gender: user.data!.gender,
-                dateOfBirth: user.data!.dateOfBirth,
-                phone: user.data!.phone,
-                email: user.data!.email,
-                address: user.data!.address,
-                imgUrl: user.data!.imgUrl,
-                status: user.data!.status),
-          );
-        }
-      }
+    } else {
+      print(respones);
+      Get.snackbar('Failed', 'You are not Admin');
     }
   }
+
+  ///////// add member
+  // Future addMember(userId, conversationId) async {
+  //   final map = {'userId': userId, 'conversationId': conversationId};
+  //   final respones = await groupChatProvider.addMember(map);
+  //   if (respones.ok) {
+  //     Get.back();
+  //     Get.snackbar('Sucessful', 'Member has been added');
+  //   } else
+  //     (print(respones));
+  //   Get.snackbar('Failed', 'You are not Admin');
+  // }
+
+  // // lấy ds bạn bè k có trong conversation
+  // Future getContacts() async {
+  //   contactController.getContactsFromAPI();
+  //   users.clear();
+  //   for (var contact in contactController.contactId) {
+  //     final user = await profileProvider.getUserById(contact.friendId);
+  //     for (Profile content in members) {
+  //       if (content.id != user.data!.id) {
+  //         users.add(
+  //           Profile(
+  //               id: user.data!.id,
+  //               name: user.data!.name,
+  //               gender: user.data!.gender,
+  //               dateOfBirth: user.data!.dateOfBirth,
+  //               phone: user.data!.phone,
+  //               email: user.data!.email,
+  //               address: user.data!.address,
+  //               imgUrl: user.data!.imgUrl,
+  //               status: user.data!.status),
+  //         );
+  //       }
+  //     }
+  //   }
+  // }
 
   // leave group
   Future leaveGroup(String id) async {
@@ -334,8 +340,10 @@ class ChatController extends GetxController {
     final respones = await groupChatProvider.deleteGroup(id);
     if (respones.ok) {
       Get.back();
+      Get.snackbar('Sucessful', 'Member has been added');
     } else
       (print(respones));
+    Get.snackbar('Failed', 'You are not Admin');
   }
 
   ///
