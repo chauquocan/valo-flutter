@@ -5,7 +5,7 @@ import 'package:valo_chat_app/app/data/models/network_response.dart';
 import 'package:valo_chat_app/app/data/models/response_model.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
-class AuthProvider extends ConnectService {
+class AuthProvider {
   //end point
   static const String checkURL = 'auth/check/';
   static const String loginURL = 'auth/signin';
@@ -24,7 +24,7 @@ class AuthProvider extends ConnectService {
   Future<NetworkResponse<ResponseMessage>> checkPhoneExist(
       String phoneNumber) async {
     try {
-      final response = await get(checkURL + phoneNumber);
+      final response = await ConnectService().get(checkURL + phoneNumber);
       return NetworkResponse.fromResponse(
           response, (json) => ResponseMessage.fromJson(json));
     } on DioError catch (e) {
@@ -35,13 +35,14 @@ class AuthProvider extends ConnectService {
   //Đăng nhập
   Future<NetworkResponse<LoginRespone>> login(Map map) async {
     try {
-      final response = await post(loginURL, data: map);
+      final response = await ConnectService().post(loginURL, params: map);
       return NetworkResponse.fromResponse(
         response,
         (json) => LoginRespone.fromJson(json),
       );
     } on DioError catch (e, s) {
       print(e.error);
+      print(s);
       return NetworkResponse.withError(e.response);
     }
   }
@@ -49,7 +50,7 @@ class AuthProvider extends ConnectService {
   //Đăng ký
   Future<NetworkResponse<ResponseMessage>> register(Map map) async {
     try {
-      final response = await post(registerURL, data: map);
+      final response = await ConnectService().post(registerURL, params: map);
       return NetworkResponse.fromResponse(
         response,
         (json) => ResponseMessage.fromJson(json),
@@ -63,9 +64,9 @@ class AuthProvider extends ConnectService {
   Future<NetworkResponse<LoginRespone>> refreshToken() async {
     final map = {'refreshToken': _refreshToken};
     try {
-      final response = await post(
+      final response = await ConnectService().post(
         refreshTokenUrl,
-        data: map,
+        params: map,
         options: Options(
           headers: <String, String>{
             'Authorization': 'Bearer $_token',
@@ -86,9 +87,9 @@ class AuthProvider extends ConnectService {
   Future<NetworkResponse<ResponseMessage>> logout() async {
     Map map = {'refreshToken': _refreshToken};
     try {
-      final response = await post(
+      final response = await ConnectService().post(
         logoutURL,
-        data: map,
+        params: map,
         options: Options(
           headers: <String, String>{
             'Authorization': 'Bearer $_token',

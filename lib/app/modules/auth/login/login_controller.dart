@@ -102,4 +102,9 @@ class LoginController extends GetxController {
 
   //Show pass
   void onShowPass() => _showPass.value = !_showPass.value;
+
+  @override
+  void onInit() {
+    super.onInit();
+  }
 }

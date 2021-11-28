@@ -81,127 +81,118 @@ class WidgetBubble extends GetView<ChatController> {
       margin: EdgeInsets.all(5),
       padding: isMe ? EdgeInsets.only(left: 40) : EdgeInsets.only(right: 40),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment:
+            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment:
-                isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-            children: [
-              isMe
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Flexible(
-                          child: GetX<ChatController>(
-                            builder: (_) {
-                              return Column(
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.all(15),
-                                    decoration: BoxDecoration(
-                                      color: controller.showMoreMess
-                                          ? AppColors.primary
-                                          : AppColors.primary,
-                                      borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(15),
-                                        topLeft: Radius.circular(15),
-                                        bottomRight:
-                                            Radius.circular(isMe ? 0 : 15),
-                                        bottomLeft:
-                                            Radius.circular(!isMe ? 0 : 15),
-                                      ),
-                                    ),
-                                    child: SelectableText(
-                                      message,
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(color: Colors.white),
-                                      onTap: () {
-                                        Clipboard.setData(
-                                            ClipboardData(text: message));
-                                        controller.showMoreMess =
-                                            !controller.showMoreMess;
-                                      },
-                                    ),
+          isMe
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Flexible(
+                      child: GetX<ChatController>(
+                        builder: (_) {
+                          return Column(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(15),
+                                decoration: BoxDecoration(
+                                  color: controller.showMoreMess
+                                      ? AppColors.primary
+                                      : AppColors.primary,
+                                  borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(15),
+                                    topLeft: Radius.circular(15),
+                                    bottomRight: Radius.circular(isMe ? 0 : 15),
+                                    bottomLeft: Radius.circular(!isMe ? 0 : 15),
                                   ),
-                                  Visibility(
-                                    visible: controller.showMoreMess,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(5),
-                                      child: Text(
-                                        dateTime,
-                                        style: TextStyle(
-                                          color: Colors.black26,
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              );
-                            },
-                          ),
-                        )
-                      ],
-                    )
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        WidgetAvatar(
-                          url: avatar,
-                          isActive: false,
-                          size: 45,
-                        ),
-                        SizedBox(width: 5),
-                        Flexible(
-                          child: GetX<ChatController>(builder: (_) {
-                            return Column(
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(15),
-                                  decoration: BoxDecoration(
-                                    color: controller.showMoreMess
-                                        ? Colors.grey.shade200
-                                        : Colors.grey.shade200,
-                                    borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(15),
-                                      topLeft: Radius.circular(15),
-                                      bottomRight:
-                                          Radius.circular(isMe ? 0 : 15),
-                                      bottomLeft:
-                                          Radius.circular(!isMe ? 0 : 15),
-                                    ),
-                                  ),
-                                  child: SelectableText(
-                                    message,
-                                    textAlign: TextAlign.start,
+                                ),
+                                child: SelectableText(
+                                  message,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(color: Colors.white),
+                                  onTap: () {
+                                    Clipboard.setData(
+                                        ClipboardData(text: message));
+                                    controller.showMoreMess =
+                                        !controller.showMoreMess;
+                                  },
+                                ),
+                              ),
+                              Visibility(
+                                visible: controller.showMoreMess,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5),
+                                  child: Text(
+                                    dateTime,
                                     style: TextStyle(
-                                      color: Colors.black87,
-                                    ),
-                                    onTap: () {
-                                      Clipboard.setData(
-                                          ClipboardData(text: message));
-                                      controller.showMoreMess =
-                                          !controller.showMoreMess;
-                                    },
-                                  ),
-                                ),
-                                Visibility(
-                                  visible: controller.showMoreMess,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(5),
-                                    child: Text(
-                                      dateTime,
-                                      style: TextStyle(color: Colors.black26),
+                                      color: Colors.black26,
                                     ),
                                   ),
                                 ),
-                              ],
-                            );
-                          }),
-                        ),
-                      ],
+                              )
+                            ],
+                          );
+                        },
+                      ),
+                    )
+                  ],
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    WidgetAvatar(
+                      url: avatar,
+                      isActive: false,
+                      size: 45,
                     ),
-            ],
-          )
+                    SizedBox(width: 5),
+                    Flexible(
+                      child: GetX<ChatController>(builder: (_) {
+                        return Column(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                color: controller.showMoreMess
+                                    ? Colors.grey.shade200
+                                    : Colors.grey.shade200,
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(15),
+                                  topLeft: Radius.circular(15),
+                                  bottomRight: Radius.circular(isMe ? 0 : 15),
+                                  bottomLeft: Radius.circular(!isMe ? 0 : 15),
+                                ),
+                              ),
+                              child: SelectableText(
+                                message,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  color: Colors.black87,
+                                ),
+                                onTap: () {
+                                  Clipboard.setData(
+                                      ClipboardData(text: message));
+                                  controller.showMoreMess =
+                                      !controller.showMoreMess;
+                                },
+                              ),
+                            ),
+                            Visibility(
+                              visible: controller.showMoreMess,
+                              child: Padding(
+                                padding: const EdgeInsets.all(5),
+                                child: Text(
+                                  dateTime,
+                                  style: TextStyle(color: Colors.black26),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }),
+                    ),
+                  ],
+                ),
         ],
       ),
     );

@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/routes/app_pages.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
+import 'package:valo_chat_app/app/utils/app_binding.dart';
 import 'app/routes/routes.dart';
 import 'app/utils/store_service.dart';
 import 'package:valo_chat_app/app/lang/lang.dart';
@@ -14,11 +15,12 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(); //firebase auth
   await Storage.init(); //storage service
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
@@ -38,6 +40,7 @@ class MyApp extends StatelessWidget {
       getPages: AppPages.pages,
       initialRoute:
           Storage.ExpireToken() == false ? Routes.WELCOME : Routes.HOME,
+      initialBinding: AppBinding(),
     );
   }
 }

@@ -6,7 +6,7 @@ import 'package:valo_chat_app/app/data/models/network_response.dart';
 import 'package:valo_chat_app/app/data/models/response_model.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
-class GroupChatProvider extends ConnectService {
+class GroupChatProvider {
   static const String userURL = 'users/';
   static const String conversationURL = 'conversations/';
   static const String friendURL = 'friends/';
@@ -18,9 +18,9 @@ class GroupChatProvider extends ConnectService {
 
   Future<NetworkResponse<Conversation>> createGroupChat(Map map) async {
     try {
-      final response = await post(
+      final response = await ConnectService().post(
         conversationURL,
-        data: map,
+        params: map,
         options: Options(headers: {'Authorization': 'Bearer ${_token}'}),
       );
       return NetworkResponse.fromResponse(
@@ -32,9 +32,9 @@ class GroupChatProvider extends ConnectService {
 
   Future<NetworkResponse<Participant>> addMember(Map map) async {
     try {
-      final response = await put(
+      final response = await ConnectService().put(
         '$conversationURL/add',
-        data: map,
+        params: map,
         options: Options(headers: {'Authorization': 'Bearer ${_token}'}),
       );
       return NetworkResponse.fromResponse(
@@ -46,9 +46,9 @@ class GroupChatProvider extends ConnectService {
 
   Future<NetworkResponse<Participant>> kickMember(Map map) async {
     try {
-      final response = await put(
+      final response = await ConnectService().put(
         '$conversationURL/kick',
-        data: map,
+        params: map,
         options: Options(headers: {'Authorization': 'Bearer ${_token}'}),
       );
       return NetworkResponse.fromResponse(

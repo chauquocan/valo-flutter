@@ -4,7 +4,7 @@ import '../connect_service.dart';
 import '../models/network_response.dart';
 import '../models/profile_model.dart';
 
-class ProfileProvider extends ConnectService {
+class ProfileProvider{
   static const String userURL = 'users';
   static const String searchURL = '${userURL}/search';
   static const String userPhoneURL = '${userURL}/phone=';
@@ -21,7 +21,7 @@ class ProfileProvider extends ConnectService {
   //Get user bằng số id
   Future<NetworkResponse<Profile>> getUserById(String id) async {
     try {
-      final response = await get('${userURL}/${id}',
+      final response = await ConnectService().get('${userURL}/${id}',
           options: Options(headers: {'Authorization': 'Bearer $_token'}));
       print(userURL + Storage.getToken()!.username);
       return NetworkResponse.fromResponse(
@@ -38,7 +38,7 @@ class ProfileProvider extends ConnectService {
   Future<NetworkResponse<Profile>> getUserByPhone(
       String numberPhone, String accessToken) async {
     try {
-      final response = await get('${userPhoneURL}${numberPhone}',
+      final response = await ConnectService().get('${userPhoneURL}${numberPhone}',
           options:
               Options(headers: {'Authorization': 'Bearer ${accessToken}'}));
       print(userURL + Storage.getToken()!.username);
@@ -55,9 +55,9 @@ class ProfileProvider extends ConnectService {
   //Update user info
   Future<NetworkResponse<Profile>> updateUserInfo(Map map) async {
     try {
-      final response = await patch(
+      final response = await ConnectService().patch(
         '${updateURL}',
-        data: map,
+        params: map,
         options: Options(
           headers: <String, String>{'Authorization': 'Bearer $_token'},
         ),
@@ -74,8 +74,8 @@ class ProfileProvider extends ConnectService {
   //Search user
   Future<NetworkResponse<ProfilePage>> searchUser(String textToSearch) async {
     try {
-      final response = await get(searchURL,
-          queryParameters: {
+      final response = await ConnectService().get(searchURL,
+          params: {
             'textToSearch': textToSearch,
           },
           options: Options(headers: {'Authorization': 'Bearer $_token'}));
@@ -94,9 +94,9 @@ class ProfileProvider extends ConnectService {
       FormData formData = FormData.fromMap({
         "multipartFile": await MultipartFile.fromFile(filePath, filename: 'avt')
       });
-      Response response = await put(
+      Response response = await ConnectService().put(
         changImageURL,
-        data: formData,
+        params: formData,
         options: Options(
           headers: <String, String>{
             'Authorization': 'Bearer $_token',

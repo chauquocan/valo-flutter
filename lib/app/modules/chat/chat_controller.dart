@@ -660,4 +660,6 @@ class ChatController extends GetxController {
     textController.selection = TextSelection.fromPosition(
         TextPosition(offset: textController.text.length));
   }
+
+  
 }

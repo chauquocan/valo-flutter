@@ -7,7 +7,7 @@ import 'package:valo_chat_app/app/data/models/message_model.dart';
 import 'package:valo_chat_app/app/data/models/network_response.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
-class ChatProvider extends ConnectService {
+class ChatProvider{
   static const String messageURL = 'messages/';
   static const String conversationURL = 'conversations';
   static const String fileURL = '/upload';
@@ -18,9 +18,9 @@ class ChatProvider extends ConnectService {
   //Get conversations
   Future<NetworkResponse<ConversationPage>> GetConversations(int page) async {
     try {
-      final response = await get(
+      final response = await ConnectService().get(
         conversationURL,
-        queryParameters: {'page': page},
+        params: {'page': page},
         options: Options(
           headers: {
             'Authorization': 'Bearer ${_token}',
@@ -41,9 +41,9 @@ class ChatProvider extends ConnectService {
   //Get messages
   Future<NetworkResponse<MessagePage>> GetMessages(String id, int page) async {
     try {
-      final response = await get(
+      final response = await ConnectService().get(
         messageURL + id,
-        queryParameters: {'page': page},
+        params: {'page': page},
         options: Options(
           headers: {
             'Authorization': 'Bearer ${_token}',
@@ -64,9 +64,9 @@ class ChatProvider extends ConnectService {
     try {
       FormData formData =
           FormData.fromMap({"files": await MultipartFile.fromFile(filePath)});
-      final response = await post(
+      final response = await ConnectService().post(
         fileURL,
-        data: formData,
+        params: formData,
         options: Options(
           headers: <String, String>{
             'Authorization': 'Bearer $_token',
@@ -93,9 +93,9 @@ class ChatProvider extends ConnectService {
       List<MultipartFile> files =
           filePath.map((e) => MultipartFile.fromFileSync(e)).toList();
       var formData = FormData.fromMap({"files": files});
-      final response = await post(
+      final response = await ConnectService().post(
         fileURL,
-        data: formData,
+        params: formData,
         options: Options(
           headers: <String, String>{
             'Authorization': 'Bearer $_token',
@@ -113,7 +113,7 @@ class ChatProvider extends ConnectService {
   //delele mess
   Future<Response> deleteMessage(String messageId) async {
     try {
-      final response = await delete(
+      final response = await ConnectService().delete(
         '$messageURL/cancel/$messageId',
         options: Options(
           headers: <String, String>{

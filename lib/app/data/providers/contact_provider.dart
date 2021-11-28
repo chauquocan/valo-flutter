@@ -4,7 +4,7 @@ import 'package:valo_chat_app/app/data/models/contact_model.dart';
 import 'package:valo_chat_app/app/data/models/network_response.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
-class ContactProvider extends ConnectService {
+class ContactProvider{
   //end point
 
   static const String getFriendsUrl = '/friends';
@@ -15,9 +15,9 @@ class ContactProvider extends ConnectService {
   //Get frineds
   Future<NetworkResponse<ContactPage>> getFriends(int page) async {
     try {
-      final response = await get(
+      final response = await ConnectService().get(
         '${getFriendsUrl}',
-        queryParameters: {'page': page},
+        params: {'page': page},
         options: Options(headers: {
           'Authorization': 'Bearer ${Storage.getToken()?.accessToken}'
         }),
