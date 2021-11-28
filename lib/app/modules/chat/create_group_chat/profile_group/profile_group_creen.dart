@@ -52,7 +52,7 @@ class ProfileGroupScreen extends GetView<ChatController> {
                   ),
                   ProfileMenu(
                     text: "Add members",
-                    icon: "assets/icons/group.svg",
+                    icon: "assets/icons/add-member.svg",
                     press: () {
                       Get.to(AddMemberScreen());
                     },
@@ -71,8 +71,10 @@ class ProfileGroupScreen extends GetView<ChatController> {
                           actions: [
                             ElevatedButton.icon(
                               onPressed: () {
+                                controller.deleteGroup(controller.id);
                                 Get.back();
-                                //controller.logout();
+                                Get.back();
+                                Get.back();
                               },
                               icon: Icon(Icons.check_circle),
                               // style: ButtonStyle(backgroundColor: Colors.blue),
@@ -115,8 +117,10 @@ class ProfileGroupScreen extends GetView<ChatController> {
                           actions: [
                             ElevatedButton.icon(
                               onPressed: () {
+                                controller.leaveGroup(controller.id);
                                 Get.back();
-                                //controller.logout();
+                                Get.back();
+                                Get.back();
                               },
                               icon: Icon(Icons.check_circle),
                               // style: ButtonStyle(backgroundColor: Colors.blue),

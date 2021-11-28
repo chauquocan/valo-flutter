@@ -7,6 +7,7 @@ import 'package:valo_chat_app/app/data/providers/contact_provider.dart';
 import 'package:valo_chat_app/app/data/providers/group_chat_provider.dart';
 import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
+import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversation.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
@@ -107,8 +108,8 @@ class CreateGroupChatController extends GetxController {
     }
     final map = {'name': textCtrl.text, 'participants': participants};
     final respones = await groupChatProvider.createGroupChat(map);
+
     if (respones.ok) {
-      Get.back();
       chatController.getConversations();
     } else
       (print(respones));

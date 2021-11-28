@@ -320,6 +320,24 @@ class ChatController extends GetxController {
     }
   }
 
+  // leave group
+  Future leaveGroup(String id) async {
+    final respones = await groupChatProvider.leaveGroup(id);
+    if (respones.ok) {
+      Get.back();
+    } else
+      (print(respones));
+  }
+
+  // delete group
+  Future deleteGroup(String id) async {
+    final respones = await groupChatProvider.deleteGroup(id);
+    if (respones.ok) {
+      Get.back();
+    } else
+      (print(respones));
+  }
+
   ///
   /*------------------------*/
   void AddMess(MessageContent mess) {
