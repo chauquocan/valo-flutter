@@ -30,7 +30,7 @@ class GroupChatProvider {
     }
   }
 
-  Future<NetworkResponse<Participant>> addMember(Map map) async {
+  Future<NetworkResponse<ResponseMessage>> addMember(Map map) async {
     try {
       final response = await ConnectService().put(
         '$conversationURL/add',
@@ -38,13 +38,13 @@ class GroupChatProvider {
         options: Options(headers: {'Authorization': 'Bearer ${_token}'}),
       );
       return NetworkResponse.fromResponse(
-          response, (json) => Conversation.fromJson(json));
+          response, (json) => ResponseMessage.fromJson(json));
     } on DioError catch (e, s) {
       return NetworkResponse.withError(e.response);
     }
   }
 
-  Future<NetworkResponse<Participant>> kickMember(Map map) async {
+  Future<NetworkResponse<ResponseMessage>> kickMember(Map map) async {
     try {
       final response = await ConnectService().put(
         '$conversationURL/kick',
@@ -52,7 +52,33 @@ class GroupChatProvider {
         options: Options(headers: {'Authorization': 'Bearer ${_token}'}),
       );
       return NetworkResponse.fromResponse(
-          response, (json) => Conversation.fromJson(json));
+          response, (json) => ResponseMessage.fromJson(json));
+    } on DioError catch (e, s) {
+      return NetworkResponse.withError(e.response);
+    }
+  }
+
+  Future<NetworkResponse<ResponseMessage>> deleteGroup(String id) async {
+    try {
+      final response = await ConnectService().delete(
+        '$conversationURL/delete/${id}',
+        options: Options(headers: {'Authorization': 'Bearer ${_token}'}),
+      );
+      return NetworkResponse.fromResponse(
+          response, (json) => ResponseMessage.fromJson(json));
+    } on DioError catch (e, s) {
+      return NetworkResponse.withError(e.response);
+    }
+  }
+
+  Future<NetworkResponse<ResponseMessage>> leaveGroup(String id) async {
+    try {
+      final response = await ConnectService().put(
+        '$conversationURL/leave/${id}',
+        options: Options(headers: {'Authorization': 'Bearer ${_token}'}),
+      );
+      return NetworkResponse.fromResponse(
+          response, (json) => ResponseMessage.fromJson(json));
     } on DioError catch (e, s) {
       return NetworkResponse.withError(e.response);
     }

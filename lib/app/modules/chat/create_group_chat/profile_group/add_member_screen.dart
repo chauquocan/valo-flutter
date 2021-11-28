@@ -37,7 +37,6 @@ class AddMemberScreen extends GetView<ChatController> {
                   onPressed: () {
                     controller.addMember(users.id, controller.id);
                     Get.back();
-                    Get.back();
                   },
                   icon: Icon(Icons.add_circle_outline),
                 ),

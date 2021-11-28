@@ -84,6 +84,7 @@ class ChatController extends GetxController {
     }
     _showMore.value = value;
   }
+
   get showMoreMess => _showMoreMess.value;
 
   set showMoreMess(value) {
@@ -313,6 +314,24 @@ class ChatController extends GetxController {
         }
       }
     }
+  }
+
+  // leave group
+  Future leaveGroup(String id) async {
+    final respones = await groupChatProvider.leaveGroup(id);
+    if (respones.ok) {
+      Get.back();
+    } else
+      (print(respones));
+  }
+
+  // delete group
+  Future deleteGroup(String id) async {
+    final respones = await groupChatProvider.deleteGroup(id);
+    if (respones.ok) {
+      Get.back();
+    } else
+      (print(respones));
   }
 
   ///
@@ -660,6 +679,4 @@ class ChatController extends GetxController {
     textController.selection = TextSelection.fromPosition(
         TextPosition(offset: textController.text.length));
   }
-
-  
 }
