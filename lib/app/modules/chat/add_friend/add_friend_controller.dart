@@ -45,8 +45,7 @@ class AddFriendController extends GetxController {
     Gửi lời mời
    */
   Future SendFriendReq(String toId) async {
-    final response = await friendProvider.SendFriendRequest(
-        Storage.getToken()!.accessToken, toId);
+    final response = await friendProvider.SendFriendRequest(toId);
     if (response.ok) {
       isSent.value = true;
       Get.snackbar('Success', 'Request sent');
@@ -62,8 +61,7 @@ class AddFriendController extends GetxController {
   Future getFriendReqList() async {
     isLoading.value = true;
     List<FriendRequest> _friendList = [];
-    final response =
-        await friendProvider.GetFriendRequests(Storage.getToken()!.accessToken);
+    final response = await friendProvider.GetFriendRequests();
     if (response.ok) {
       if (response.data!.content.length > 0) {
         for (var request in response.data!.content) {
@@ -86,8 +84,7 @@ class AddFriendController extends GetxController {
     Chấp nhận lời mời
    */
   Future acceptFriendRequest(String id) async {
-    final response = await friendProvider.AcceptFriendRequest(
-        Storage.getToken()!.accessToken, id);
+    final response = await friendProvider.AcceptFriendRequest(id);
     if (response.ok) {
       Get.snackbar('Thanh cong', '${response.data}');
       chatController.getConversations();

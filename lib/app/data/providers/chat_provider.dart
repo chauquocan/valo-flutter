@@ -7,10 +7,11 @@ import 'package:valo_chat_app/app/data/models/message_model.dart';
 import 'package:valo_chat_app/app/data/models/network_response.dart';
 import 'package:valo_chat_app/app/utils/store_service.dart';
 
-class ChatProvider{
+class ChatProvider {
   static const String messageURL = 'messages/';
   static const String conversationURL = 'conversations';
   static const String fileURL = '/upload';
+  static const String deleteURL = '$messageURL/cancel';
 
   //current token
   final _token = Storage.getToken()?.accessToken;
@@ -114,7 +115,7 @@ class ChatProvider{
   Future<Response> deleteMessage(String messageId) async {
     try {
       final response = await ConnectService().delete(
-        '$messageURL/cancel/$messageId',
+        '$deleteURL/$messageId',
         options: Options(
           headers: <String, String>{
             'Authorization': 'Bearer $_token',
@@ -123,7 +124,8 @@ class ChatProvider{
       );
       return response;
     } on DioError catch (e, s) {
-      throw Exception(e);
+      print(e.error);
+      throw Exception(e.error);
     }
   }
 }

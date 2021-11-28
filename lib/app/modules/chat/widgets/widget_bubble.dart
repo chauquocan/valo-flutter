@@ -5,12 +5,14 @@ class WidgetBubble extends GetView<ChatController> {
   final String message;
   final String dateTime;
   final String type;
+  final String status;
   final String? avatar;
 
   WidgetBubble({
     required this.message,
     required this.isMe,
     required this.dateTime,
+    required this.status,
     required this.type,
     this.avatar,
   });
@@ -27,21 +29,25 @@ class WidgetBubble extends GetView<ChatController> {
         );
       }
     }
-    if (type == 'SYSTEM') {
-      return _buildSystemBubble();
-    } else if (type == 'TEXT') {
+    if (status == 'CANCELED') {
       return _buildTextBubble();
-    } else if (type == 'IMAGE') {
-      return _buildImageBubble(context);
-    } else if (type == 'STICKER') {
-      return _buildStickerBubble(context);
-    } else if (type == 3) {
-      List<String> dataList = message.split(' ');
-      double lat = double.parse(dataList[0]);
-      double long = double.parse(dataList[1]);
-      return _buildMapviewBubble(context, lat, long);
     } else {
-      return SizedBox();
+      if (type == 'SYSTEM') {
+        return _buildSystemBubble();
+      } else if (type == 'TEXT') {
+        return _buildTextBubble();
+      } else if (type == 'IMAGE') {
+        return _buildImageBubble(context);
+      } else if (type == 'STICKER') {
+        return _buildStickerBubble(context);
+      } else if (type == 3) {
+        List<String> dataList = message.split(' ');
+        double lat = double.parse(dataList[0]);
+        double long = double.parse(dataList[1]);
+        return _buildMapviewBubble(context, lat, long);
+      } else {
+        return SizedBox();
+      }
     }
   }
 
@@ -246,7 +252,7 @@ class WidgetBubble extends GetView<ChatController> {
                                 ),
                                 errorWidget: (context, url, error) => Material(
                                   child: Image.asset(
-                                    'assets/images/img_not_available.jpeg',
+                                    'assets/images/img_not_available.jpg',
                                     fit: BoxFit.cover,
                                   ),
                                   borderRadius: BorderRadius.all(
@@ -299,7 +305,7 @@ class WidgetBubble extends GetView<ChatController> {
                                 ),
                                 errorWidget: (context, url, error) => Material(
                                   child: Image.asset(
-                                    'assets/images/img_not_available.jpeg',
+                                    'assets/images/img_not_available.jpg',
                                     fit: BoxFit.cover,
                                   ),
                                   borderRadius: BorderRadius.all(

@@ -88,10 +88,6 @@ class LoginController extends GetxController {
     }
   }
 
-  void _showLoading() {
-    Get.dialog(const DialogLoading());
-  }
-
   void showInfoDialog(String title, String content) {
     Get.dialog(AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(29)),
@@ -103,8 +99,4 @@ class LoginController extends GetxController {
   //Show pass
   void onShowPass() => _showPass.value = !_showPass.value;
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
 }

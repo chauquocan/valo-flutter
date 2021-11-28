@@ -1,9 +1,10 @@
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:focused_menu/focused_menu.dart';
+import 'package:focused_menu/modals.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/chat/create_group_chat/profile_group/profile_group_creen.dart';
-import 'package:valo_chat_app/app/modules/chat/video/video_call.dart';
 import 'package:valo_chat_app/app/modules/chat/widgets/widgets.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_friend_screen.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
@@ -35,14 +36,28 @@ class ChatScreen extends GetView<ChatController> {
                         final item = controller.messages[i];
                         return GestureDetector(
                           onLongPress: () {},
-                          child: WidgetBubble(
-                            message: item.message.content,
-                            isMe: item.message.senderId ==
-                                controller.currentUserId,
-                            dateTime: DateFormat('h:mm a')
-                                .format(DateTime.parse(item.message.sendAt)),
-                            type: item.message.messageType,
-                            avatar: item.userImgUrl,
+                          child: FocusedMenuHolder(
+                            blurSize: 0,
+                            menuItems: <FocusedMenuItem>[
+                              FocusedMenuItem(
+                                title: Text('Delete'),
+                                trailingIcon: Icon(Icons.delete),
+                                onPressed: () {
+                                  controller.DeleteMessage(item.message.id);
+                                },
+                              )
+                            ],
+                            onPressed: () {},
+                            child: WidgetBubble(
+                              message: item.message.content,
+                              isMe: item.message.senderId ==
+                                  controller.currentUserId,
+                              dateTime: DateFormat('h:mm a')
+                                  .format(DateTime.parse(item.message.sendAt)),
+                              type: item.message.messageType,
+                              status: item.message.messageStatus,
+                              avatar: item.userImgUrl,
+                            ),
                           ),
                         );
                       },

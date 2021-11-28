@@ -116,7 +116,7 @@ class Message {
   final String senderId;
   final String sendAt;
   final String messageType;
-  final String content;
+  String content;
   final String messageStatus;
   final String replyId;
   final List<Reaction>? reactions;

@@ -84,6 +84,7 @@ class ChatController extends GetxController {
     }
     _showMore.value = value;
   }
+
   get showMoreMess => _showMoreMess.value;
 
   set showMoreMess(value) {
@@ -222,6 +223,10 @@ class ChatController extends GetxController {
       destination: '/users/queue/messages',
       callback: (StompFrame frame) => OnMessageReceive(frame),
     );
+    StompService.stompClient.subscribe(
+      destination: '/users/queue/messages/delete',
+      callback: (StompFrame frame) => OnCancelMessage(frame),
+    );
 
     var keyboardVisibilityController = KeyboardVisibilityController();
     keyboardVisibilityController.onChange.listen((bool isKeyboardVisible) {
@@ -329,6 +334,8 @@ class ChatController extends GetxController {
     AddMess(mess);
     update();
   }
+
+  Future OnCancelMessage(StompFrame frame) async {}
 
   /* 
     Get Messages
@@ -624,6 +631,21 @@ class ChatController extends GetxController {
     }
   }
 
+  Future DeleteMessage(String messageId) async {
+    final text =
+        messages.firstWhere((element) => element.message.id == messageId);
+    if (text.message.senderId == currentUserId) {
+      if (text.message.messageStatus != 'CANCELED') {
+        await chatProvider.deleteMessage(messageId);
+      } else {
+        Get.snackbar('Thong bao', 'tin nhan nay da duoc thu hoi');
+      }
+    } else {
+      Get.snackbar(
+          'Thong bao', 'ban khong the thu hoi tin nhan cua nguoi khac');
+    }
+  }
+
   void onEmojiSelected(Emoji emoji) {
     textController.text += emoji.emoji;
     _moveCursorToLast();
@@ -660,6 +682,4 @@ class ChatController extends GetxController {
     textController.selection = TextSelection.fromPosition(
         TextPosition(offset: textController.text.length));
   }
-
-  
 }
