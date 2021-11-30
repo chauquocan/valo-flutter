@@ -23,8 +23,11 @@ Chạy bằng Android Studio hoặc VS code (Cài extentions/plugin Flutter,Dart
 
 ![Chạy app ở main.dart](doc/images/RunApp.png)
 
-## Các lỗi có thể gặp 
+## Xác thực số điện thoại bằng firebase:
 
+
+## Các lỗi có thể gặp 
+- Lỗi gradle
 
 
 
