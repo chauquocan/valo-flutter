@@ -11,15 +11,15 @@ Chạy bằng Android Studio hoặc VS code (Cài extentions/plugin Flutter,Dart
 
 ## Chạy chương trình
 -----------
--Kiểm tra phiên bản trước khi chạy
+- Kiểm tra phiên bản trước khi chạy
 `flutter doctor -v`
 
 `flutter pub get`
--Chạy bằng terminal
+- Chạy bằng terminal
 
 `flutter run`
 
--Chạy ở main.dart
+- Chạy ở main.dart
 
 ![Chạy app ở main.dart](doc/images/RunApp.png)
 
