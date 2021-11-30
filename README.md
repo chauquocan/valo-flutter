@@ -4,7 +4,19 @@ Nhóm 23: Valo chat app
 
 ## Cách chạy chương trình
 Cài đặt flutter library:
-https://docs.flutter.dev/get-started/install
+Theo hướng dẫn: https://docs.flutter.dev/get-started/install
+
 Chạy bằng Android Studio hoặc VS code (Cài extentions/plugin Flutter,Dart)
+
+-----------
+Kiểm tra phiên bản trước khi chạy
+flutter doctor -v 
+
+flutter pub get
+-----------
+--Chạy bằng terminal
+flutter run
+--Chạy ở main.dart
+![Chạy app ở main.dart](doc/images/RunApp.png)
 
 
