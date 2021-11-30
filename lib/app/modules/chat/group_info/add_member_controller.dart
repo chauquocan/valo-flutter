@@ -7,10 +7,10 @@ import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controll
 
 class AddMemberController extends GetxController {
   final chatController = Get.find<ChatController>();
+  final contactController = Get.find<TabContactController>();
+
   final GroupChatProvider groupChatProvider;
   final ProfileProvider profileProvider;
-
-  final contactController = Get.find<TabContactController>();
 
   AddMemberController({
     required this.groupChatProvider,
@@ -27,7 +27,7 @@ class AddMemberController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getContacts();
+    getContactsCanAllToGroup();
     print(users);
   }
 
@@ -42,27 +42,14 @@ class AddMemberController extends GetxController {
   }
 
   // lấy ds bạn bè k có trong conversation    -- ko lay dc
-  Future getContacts() async {
-    contactController.getContactsFromAPI();
-    //users.clear();
+  Future getContactsCanAllToGroup() async {
+    List<Profile> temp = [];
     for (var contact in contactController.contactId) {
       final user = await profileProvider.getUserById(contact.friendId);
-      for (Profile content in chatController.members) {
-        if (content.id != user.data!.id) {
-          users.add(
-            Profile(
-                id: user.data!.id,
-                name: user.data!.name,
-                gender: user.data!.gender,
-                dateOfBirth: user.data!.dateOfBirth,
-                phone: user.data!.phone,
-                email: user.data!.email,
-                address: user.data!.address,
-                imgUrl: user.data!.imgUrl,
-                status: user.data!.status),
-          );
-        }
-      }
+      temp.add(user.data!);
     }
+    users = temp
+        .where((element) => !chatController.members.contains(element.phone))
+        .toList();
   }
 }

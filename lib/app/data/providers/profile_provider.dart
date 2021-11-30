@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:valo_chat_app/app/utils/store_service.dart';
+import 'package:valo_chat_app/app/utils/storage_service.dart';
 import '../connect_service.dart';
 import '../models/network_response.dart';
 import '../models/profile_model.dart';
 
-class ProfileProvider{
+class ProfileProvider {
   static const String userURL = 'users';
   static const String searchURL = '${userURL}/search';
   static const String userPhoneURL = '${userURL}/phone=';
@@ -23,7 +23,6 @@ class ProfileProvider{
     try {
       final response = await ConnectService().get('${userURL}/${id}',
           options: Options(headers: {'Authorization': 'Bearer $_token'}));
-      print(userURL + Storage.getToken()!.username);
       return NetworkResponse.fromResponse(
         response,
         (json) => Profile.fromJson(json),
@@ -38,7 +37,8 @@ class ProfileProvider{
   Future<NetworkResponse<Profile>> getUserByPhone(
       String numberPhone, String accessToken) async {
     try {
-      final response = await ConnectService().get('${userPhoneURL}${numberPhone}',
+      final response = await ConnectService().get(
+          '${userPhoneURL}${numberPhone}',
           options:
               Options(headers: {'Authorization': 'Bearer ${accessToken}'}));
       print(userURL + Storage.getToken()!.username);

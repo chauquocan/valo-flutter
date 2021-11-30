@@ -37,7 +37,7 @@ class LoginScreen extends GetView<LoginController> {
                     inputFormat: [FilteringTextInputFormatter.digitsOnly],
                     textColor: AppColors.light,
                     icon: Icons.phone,
-                    validator: (value) => controller.phoneValidator(value!),
+                    validator: (value) => Regex.phoneValidator(value!),
                   ),
                   //Password's state
                   Obx(
@@ -55,11 +55,14 @@ class LoginScreen extends GetView<LoginController> {
                         onPressed: () {
                           controller.onShowPass();
                         },
-                        icon: Icon(
-                          controller._showPass.value
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: AppColors.light,
+                        icon: Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: Icon(
+                            controller._showPass.value
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: AppColors.light,
+                          ),
                         ),
                       ),
                     ),

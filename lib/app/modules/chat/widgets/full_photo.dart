@@ -21,6 +21,8 @@ class FullPhoto extends StatelessWidget {
           maxScale: PhotoViewComputedScale.covered * 2,
           heroAttributes: PhotoViewHeroAttributes(tag: url),
           imageProvider: CachedNetworkImageProvider(url),
+          enableRotation: true,
+          
         ),
       ),
     );

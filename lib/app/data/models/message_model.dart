@@ -73,9 +73,9 @@ class MessageContent {
     this.status,
   });
 
-  final Message message;
-  final String userName;
-  final String userImgUrl;
+  Message message;
+  String userName;
+  String userImgUrl;
   late String? status;
   late bool? select = false;
 
@@ -127,19 +127,19 @@ class Message {
   String toRawJson() => json.encode(toJson());
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
-        id: json["id"],
-        conversationId: json["conversationId"],
+        id: json["id"] ?? "",
+        conversationId: json["conversationId"] ?? "",
         senderId: json["senderId"] ?? "",
-        sendAt: json["sendAt"],
-        messageType: json["messageType"],
-        content: json["content"],
+        sendAt: json["sendAt"] ?? "",
+        messageType: json["messageType"] ?? "",
+        content: json["content"] ?? "",
         messageStatus: json["messageStatus"] ?? "",
         replyId: json["replyId"] ?? "",
         reactions: json["reactions"] == null
-            ? null
+            ? []
             : List<Reaction>.from(
                 json["reactions"].map((x) => Reaction.fromJson(x))),
-        pin: json["pin"],
+        pin: json["pin"] ?? false,
       );
 
   Map<String, dynamic> toJson() => {

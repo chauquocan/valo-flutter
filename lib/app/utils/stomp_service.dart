@@ -3,7 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
-import 'package:valo_chat_app/app/utils/store_service.dart';
+import 'package:valo_chat_app/app/utils/storage_service.dart';
 
 class StompService {
   static var stompClient = null;

@@ -4,7 +4,7 @@ import 'package:focused_menu/modals.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:valo_chat_app/app/modules/chat/create_group_chat/profile_group/profile_group_creen.dart';
+import 'package:valo_chat_app/app/modules/chat/group_info/profile_group_creen.dart';
 import 'package:valo_chat_app/app/modules/chat/widgets/widgets.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_friend_screen.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
@@ -43,7 +43,13 @@ class ChatScreen extends GetView<ChatController> {
                                 title: Text('Delete'),
                                 trailingIcon: Icon(Icons.delete),
                                 onPressed: () {
-                                  controller.DeleteMessage(item.message.id);
+                                  CustomDialog().confirmDialog(
+                                    'Lưu ý',
+                                    'Bạn có chắc muốn thu hồi tin nhắn này?',
+                                    () => controller
+                                        .deleteMessage(item.message.id),
+                                    () => Get.back(),
+                                  );
                                 },
                               )
                             ],
@@ -216,9 +222,9 @@ class ChatScreen extends GetView<ChatController> {
         IconButton(
           onPressed: () {
             if (controller.isGroup == true) {
-              Get.to(ProfileGroupScreen(), arguments: ['uid']);
+              Get.to(() => ProfileGroupScreen(), arguments: ['uid']);
             } else
-              Get.to(ProfileFriendScreen());
+              Get.to(() => ProfileFriendScreen());
           },
           icon: Icon(Icons.list_outlined),
         ),

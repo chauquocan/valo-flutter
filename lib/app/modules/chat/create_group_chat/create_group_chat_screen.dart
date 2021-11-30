@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/chat/create_group_chat/create_group_chat_controller.dart';
-import 'package:valo_chat_app/app/utils/store_service.dart';
+import 'package:valo_chat_app/app/utils/regex.dart';
+import 'package:valo_chat_app/app/utils/storage_service.dart';
 import 'package:valo_chat_app/app/widgets/widget_appbar.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
 
 class CreateGroupChatScreen extends GetView<CreateGroupChatController> {
+  const CreateGroupChatScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return GetX<CreateGroupChatController>(
@@ -41,21 +44,25 @@ class CreateGroupChatScreen extends GetView<CreateGroupChatController> {
                 Flexible(
                   child: GetX<CreateGroupChatController>(
                     builder: (_) {
-                      return Column(
-                        children: [
-                          WidgetField(
-                            controller: controller.textCtrl,
-                            hint: 'Enter group name',
-                            margin: EdgeInsets.symmetric(
-                              vertical: 10,
-                              horizontal: 10,
+                      return Form(
+                        key: controller.nameFormKey,
+                        child: Column(
+                          children: [
+                            WidgetField(
+                              controller: controller.textCtrl,
+                              validator:(value)=> Regex.fullNameValidator(value!),
+                              hint: 'Enter group name',
+                              margin: EdgeInsets.symmetric(
+                                vertical: 10,
+                                horizontal: 10,
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 10),
-                          _buildListSelected(),
-                          SizedBox(height: 10),
-                          _buildListUser(),
-                        ],
+                            SizedBox(height: 10),
+                            _buildListSelected(),
+                            SizedBox(height: 10),
+                            _buildListUser(),
+                          ],
+                        ),
                       );
                     },
                   ),

@@ -6,7 +6,7 @@ import 'package:valo_chat_app/app/data/providers/friend_request_provider.dart';
 import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
-import 'package:valo_chat_app/app/utils/store_service.dart';
+import 'package:valo_chat_app/app/utils/storage_service.dart';
 
 class AddFriendController extends GetxController {
   final chatController = Get.find<TabConversationController>();
@@ -23,6 +23,7 @@ class AddFriendController extends GetxController {
   final searchResults = <Profile>[].obs;
   final friendReqList = <FriendRequest>[].obs;
   final userList = <Profile>[].obs;
+  final searchFormKey = GlobalKey<FormState>();
 
   //loading
   final isLoading = false.obs;
@@ -39,6 +40,16 @@ class AddFriendController extends GetxController {
   void onInit() {
     getFriendReqList();
     super.onInit();
+  }
+
+  String? searchValidator(String value) {
+    if (value.isEmpty) {
+      return '';
+    }
+    if (RegExp(r"\s").hasMatch(value)) {
+      return '';
+    }
+    return null;
   }
 
   /* 
@@ -99,32 +110,36 @@ class AddFriendController extends GetxController {
     Search user
    */
   Future searchUser(String textToSearch) async {
-    isLoading.value = true;
-    List<Profile> _profiles = [];
-    String userPhone = Storage.getUser()!.phone;
-    final searchResponse = await userProvider.searchUser(
-      textToSearch,
-    );
-    if (searchResponse.ok) {
-      if (searchResponse.data!.content.length > 0) {
-        Future.delayed(Duration(milliseconds: 200), () {
-          // Do something
-          for (var item in searchResponse.data!.content) {
-            if (userPhone != item.phone) {
-              _profiles.add(item);
+    if (searchFormKey.currentState!.validate()) {
+      isLoading.value = true;
+      List<Profile> _profiles = [];
+      final currentUser = Storage.getUser();
+      final searchResponse = await userProvider.searchUser(
+        textToSearch,
+      );
+      if (searchResponse.ok) {
+        if (searchResponse.data!.content.length > 0) {
+          Future.delayed(Duration(milliseconds: 200), () {
+            // Do something
+            for (var item in searchResponse.data!.content) {
+              if (currentUser!.phone != item.phone ||
+                  currentUser.name != item.name) {
+                _profiles.add(item);
+              }
             }
-          }
-          searchResults.value = _profiles;
+            searchResults.value = _profiles;
+            isLoading.value = false;
+            usersLoadded.value = true;
+          });
+        } else {
           isLoading.value = false;
-          usersLoadded.value = true;
-        });
+          usersLoadded.value = false;
+        }
       } else {
+        Get.snackbar('Search failed', 'Something wrong');
         isLoading.value = false;
-        usersLoadded.value = false;
       }
-    } else {
-      Get.snackbar('Search failed', 'Something wrong');
-      isLoading.value = false;
     }
+    isSearch.value = true;
   }
 }

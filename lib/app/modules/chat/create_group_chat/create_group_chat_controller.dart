@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:valo_chat_app/app/data/models/conversation_model.dart';
 import 'package:valo_chat_app/app/data/models/profile_model.dart';
 import 'package:valo_chat_app/app/data/providers/contact_provider.dart';
 import 'package:valo_chat_app/app/data/providers/group_chat_provider.dart';
 import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
-import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversation.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
-import 'package:valo_chat_app/app/utils/store_service.dart';
+import 'package:valo_chat_app/app/utils/storage_service.dart';
 
 class CreateGroupChatController extends GetxController {
   final chatController = Get.find<TabConversationController>();
@@ -17,7 +15,7 @@ class CreateGroupChatController extends GetxController {
   final ContactProvider contactProvider;
   final GroupChatProvider groupChatProvider;
 
-  TabContactController contactController = Get.find();
+  final contactController = Get.find<TabContactController>();
 
   CreateGroupChatController(
       {required this.userProvider,
@@ -32,6 +30,7 @@ class CreateGroupChatController extends GetxController {
   final _isLoading = true.obs;
   final _users = <Profile>[].obs;
   final _selected = <Profile>[].obs;
+  final nameFormKey = GlobalKey<FormState>();
 
   get name => _name.value;
 
@@ -98,39 +97,30 @@ class CreateGroupChatController extends GetxController {
   }
 
   Future onSubmit() async {
-    for (var content in selected) {
-      participants.add(Participant(
-        userId: content.id,
-        addByUserId: Storage.getUser()!.id,
-        addTime: DateTime.now().toString(),
-        admin: false,
-      ));
-    }
-    final map = {'name': textCtrl.text, 'participants': participants};
-    final respones = await groupChatProvider.createGroupChat(map);
+    if (nameFormKey.currentState!.validate()) {
+      for (var content in selected) {
+        participants.add(Participant(
+          userId: content.id,
+          addByUserId: Storage.getUser()!.id,
+          addTime: DateTime.now().toString(),
+          admin: false,
+        ));
+      }
+      final map = {'name': textCtrl.text, 'participants': participants};
+      final respones = await groupChatProvider.createGroupChat(map);
 
-    if (respones.ok) {
-      chatController.getConversations();
-    } else
-      (print(respones));
+      if (respones.ok) {
+        chatController.getConversations();
+      } else
+        print(respones);
+    }
   }
 
   Future getContacts() async {
     contactController.getContactsFromAPI();
     for (var contact in contactController.contactId) {
       final user = await userProvider.getUserById(contact.friendId);
-      users.add(
-        Profile(
-            id: user.data!.id,
-            name: user.data!.name,
-            gender: user.data!.gender,
-            dateOfBirth: user.data!.dateOfBirth,
-            phone: user.data!.phone,
-            email: user.data!.email,
-            address: user.data!.address,
-            imgUrl: user.data!.imgUrl,
-            status: user.data!.status),
-      );
+      users.add(user.data!);
     }
   }
 

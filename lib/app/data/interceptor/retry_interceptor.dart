@@ -13,11 +13,16 @@ class RetryOnConnectionChangeInterceptor extends Interceptor {
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
+    // print(err);
     if (_shouldRetry(err)) {
       try {
+        print('Retry nè ');
         requestRetrier.scheduleRequestRetry(err.requestOptions);
-      } catch (e) {}
+      } catch (e) {
+        print(e);
+      }
     }
+    handler.next(err);
   }
 
   bool _shouldRetry(DioError err) {

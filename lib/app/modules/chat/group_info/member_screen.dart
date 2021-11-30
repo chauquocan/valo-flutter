@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:valo_chat_app/app/modules/chat/chat_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 
-import '../../chat_controller.dart';
 
 class MemberScreen extends GetView<ChatController> {
   @override
@@ -49,7 +48,6 @@ class MemberScreen extends GetView<ChatController> {
                               Get.back();
                             },
                             icon: Icon(Icons.check_circle),
-                            // style: ButtonStyle(backgroundColor: Colors.blue),
                             label: Text(
                               "Xác nhận",
                               style: TextStyle(color: Colors.white),

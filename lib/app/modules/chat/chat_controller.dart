@@ -17,7 +17,7 @@ import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
 import 'package:valo_chat_app/app/utils/stomp_service.dart';
-import 'package:valo_chat_app/app/utils/store_service.dart';
+import 'package:valo_chat_app/app/utils/storage_service.dart';
 
 class ChatController extends GetxController {
   final conversationController = Get.find<TabConversationController>();
@@ -215,7 +215,7 @@ class ChatController extends GetxController {
     isGroup = Get.arguments['isGroup'];
     participants = Get.arguments['participants'];
 
-    getmember();
+    getmembers();
     getMessages(id, _page.value);
 
     StompService.stompClient.subscribe(
@@ -244,6 +244,7 @@ class ChatController extends GetxController {
 
   @override
   void onReady() {
+    // updateReadMessage();
     paginateMessages();
     super.onReady();
   }
@@ -255,25 +256,15 @@ class ChatController extends GetxController {
   }
 
   //get member in group
-  Future getmember() async {
+  Future getmembers() async {
+    List<Profile> membersTemp = [];
     for (var content in participants) {
-      final profile = await getProfileById(content.userId);
-      members.add(profile);
+      final profile = await profileProvider.getUserById(content.userId);
+      if (profile.ok) {
+        membersTemp.add(profile.data!);
+      }
     }
-  }
-
-  Future<Profile> getProfileById(String id) async {
-    final response = await profileProvider.getUserById(id);
-    return Profile(
-        id: response.data!.id,
-        name: response.data!.name,
-        gender: response.data!.gender,
-        dateOfBirth: response.data!.dateOfBirth,
-        phone: response.data!.phone,
-        email: response.data!.email,
-        address: response.data!.address,
-        imgUrl: response.data!.imgUrl,
-        status: response.data!.status);
+    members.assignAll(membersTemp);
   }
 
   // kick member
@@ -358,10 +349,17 @@ class ChatController extends GetxController {
     print(response);
     MessageContent mess = MessageContent.fromJson(response);
     AddMess(mess);
-    update();
+    _messages.refresh();
   }
 
-  Future OnCancelMessage(StompFrame frame) async {}
+  Future OnCancelMessage(StompFrame frame) async {
+    var response = jsonDecode(frame.body!);
+    MessageContent mess = MessageContent.fromJson(response);
+    var text =
+        messages.firstWhere((element) => element.message.id == mess.message.id);
+    text.message = mess.message;
+    _messages.refresh();
+  }
 
   /* 
     Get Messages
@@ -490,6 +488,22 @@ class ChatController extends GetxController {
     //   }
 
     // }
+  }
+
+  void updateReadMessage() async {
+    for (var mess in messages) {
+      print(mess);
+      String body = json.encode({
+        "messageId": mess.message.id,
+        "conversationId": id,
+        "userId": currentUserId,
+        "readAt": DateTime.now(),
+      });
+      StompService.stompClient.send(
+        destination: "/app/read",
+        body: body,
+      );
+    }
   }
 
   void sendSticker(String? url) async {
@@ -657,12 +671,13 @@ class ChatController extends GetxController {
     }
   }
 
-  Future DeleteMessage(String messageId) async {
+  Future deleteMessage(String messageId) async {
     final text =
         messages.firstWhere((element) => element.message.id == messageId);
     if (text.message.senderId == currentUserId) {
       if (text.message.messageStatus != 'CANCELED') {
         await chatProvider.deleteMessage(messageId);
+        Get.back();
       } else {
         Get.snackbar('Thong bao', 'tin nhan nay da duoc thu hoi');
       }

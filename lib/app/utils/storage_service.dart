@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:valo_chat_app/app/data/models/auth_model.dart';
@@ -25,6 +24,10 @@ class Storage {
     return LoginRespone.fromRawJson(raw);
   }
 
+  static Future removeToken() async {
+    await _pref.remove('token');
+  }
+
   //save user
   static Future saveUser(Profile user) async {
     await _pref.setString('user', user.toRawJson());
@@ -33,6 +36,10 @@ class Storage {
   static Future updateUser(Profile user) async {
     _pref.remove('user');
     await _pref.setString('user', user.toRawJson());
+  }
+
+  static Future removeUser() async {
+    await _pref.remove('user');
   }
 
   //get user
@@ -60,7 +67,6 @@ class Storage {
         _pref.remove('user');
         _pref.remove('token');
         _pref.clear();
-        Get.offAllNamed('/welcome');
         return false;
       }
     }
@@ -80,6 +86,8 @@ class Storage {
 
   //Log out
   static Future logout() async {
+    await removeToken();
+    await removeUser();
     await _pref.clear();
   }
 }

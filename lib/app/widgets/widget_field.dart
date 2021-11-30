@@ -6,6 +6,7 @@ class WidgetField extends StatelessWidget {
   final String hint;
   final EdgeInsets? padding;
   final EdgeInsets? margin;
+  final String? Function(String?)? validator;
 
   const WidgetField({
     Key? key,
@@ -13,6 +14,7 @@ class WidgetField extends StatelessWidget {
     required this.hint,
     this.padding,
     this.margin,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -27,6 +29,7 @@ class WidgetField extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         child: TextFormField(
+          validator: validator,
           controller: controller,
           decoration: InputDecoration(
             hintText: hint,

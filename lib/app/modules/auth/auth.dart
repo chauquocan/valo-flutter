@@ -15,6 +15,7 @@ import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
 import 'package:valo_chat_app/app/modules/auth/login/login.dart';
 import 'package:valo_chat_app/app/modules/auth/register/register.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
+import 'package:valo_chat_app/app/utils/regex.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
 
 export './login/login.dart';

@@ -3,11 +3,11 @@ import 'package:valo_chat_app/app/data/connect_service.dart';
 import 'package:valo_chat_app/app/data/models/auth_model.dart';
 import 'package:valo_chat_app/app/data/models/network_response.dart';
 import 'package:valo_chat_app/app/data/models/response_model.dart';
-import 'package:valo_chat_app/app/utils/store_service.dart';
+import 'package:valo_chat_app/app/utils/storage_service.dart';
 
 class AuthProvider {
   //end point
-  static const String checkURL = 'auth/check/';
+  static const String checkURL = 'auth/check';
   static const String loginURL = 'auth/signin';
   static const String registerURL = 'auth/register';
   static const String logoutURL = 'auth/signout';
@@ -24,7 +24,9 @@ class AuthProvider {
   Future<NetworkResponse<ResponseMessage>> checkPhoneExist(
       String phoneNumber) async {
     try {
-      final response = await ConnectService().get(checkURL + phoneNumber);
+      print('request api for checking phone number');
+      final response = await ConnectService().get('$checkURL/$phoneNumber');
+      print(response);
       return NetworkResponse.fromResponse(
           response, (json) => ResponseMessage.fromJson(json));
     } on DioError catch (e) {
@@ -41,8 +43,6 @@ class AuthProvider {
         (json) => LoginRespone.fromJson(json),
       );
     } on DioError catch (e, s) {
-      print(e.error);
-      print(s);
       return NetworkResponse.withError(e.response);
     }
   }

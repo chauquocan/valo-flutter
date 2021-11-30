@@ -8,62 +8,39 @@ class RegisterController extends GetxController {
   final TextEditingController _phoneInput = TextEditingController();
   final TextEditingController _emailInput = TextEditingController();
   final TextEditingController _passwordInput = TextEditingController();
+  final TextEditingController _confirmPasswordInput = TextEditingController();
 
   //Form key for valid
   final _RegisterFormKey = GlobalKey<FormState>();
+  final isLoading = false.obs;
 
   //pass's state
   final _showPass = true.obs;
+  final _showConfirmPass = true.obs;
 
   RegisterController({required this.authProvider});
-  String? fullNameValidator(String value) {
-    if (value.isEmpty) {
-      return 'Please enter your name';
-    }
-    return null;
-  }
-
-  String? emailValidator(String value) {
-    if (value.isEmpty) {
-      return 'Please enter your email';
-    }
-    return null;
-  }
-
-  String? passwordValidator(String value) {
-    if (value.isEmpty) {
-      return 'Please enter password';
-    }
-    return null;
-  }
 
   //Sign up
   Future register(String phoneNumber, String fullName, String password,
       String email) async {
-    _showLoading();
-    final RegisterRequest = {
-      'username': phoneNumber,
-      'fullname': fullName,
-      'password': password,
-      'email': email,
-    };
-    final response = await authProvider.register(RegisterRequest);
-    print('Respone: ${response.toString()}');
-    if (response.ok) {
-      // showInfoDialog('Sign up susscessfully', 'lets sign in');
-      Get.snackbar('Sign up susscessfully', 'lets sign in');
-      Get.offAll(
-        () => WelcomeScreen(),
-      );
-    } else {
-      Get.back();
-      // showInfoDialog('Sign up failed', 'something went wrong');
-      Get.snackbar('Sign up failed', 'something went wrong');
+    if (_RegisterFormKey.currentState!.validate()) {
+      print('Thông tin hợp lệ');
+      final RegisterRequest = {
+        'username': phoneNumber,
+        'fullname': fullName,
+        'password': password,
+        'email': email,
+      };
+      final response = await authProvider.register(RegisterRequest);
+      if (response.ok) {
+        Get.offAll(
+          () => WelcomeScreen(),
+        );
+      } else {
+        Get.back();
+        Get.snackbar('Sign up failed', 'something went wrong');
+      }
     }
-  }
-
-  void _showLoading() {
-    Get.dialog(const DialogLoading());
   }
 
   void showInfoDialog(String title, String content) {
@@ -75,12 +52,14 @@ class RegisterController extends GetxController {
 
   //Show pass
   void onShowPass() => _showPass.value = !_showPass.value;
+  void onShowConfirmPass() => _showConfirmPass.value = !_showConfirmPass.value;
 
   @override
   void onClose() {
     _phoneInput.dispose();
     _emailInput.dispose();
     _passwordInput.dispose();
+    _confirmPasswordInput.dispose();
     super.onClose();
   }
 }

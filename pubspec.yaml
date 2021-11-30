@@ -69,6 +69,7 @@ dependencies:
   emoji_picker_flutter: ^1.0.8
   google_maps_flutter: ^2.1.1
   focused_menu: ^1.0.5
+  date_time_picker: ^2.1.0
 
   
 dev_dependencies:

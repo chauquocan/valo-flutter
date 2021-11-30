@@ -6,5 +6,6 @@ class AuthBinding extends Bindings {
     Get.lazyPut(() => LoginController(
         authProvider: AuthProvider(), userProvider: ProfileProvider()));
     Get.lazyPut(() => RegisterController(authProvider: AuthProvider()));
+    Get.put<AuthController>(AuthController(authProvider: AuthProvider()));
   }
 }

@@ -9,7 +9,7 @@ import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
 import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
 import 'package:valo_chat_app/app/utils/date.dart';
 import 'package:valo_chat_app/app/utils/stomp_service.dart';
-import 'package:valo_chat_app/app/utils/store_service.dart';
+import 'package:valo_chat_app/app/utils/storage_service.dart';
 
 class TabConversationController extends GetxController {
   final ChatProvider chatProvider;
@@ -41,7 +41,7 @@ class TabConversationController extends GetxController {
     super.onReady();
   }
 
-  SubscribeChannel() {
+  void SubscribeChannel() async {
     StompService.stompClient.subscribe(
       destination: '/users/queue/messages',
       callback: (StompFrame frame) => onMessagesReceive(frame),

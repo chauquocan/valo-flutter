@@ -4,7 +4,7 @@ import 'package:get/get_connect/http/src/status/http_status.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:valo_chat_app/app/data/providers/auth_provider.dart';
 import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
-import 'package:valo_chat_app/app/utils/store_service.dart';
+import 'package:valo_chat_app/app/utils/storage_service.dart';
 
 class TabProfileController extends GetxController {
   //user service
@@ -16,6 +16,8 @@ class TabProfileController extends GetxController {
   final TextEditingController inputPhone = TextEditingController();
   final TextEditingController inputEmail = TextEditingController();
   final TextEditingController inputAdress = TextEditingController();
+  final TextEditingController inputDate = TextEditingController();
+  final TextEditingController inputGender = TextEditingController();
 
   TabProfileController(
       {required this.userProvider, required this.authProvider});
@@ -26,6 +28,8 @@ class TabProfileController extends GetxController {
   final ImagePicker _picker = ImagePicker();
   var imageURL = '';
 
+  final editFormKey = GlobalKey<FormState>();
+
   @override
   void onInit() {
     super.onInit();
@@ -33,12 +37,14 @@ class TabProfileController extends GetxController {
 
   @override
   void onClose() {
-    inputName.clear();
-    inputPhone.clear();
-    inputEmail.clear();
-    inputAdress.clear();
+    inputName.dispose();
+    inputPhone.dispose();
+    inputEmail.dispose();
+    inputAdress.dispose();
     super.onClose();
   }
+
+  
 
   //upload image function
   void uploadImage(ImageSource imageSource) async {
@@ -72,38 +78,42 @@ class TabProfileController extends GetxController {
   }
 
   //Edit profile infomation function
-  Future editProfileInfo(
-      String name, String phone, String email, String address) async {
-    final map = {
-      'name': name,
-      'phone': phone,
-      'email': email,
-      'address': address,
-    };
-    try {
-      final response = await ProfileProvider().updateUserInfo(map);
-      print('Update Response: ${response.toString()}');
-      if (response.ok) {
-        final userResponse =
-            await ProfileProvider().getUserByPhone('${phone}', _token);
-        Get.snackbar('update susscessfully', '');
-        if (userResponse.ok) {
-          await Storage.saveUser(userResponse.data!);
-          Get.reload();
+  Future editProfileInfo(String name, String gender, String phone, String email,
+      String address, String birhDay) async {
+    if (editFormKey.currentState!.validate()) {
+      final map = {
+        'name': name,
+        'gender': gender,
+        'dateOfBirth': birhDay,
+        'phone': phone,
+        'email': email,
+        'address': address,
+      };
+      try {
+        final response = await ProfileProvider().updateUserInfo(map);
+        print('Update Response: ${response.toString()}');
+        if (response.ok) {
+          final userResponse =
+              await ProfileProvider().getUserByPhone('${phone}', _token);
+          Get.snackbar('update susscessfully', '');
+          if (userResponse.ok) {
+            await Storage.updateUser(userResponse.data!);
+            Get.reload();
+          } else {
+            Get.back();
+          }
         } else {
-          Get.back();
+          if (response.code == HttpStatus.forbidden) {
+            Get.snackbar('failed', 'Sometihing went wrong, try again');
+          } else if (response.code == HttpStatus.unauthorized) {
+            Get.snackbar('failed', 'Sometihing went wrong, try again');
+          } else {
+            Get.snackbar('failed', 'Sometihing went wrong, try again');
+          }
         }
-      } else {
-        if (response.code == HttpStatus.forbidden) {
-          Get.snackbar('failed', 'Sometihing went wrong, try again');
-        } else if (response.code == HttpStatus.unauthorized) {
-          Get.snackbar('failed', 'Sometihing went wrong, try again');
-        } else {
-          Get.snackbar('failed', 'Sometihing went wrong, try again');
-        }
+      } finally {
+        // TODO
       }
-    } finally {
-      // TODO
     }
   }
 
@@ -111,7 +121,7 @@ class TabProfileController extends GetxController {
   Future logout() async {
     final response = await authProvider.logout();
     if (response.ok) {
-      await Storage.logout();
+      Storage.logout();
       Get.offAllNamed('/');
     } else {
       print(response);

@@ -35,46 +35,70 @@ class RegisterScreen extends GetView<RegisterController> {
                   //FulName input
                   RoundedInputField(
                     controller: controller._fullNameInput,
-                    labelText: 'Full name:',
-                    hintText: "Please enter your name",
+                    hintText: "Enter name",
                     textColor: AppColors.light,
                     icon: Icons.person,
-                    validator: (value) => controller.fullNameValidator(value!),
+                    validator: (value) => Regex.fullNameValidator(value!),
                   ),
                   //Email input
                   RoundedInputField(
                     controller: controller._emailInput,
-                    labelText: 'Email:',
-                    hintText: "Please enter email",
+                    // labelText: 'Email:',
+                    hintText: "Enter email",
                     textColor: AppColors.light,
                     icon: Icons.email,
-                    validator: (value) => controller.emailValidator(value!),
+                    validator: (value) => Regex.emailValidator(value!),
                   ),
                   //Password input
                   Obx(
                     () => RoundedInputField(
                       controller: controller._passwordInput,
-                      labelText: 'Password:',
-                      hintText: "Please enter password",
+                      hintText: "Enter password",
                       password: controller._showPass.value,
                       textColor: AppColors.light,
                       icon: Icons.lock,
-                      validator: (value) =>
-                          controller.passwordValidator(value!),
+                      validator: (value) => Regex.passwordValidator(value!),
                       suffixIcon: IconButton(
                         onPressed: () {
                           controller.onShowPass();
                         },
-                        icon: Icon(
-                          controller._showPass.value
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: AppColors.light,
+                        icon: Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: Icon(
+                            controller._showPass.value
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: AppColors.light,
+                          ),
                         ),
                       ),
                     ),
                   ),
-
+                  Obx(
+                    () => RoundedInputField(
+                      controller: controller._confirmPasswordInput,
+                      hintText: "Confirm password",
+                      password: controller._showConfirmPass.value,
+                      textColor: AppColors.light,
+                      icon: Icons.lock,
+                      validator: (value) => Regex.confirmPasswordValidator(
+                          value!, controller._passwordInput.text),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          controller.onShowConfirmPass();
+                        },
+                        icon: Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: Icon(
+                            controller._showConfirmPass.value
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: AppColors.light,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                   //Sign up submit button
                   RoundedButton(
                     buttonText: 'SIGN UP',

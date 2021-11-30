@@ -9,10 +9,11 @@ import 'package:valo_chat_app/app/data/providers/auth_provider.dart';
 
 import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
 import 'package:valo_chat_app/app/modules/auth/auth.dart';
+import 'package:valo_chat_app/app/utils/regex.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 
-import '../../../utils/store_service.dart';
+import '../../../utils/storage_service.dart';
 
 part 'login_screen.dart';
 part 'login_controller.dart';

@@ -52,7 +52,6 @@ class Body extends StatelessWidget {
                     actions: [
                       ElevatedButton.icon(
                         onPressed: () {
-                          Get.back();
                           controller.logout();
                         },
                         icon: Icon(Icons.check_circle),

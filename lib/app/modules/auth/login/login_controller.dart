@@ -3,14 +3,13 @@ part of 'login.dart';
 //Controller for login view
 class LoginController extends GetxController {
   LoginController({required this.authProvider, required this.userProvider});
+  //Controller text field
+  final TextEditingController _phoneInput = TextEditingController();
+  final TextEditingController _passwordInput = TextEditingController();
 
   //User service
   final AuthProvider authProvider;
   final ProfileProvider userProvider;
-
-  //Controller text field
-  final TextEditingController _phoneInput = TextEditingController();
-  final TextEditingController _passwordInput = TextEditingController();
 
   //Form key for valid
   final _loginFormKey = GlobalKey<FormState>();
@@ -21,14 +20,6 @@ class LoginController extends GetxController {
   //loading
   final _isLoading = false.obs;
   // final _isLoading = false.obs;
-
-  //Validator
-  String? phoneValidator(String value) {
-    if (value.isEmpty) {
-      return 'Please enter phone number';
-    }
-    return null;
-  }
 
   String? passwordValidator(String value) {
     if (value.isEmpty) {
@@ -54,8 +45,6 @@ class LoginController extends GetxController {
         //save Token
         await Storage.saveToken(response.data!);
         String accessToken = response.data!.accessToken;
-        // dio get user
-        String phoneNumber = Storage.getToken()!.username;
         final userResponse =
             await userProvider.getUserByPhone(phoneNumber, accessToken);
         print('User respone: ${userResponse.toString()}');
@@ -75,28 +64,29 @@ class LoginController extends GetxController {
         if (response.code == HttpStatus.forbidden) {
           Get.snackbar('Login failed', 'Phone number or password incorrect');
           // showInfoDialog('Login fail', 'Phone number or password incorrect');
-        } else if (response.code == HttpStatus.unauthorized) {
-          showInfoDialog('Login failed', 'User not found, please register');
-        } else {
-          showInfoDialog('Login failed', 'Sometihing went wrong, try again');
+        } else if (response.code == HttpStatus.badRequest) {
+          showInfoDialog('Login failed',
+              'Phone number or password incorrect! Please try again');
         }
       }
-    } else {
-      //exception
-      _isLoading.value = false;
-      showInfoDialog('Login failed', 'Invalid phonenumber or password');
     }
+    _isLoading.value = false;
   }
 
   void showInfoDialog(String title, String content) {
     Get.dialog(AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(29)),
-      title: Text(title),
-      content: Text(content),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      title: Text(
+        title,
+        textAlign: TextAlign.center,
+      ),
+      content: Text(
+        content,
+        textAlign: TextAlign.center,
+      ),
     ));
   }
 
   //Show pass
   void onShowPass() => _showPass.value = !_showPass.value;
-
 }

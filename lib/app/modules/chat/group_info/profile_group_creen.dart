@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:valo_chat_app/app/modules/chat/create_group_chat/profile_group/add_member_screen.dart';
-import 'package:valo_chat_app/app/modules/chat/create_group_chat/profile_group/member_screen.dart';
+import 'package:valo_chat_app/app/modules/chat/chat_controller.dart';
+import 'package:valo_chat_app/app/modules/chat/group_info/add_member_binding.dart';
+import 'package:valo_chat_app/app/modules/chat/group_info/add_member_screen.dart';
+import 'package:valo_chat_app/app/modules/chat/group_info/member_screen.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_menu.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
-import 'package:valo_chat_app/app/widgets/widgets.dart';
-
-import '../../chat_controller.dart';
 
 class ProfileGroupScreen extends GetView<ChatController> {
   const ProfileGroupScreen({Key? key}) : super(key: key);
@@ -47,14 +45,15 @@ class ProfileGroupScreen extends GetView<ChatController> {
                     text: "Members",
                     icon: "assets/icons/group.svg",
                     press: () {
-                      Get.to(MemberScreen());
+                      Get.to(() => MemberScreen());
                     },
                   ),
                   ProfileMenu(
                     text: "Add members",
                     icon: "assets/icons/add-member.svg",
                     press: () {
-                      Get.to(AddMemberScreen());
+                      Get.to(() => AddMemberScreen(),
+                          binding: AddMemberBinding());
                     },
                   ),
                   ProfileMenu(
@@ -72,9 +71,7 @@ class ProfileGroupScreen extends GetView<ChatController> {
                             ElevatedButton.icon(
                               onPressed: () {
                                 controller.deleteGroup(controller.id);
-                                Get.back();
-                                Get.back();
-                                Get.back();
+                                // Get.back();
                               },
                               icon: Icon(Icons.check_circle),
                               // style: ButtonStyle(backgroundColor: Colors.blue),
@@ -118,9 +115,7 @@ class ProfileGroupScreen extends GetView<ChatController> {
                             ElevatedButton.icon(
                               onPressed: () {
                                 controller.leaveGroup(controller.id);
-                                Get.back();
-                                Get.back();
-                                Get.back();
+                                // Get.back();
                               },
                               icon: Icon(Icons.check_circle),
                               // style: ButtonStyle(backgroundColor: Colors.blue),
@@ -198,15 +193,3 @@ class ProfileGroupScreen extends GetView<ChatController> {
     );
   }
 }
-
-
-//  SizedBox(
-//             height: 30,
-//           ),
-//           buildTextField("Name:    ", controller.name, Colors.lightBlue),
-//           buildTextField("View member   ", "", Colors.lightBlue),
-//           buildTextField("Leave group   ", "", Colors.red),
-//           SizedBox(
-//             height: 20,
-//           ),
-//         ],
