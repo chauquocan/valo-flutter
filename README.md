@@ -25,9 +25,14 @@ Chạy bằng Android Studio hoặc VS code (Cài extentions/plugin Flutter,Dart
 
 ## Xác thực số điện thoại bằng firebase:
 
+- Mở console Firebase
+
+![Thêm SHA1](doc/images/AddSHA.png)
+
 
 ## Các lỗi có thể gặp 
-- Lỗi gradle
+- Lỗi gradle 
+- - 
 
 
 
