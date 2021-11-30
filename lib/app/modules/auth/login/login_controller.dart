@@ -1,63 +1,92 @@
 part of 'login.dart';
 
+//Controller for login view
 class LoginController extends GetxController {
-  final UserProvider userProvider;
+  LoginController({required this.authProvider, required this.userProvider});
+  //Controller text field
   final TextEditingController _phoneInput = TextEditingController();
   final TextEditingController _passwordInput = TextEditingController();
+
+  //User service
+  final AuthProvider authProvider;
+  final ProfileProvider userProvider;
+
+  //Form key for valid
   final _loginFormKey = GlobalKey<FormState>();
+
+  //pass's state
   final _showPass = true.obs;
+
+  //loading
+  final _isLoading = false.obs;
   // final _isLoading = false.obs;
-  LoginController({required this.userProvider});
 
-  String phoneValidator(String value) {
-    if (value.isEmpty) {
-      return 'Please enter phone number';
-    }
-    return "";
-  }
-
-  String passwordValidator(String value) {
+  String? passwordValidator(String value) {
     if (value.isEmpty) {
       return 'Please enter password';
     }
-    return "";
+    return null;
   }
 
+  //Login function
   Future login(String phoneNumber, String password) async {
+    //loading
+    _isLoading.value = true;
+    //valid
     if (_loginFormKey.currentState!.validate()) {
-      _showLoading();
+      //map request
       final map = {'username': phoneNumber, 'password': password};
-      final response = await userProvider.login(map);
+      //dio login
+      final response = await authProvider.login(map);
+      //
       print('Respone: ${response.toString()}');
+      //ok
       if (response.ok) {
-        await Storage.saveUser(response.data!);
-        Get.offAll(() => HomeScreen(), binding: HomeBinding());
-      } else {
-        Get.back();
-        if (response.code == HttpStatus.forbidden) {
-          showInfoDialog('Login fail', 'Phone number or password incorrect');
-        } else if (response.code == HttpStatus.unauthorized) {
-          showInfoDialog('Login failed', 'User not found, please register');
+        //save Token
+        await Storage.saveToken(response.data!);
+        String accessToken = response.data!.accessToken;
+        final userResponse =
+            await userProvider.getUserByPhone(phoneNumber, accessToken);
+        print('User respone: ${userResponse.toString()}');
+        //ok
+        if (userResponse.ok) {
+          //save user
+          await Storage.saveUser(userResponse.data!);
+          //direct
+          Get.offAllNamed('/home');
         } else {
-          showInfoDialog('Login failed', 'Sometihing went wrong, try again');
+          Get.snackbar('Error', 'Get user information failed');
+        }
+        _isLoading.value = false;
+      } else {
+        //exception http
+        _isLoading.value = false;
+        if (response.code == HttpStatus.forbidden) {
+          Get.snackbar('Login failed', 'Phone number or password incorrect');
+          // showInfoDialog('Login fail', 'Phone number or password incorrect');
+        } else if (response.code == HttpStatus.badRequest) {
+          showInfoDialog('Login failed',
+              'Phone number or password incorrect! Please try again');
         }
       }
-    } else {
-      showInfoDialog('Login failed', 'Invalid phonenumber or password');
     }
-  }
-
-  void _showLoading() {
-    Get.dialog(const DialogLoading());
+    _isLoading.value = false;
   }
 
   void showInfoDialog(String title, String content) {
     Get.dialog(AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(29)),
-      title: Text(title),
-      content: Text(content),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      title: Text(
+        title,
+        textAlign: TextAlign.center,
+      ),
+      content: Text(
+        content,
+        textAlign: TextAlign.center,
+      ),
     ));
   }
 
+  //Show pass
   void onShowPass() => _showPass.value = !_showPass.value;
 }

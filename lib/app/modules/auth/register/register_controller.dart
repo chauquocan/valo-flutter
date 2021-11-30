@@ -1,31 +1,46 @@
 part of 'register.dart';
 
 class RegisterController extends GetxController {
-  final UserProvider userProvider;
+  //user service
+  final AuthProvider authProvider;
+  //controller field
+  final TextEditingController _fullNameInput = TextEditingController();
   final TextEditingController _phoneInput = TextEditingController();
   final TextEditingController _emailInput = TextEditingController();
   final TextEditingController _passwordInput = TextEditingController();
+  final TextEditingController _confirmPasswordInput = TextEditingController();
 
-  RegisterController({required this.userProvider});
+  //Form key for valid
+  final _RegisterFormKey = GlobalKey<FormState>();
+  final isLoading = false.obs;
 
-  Future register(String phoneNumber, String password, String email) async {
-    _showLoading();
-    final map = {'username': phoneNumber, 'password': password, 'email': email};
-    final response = await userProvider.register(map);
-    print('Respone: ${response.toString()}');
-    if (response.ok) {
-      showInfoDialog('Sign up susscessfully', 'lets sign in');
-      Get.offAll(
-        () => WelcomeScreen(),
-      );
-    } else {
-      Get.back();
-      showInfoDialog('Sign up failed', 'something went wrong');
+  //pass's state
+  final _showPass = true.obs;
+  final _showConfirmPass = true.obs;
+
+  RegisterController({required this.authProvider});
+
+  //Sign up
+  Future register(String phoneNumber, String fullName, String password,
+      String email) async {
+    if (_RegisterFormKey.currentState!.validate()) {
+      print('Thông tin hợp lệ');
+      final RegisterRequest = {
+        'username': phoneNumber,
+        'fullname': fullName,
+        'password': password,
+        'email': email,
+      };
+      final response = await authProvider.register(RegisterRequest);
+      if (response.ok) {
+        Get.offAll(
+          () => WelcomeScreen(),
+        );
+      } else {
+        Get.back();
+        Get.snackbar('Sign up failed', 'something went wrong');
+      }
     }
-  }
-
-  void _showLoading() {
-    Get.dialog(const DialogLoading());
   }
 
   void showInfoDialog(String title, String content) {
@@ -35,11 +50,16 @@ class RegisterController extends GetxController {
     ));
   }
 
+  //Show pass
+  void onShowPass() => _showPass.value = !_showPass.value;
+  void onShowConfirmPass() => _showConfirmPass.value = !_showConfirmPass.value;
+
   @override
   void onClose() {
     _phoneInput.dispose();
     _emailInput.dispose();
     _passwordInput.dispose();
+    _confirmPasswordInput.dispose();
     super.onClose();
   }
 }

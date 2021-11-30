@@ -1,5 +1,6 @@
 part of 'login.dart';
 
+//Login view
 class LoginScreen extends GetView<LoginController> {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -20,12 +21,14 @@ class LoginScreen extends GetView<LoginController> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  //image
                   SvgPicture.asset(
                     'assets/icons/logo.svg',
                     width: size.width * 0.5,
                     color: AppColors.light,
                   ),
                   SizedBox(height: size.height * 0.05),
+                  //Phone input
                   RoundedInputField(
                     controller: controller._phoneInput,
                     hintText: "Enter phone number",
@@ -34,9 +37,9 @@ class LoginScreen extends GetView<LoginController> {
                     inputFormat: [FilteringTextInputFormatter.digitsOnly],
                     textColor: AppColors.light,
                     icon: Icons.phone,
-                    validator: (value) => controller.phoneValidator(value!),
+                    validator: (value) => Regex.phoneValidator(value!),
                   ),
-                  //thay đổi state
+                  //Password's state
                   Obx(
                     () => RoundedInputField(
                       controller: controller._passwordInput,
@@ -47,29 +50,42 @@ class LoginScreen extends GetView<LoginController> {
                       textColor: AppColors.light,
                       validator: (value) =>
                           controller.passwordValidator(value!),
-                      //thay đổi state chữ khi bấm vào icon mắt
+                      //show password button
                       suffixIcon: IconButton(
                         onPressed: () {
                           controller.onShowPass();
                         },
-                        icon: Icon(
-                          controller._showPass.value
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: AppColors.light,
+                        icon: Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: Icon(
+                            controller._showPass.value
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: AppColors.light,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  RoundedButton(
-                    text: 'signin'.tr.toUpperCase(),
-                    color: Colors.white,
-                    textColor: AppColors.primary,
-                    onPressed: () => controller.login(
-                        controller._phoneInput.text,
-                        controller._passwordInput.text),
+                  //Sign in button
+                  Obx(
+                    () => controller._isLoading.value
+                        ? CircularProgressIndicator(
+                            backgroundColor: AppColors.light,
+                          )
+                        : RoundedButton(
+                            buttonText: 'signin'.tr.toUpperCase(),
+                            width: size.width * 0.8,
+                            colors: [AppColors.light, AppColors.light],
+                            color: AppColors.light,
+                            textColor: AppColors.dark,
+                            onPressed: () => controller.login(
+                                controller._phoneInput.text,
+                                controller._passwordInput.text),
+                          ),
                   ),
                   SizedBox(height: size.height * 0.03),
+                  //Check
                   AlreadyHaveAnAccountCheck(press: () => Get.offNamed('/auth')),
                 ],
               ),

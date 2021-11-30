@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 
+//Response from api
 class NetworkResponse<T> {
   final int code;
   final bool ok;

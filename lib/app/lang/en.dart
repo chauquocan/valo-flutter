@@ -1,9 +1,12 @@
+// English
 const Map<String, String> en = {
   'chooselang': 'Choose language',
   'submit': 'Submit',
   'enterphonenumber': 'Enter phone number',
+  'authTitle': 'Phone number verification',
   'enterotp': 'Enter OTP code',
   'sendOTP': 'Send SMS code',
+  'resendOTP': 'Resend OTP Code',
   'loading': 'Loading...',
   // 'en': 'English',
   // 'vi': 'Vietnamese',

@@ -1,9 +1,17 @@
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/auth/auth.dart';
+import 'package:valo_chat_app/app/modules/chat/add_friend/add_friend_binding.dart';
+import 'package:valo_chat_app/app/modules/chat/add_friend/add_friend_screen.dart';
+import 'package:valo_chat_app/app/modules/chat/add_friend/friend_request_screen.dart';
+import 'package:valo_chat_app/app/modules/chat/chat.dart';
+import 'package:valo_chat_app/app/modules/chat/create_group_chat/create_group_chat_bindings.dart';
+import 'package:valo_chat_app/app/modules/chat/create_group_chat/create_group_chat_screen.dart';
 import 'package:valo_chat_app/app/modules/home/home.dart';
 import 'package:valo_chat_app/app/modules/auth/login/login.dart';
 import 'package:valo_chat_app/app/modules/auth/register/register.dart';
-import 'package:valo_chat_app/app/modules/home/tabs/profile/tab_profile.dart';
+import 'package:valo_chat_app/app/modules/home/tabs/profile/profile.dart';
+import 'package:valo_chat_app/app/modules/settings/setting_binding.dart';
+import 'package:valo_chat_app/app/modules/settings/setting_screen.dart';
 import 'package:valo_chat_app/app/modules/welcome/welcome_screen.dart';
 import 'package:valo_chat_app/app/utils/app_binding.dart';
 
@@ -13,9 +21,10 @@ abstract class AppPages {
   AppPages._();
   static final pages = [
     GetPage(
-        name: Routes.WELCOME,
-        page: () => WelcomeScreen(),
-        binding: AppBinding()),
+      name: Routes.WELCOME,
+      page: () => WelcomeScreen(),
+      binding: AppBinding(),
+    ),
     GetPage(
       name: Routes.HOME,
       page: () => HomeScreen(),
@@ -27,18 +36,52 @@ abstract class AppPages {
       binding: AuthBinding(),
     ),
     GetPage(
+      name: Routes.OTP,
+      page: () => OtpScreen(
+        phoneNumber: '',
+      ),
+      binding: AuthBinding(),
+    ),
+    GetPage(
       name: Routes.LOGIN,
       page: () => LoginScreen(),
-      binding: LoginBinding(),
+      binding: AuthBinding(),
     ),
     GetPage(
       name: Routes.REGISTER,
-      page: () => RegisterScreen(),
-      binding: RegisterBinding(),
+      page: () => RegisterScreen(
+        numberPhone: '',
+      ),
+      binding: AuthBinding(),
     ),
     GetPage(
-      name: Routes.PROFILE,
-      page: () => TabProfile(),
-    )
+      name: Routes.EDITPROFILE,
+      page: () => EditProfileScreen(),
+    ),
+    GetPage(
+      name: Routes.CREATEGROUP,
+      page: () => CreateGroupChatScreen(),
+      binding: CreateGroupChatBinding(),
+    ),
+    GetPage(
+      name: Routes.NEWFRIEND,
+      page: () => AddFriendScreen(),
+      binding: AddFriendBinding(),
+    ),
+    GetPage(
+      name: Routes.FRIENDREQUEST,
+      page: () => FriendRequestScreen(),
+      binding: AddFriendBinding(),
+    ),
+    GetPage(
+      name: Routes.CHAT,
+      page: () => ChatScreen(),
+      binding: ChatBinding(),
+    ),
+    GetPage(
+      name: Routes.SETTING,
+      page: () => SettingScreen(),
+      binding: SettingBinding(),
+    ),
   ];
 }

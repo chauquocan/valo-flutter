@@ -1,5 +1,6 @@
 part of '../widgets.dart';
 
+//custom input field for app
 class RoundedInputField extends StatelessWidget {
   final TextEditingController controller;
   final TextInputType keyboardType;
@@ -18,6 +19,7 @@ class RoundedInputField extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   String? Function(String?)? validator;
   final IconButton? suffixIcon;
+  Widget? prefixIcon;
 
   RoundedInputField({
     Key? key,
@@ -38,6 +40,7 @@ class RoundedInputField extends StatelessWidget {
     this.margin,
     this.padding,
     this.suffixIcon,
+    this.prefixIcon,
   }) : super(key: key);
 
   @override
@@ -46,7 +49,7 @@ class RoundedInputField extends StatelessWidget {
     return Container(
       margin: margin ?? const EdgeInsets.symmetric(vertical: 10),
       padding:
-          padding ?? const EdgeInsets.symmetric(horizontal: 20, vertical: 1),
+          padding ?? const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
       width: sizeInput ?? size.width * 0.8,
       decoration: BoxDecoration(
         color: backgroundColor,
@@ -62,12 +65,15 @@ class RoundedInputField extends StatelessWidget {
         obscureText: password,
         autocorrect: false,
         style: TextStyle(
-            color: textColor,
-            fontSize: fontSize,
-            fontWeight: FontWeight.normal),
+          color: textColor,
+          fontSize: fontSize,
+          fontWeight: FontWeight.normal,
+        ),
         decoration: InputDecoration(
-          suffixIcon: suffixIcon,
           floatingLabelBehavior: FloatingLabelBehavior.always,
+          contentPadding: const EdgeInsets.only(bottom: 10, top: 5),
+          prefixIcon: prefixIcon,
+          suffixIcon: suffixIcon,
           labelText: labelText,
           labelStyle: TextStyle(
             fontSize: fontSize - 2,
@@ -75,13 +81,18 @@ class RoundedInputField extends StatelessWidget {
             height: 0.2,
             fontWeight: FontWeight.normal,
           ),
-          icon: Icon(
-            icon,
-            color: Colors.white,
+          icon: Padding(
+            padding: EdgeInsets.only(top: 15),
+            child: Icon(
+              icon,
+              color: Colors.white,
+            ),
           ),
           hintText: hintText,
           hintStyle: const TextStyle(color: AppColors.hintLight),
           border: InputBorder.none,
+          errorText: '',
+          // errorStyle: const TextStyle(fontSize: 0),
         ),
       ),
     );

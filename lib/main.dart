@@ -1,35 +1,43 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/routes/app_pages.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:valo_chat_app/app/utils/app_binding.dart';
 import 'app/routes/routes.dart';
-import 'app/utils/store_service.dart';
+import 'app/utils/storage_service.dart';
 import 'package:valo_chat_app/app/lang/lang.dart';
 
 Future main() async {
+  await dotenv.load(fileName: ".env"); // dotenv
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  await Storage.init();
+  await Firebase.initializeApp(); //firebase auth
+  await Storage.init(); //storage service
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    print('current username: ${Storage.getUser()?.username}');
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.blue),
+    ); //status bar
     return GetMaterialApp(
       title: 'Valo chat app',
       debugShowCheckedModeBanner: false,
+      //Translate language
       translations: TranslationService(),
       locale: TranslationService.locale,
       fallbackLocale: TranslationService.fallbackLocale,
-      theme: AppTheme.light,
-      getPages: AppPages.pages,
+      theme: AppTheme.light, //theme
+      getPages: AppPages.pages, //routes
       initialRoute:
           Storage.ExpireToken() == false ? Routes.WELCOME : Routes.HOME,
+      initialBinding: AppBinding(),
     );
   }
 }

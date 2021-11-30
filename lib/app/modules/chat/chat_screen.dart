@@ -1,134 +1,121 @@
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:focused_menu/focused_menu.dart';
+import 'package:focused_menu/modals.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:valo_chat_app/app/data/models/chat.dart';
-import 'package:valo_chat_app/app/modules/chat/ui/own_message.dart';
-import 'package:valo_chat_app/app/modules/chat/ui/reply_message.dart';
-import 'package:valo_chat_app/app/themes/theme.dart';
+import 'package:valo_chat_app/app/modules/chat/group_info/profile_group_creen.dart';
+import 'package:valo_chat_app/app/modules/chat/widgets/widgets.dart';
+import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_friend_screen.dart';
+import 'package:valo_chat_app/app/widgets/widgets.dart';
 import 'chat_controller.dart';
 
 class ChatScreen extends GetView<ChatController> {
-  const ChatScreen({Key? key, required this.chatModel}) : super(key: key);
-  final ChatModel chatModel;
+  const ChatScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Image.asset(
-          "assets/images/background_may.png",
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          fit: BoxFit.cover,
-        ),
-        Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: _appBar(),
-          body: Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: Stack(
-              children: [
-                ListView(
-                  children: [
-                    OwnMessage(
-                      message: "mesageadsada",
-                      time: "12:0",
-                    ),
-                    ReplyMessage(
-                      message: "okeee",
-                      time: "12:0",
-                    ),
-                    OwnMessage(
-                      message: "mesageadsada",
-                      time: "12:0",
-                    ),
-                    ReplyMessage(
-                      message: "okeee",
-                      time: "12:0",
-                    ),
-                    OwnMessage(
-                      message: "mesageadsada",
-                      time: "12:0",
-                    ),
-                    ReplyMessage(
-                      message: "okeee",
-                      time: "12:0",
-                    ),
-                    OwnMessage(
-                      message: "mesageadsada",
-                      time: "12:0",
-                    ),
-                    ReplyMessage(
-                      message: "okeee",
-                      time: "12:0",
-                    ),
-                    OwnMessage(
-                      message: "mesageadsada",
-                      time: "12:0",
-                    ),
-                    ReplyMessage(
-                      message: "okeee",
-                      time: "12:0",
-                    ),
-                  ],
-                ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Row(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width - 50,
-                        child: Card(
-                          margin: EdgeInsets.only(left: 2, right: 2, bottom: 8),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25)),
-                          child: TextFormField(
-                            textAlignVertical: TextAlignVertical.center,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: 5,
-                            minLines: 1,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "Type a message",
-                              prefixIcon: IconButton(
-                                icon: Icon(Icons.emoji_emotions),
-                                onPressed: () {},
-                              ),
-                              suffixIcon: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(Icons.attach_file),
-                                  ),
-                                  IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(Icons.camera_alt))
-                                ],
-                              ),
-                              contentPadding: EdgeInsets.all(5),
+    Size size = MediaQuery.of(context).size;
+    return Scaffold(
+      appBar: _appBar(),
+      body: Column(
+        children: [
+          Expanded(
+            child: GetX<ChatController>(
+              builder: (_) {
+                if (controller.isLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  if (controller.messagesLoaded) {
+                    return ListView.builder(
+                      controller: controller.scrollController,
+                      reverse: true,
+                      physics: AlwaysScrollableScrollPhysics(),
+                      itemCount: controller.messages.length,
+                      itemBuilder: (context, i) {
+                        final item = controller.messages[i];
+                        return GestureDetector(
+                          onLongPress: () {},
+                          child: FocusedMenuHolder(
+                            blurSize: 0,
+                            menuItems: <FocusedMenuItem>[
+                              FocusedMenuItem(
+                                title: Text('Delete'),
+                                trailingIcon: Icon(Icons.delete),
+                                onPressed: () {
+                                  CustomDialog().confirmDialog(
+                                    'Lưu ý',
+                                    'Bạn có chắc muốn thu hồi tin nhắn này?',
+                                    () => controller
+                                        .deleteMessage(item.message.id),
+                                    () => Get.back(),
+                                  );
+                                },
+                              )
+                            ],
+                            onPressed: () {},
+                            child: WidgetBubble(
+                              message: item.message.content,
+                              isMe: item.message.senderId ==
+                                  controller.currentUserId,
+                              dateTime: DateFormat('h:mm a')
+                                  .format(DateTime.parse(item.message.sendAt)),
+                              type: item.message.messageType,
+                              status: item.message.messageStatus,
+                              avatar: item.userImgUrl,
                             ),
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
-                        child: CircleAvatar(
-                          radius: 25,
-                          child: IconButton(
-                              onPressed: () {}, icon: Icon(Icons.send)),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ],
+                        );
+                      },
+                    );
+                  } else {
+                    return const Center(child: Text('No messages'));
+                  }
+                }
+              },
             ),
           ),
-        )
-      ],
+          buildListTag(),
+          WidgetInputField(
+            textEditingController: controller.textController,
+            onSubmit: () => controller.sendTextMessage(),
+            sendImageFromCamera: () => controller.pickImageFromCamera(),
+            sendImageFromGallery: () =>
+                // controller.pickImageFromCamera(ImageSource.gallery),
+                controller.pickImagesFromGallery(),
+            sendIcon: () => controller.emojiShowing = !controller.emojiShowing,
+            sendSticker: () =>
+                controller.stickerShowing = !controller.stickerShowing,
+            // sendGif: () => controller.gifShowing = !controller.gifShowing,
+            sendGif: () => controller.sendGif(context),
+
+            sendFile: () => controller.pickFilesFromGallery(),
+            isEmojiVisible: controller.emojiShowing,
+            isKeyboardVisible: controller.isKeyboardVisible,
+          ),
+          _buildEmoji(),
+          _buildSticker(),
+          _buildGif(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGif() {
+    return GetX<ChatController>(
+      builder: (_) {
+        return Visibility(
+            visible: controller.gifShowing, child: WidgetSticker());
+      },
+    );
+  }
+
+  Widget _buildSticker() {
+    return GetX<ChatController>(
+      builder: (_) {
+        return Visibility(
+            visible: controller.stickerShowing, child: WidgetSticker());
+      },
     );
   }
 
@@ -139,31 +126,32 @@ class ChatScreen extends GetView<ChatController> {
         child: SizedBox(
           height: 250,
           child: EmojiPicker(
-              onEmojiSelected: (Category category, Emoji emoji) {
-                controller.onEmojiSelected(emoji);
-              },
-              onBackspacePressed: () {
-                controller.onBackspacePressed();
-              },
-              config: const Config(
-                  columns: 7,
-                  emojiSizeMax: 32.0,
-                  verticalSpacing: 0,
-                  horizontalSpacing: 0,
-                  initCategory: Category.RECENT,
-                  bgColor: Color(0xFFF2F2F2),
-                  indicatorColor: Colors.blue,
-                  iconColor: Colors.grey,
-                  iconColorSelected: Colors.blue,
-                  progressIndicatorColor: Colors.blue,
-                  backspaceColor: Colors.blue,
-                  showRecentsTab: true,
-                  recentsLimit: 28,
-                  noRecentsText: 'No Recents',
-                  noRecentsStyle:
-                      TextStyle(fontSize: 20, color: Colors.black26),
-                  categoryIcons: CategoryIcons(),
-                  buttonMode: ButtonMode.MATERIAL)),
+            onEmojiSelected: (Category category, Emoji emoji) {
+              controller.onEmojiSelected(emoji);
+            },
+            onBackspacePressed: () {
+              controller.onBackspacePressed();
+            },
+            config: const Config(
+              columns: 7,
+              emojiSizeMax: 32.0,
+              verticalSpacing: 0,
+              horizontalSpacing: 0,
+              initCategory: Category.RECENT,
+              bgColor: Color(0xFFF2F2F2),
+              indicatorColor: Colors.blue,
+              iconColor: Colors.grey,
+              iconColorSelected: Colors.blue,
+              progressIndicatorColor: Colors.blue,
+              backspaceColor: Colors.blue,
+              showRecentsTab: true,
+              recentsLimit: 28,
+              noRecentsText: 'No Recents',
+              noRecentsStyle: TextStyle(fontSize: 20, color: Colors.black26),
+              categoryIcons: CategoryIcons(),
+              buttonMode: ButtonMode.MATERIAL,
+            ),
+          ),
         ),
       );
     });
@@ -171,11 +159,14 @@ class ChatScreen extends GetView<ChatController> {
 
   AppBar _appBar() {
     return AppBar(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
+      ),
       leadingWidth: 70,
       titleSpacing: 0,
       leading: InkWell(
         onTap: () {
-          Get.back();
+          Get.offNamed('/home');
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -184,16 +175,12 @@ class ChatScreen extends GetView<ChatController> {
               Icons.arrow_back,
               size: 30,
             ),
-            CircleAvatar(
-              radius: 20,
-              backgroundColor: Colors.blueGrey,
-              child: SvgPicture.asset(
-                chatModel.isGroup
-                    ? 'assets/icons/logo.svg'
-                    : 'assets/icons/signup.svg',
-                color: AppColors.secondary,
-                height: 36,
-                width: 36,
+            Hero(
+              tag: controller.id,
+              child: CircleAvatar(
+                radius: 20,
+                backgroundColor: Colors.blueGrey,
+                backgroundImage: NetworkImage(controller.avatar),
               ),
             ),
           ],
@@ -206,7 +193,7 @@ class ChatScreen extends GetView<ChatController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              chatModel.name,
+              controller.name,
               style: TextStyle(
                 fontSize: 18.5,
                 fontWeight: FontWeight.bold,
@@ -223,17 +210,58 @@ class ChatScreen extends GetView<ChatController> {
       ),
       actions: [
         IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.video_call),
+          onPressed: () {
+            // Get.to(VideoCallScreen());
+          },
+          icon: Icon(Icons.videocam),
         ),
         IconButton(
           onPressed: () {},
           icon: Icon(Icons.call),
         ),
-        PopupMenuButton(itemBuilder: (BuildContext context) {
-          return [];
-        })
+        IconButton(
+          onPressed: () {
+            if (controller.isGroup == true) {
+              Get.to(() => ProfileGroupScreen(), arguments: ['uid']);
+            } else
+              Get.to(() => ProfileFriendScreen());
+          },
+          icon: Icon(Icons.list_outlined),
+        ),
       ],
+    );
+  }
+
+  Widget buildListTag() {
+    return GetX<ChatController>(
+      builder: (_) {
+        return Visibility(
+          visible: controller.tagging,
+          child: Container(
+            height: 160,
+            width: double.infinity,
+            margin: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade200,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: controller.membersWithoutMe.length,
+              itemBuilder: (context, i) {
+                final item = controller.membersWithoutMe[i];
+                return ListTile(
+                  onTap: () => WidgetAvatar(
+                    url: item.imgUrl,
+                    size: 40,
+                  ),
+                  title: Text(item.name),
+                );
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 }

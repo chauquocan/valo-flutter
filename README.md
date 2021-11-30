@@ -1,16 +1,40 @@
 # valo_chat_app
+Môn Công nghệ Mới
+Nhóm 23: Valo chat app 
 
-Valo chat app getx
+## Cài chương trình
+Cài đặt flutter library:
+Theo hướng dẫn: https://docs.flutter.dev/get-started/install
 
-## Getting Started
+Chạy bằng Android Studio hoặc VS code (Cài extentions/plugin Flutter,Dart)
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## Chạy chương trình
+-----------
+- Kiểm tra phiên bản trước khi chạy
+`flutter doctor -v`
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+`flutter pub get`
+- Chạy bằng terminal
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+`flutter run`
+
+- Chạy ở main.dart
+
+![Chạy app ở main.dart](doc/images/RunApp.png)
+
+## Xác thực số điện thoại bằng firebase:
+
+- Mở console Firebase
+
+![Thêm SHA1](doc/images/AddSHA.png)
+
+
+## Các lỗi có thể gặp 
+- Lỗi gradle 
+- - 
+
+
+
+
+
