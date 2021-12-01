@@ -17,6 +17,7 @@ class WidgetBubble extends GetView<ChatController> {
     this.avatar,
   });
 
+  @override
   Widget build(BuildContext context) {
     final uri = Uri.tryParse(message);
     if (uri != null && type != 'IMAGE' && type != 'STICKER') {

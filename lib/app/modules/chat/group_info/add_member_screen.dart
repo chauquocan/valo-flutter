@@ -27,18 +27,18 @@ class AddMemberScreen extends GetView<AddMemberController> {
                   leading: CircleAvatar(
                     backgroundColor: Colors.blueGrey,
                     radius: 30,
-                    backgroundImage: NetworkImage('${user.imgUrl}'),
+                    backgroundImage: NetworkImage(user.imgUrl),
                   ),
                   title: Text(
                     user.name,
-                    style: TextStyle(fontSize: 18),
+                    style: const TextStyle(fontSize: 18),
                   ),
                   trailing: IconButton(
                     onPressed: () {
                       controller.addMember(user.id, chatController.id);
                       Get.back();
                     },
-                    icon: Icon(Icons.add_circle_outline),
+                    icon: const Icon(Icons.add_circle_outline),
                   ),
                 ),
               );
@@ -50,11 +50,11 @@ class AddMemberScreen extends GetView<AddMemberController> {
 
 AppBar _appBar() {
   return AppBar(
-    title: Text(
+    title: const Text(
       'Add new member',
       style: TextStyle(color: AppColors.light),
     ),
-    shape: RoundedRectangleBorder(
+    shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
     ),
     backgroundColor: Colors.lightBlue,

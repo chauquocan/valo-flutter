@@ -28,7 +28,6 @@ class AddMemberController extends GetxController {
   void onInit() {
     super.onInit();
     getContactsCanAllToGroup();
-    print(users);
   }
 
 ///////// add member
@@ -37,8 +36,8 @@ class AddMemberController extends GetxController {
     final respones = await groupChatProvider.addMember(map);
     if (respones.ok) {
       Get.back();
-    } else
-      (print(respones));
+    }
+    print(respones);
   }
 
   // lấy ds bạn bè k có trong conversation    -- ko lay dc

@@ -4,7 +4,9 @@ import 'package:valo_chat_app/app/modules/chat/add_friend/add_friend_controller.
 import 'package:valo_chat_app/app/themes/theme.dart';
 
 class AddFriendScreen extends StatelessWidget {
-  AddFriendController controller = Get.find<AddFriendController>();
+  final controller = Get.find<AddFriendController>();
+
+  AddFriendScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +36,7 @@ class AddFriendScreen extends StatelessWidget {
                   decoration: InputDecoration(
                       hintText: 'Enter phone number or name',
                       suffixIcon: IconButton(
-                          onPressed: () {}, icon: Icon(Icons.search))),
+                          onPressed: () {}, icon: const Icon(Icons.search))),
                 ),
               ),
             ),
@@ -63,17 +65,17 @@ class AddFriendScreen extends StatelessWidget {
                                 ),
                                 title: Text(
                                   user.name,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 subtitle: Text(user.phone),
                                 trailing: TextButton(
                                   onPressed: () =>
-                                      controller.SendFriendReq('${user.id}'),
+                                      controller.sendFriendReq(user.id),
                                   child: Obx(() => controller.isSent.value
-                                      ? Text('Đã gửi')
-                                      : Text('Kết bạn')),
+                                      ? const Text('Đã gửi')
+                                      : const Text('Kết bạn')),
                                 ),
                               );
                             })
@@ -82,7 +84,7 @@ class AddFriendScreen extends StatelessWidget {
                               controller.isSearch.value
                                   ? 'No user found'
                                   : 'Search friend',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: AppColors.dark,
                                 fontSize: 18,
                               ),
@@ -99,7 +101,7 @@ class AddFriendScreen extends StatelessWidget {
 
 AppBar _appBar() {
   return AppBar(
-    title: Text(
+    title: const Text(
       'Add new friend',
       style: TextStyle(color: AppColors.light),
     ),

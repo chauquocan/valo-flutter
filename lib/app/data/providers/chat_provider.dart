@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:valo_chat_app/app/data/connect_service.dart';
 import 'package:valo_chat_app/app/data/models/conversation_model.dart';
@@ -13,18 +12,16 @@ class ChatProvider {
   static const String fileURL = '/upload';
   static const String deleteURL = '$messageURL/cancel';
 
-  //current token
-  final _token = Storage.getToken()?.accessToken;
-
   //Get conversations
-  Future<NetworkResponse<ConversationPage>> GetConversations(int page) async {
+  Future<NetworkResponse<ConversationPage>> getConversations(int page) async {
     try {
       final response = await ConnectService().get(
         conversationURL,
         params: {'page': page},
         options: Options(
           headers: {
-            'Authorization': 'Bearer ${_token}',
+            'Authorization':
+                'Bearer ${LocalStorage.getToken()?.accessToken.toString()}',
           },
         ),
       );
@@ -32,30 +29,27 @@ class ChatProvider {
         response,
         (json) => ConversationPage.fromJson(json),
       );
-    } on DioError catch (e, s) {
-      print(e.error);
-      print(s);
+    } on DioError catch (e) {
       return NetworkResponse.withError(e.response);
     }
   }
 
   //Get messages
-  Future<NetworkResponse<MessagePage>> GetMessages(String id, int page) async {
+  Future<NetworkResponse<MessagePage>> getMesages(String id, int page) async {
     try {
       final response = await ConnectService().get(
         messageURL + id,
         params: {'page': page},
         options: Options(
           headers: {
-            'Authorization': 'Bearer ${_token}',
+            'Authorization':
+                'Bearer ${LocalStorage.getToken()?.accessToken.toString()}',
           },
         ),
       );
       return NetworkResponse.fromResponse(
           response, (json) => MessagePage.fromJson(json));
-    } on DioError catch (e, s) {
-      print(e.error);
-      print(e.response?.data);
+    } on DioError catch (e) {
       return NetworkResponse.withError(e.response);
     }
   }
@@ -70,14 +64,13 @@ class ChatProvider {
         params: formData,
         options: Options(
           headers: <String, String>{
-            'Authorization': 'Bearer $_token',
+            'Authorization':
+                'Bearer ${LocalStorage.getToken()?.accessToken.toString()}',
           },
         ),
       );
       return response;
-    } on DioError catch (e, s) {
-      print(e.message);
-      // return NetworkResponse.withError(e.response);
+    } on DioError catch (e) {
       throw Exception(e);
     }
   }
@@ -85,12 +78,6 @@ class ChatProvider {
   //Pick file
   Future<Response> uploadFiles(List filePath) async {
     try {
-      // var formData = FormData();
-      // for (var file in filePath) {
-      //   formData.files.addAll([
-      //     MapEntry("files", await MultipartFile.fromFile(file)),
-      //   ]);
-      // }
       List<MultipartFile> files =
           filePath.map((e) => MultipartFile.fromFileSync(e)).toList();
       var formData = FormData.fromMap({"files": files});
@@ -99,14 +86,13 @@ class ChatProvider {
         params: formData,
         options: Options(
           headers: <String, String>{
-            'Authorization': 'Bearer $_token',
+            'Authorization':
+                'Bearer ${LocalStorage.getToken()?.accessToken.toString()}',
           },
         ),
       );
       return response;
-    } on DioError catch (e, s) {
-      print(e.message);
-      // return NetworkResponse.withError(e.response);
+    } on DioError catch (e) {
       throw Exception(e);
     }
   }
@@ -118,13 +104,13 @@ class ChatProvider {
         '$deleteURL/$messageId',
         options: Options(
           headers: <String, String>{
-            'Authorization': 'Bearer $_token',
+            'Authorization':
+                'Bearer ${LocalStorage.getToken()?.accessToken.toString()}',
           },
         ),
       );
       return response;
-    } on DioError catch (e, s) {
-      print(e.error);
+    } on DioError catch (e) {
       throw Exception(e.error);
     }
   }

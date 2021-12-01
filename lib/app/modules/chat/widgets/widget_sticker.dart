@@ -1,6 +1,8 @@
 part of 'widgets.dart';
 
 class WidgetSticker extends GetView<ChatController>{
+  const WidgetSticker({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(

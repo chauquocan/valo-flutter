@@ -38,20 +38,17 @@ class LoginController extends GetxController {
       final map = {'username': phoneNumber, 'password': password};
       //dio login
       final response = await authProvider.login(map);
-      //
-      print('Respone: ${response.toString()}');
       //ok
       if (response.ok) {
         //save Token
-        await Storage.saveToken(response.data!);
+        await LocalStorage.saveToken(response.data!);
         String accessToken = response.data!.accessToken;
         final userResponse =
             await userProvider.getUserByPhone(phoneNumber, accessToken);
-        print('User respone: ${userResponse.toString()}');
         //ok
         if (userResponse.ok) {
           //save user
-          await Storage.saveUser(userResponse.data!);
+          await LocalStorage.saveUser(userResponse.data!);
           //direct
           Get.offAllNamed('/home');
         } else {
@@ -63,7 +60,6 @@ class LoginController extends GetxController {
         _isLoading.value = false;
         if (response.code == HttpStatus.forbidden) {
           Get.snackbar('Login failed', 'Phone number or password incorrect');
-          // showInfoDialog('Login fail', 'Phone number or password incorrect');
         } else if (response.code == HttpStatus.badRequest) {
           showInfoDialog('Login failed',
               'Phone number or password incorrect! Please try again');
@@ -84,6 +80,17 @@ class LoginController extends GetxController {
         content,
         textAlign: TextAlign.center,
       ),
+      actionsAlignment: MainAxisAlignment.center,
+      actions: [
+        ElevatedButton.icon(
+          onPressed: () => Get.back(),
+          icon: const Icon(Icons.check),
+          label: Text(
+            'submit'.tr,
+            style: const TextStyle(color: Colors.white),
+          ),
+        ),
+      ],
     ));
   }
 

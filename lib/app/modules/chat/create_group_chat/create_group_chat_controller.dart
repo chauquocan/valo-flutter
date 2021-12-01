@@ -84,7 +84,7 @@ class CreateGroupChatController extends GetxController {
 
   @override
   void onClose() {
-    // TODO: implement onClose
+    textCtrl.dispose();
     super.onClose();
   }
 
@@ -101,7 +101,7 @@ class CreateGroupChatController extends GetxController {
       for (var content in selected) {
         participants.add(Participant(
           userId: content.id,
-          addByUserId: Storage.getUser()!.id,
+          addByUserId: LocalStorage.getUser()!.id,
           addTime: DateTime.now().toString(),
           admin: false,
         ));

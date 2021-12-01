@@ -20,7 +20,7 @@ class TabProfile extends GetView<TabProfileController> {
   AppBar _appBar() {
     return AppBar(
       title: Text('personal'.tr),
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           bottom: Radius.circular(10),
         ),

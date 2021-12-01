@@ -1,7 +1,7 @@
 part of 'auth.dart';
 
 class AuthScreen extends GetView<AuthController> {
-  AuthScreen({Key? key}) : super(key: key);
+  const AuthScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class AuthScreen extends GetView<AuthController> {
                   SizedBox(height: size.height * 0.1),
                   Container(
                     alignment: Alignment.center,
-                    padding: EdgeInsets.only(top: 5),
+                    padding: const EdgeInsets.only(top: 5),
                     decoration: BoxDecoration(
                       border: Border.all(),
                       borderRadius: BorderRadius.circular(29),
@@ -61,8 +61,8 @@ class AuthScreen extends GetView<AuthController> {
                       ),
                       decoration: InputDecoration(
                         errorText: '',
-                        errorStyle: TextStyle(fontSize: 0),
-                        contentPadding: EdgeInsets.symmetric(
+                        errorStyle: const TextStyle(fontSize: 0),
+                        contentPadding: const EdgeInsets.symmetric(
                             vertical: 20.0, horizontal: 20.0),
                         prefixIcon: CountryCodePicker(
                           textStyle: const TextStyle(color: AppColors.dark),
@@ -88,19 +88,19 @@ class AuthScreen extends GetView<AuthController> {
                   SizedBox(height: size.height * 0.015),
                   Obx(() {
                     if (controller.isCodeSending.value) {
-                      return CircularProgressIndicator(
+                      return const CircularProgressIndicator(
                         backgroundColor: AppColors.light,
                       );
                     } else {
                       return RoundedButton(
                         buttonText: 'sendOTP'.tr,
                         width: size.width * 0.6,
-                        colors: [AppColors.light, AppColors.light],
+                        colors: const [AppColors.light, AppColors.light],
                         color: AppColors.light,
                         textColor: AppColors.dark,
                         onPressed: () {
                           FocusScope.of(context).unfocus();
-                          controller.CheckPhoneExist(
+                          controller.checkPhoneExist(
                               controller._phoneController.text);
                         },
                       );

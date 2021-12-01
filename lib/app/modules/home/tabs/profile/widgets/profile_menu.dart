@@ -25,8 +25,8 @@ class ProfileMenu extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(7.0),
       ),
-      margin: EdgeInsets.only(top: 10),
-      padding: EdgeInsets.all(10),
+      margin: const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.all(10),
       child: ListTile(
         onTap: press,
         leading: CircleAvatar(
@@ -40,7 +40,7 @@ class ProfileMenu extends StatelessWidget {
             width: 40,
           ),
         ),
-        trailing: Icon(Icons.arrow_forward),
+        trailing: const Icon(Icons.arrow_forward),
         title: Text(
           text,
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),

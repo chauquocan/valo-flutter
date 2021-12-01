@@ -13,20 +13,11 @@ class AuthProvider {
   static const String logoutURL = 'auth/signout';
   static const String refreshTokenUrl = 'auth/refresh_token';
 
-  //current token
-  final _token = Storage.getToken()?.accessToken;
-  //current rfToken
-  final _refreshToken = Storage.getToken()?.refreshToken;
-  //curent userId
-  final _userId = Storage.getUser()?.id;
-
   //Check phone number exist
   Future<NetworkResponse<ResponseMessage>> checkPhoneExist(
       String phoneNumber) async {
     try {
-      print('request api for checking phone number');
       final response = await ConnectService().get('$checkURL/$phoneNumber');
-      print(response);
       return NetworkResponse.fromResponse(
           response, (json) => ResponseMessage.fromJson(json));
     } on DioError catch (e) {
@@ -62,41 +53,39 @@ class AuthProvider {
 
   // Refresh token
   Future<NetworkResponse<LoginRespone>> refreshToken() async {
-    final map = {'refreshToken': _refreshToken};
+    final map = {
+      'refreshToken': LocalStorage.getToken()?.refreshToken.toString()
+    };
     try {
-      final response = await ConnectService().post(
+      final response = await ConnectService().postRefreshToken(
         refreshTokenUrl,
         params: map,
-        options: Options(
-          headers: <String, String>{
-            'Authorization': 'Bearer $_token',
-          },
-        ),
       );
       return NetworkResponse.fromResponse(
         response,
         (json) => LoginRespone.fromJson(json),
       );
-    } on DioError catch (e, s) {
-      print(e.error);
+    } on DioError catch (e) {
       return NetworkResponse.withError(e.response);
     }
   }
 
   //Logout
   Future<NetworkResponse<ResponseMessage>> logout() async {
-    Map map = {'refreshToken': _refreshToken};
+    Map map = {
+      'refreshToken': LocalStorage.getToken()?.refreshToken.toString()
+    };
     try {
       final response = await ConnectService().post(
         logoutURL,
         params: map,
         options: Options(
           headers: <String, String>{
-            'Authorization': 'Bearer $_token',
+            'Authorization':
+                'Bearer ${LocalStorage.getToken()?.accessToken.toString()}',
           },
         ),
       );
-      print(response);
       return NetworkResponse.fromResponse(
         response,
         (json) => ResponseMessage.fromJson(json),

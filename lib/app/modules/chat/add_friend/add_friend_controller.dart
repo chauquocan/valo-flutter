@@ -55,8 +55,8 @@ class AddFriendController extends GetxController {
   /* 
     Gửi lời mời
    */
-  Future SendFriendReq(String toId) async {
-    final response = await friendProvider.SendFriendRequest(toId);
+  Future sendFriendReq(String toId) async {
+    final response = await friendProvider.sendFriendRequest(toId);
     if (response.ok) {
       isSent.value = true;
       Get.snackbar('Success', 'Request sent');
@@ -71,8 +71,7 @@ class AddFriendController extends GetxController {
    */
   Future getFriendReqList() async {
     isLoading.value = true;
-    List<FriendRequest> _friendList = [];
-    final response = await friendProvider.GetFriendRequests();
+    final response = await friendProvider.getFriendRequests();
     if (response.ok) {
       if (response.data!.content.length > 0) {
         for (var request in response.data!.content) {
@@ -95,7 +94,7 @@ class AddFriendController extends GetxController {
     Chấp nhận lời mời
    */
   Future acceptFriendRequest(String id) async {
-    final response = await friendProvider.AcceptFriendRequest(id);
+    final response = await friendProvider.acceptFriendRequest(id);
     if (response.ok) {
       Get.snackbar('Thanh cong', '${response.data}');
       chatController.getConversations();
@@ -113,13 +112,13 @@ class AddFriendController extends GetxController {
     if (searchFormKey.currentState!.validate()) {
       isLoading.value = true;
       List<Profile> _profiles = [];
-      final currentUser = Storage.getUser();
+      final currentUser = LocalStorage.getUser();
       final searchResponse = await userProvider.searchUser(
         textToSearch,
       );
       if (searchResponse.ok) {
         if (searchResponse.data!.content.length > 0) {
-          Future.delayed(Duration(milliseconds: 200), () {
+          Future.delayed(const Duration(milliseconds: 200), () {
             // Do something
             for (var item in searchResponse.data!.content) {
               if (currentUser!.phone != item.phone ||

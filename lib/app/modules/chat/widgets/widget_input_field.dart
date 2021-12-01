@@ -14,7 +14,7 @@ class WidgetInputField extends GetView<ChatController> {
   final bool isKeyboardVisible;
   final bool isEmojiVisible;
 
-  WidgetInputField({
+  const WidgetInputField({
     Key? key,
     required this.textEditingController,
     this.onSubmit,
@@ -41,42 +41,42 @@ class WidgetInputField extends GetView<ChatController> {
                   children: [
                     IconButton(
                       onPressed: sendImageFromCamera,
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.camera_alt,
                         color: Colors.lightBlue,
                       ),
                     ),
                     IconButton(
                       onPressed: sendImageFromGallery,
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.image,
                         color: Colors.lightBlue,
                       ),
                     ),
                     IconButton(
                       onPressed: sendSticker,
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.face,
                         color: Colors.lightBlue,
                       ),
                     ),
                     IconButton(
                       onPressed: sendIcon,
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.emoji_emotions,
                         color: Colors.lightBlue,
                       ),
                     ),
                     IconButton(
                       onPressed: sendGif,
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.gif_outlined,
                         color: Colors.lightBlue,
                       ),
                     ),
                     IconButton(
                       onPressed: sendFile,
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.attach_file,
                         color: Colors.lightBlue,
                       ),
@@ -115,7 +115,7 @@ class WidgetInputField extends GetView<ChatController> {
                       child: TextFormField(
                         controller: textEditingController,
                         keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Enter Message',
                           border: InputBorder.none,
                         ),
@@ -123,7 +123,7 @@ class WidgetInputField extends GetView<ChatController> {
                     ),
                     IconButton(
                       onPressed: onSubmit,
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.send,
                         color: Colors.lightBlue,
                       ),

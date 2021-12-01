@@ -17,7 +17,7 @@ class AuthController extends GetxController {
   final _authFormKey = GlobalKey<FormState>();
   final _otpFormKey = GlobalKey<FormState>();
 
-  void CheckPhoneExist(String phoneNumber) async {
+  void checkPhoneExist(String phoneNumber) async {
     if (_authFormKey.currentState!.validate()) {
       final response = await authProvider.checkPhoneExist(phoneNumber);
       if (response.ok) {
@@ -49,7 +49,7 @@ class AuthController extends GetxController {
           'Lỗi',
           'Có lỗi xảy ra khi gửi xác thực',
           'Xác nhận',
-          Icon(Icons.check),
+          const Icon(Icons.check),
           () => Get.back(),
         );
       },
@@ -81,12 +81,11 @@ class AuthController extends GetxController {
       )
           .catchError(
         (error) {
-          print(error);
           CustomDialog().showInfoDialog(
             'Lỗi',
             'Mã xác thực không đúng! hãy thử lại',
             'Xác nhận',
-            Icon(Icons.check),
+            const Icon(Icons.check),
             () => Get.back(),
           );
           isOTPLoading.value = false;

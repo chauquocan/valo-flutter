@@ -17,8 +17,8 @@ class WidgetAvatarChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (!isGroup) {
-      final user =
-          members.firstWhere((element) => element.id != Storage.getUser()?.id);
+      final user = members
+          .firstWhere((element) => element.id != LocalStorage.getUser()?.id);
       return WidgetAvatar(url: "assets/icons/logo.svg", size: size);
     }
     if (members.length <= 2) {

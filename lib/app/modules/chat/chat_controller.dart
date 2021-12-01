@@ -36,7 +36,7 @@ class ChatController extends GetxController {
   final textController = TextEditingController();
   final keyboardController = KeyboardVisibilityController();
   final scrollController = ScrollController();
-  final currentUserId = Storage.getUser()?.id;
+  final currentUserId = LocalStorage.getUser()?.id;
 
   final _id = ''.obs;
   final _name = ''.obs;
@@ -192,8 +192,9 @@ class ChatController extends GetxController {
 
   List<Profile> get members => _members;
 
-  List<Profile> get membersWithoutMe =>
-      _members.where((element) => element.id != Storage.getUser()?.id).toList();
+  List<Profile> get membersWithoutMe => _members
+      .where((element) => element.id != LocalStorage.getUser()?.id)
+      .toList();
 
   set members(value) {
     _members.value = value;
@@ -220,11 +221,11 @@ class ChatController extends GetxController {
 
     StompService.stompClient.subscribe(
       destination: '/users/queue/messages',
-      callback: (StompFrame frame) => OnMessageReceive(frame),
+      callback: (StompFrame frame) => onMessageReceive(frame),
     );
     StompService.stompClient.subscribe(
       destination: '/users/queue/messages/delete',
-      callback: (StompFrame frame) => OnCancelMessage(frame),
+      callback: (StompFrame frame) => onCancelMessage(frame),
     );
 
     var keyboardVisibilityController = KeyboardVisibilityController();
@@ -275,7 +276,6 @@ class ChatController extends GetxController {
       Get.snackbar('Sucessful', 'Member has been kicked');
       Get.back();
     } else {
-      print(respones);
       Get.snackbar('Failed', 'You are not Admin');
     }
   }
@@ -323,7 +323,7 @@ class ChatController extends GetxController {
     if (respones.ok) {
       Get.back();
     } else
-      (print(respones));
+      print(respones);
   }
 
   // delete group
@@ -333,26 +333,25 @@ class ChatController extends GetxController {
       Get.back();
       Get.snackbar('Sucessful', 'Member has been added');
     } else
-      (print(respones));
+      print(respones);
     Get.snackbar('Failed', 'You are not Admin');
   }
 
   ///
   /*------------------------*/
-  void AddMess(MessageContent mess) {
+  void addMess(MessageContent mess) {
     messages.insert(0, mess);
     update();
   }
 
-  Future OnMessageReceive(StompFrame frame) async {
+  Future onMessageReceive(StompFrame frame) async {
     var response = jsonDecode(frame.body!);
-    print(response);
     MessageContent mess = MessageContent.fromJson(response);
-    AddMess(mess);
+    addMess(mess);
     _messages.refresh();
   }
 
-  Future OnCancelMessage(StompFrame frame) async {
+  Future onCancelMessage(StompFrame frame) async {
     var response = jsonDecode(frame.body!);
     MessageContent mess = MessageContent.fromJson(response);
     var text =
@@ -366,7 +365,7 @@ class ChatController extends GetxController {
    */
   Future getMessages(String id, int page) async {
     List<MessageContent> _messages = [];
-    final response = await chatProvider.GetMessages(id, page);
+    final response = await chatProvider.getMesages(id, page);
     if (response.ok) {
       if (response.data!.content.length > 0) {
         for (var content in response.data!.content) {
@@ -377,7 +376,6 @@ class ChatController extends GetxController {
         messagesLoaded = true;
         _page.value++;
       } else {
-        print('ko co mess');
         isLoading = false;
         messagesLoaded = false;
       }
@@ -391,7 +389,7 @@ class ChatController extends GetxController {
    */
   Future getMoreMessages(String id, int page) async {
     List<MessageContent> _messages = [];
-    final response = await chatProvider.GetMessages(id, page);
+    final response = await chatProvider.getMesages(id, page);
     if (response.ok) {
       if (response.data!.content.length > 0) {
         for (var content in response.data!.content) {
@@ -432,10 +430,10 @@ class ChatController extends GetxController {
   void sendTextMessage() {
     if (textController.text.isNotEmpty) {
       String body = json.encode({
-        "conversationId": '${id}',
+        "conversationId": '$id',
         "messageType": 0,
-        "content": '${textController.text}',
-        "senderId": '${currentUserId}',
+        "content": textController.text,
+        "senderId": '$currentUserId',
         "replyId": '',
       });
       StompService.stompClient.send(
@@ -444,7 +442,7 @@ class ChatController extends GetxController {
       );
       if (messages.length >= 1) {
         scrollController.animateTo(0,
-            duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+            duration:const Duration(milliseconds: 300), curve: Curves.easeOut);
       }
       textController.clear();
     }
@@ -492,7 +490,6 @@ class ChatController extends GetxController {
 
   void updateReadMessage() async {
     for (var mess in messages) {
-      print(mess);
       String body = json.encode({
         "messageId": mess.message.id,
         "conversationId": id,
@@ -508,10 +505,10 @@ class ChatController extends GetxController {
 
   void sendSticker(String? url) async {
     String body = json.encode({
-      "conversationId": '${id}',
+      "conversationId": '$id',
       "messageType": 2,
       "content": url,
-      "senderId": '${currentUserId}',
+      "senderId": '$currentUserId',
       "replyId": '',
     });
     StompService.stompClient.send(
@@ -555,10 +552,10 @@ class ChatController extends GetxController {
     if (gif != null) {
       // print(gif);
       String body = json.encode({
-        "conversationId": '${id}',
+        "conversationId": '$id',
         "messageType": 2,
         "content": gif.images?.original?.webp,
-        "senderId": '${currentUserId}',
+        "senderId": '$currentUserId',
         "replyId": '',
       });
       StompService.stompClient.send(
@@ -578,10 +575,10 @@ class ChatController extends GetxController {
         final listFile = [];
         for (var image in response.data) {
           String body = json.encode({
-            "conversationId": '${id}',
+            "conversationId": '$id',
             "messageType": 1,
             "content": image,
-            "senderId": '${Storage.getUser()!.id}',
+            "senderId": '${LocalStorage.getUser()!.id}',
             "replyId": '',
           });
           StompService.stompClient.send(
@@ -612,10 +609,10 @@ class ChatController extends GetxController {
       if (response.statusCode == 200) {
         for (var image in response.data) {
           String body = json.encode({
-            "conversationId": '${id}',
+            "conversationId": '$id',
             "messageType": 1,
             "content": image,
-            "senderId": '${Storage.getUser()!.id}',
+            "senderId": '${LocalStorage.getUser()!.id}',
             "replyId": '',
           });
           StompService.stompClient.send(
@@ -646,10 +643,10 @@ class ChatController extends GetxController {
       if (response.statusCode == 200) {
         for (var image in response.data) {
           String body = json.encode({
-            "conversationId": '${id}',
+            "conversationId": '$id',
             "messageType": 5,
             "content": image,
-            "senderId": '${Storage.getUser()!.id}',
+            "senderId": '${LocalStorage.getUser()!.id}',
             "replyId": '',
           });
           StompService.stompClient.send(

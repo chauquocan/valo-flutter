@@ -2,7 +2,7 @@ part of 'auth.dart';
 
 //OTP view
 class OtpScreen extends StatefulWidget {
-  OtpScreen({Key? key, required this.phoneNumber}) : super(key: key);
+  const OtpScreen({Key? key, required this.phoneNumber}) : super(key: key);
   //Phone number from auth view
   final String phoneNumber;
 
@@ -23,7 +23,7 @@ class _OtpScreenState extends State<OtpScreen> {
   @override
   initState() {
     super.initState();
-    timer = Timer.periodic(Duration(seconds: 1), (_) {
+    timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (secondsRemaining != 0) {
         setState(() {
           secondsRemaining--;
@@ -92,7 +92,7 @@ class _OtpScreenState extends State<OtpScreen> {
                 //OTP code time remaining
                 Text(
                   '$secondsRemaining',
-                  style: TextStyle(color: Colors.white, fontSize: 18),
+                  style: const TextStyle(color: Colors.white, fontSize: 18),
                 ),
                 //OTP input
                 Container(
@@ -106,7 +106,7 @@ class _OtpScreenState extends State<OtpScreen> {
                     fieldsCount: 6,
                     controller: authController._otpController,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    autofillHints: [AutofillHints.creditCardNumber],
+                    autofillHints: const [AutofillHints.creditCardNumber],
                     focusNode: _pinPutFocusNode,
                     submittedFieldDecoration: _pinPutDecoration.copyWith(
                       borderRadius: BorderRadius.circular(20.0),
@@ -128,7 +128,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         )
                       : RoundedButton(
                           buttonText: 'submit'.tr,
-                          colors: [AppColors.light, AppColors.light],
+                          colors: const [AppColors.light, AppColors.light],
                           color: Colors.black,
                           textColor: AppColors.dark,
                           width: size.width * 0.6,
@@ -138,7 +138,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                 ._verifyOTP(authController._otpController.text);
                           }),
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 //Resend button
                 enableResend
                     ? Container(
@@ -151,7 +151,7 @@ class _OtpScreenState extends State<OtpScreen> {
                           onPressed: enableResend ? _resendCode : () {},
                           child: Text(
                             'resendOTP'.tr,
-                            style: TextStyle(color: AppColors.light),
+                            style: const TextStyle(color: AppColors.light),
                           ),
                         ),
                       )
@@ -164,7 +164,7 @@ class _OtpScreenState extends State<OtpScreen> {
                           onPressed: () {},
                           child: Text(
                             'resendOTP'.tr,
-                            style: TextStyle(color: AppColors.dark),
+                            style: const TextStyle(color: AppColors.dark),
                           ),
                         ),
                       ),

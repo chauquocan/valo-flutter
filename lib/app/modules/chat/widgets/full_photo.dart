@@ -3,7 +3,7 @@ part of 'widgets.dart';
 class FullPhoto extends StatelessWidget {
   final String url;
 
-  FullPhoto({Key? key, required this.url}) : super(key: key);
+  const FullPhoto({Key? key, required this.url}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

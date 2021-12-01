@@ -23,7 +23,6 @@ class TabProfileController extends GetxController {
       {required this.userProvider, required this.authProvider});
 
   var isLoading = false.obs;
-  final _token = Storage.getToken()!.accessToken;
   //image
   final ImagePicker _picker = ImagePicker();
   var imageURL = '';
@@ -44,8 +43,6 @@ class TabProfileController extends GetxController {
     super.onClose();
   }
 
-  
-
   //upload image function
   void uploadImage(ImageSource imageSource) async {
     try {
@@ -59,18 +56,18 @@ class TabProfileController extends GetxController {
           imageURL = response.data!.imgUrl;
           print(response.data);
           print(imageURL);
-          await Storage.updateUser(response.data!);
+          await LocalStorage.updateUser(response.data!);
           Get.snackbar('Success', 'Image uploaded successfully',
-              margin: EdgeInsets.only(top: 5, left: 10, right: 10));
+              margin: const EdgeInsets.only(top: 5, left: 10, right: 10));
         } else if (response.code == HttpStatus.unauthorized) {
           Get.snackbar('Unauthorization', 'token expired');
         } else {
-          Get.snackbar('Failed', 'Error Code: ${response}',
-              margin: EdgeInsets.only(top: 5, left: 10, right: 10));
+          Get.snackbar('Failed', 'Error Code: $response',
+              margin: const EdgeInsets.only(top: 5, left: 10, right: 10));
         }
       } else {
         Get.snackbar('Failed', 'Image not selected',
-            margin: EdgeInsets.only(top: 5, left: 10, right: 10));
+            margin: const EdgeInsets.only(top: 5, left: 10, right: 10));
       }
     } finally {
       isLoading(false);
@@ -93,11 +90,11 @@ class TabProfileController extends GetxController {
         final response = await ProfileProvider().updateUserInfo(map);
         print('Update Response: ${response.toString()}');
         if (response.ok) {
-          final userResponse =
-              await ProfileProvider().getUserByPhone('${phone}', _token);
+          final userResponse = await ProfileProvider().getUserByPhone(
+              phone, LocalStorage.getToken()!.accessToken.toString());
           Get.snackbar('update susscessfully', '');
           if (userResponse.ok) {
-            await Storage.updateUser(userResponse.data!);
+            await LocalStorage.updateUser(userResponse.data!);
             Get.reload();
           } else {
             Get.back();
@@ -121,8 +118,17 @@ class TabProfileController extends GetxController {
   Future logout() async {
     final response = await authProvider.logout();
     if (response.ok) {
-      Storage.logout();
+      LocalStorage.logout();
       Get.offAllNamed('/');
+    } else {
+      print(response);
+    }
+  }
+
+  Future refreshToken() async {
+    final response = await authProvider.refreshToken();
+    if (response.ok) {
+      print(response);
     } else {
       print(response);
     }

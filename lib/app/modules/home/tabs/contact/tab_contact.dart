@@ -19,7 +19,7 @@ class _ContactTabState extends State<ContactTab> {
       child: Scaffold(
           appBar: AppBar(
             title: Text('contact'.tr),
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(
                 bottom: Radius.circular(10),
               ),
@@ -29,17 +29,17 @@ class _ContactTabState extends State<ContactTab> {
                 onPressed: () {
                   Get.toNamed('/newfriend');
                 },
-                icon: Icon(Icons.person_add),
+                icon:const  Icon(Icons.person_add),
               ),
               IconButton(
                 onPressed: () {},
-                icon: Icon(Icons.contacts),
+                icon:const  Icon(Icons.contacts),
               ),
             ],
           ),
           body: GetBuilder<TabContactController>(
             builder: (_) => Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Column(
                 children: <Widget>[
                   Container(
@@ -75,19 +75,19 @@ class _ContactTabState extends State<ContactTab> {
                                   : controller.contacts,
                             )
                           : Container(
-                              padding: EdgeInsets.only(top: 40),
+                              padding: const EdgeInsets.only(top: 40),
                               child: Text(
                                 controller.isSearch.value
                                     ? 'No search results to show'
                                     : 'No contacts exist',
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 20),
+                                style: const TextStyle(
+                                    color: Colors.grey, fontSize: 20),
                               ),
                             )
                       : Container(
                           // still loading contacts
-                          padding: EdgeInsets.only(top: 40),
-                          child: Center(
+                          padding: const EdgeInsets.only(top: 40),
+                          child: const Center(
                             child: Text('No contacts'),
                           ),
                         ))

@@ -18,7 +18,7 @@ class ConversationTab extends GetView<TabConversationController> {
         actions: [
           IconButton(
               onPressed: () => Get.toNamed('/newfriend'),
-              icon: Icon(Icons.search)),
+              icon: const Icon(Icons.search)),
           PopupMenuButton<String>(
             onSelected: (value) {
               switch (value) {
@@ -35,15 +35,15 @@ class ConversationTab extends GetView<TabConversationController> {
             },
             itemBuilder: (BuildContext context) {
               return [
-                PopupMenuItem(
+                const PopupMenuItem(
                   child: Text("New friend"),
                   value: "newfriend",
                 ),
-                PopupMenuItem(
+                const PopupMenuItem(
                   child: Text("New group"),
                   value: "newgroup",
                 ),
-                PopupMenuItem(
+                const PopupMenuItem(
                   child: Text("Friend Request"),
                   value: "friendrequest",
                 ),
@@ -95,11 +95,11 @@ class ConversationTab extends GetView<TabConversationController> {
                         subtitle: Row(
                           children: [
                             conversation.unReadMessage > 0
-                                ? Icon(
+                                ? const Icon(
                                     Icons.fiber_manual_record,
                                     color: AppColors.primary,
                                   )
-                                : Icon(Icons.done),
+                                : const Icon(Icons.done),
                             const SizedBox(
                               width: 3,
                             ),
@@ -107,10 +107,10 @@ class ConversationTab extends GetView<TabConversationController> {
                               child: Text(
                                 controller.lastMess(conversation.lastMessage),
                                 style: conversation.unReadMessage > 0
-                                    ? TextStyle(
+                                    ? const TextStyle(
                                         fontSize: 13,
                                         fontWeight: FontWeight.bold)
-                                    : TextStyle(fontSize: 13),
+                                    : const TextStyle(fontSize: 13),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),

@@ -56,7 +56,10 @@ class CustomDialog {
           ),
         ],
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10))),
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
+          ),
+        ),
       ),
     );
   }

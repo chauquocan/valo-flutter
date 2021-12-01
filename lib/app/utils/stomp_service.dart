@@ -8,8 +8,8 @@ import 'package:valo_chat_app/app/utils/storage_service.dart';
 class StompService {
   static var stompClient = null;
   static var wsUrl = dotenv.env['WS_URL'];
-  final _userId = Storage.getToken()?.username;
-  final _token = Storage.getToken()?.accessToken;
+  final _userId = LocalStorage.getToken()?.username;
+  final _token = LocalStorage.getToken()?.accessToken;
 
   void startStomp() {
     if (stompClient == null) {

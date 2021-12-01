@@ -15,7 +15,6 @@ class ChatScreen extends GetView<ChatController> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: _appBar(),
       body: Column(
@@ -30,7 +29,7 @@ class ChatScreen extends GetView<ChatController> {
                     return ListView.builder(
                       controller: controller.scrollController,
                       reverse: true,
-                      physics: AlwaysScrollableScrollPhysics(),
+                      physics: const AlwaysScrollableScrollPhysics(),
                       itemCount: controller.messages.length,
                       itemBuilder: (context, i) {
                         final item = controller.messages[i];
@@ -40,8 +39,8 @@ class ChatScreen extends GetView<ChatController> {
                             blurSize: 0,
                             menuItems: <FocusedMenuItem>[
                               FocusedMenuItem(
-                                title: Text('Delete'),
-                                trailingIcon: Icon(Icons.delete),
+                                title: const Text('Delete'),
+                                trailingIcon: const Icon(Icons.delete),
                                 onPressed: () {
                                   CustomDialog().confirmDialog(
                                     'Lưu ý',
@@ -95,18 +94,8 @@ class ChatScreen extends GetView<ChatController> {
           ),
           _buildEmoji(),
           _buildSticker(),
-          _buildGif(),
         ],
       ),
-    );
-  }
-
-  Widget _buildGif() {
-    return GetX<ChatController>(
-      builder: (_) {
-        return Visibility(
-            visible: controller.gifShowing, child: WidgetSticker());
-      },
     );
   }
 
@@ -114,7 +103,7 @@ class ChatScreen extends GetView<ChatController> {
     return GetX<ChatController>(
       builder: (_) {
         return Visibility(
-            visible: controller.stickerShowing, child: WidgetSticker());
+            visible: controller.stickerShowing, child: const WidgetSticker());
       },
     );
   }
@@ -159,7 +148,7 @@ class ChatScreen extends GetView<ChatController> {
 
   AppBar _appBar() {
     return AppBar(
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
       ),
       leadingWidth: 70,
@@ -171,7 +160,7 @@ class ChatScreen extends GetView<ChatController> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.arrow_back,
               size: 30,
             ),
@@ -187,19 +176,19 @@ class ChatScreen extends GetView<ChatController> {
         ),
       ),
       title: Container(
-        margin: EdgeInsets.all(5),
+        margin: const EdgeInsets.all(5),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               controller.name,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18.5,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text(
+            const Text(
               'last seen today',
               style: TextStyle(
                 fontSize: 13,
@@ -209,16 +198,16 @@ class ChatScreen extends GetView<ChatController> {
         ),
       ),
       actions: [
-        IconButton(
-          onPressed: () {
-            // Get.to(VideoCallScreen());
-          },
-          icon: Icon(Icons.videocam),
-        ),
-        IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.call),
-        ),
+        // IconButton(
+        //   onPressed: () {
+        // Get.to(VideoCallScreen());
+        //   },
+        //   icon:const Icon(Icons.videocam),
+        // ),
+        // IconButton(
+        //   onPressed: () {},
+        //   icon:const Icon(Icons.call),
+        // ),
         IconButton(
           onPressed: () {
             if (controller.isGroup == true) {
@@ -226,7 +215,7 @@ class ChatScreen extends GetView<ChatController> {
             } else
               Get.to(() => ProfileFriendScreen());
           },
-          icon: Icon(Icons.list_outlined),
+          icon: const Icon(Icons.list_outlined),
         ),
       ],
     );
@@ -240,7 +229,7 @@ class ChatScreen extends GetView<ChatController> {
           child: Container(
             height: 160,
             width: double.infinity,
-            margin: EdgeInsets.all(10),
+            margin: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: Colors.grey.shade200,
               borderRadius: BorderRadius.circular(20),

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
 import 'package:valo_chat_app/app/data/models/conversation_model.dart';
-import 'package:valo_chat_app/app/data/models/message_model.dart';
 import 'package:valo_chat_app/app/data/models/profile_model.dart';
 import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
 import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
@@ -35,13 +34,13 @@ class TabConversationController extends GetxController {
   @override
   void onReady() {
     paginateMessages();
-    Future.delayed(Duration(milliseconds: 500), () {
-      SubscribeChannel();
+    Future.delayed(const Duration(milliseconds: 500), () {
+      subscribeChannel();
     });
     super.onReady();
   }
 
-  void SubscribeChannel() async {
+  void subscribeChannel() async {
     StompService.stompClient.subscribe(
       destination: '/users/queue/messages',
       callback: (StompFrame frame) => onMessagesReceive(frame),
@@ -62,7 +61,7 @@ class TabConversationController extends GetxController {
       mess = lastMess.message.content.substring(0, 10) + ' ...  ';
     }
     if (lastMess.message.senderId != "") {
-      if (lastMess.message.senderId == Storage.getUser()?.id) {
+      if (lastMess.message.senderId == LocalStorage.getUser()?.id) {
         if (lastMess.message.messageType == 'IMAGE') {
           return 'You send a photo';
         } else if (lastMess.message.messageType == 'STICKER') {
@@ -92,8 +91,8 @@ class TabConversationController extends GetxController {
    */
   Future getConversations() async {
     List<ConversationContent> _conversations = [];
-    String? currentUserId = Storage.getUser()?.id;
-    final response = await chatProvider.GetConversations(_page.value);
+    String? currentUserId = LocalStorage.getUser()?.id;
+    final response = await chatProvider.getConversations(_page.value);
     if (response.ok) {
       if (response.data!.content.length > 0) {
         for (var content in response.data!.content) {
@@ -147,8 +146,8 @@ class TabConversationController extends GetxController {
    */
   Future getMoreConversation() async {
     List<ConversationContent> _conversations = [];
-    String currentUserId = Storage.getUser()!.id;
-    final response = await chatProvider.GetConversations(_page.value);
+    String currentUserId = LocalStorage.getUser()!.id;
+    final response = await chatProvider.getConversations(_page.value);
     if (response.ok) {
       if (response.data!.content.length > 0) {
         for (var content in response.data!.content) {
