@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,6 +9,7 @@ import 'package:valo_chat_app/app/modules/home/tabs/profile/tab_profile_controll
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:valo_chat_app/app/utils/regex.dart';
 import 'package:valo_chat_app/app/utils/storage_service.dart';
+import 'package:valo_chat_app/app/widgets/widgets.dart';
 
 // sua profile cua minh
 class EditProfileScreen extends StatelessWidget {
@@ -155,6 +157,17 @@ class EditProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               //Phone numbers input
+
+              // RoundedInputField(
+              //   controller: controller.inputPhone,
+              //   hintText: '${LocalStorage.getUser()?.phone}',
+              //   keyboardType: TextInputType.phone,
+              //   inputFormat: [FilteringTextInputFormatter.digitsOnly],
+              //   textColor: AppColors.light,
+              //   icon: Icons.phone,
+              //   validator: (value) => Regex.phoneValidator(value!),
+              // ),
+
               buildTextField("Phone", '${LocalStorage.getUser()?.phone}',
                   controller.inputPhone, false, (value) {}),
               //Name input

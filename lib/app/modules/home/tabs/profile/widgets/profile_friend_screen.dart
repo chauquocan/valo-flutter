@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:valo_chat_app/app/modules/chat/chat_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
+import 'package:valo_chat_app/app/utils/storage_service.dart';
 
 class ProfileFriendScreen extends GetView<ChatController> {
   const ProfileFriendScreen({Key? key}) : super(key: key);
@@ -25,13 +26,19 @@ class ProfileFriendScreen extends GetView<ChatController> {
                     radius: 60,
                     backgroundImage: NetworkImage(controller.avatar),
                   ))),
+          Text(
+            '${controller.name}',
+            textAlign: TextAlign.center,
+            style:
+                TextStyle(fontSize: 26, letterSpacing: 2.2, color: Colors.blue),
+          ),
           const SizedBox(
             height: 30,
           ),
-          buildTextField("Name:    ", controller.name),
-          buildTextField("Phone:   ", "0772555445"),
-          buildTextField("E-mail:   ", "S2taaa@gmail.com"),
-          buildTextField("Address:", "Gia Nghia"),
+          buildTextField("Phone:     ", "0772555445"),
+          buildTextField("birth-day:", "22/12/2000"),
+          buildTextField("E-mail:     ", "S2taaa@gmail.com"),
+          buildTextField("Address:  ", "Gia Nghia"),
           const SizedBox(
             height: 20,
           ),
@@ -75,7 +82,7 @@ class ProfileFriendScreen extends GetView<ChatController> {
               labelText,
               style: const TextStyle(fontSize: 20, color: Colors.black38),
             ),
-            const SizedBox(width: 20),
+            const SizedBox(width: 50),
             Align(
               alignment: Alignment.centerRight,
               child: Text(
