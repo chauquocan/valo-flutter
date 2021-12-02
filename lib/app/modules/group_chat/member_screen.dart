@@ -1,9 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:valo_chat_app/app/modules/chat/chat_controller.dart';
-import 'package:valo_chat_app/app/themes/theme.dart';
+part of 'group.dart';
 
 class MemberScreen extends GetView<ChatController> {
   const MemberScreen({Key? key}) : super(key: key);
@@ -11,7 +6,16 @@ class MemberScreen extends GetView<ChatController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: _appBar(),
+        appBar: AppBar(
+          title: const Text(
+            'Group member',
+            style: TextStyle(color: AppColors.light),
+          ),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
+          ),
+          backgroundColor: Colors.lightBlue,
+        ),
         body: ListView.builder(
           shrinkWrap: true,
           itemCount: controller.members.length,
@@ -79,17 +83,4 @@ class MemberScreen extends GetView<ChatController> {
           },
         ));
   }
-}
-
-AppBar _appBar() {
-  return AppBar(
-    title: const Text(
-      'Group member',
-      style: TextStyle(color: AppColors.light),
-    ),
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
-    ),
-    backgroundColor: Colors.lightBlue,
-  );
 }

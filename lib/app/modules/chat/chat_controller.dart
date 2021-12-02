@@ -18,6 +18,7 @@ import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controll
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
 import 'package:valo_chat_app/app/utils/stomp_service.dart';
 import 'package:valo_chat_app/app/utils/storage_service.dart';
+import 'package:valo_chat_app/app/widgets/widgets.dart';
 
 class ChatController extends GetxController {
   final conversationController = Get.find<TabConversationController>();
@@ -45,9 +46,9 @@ class ChatController extends GetxController {
   final _isGroup = false.obs;
   final _page = 0.obs;
 
-  final _users = <Profile>[].obs;
+  final _users = <User>[].obs;
 
-  List<Profile> get users => _users;
+  List<User> get users => _users;
 
   set users(value) {
     _users.value = value;
@@ -73,8 +74,8 @@ class ChatController extends GetxController {
   final _messagesLoaded = false.obs;
 
   final _tagging = false.obs;
-  final _members = <Profile>[].obs;
-  final _listTagged = <Profile>[].obs;
+  final _members = <User>[].obs;
+  final _listTagged = <User>[].obs;
 
   get showMore => _showMore.value;
 
@@ -190,9 +191,9 @@ class ChatController extends GetxController {
     _tagging.value = value;
   }
 
-  List<Profile> get members => _members;
+  List<User> get members => _members;
 
-  List<Profile> get membersWithoutMe => _members
+  List<User> get membersWithoutMe => _members
       .where((element) => element.id != LocalStorage.getUser()?.id)
       .toList();
 
@@ -200,7 +201,7 @@ class ChatController extends GetxController {
     _members.value = value;
   }
 
-  List<Profile> get listTagged => _listTagged;
+  List<User> get listTagged => _listTagged;
 
   set listTagged(value) {
     _listTagged.value = value;
@@ -258,7 +259,7 @@ class ChatController extends GetxController {
 
   //get member in group
   Future getmembers() async {
-    List<Profile> membersTemp = [];
+    List<User> membersTemp = [];
     for (var content in participants) {
       final profile = await profileProvider.getUserById(content.userId);
       if (profile.ok) {
@@ -339,15 +340,10 @@ class ChatController extends GetxController {
 
   ///
   /*------------------------*/
-  void addMess(MessageContent mess) {
-    messages.insert(0, mess);
-    update();
-  }
-
   Future onMessageReceive(StompFrame frame) async {
     var response = jsonDecode(frame.body!);
     MessageContent mess = MessageContent.fromJson(response);
-    addMess(mess);
+    messages.insert(0, mess);
     _messages.refresh();
   }
 
@@ -420,7 +416,7 @@ class ChatController extends GetxController {
     });
   }
 
-  void onTagSelect(Profile user) {
+  void onTagSelect(User user) {
     tagging = !tagging;
     textController.text += user.name;
     listTagged.add(user);
@@ -442,7 +438,7 @@ class ChatController extends GetxController {
       );
       if (messages.length >= 1) {
         scrollController.animateTo(0,
-            duration:const Duration(milliseconds: 300), curve: Curves.easeOut);
+            duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
       }
       textController.clear();
     }
@@ -672,12 +668,19 @@ class ChatController extends GetxController {
     final text =
         messages.firstWhere((element) => element.message.id == messageId);
     if (text.message.senderId == currentUserId) {
-      if (text.message.messageStatus != 'CANCELED') {
-        await chatProvider.deleteMessage(messageId);
-        Get.back();
-      } else {
-        Get.snackbar('Thong bao', 'tin nhan nay da duoc thu hoi');
-      }
+      CustomDialog().confirmDialog(
+        'Lưu ý',
+        'Bạn có chắc muốn thu hồi tin nhắn này?',
+        () async {
+          if (text.message.messageStatus != 'CANCELED') {
+            await chatProvider.deleteMessage(messageId);
+            Get.back();
+          } else {
+            Get.snackbar('Thong bao', 'tin nhan nay da duoc thu hoi');
+          }
+        },
+        () => Get.back(),
+      );
     } else {
       Get.snackbar(
           'Thong bao', 'ban khong the thu hoi tin nhan cua nguoi khac');

@@ -2,11 +2,11 @@ import 'package:dio/dio.dart';
 
 //Response from api
 class NetworkResponse<T> {
-  final int code;
-  final bool ok;
-  final String? msg;
-  final T? data;
-  final String? rawBody;
+  int code;
+  bool ok;
+  String? msg;
+  T? data;
+  String? rawBody;
 
   NetworkResponse({
     required this.code,

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 //Auth response
-
 class LoginRespone {
   LoginRespone({
     required this.username,

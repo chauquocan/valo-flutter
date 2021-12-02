@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+part of 'widgets.dart';
 
 //Cusom appbar
 class WidgetAppBar extends StatelessWidget implements PreferredSizeWidget {

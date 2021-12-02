@@ -39,7 +39,7 @@ class ConnectService {
   ///token
   Map<String, dynamic>? getAuthorizationHeader() {
     var headers;
-    var token = LocalStorage.getToken()?.accessToken;
+    var token = LocalStorage.getToken()?.accessToken.toString();
     if (token != null) {
       headers = {
         'Authorization': 'Bearer $token',

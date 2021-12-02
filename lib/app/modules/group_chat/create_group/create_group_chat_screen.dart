@@ -1,10 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:valo_chat_app/app/modules/chat/create_group_chat/create_group_chat_controller.dart';
-import 'package:valo_chat_app/app/utils/regex.dart';
-import 'package:valo_chat_app/app/utils/storage_service.dart';
-import 'package:valo_chat_app/app/widgets/widget_appbar.dart';
-import 'package:valo_chat_app/app/widgets/widgets.dart';
+part of '../group.dart';
 
 class CreateGroupChatScreen extends GetView<CreateGroupChatController> {
   const CreateGroupChatScreen({Key? key}) : super(key: key);

@@ -117,12 +117,8 @@ class TabProfileController extends GetxController {
   //Logout
   Future logout() async {
     final response = await authProvider.logout();
-    if (response.ok) {
-      LocalStorage.logout();
-      Get.offAllNamed('/');
-    } else {
-      print(response);
-    }
+    LocalStorage.logout();
+    Get.offAllNamed('/');
   }
 
   Future refreshToken() async {

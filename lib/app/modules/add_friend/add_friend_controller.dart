@@ -7,6 +7,7 @@ import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
 import 'package:valo_chat_app/app/utils/storage_service.dart';
+import 'package:valo_chat_app/app/widgets/widgets.dart';
 
 class AddFriendController extends GetxController {
   final chatController = Get.find<TabConversationController>();
@@ -20,9 +21,9 @@ class AddFriendController extends GetxController {
 
   var searchController = TextEditingController();
 
-  final searchResults = <Profile>[].obs;
+  final searchResults = <UserContent>[].obs;
   final friendReqList = <FriendRequest>[].obs;
-  final userList = <Profile>[].obs;
+  final userList = <User>[].obs;
   final searchFormKey = GlobalKey<FormState>();
 
   //loading
@@ -59,10 +60,9 @@ class AddFriendController extends GetxController {
     final response = await friendProvider.sendFriendRequest(toId);
     if (response.ok) {
       isSent.value = true;
-      Get.snackbar('Success', 'Request sent');
+      customSnackbar().snackbarDialog('Success', 'Request sent');
     } else {
-      Get.snackbar('Fail', 'You already sent request',
-          snackPosition: SnackPosition.BOTTOM);
+      customSnackbar().snackbarDialog('Fail', 'You already sent request');
     }
   }
 
@@ -96,12 +96,12 @@ class AddFriendController extends GetxController {
   Future acceptFriendRequest(String id) async {
     final response = await friendProvider.acceptFriendRequest(id);
     if (response.ok) {
-      Get.snackbar('Thanh cong', '${response.data}');
+      customSnackbar().snackbarDialog('Thanh cong', '${response.data}');
       chatController.getConversations();
       contactController.getContactsFromAPI();
       isAccepted.value = true;
     } else {
-      Get.snackbar('That bai', '${response.data}');
+      customSnackbar().snackbarDialog('That bai', '${response.data}');
     }
   }
 
@@ -111,7 +111,7 @@ class AddFriendController extends GetxController {
   Future searchUser(String textToSearch) async {
     if (searchFormKey.currentState!.validate()) {
       isLoading.value = true;
-      List<Profile> _profiles = [];
+      List<UserContent> _profiles = [];
       final currentUser = LocalStorage.getUser();
       final searchResponse = await userProvider.searchUser(
         textToSearch,
@@ -121,8 +121,8 @@ class AddFriendController extends GetxController {
           Future.delayed(const Duration(milliseconds: 200), () {
             // Do something
             for (var item in searchResponse.data!.content) {
-              if (currentUser!.phone != item.phone ||
-                  currentUser.name != item.name) {
+              if (currentUser!.phone != item.user.phone ||
+                  currentUser.name != item.user.name) {
                 _profiles.add(item);
               }
             }
@@ -135,8 +135,8 @@ class AddFriendController extends GetxController {
           usersLoadded.value = false;
         }
       } else {
-        Get.snackbar('Search failed', 'Something wrong');
         isLoading.value = false;
+        usersLoadded.value = false;
       }
     }
     isSearch.value = true;

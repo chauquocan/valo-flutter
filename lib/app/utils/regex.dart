@@ -1,4 +1,5 @@
 import 'package:get/get_utils/src/extensions/string_extensions.dart';
+import 'package:valo_chat_app/app/widgets/widgets.dart';
 
 class Regex {
   static bool isName(String name) {
@@ -47,6 +48,8 @@ class Regex {
       return 'Please enter password';
     }
     if (!isPasswordValid(value)) {
+      customSnackbar().snackbarDialog('Lưu ý',
+          'Mật khẩu tối thiểu 8 kí tự bao gồm chữ, số, kí tự đặc biệt');
       return 'Invalid password';
     }
     return null;

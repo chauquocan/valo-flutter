@@ -76,8 +76,8 @@ class MessageContent {
   Message message;
   String userName;
   String userImgUrl;
-  late String? status;
-  late bool? select = false;
+  String? status;
+  bool? select = false;
 
   factory MessageContent.fromRawJson(String str) =>
       MessageContent.fromJson(json.decode(str));
@@ -111,16 +111,16 @@ class Message {
     required this.pin,
   });
 
-  final String id;
-  final String conversationId;
-  final String senderId;
-  final String sendAt;
-  final String messageType;
+  String id;
+  String conversationId;
+  String senderId;
+  String sendAt;
+  String messageType;
   String content;
-  final String messageStatus;
-  final String replyId;
-  final List<Reaction>? reactions;
-  final bool pin;
+  String messageStatus;
+  String replyId;
+  List<Reaction>? reactions;
+  bool pin;
 
   factory Message.fromRawJson(String str) => Message.fromJson(json.decode(str));
 
@@ -164,8 +164,8 @@ class Reaction {
     required this.reactionType,
   });
 
-  final String userId;
-  final String reactionType;
+  String userId;
+  String reactionType;
 
   factory Reaction.fromRawJson(String str) =>
       Reaction.fromJson(json.decode(str));

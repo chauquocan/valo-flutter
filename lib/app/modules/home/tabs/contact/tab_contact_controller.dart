@@ -97,7 +97,7 @@ class TabContactController extends GetxController {
   /* 
     Get contact info from id
    */
-  Future<Profile?> getContact(String id) async {
+  Future<User?> getContact(String id) async {
     final user = await userProvider.getUserById(id);
     return user.data;
   }

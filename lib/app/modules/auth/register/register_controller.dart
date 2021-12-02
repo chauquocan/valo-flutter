@@ -57,6 +57,7 @@ class RegisterController extends GetxController {
   void onClose() {
     _phoneInput.dispose();
     _emailInput.dispose();
+    _fullNameInput.dispose();
     _passwordInput.dispose();
     _confirmPasswordInput.dispose();
     super.onClose();

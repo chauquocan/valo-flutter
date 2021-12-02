@@ -7,6 +7,7 @@ import 'package:valo_chat_app/app/utils/storage_service.dart';
 
 part 'widget_avatar_chat.dart';
 part 'widget_avatar.dart';
+part 'widget_appbar.dart';
 part 'widget_field.dart';
 part 'custom/rounded_button.dart';
 part 'background.dart';

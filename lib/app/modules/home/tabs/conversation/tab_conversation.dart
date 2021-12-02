@@ -89,8 +89,7 @@ class ConversationTab extends GetView<TabConversationController> {
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                         trailing: Text(
-                          formatDate(conversation.lastMessage.message.sendAt)
-                              .toString(),
+                          formatDate(conversation.lastMessage.message.sendAt),
                         ),
                         subtitle: Row(
                           children: [
@@ -105,13 +104,12 @@ class ConversationTab extends GetView<TabConversationController> {
                             ),
                             Flexible(
                               child: Text(
-                                controller.lastMess(conversation.lastMessage),
+                                controller.lastMess(conversation),
                                 style: conversation.unReadMessage > 0
                                     ? const TextStyle(
                                         fontSize: 13,
                                         fontWeight: FontWeight.bold)
                                     : const TextStyle(fontSize: 13),
-                                maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),

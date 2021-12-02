@@ -4,8 +4,8 @@ import 'package:focused_menu/modals.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:valo_chat_app/app/modules/chat/group_info/profile_group_creen.dart';
 import 'package:valo_chat_app/app/modules/chat/widgets/widgets.dart';
+import 'package:valo_chat_app/app/modules/group_chat/group.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_friend_screen.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
 import 'chat_controller.dart';
@@ -15,40 +15,34 @@ class ChatScreen extends GetView<ChatController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _appBar(),
-      body: Column(
-        children: [
-          Expanded(
-            child: GetX<ChatController>(
-              builder: (_) {
-                if (controller.isLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else {
-                  if (controller.messagesLoaded) {
-                    return ListView.builder(
-                      controller: controller.scrollController,
-                      reverse: true,
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      itemCount: controller.messages.length,
-                      itemBuilder: (context, i) {
-                        final item = controller.messages[i];
-                        return GestureDetector(
-                          onLongPress: () {},
-                          child: FocusedMenuHolder(
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        appBar: _appBar(),
+        body: Column(
+          children: [
+            Expanded(
+              child: GetX<ChatController>(
+                builder: (_) {
+                  if (controller.isLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else {
+                    if (controller.messagesLoaded) {
+                      return ListView.builder(
+                        controller: controller.scrollController,
+                        reverse: true,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        itemCount: controller.messages.length,
+                        itemBuilder: (context, i) {
+                          final item = controller.messages[i];
+                          return FocusedMenuHolder(
                             blurSize: 0,
                             menuItems: <FocusedMenuItem>[
                               FocusedMenuItem(
                                 title: const Text('Delete'),
                                 trailingIcon: const Icon(Icons.delete),
                                 onPressed: () {
-                                  CustomDialog().confirmDialog(
-                                    'Lưu ý',
-                                    'Bạn có chắc muốn thu hồi tin nhắn này?',
-                                    () => controller
-                                        .deleteMessage(item.message.id),
-                                    () => Get.back(),
-                                  );
+                                  controller.deleteMessage(item.message.id);
                                 },
                               )
                             ],
@@ -63,38 +57,39 @@ class ChatScreen extends GetView<ChatController> {
                               status: item.message.messageStatus,
                               avatar: item.userImgUrl,
                             ),
-                          ),
-                        );
-                      },
-                    );
-                  } else {
-                    return const Center(child: Text('No messages'));
+                          );
+                        },
+                      );
+                    } else {
+                      return const Center(child: Text('No messages'));
+                    }
                   }
-                }
-              },
+                },
+              ),
             ),
-          ),
-          buildListTag(),
-          WidgetInputField(
-            textEditingController: controller.textController,
-            onSubmit: () => controller.sendTextMessage(),
-            sendImageFromCamera: () => controller.pickImageFromCamera(),
-            sendImageFromGallery: () =>
-                // controller.pickImageFromCamera(ImageSource.gallery),
-                controller.pickImagesFromGallery(),
-            sendIcon: () => controller.emojiShowing = !controller.emojiShowing,
-            sendSticker: () =>
-                controller.stickerShowing = !controller.stickerShowing,
-            // sendGif: () => controller.gifShowing = !controller.gifShowing,
-            sendGif: () => controller.sendGif(context),
+            buildListTag(),
+            WidgetInputField(
+              textEditingController: controller.textController,
+              onSubmit: () => controller.sendTextMessage(),
+              sendImageFromCamera: () => controller.pickImageFromCamera(),
+              sendImageFromGallery: () =>
+                  // controller.pickImageFromCamera(ImageSource.gallery),
+                  controller.pickImagesFromGallery(),
+              sendIcon: () =>
+                  controller.emojiShowing = !controller.emojiShowing,
+              sendSticker: () =>
+                  controller.stickerShowing = !controller.stickerShowing,
+              // sendGif: () => controller.gifShowing = !controller.gifShowing,
+              sendGif: () => controller.sendGif(context),
 
-            sendFile: () => controller.pickFilesFromGallery(),
-            isEmojiVisible: controller.emojiShowing,
-            isKeyboardVisible: controller.isKeyboardVisible,
-          ),
-          _buildEmoji(),
-          _buildSticker(),
-        ],
+              sendFile: () => controller.pickFilesFromGallery(),
+              isEmojiVisible: controller.emojiShowing,
+              isKeyboardVisible: controller.isKeyboardVisible,
+            ),
+            _buildEmoji(),
+            _buildSticker(),
+          ],
+        ),
       ),
     );
   }

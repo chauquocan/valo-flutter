@@ -54,8 +54,8 @@ class ContactPage {
   String toRawJson() => json.encode(toJson());
 
   factory ContactPage.fromJson(Map<String, dynamic> json) => ContactPage(
-        content:
-            List<ContactContent>.from(json["content"].map((x) => ContactContent.fromJson(x))),
+        content: List<ContactContent>.from(
+            json["content"].map((x) => ContactContent.fromJson(x))),
         pageable: Pageable.fromJson(json["pageable"]),
         last: json["last"],
         totalElements: json["totalElements"],
@@ -96,7 +96,8 @@ class ContactContent {
   String friendId;
   String addDateAt;
 
-  factory ContactContent.fromRawJson(String str) => ContactContent.fromJson(json.decode(str));
+  factory ContactContent.fromRawJson(String str) =>
+      ContactContent.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 

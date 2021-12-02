@@ -8,6 +8,8 @@ import 'package:valo_chat_app/app/utils/storage_service.dart';
 class GroupChatProvider {
   static const String userURL = 'users/';
   static const String conversationURL = 'conversations/';
+  static const String membersCanAddURL = '$conversationURL/add/';
+
   static const String friendURL = 'friends/';
 
   Future<NetworkResponse<Conversation>> createGroupChat(Map map) async {
@@ -26,6 +28,8 @@ class GroupChatProvider {
       return NetworkResponse.withError(e.response);
     }
   }
+
+  // Future<NetworkResponse>
 
   Future<NetworkResponse<ResponseMessage>> addMember(Map map) async {
     try {
@@ -88,6 +92,19 @@ class GroupChatProvider {
       );
       return NetworkResponse.fromResponse(
           response, (json) => ResponseMessage.fromJson(json));
+    } on DioError catch (e) {
+      return NetworkResponse.withError(e.response);
+    }
+  }
+
+  Future<NetworkResponse<ListParticipant>> getFriendsCanAddToGroup(
+      String conversationId) async {
+    try {
+      final response = await ConnectService().get(
+        '$membersCanAddURL$conversationId',
+      );
+      return NetworkResponse.fromResponse(
+          response, (json) => ListParticipant.fromJson(json));
     } on DioError catch (e) {
       return NetworkResponse.withError(e.response);
     }

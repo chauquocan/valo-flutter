@@ -2,9 +2,8 @@ import 'dart:convert';
 
 import 'package:valo_chat_app/app/data/models/page_model.dart';
 
-
-class ProfilePage {
-  ProfilePage({
+class UserPage {
+  UserPage({
     required this.content,
     required this.pageable,
     required this.last,
@@ -17,51 +16,81 @@ class ProfilePage {
     required this.numberOfElements,
     required this.empty,
   });
-  late final List<Profile> content;
-  late final Pageable pageable;
-  late final bool last;
-  late final int totalElements;
-  late final int totalPages;
-  late final int size;
-  late final int number;
-  late final Sort sort;
-  late final bool first;
-  late final int numberOfElements;
-  late final bool empty;
-  
-  ProfilePage.fromJson(Map<String, dynamic> json){
-    content = List.from(json['content']).map((e)=>Profile.fromJson(e)).toList();
-    pageable = Pageable.fromJson(json['pageable']);
-    last = json['last'];
-    totalElements = json['totalElements'];
-    totalPages = json['totalPages'];
-    size = json['size'];
-    number = json['number'];
-    sort = Sort.fromJson(json['sort']);
-    first = json['first'];
-    numberOfElements = json['numberOfElements'];
-    empty = json['empty'];
-  }
 
-  Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['content'] = content.map((e)=>e.toJson()).toList();
-    _data['pageable'] = pageable.toJson();
-    _data['last'] = last;
-    _data['totalElements'] = totalElements;
-    _data['totalPages'] = totalPages;
-    _data['size'] = size;
-    _data['number'] = number;
-    _data['sort'] = sort.toJson();
-    _data['first'] = first;
-    _data['numberOfElements'] = numberOfElements;
-    _data['empty'] = empty;
-    return _data;
-  }
+  List<UserContent> content;
+  Pageable pageable;
+  bool last;
+  int totalElements;
+  int totalPages;
+  int size;
+  int number;
+  Sort sort;
+  bool first;
+  int numberOfElements;
+  bool empty;
+
+  factory UserPage.fromRawJson(String str) =>
+      UserPage.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory UserPage.fromJson(Map<String, dynamic> json) => UserPage(
+        content: List<UserContent>.from(
+            json["content"].map((x) => UserContent.fromJson(x))),
+        pageable: Pageable.fromJson(json["pageable"]),
+        last: json["last"],
+        totalElements: json["totalElements"],
+        totalPages: json["totalPages"],
+        size: json["size"],
+        number: json["number"],
+        sort: Sort.fromJson(json["sort"]),
+        first: json["first"],
+        numberOfElements: json["numberOfElements"],
+        empty: json["empty"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "content": List<dynamic>.from(content.map((x) => x.toJson())),
+        "pageable": pageable.toJson(),
+        "last": last,
+        "totalElements": totalElements,
+        "totalPages": totalPages,
+        "size": size,
+        "number": number,
+        "sort": sort.toJson(),
+        "first": first,
+        "numberOfElements": numberOfElements,
+        "empty": empty,
+      };
 }
 
-class Profile {
-  Profile({
+class UserContent {
+  UserContent({
+    required this.user,
+    required this.friend,
+  });
+
+  User user;
+  bool friend;
+
+  factory UserContent.fromRawJson(String str) =>
+      UserContent.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory UserContent.fromJson(Map<String, dynamic> json) => UserContent(
+        user: User.fromJson(json["user"]),
+        friend: json["friend"] ?? false,
+      );
+
+  Map<String, dynamic> toJson() => {
+        "user": user.toJson(),
+        "friend": friend,
+      };
+}
+
+class User {
+  User({
     required this.id,
     required this.name,
     required this.gender,
@@ -72,44 +101,43 @@ class Profile {
     required this.imgUrl,
     required this.status,
   });
-  late final String id;
-  late final String name;
-  late final String gender;
-  late final String dateOfBirth;
-  late final String phone;
-  late final String email;
-  late final String address;
-  late final String imgUrl;
-  late final String status;
 
-  factory Profile.fromRawJson(String str) =>
-      Profile.fromJson(json.decode(str));
+  String id;
+  String name;
+  String gender;
+  DateTime dateOfBirth;
+  String phone;
+  String email;
+  String address;
+  String imgUrl;
+  String status;
+
+  factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
-  
-  Profile.fromJson(Map<String, dynamic> json){
-    id = json['id'];
-    name = json['name'];
-    gender = json['gender'];
-    dateOfBirth = json['dateOfBirth'];
-    phone = json['phone'];
-    email = json['email'];
-    address = json['address'];
-    imgUrl = json['imgUrl'];
-    status = json['status'];
-  }
 
-  Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['id'] = id;
-    _data['name'] = name;
-    _data['gender'] = gender;
-    _data['dateOfBirth'] = dateOfBirth;
-    _data['phone'] = phone;
-    _data['email'] = email;
-    _data['address'] = address;
-    _data['imgUrl'] = imgUrl;
-    _data['status'] = status;
-    return _data;
-  }
+  factory User.fromJson(Map<String, dynamic> json) => User(
+        id: json["id"] ?? "",
+        name: json["name"] ?? "",
+        gender: json["gender"] ?? "",
+        dateOfBirth: DateTime.parse(json["dateOfBirth"]),
+        phone: json["phone"] ?? "",
+        email: json["email"] ?? "",
+        address: json["address"] ?? "",
+        imgUrl: json["imgUrl"] ?? "",
+        status: json["status"] ?? "",
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "gender": gender,
+        "dateOfBirth":
+            "${dateOfBirth.year.toString().padLeft(4, '0')}-${dateOfBirth.month.toString().padLeft(2, '0')}-${dateOfBirth.day.toString().padLeft(2, '0')}",
+        "phone": phone,
+        "email": email,
+        "address": address,
+        "imgUrl": imgUrl,
+        "status": status,
+      };
 }

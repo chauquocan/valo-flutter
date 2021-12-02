@@ -14,7 +14,7 @@ class ProfileProvider {
   static const String changImageURL = '$userURL/me/changeImage';
 
   //Get user bằng số id
-  Future<NetworkResponse<Profile>> getUserById(String id) async {
+  Future<NetworkResponse<User>> getUserById(String id) async {
     try {
       final response = await ConnectService().get('$userURL/$id',
           options: Options(headers: {
@@ -23,15 +23,15 @@ class ProfileProvider {
           }));
       return NetworkResponse.fromResponse(
         response,
-        (json) => Profile.fromJson(json),
+        (json) => User.fromJson(json),
       );
-    } on DioError catch (e, s) {
+    } on DioError catch (e) {
       return NetworkResponse.withError(e.response);
     }
   }
 
   //Get user bằng số điện thoại
-  Future<NetworkResponse<Profile>> getUserByPhone(
+  Future<NetworkResponse<User>> getUserByPhone(
       String numberPhone, String accessToken) async {
     try {
       final response = await ConnectService().get(
@@ -39,15 +39,15 @@ class ProfileProvider {
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       return NetworkResponse.fromResponse(
         response,
-        (json) => Profile.fromJson(json),
+        (json) => User.fromJson(json),
       );
-    } on DioError catch (e, s) {
+    } on DioError catch (e) {
       return NetworkResponse.withError(e.response);
     }
   }
 
   //Update user info
-  Future<NetworkResponse<Profile>> updateUserInfo(Map map) async {
+  Future<NetworkResponse<User>> updateUserInfo(Map map) async {
     try {
       final response = await ConnectService().patch(
         updateURL,
@@ -60,14 +60,14 @@ class ProfileProvider {
         ),
       );
       return NetworkResponse.fromResponse(
-          response, (json) => Profile.fromJson(json));
+          response, (json) => User.fromJson(json));
     } on DioError catch (e) {
       return NetworkResponse.withError(e.response);
     }
   }
 
   //Search user
-  Future<NetworkResponse<ProfilePage>> searchUser(String textToSearch) async {
+  Future<NetworkResponse<UserPage>> searchUser(String textToSearch) async {
     try {
       final response = await ConnectService().get(searchURL,
           params: {
@@ -79,15 +79,15 @@ class ProfileProvider {
           }));
       return NetworkResponse.fromResponse(
         response,
-        (json) => ProfilePage.fromJson(json),
+        (json) => UserPage.fromJson(json),
       );
-    } on DioError catch (e, s) {
+    } on DioError catch (e) {
       return NetworkResponse.withError(e.response);
     }
   }
 
   //upload hình
-  Future<NetworkResponse<Profile>> uploadFile(filePath) async {
+  Future<NetworkResponse<User>> uploadFile(filePath) async {
     try {
       FormData formData = FormData.fromMap({
         "multipartFile": await MultipartFile.fromFile(filePath, filename: 'avt')
@@ -104,7 +104,7 @@ class ProfileProvider {
       );
       return NetworkResponse.fromResponse(
         response,
-        (json) => Profile.fromJson(json),
+        (json) => User.fromJson(json),
       );
     } on DioError catch (e) {
       return NetworkResponse.withError(e.response);

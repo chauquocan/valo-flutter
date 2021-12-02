@@ -17,9 +17,8 @@ class LocalStorage {
 
   //save token
   static Future saveToken(LoginRespone token) async {
-    // await _pref.remove('token');
+    await _pref.remove('token');
     await _pref.setString('token', token.toRawJson());
-    print(_pref.getString('token').toString());
   }
 
   //get token
@@ -34,11 +33,11 @@ class LocalStorage {
   }
 
   //save user
-  static Future saveUser(Profile user) async {
+  static Future saveUser(User user) async {
     await _pref.setString('user', user.toRawJson());
   }
 
-  static Future updateUser(Profile user) async {
+  static Future updateUser(User user) async {
     _pref.remove('user');
     await _pref.setString('user', user.toRawJson());
   }
@@ -48,10 +47,10 @@ class LocalStorage {
   }
 
   //get user
-  static Profile? getUser() {
+  static User? getUser() {
     final raw = _pref.getString('user');
     if (raw == null) return null;
-    return Profile.fromRawJson(raw);
+    return User.fromRawJson(raw);
   }
 
   //check token is expired

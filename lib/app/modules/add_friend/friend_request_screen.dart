@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:valo_chat_app/app/modules/chat/add_friend/add_friend_controller.dart';
+import 'package:valo_chat_app/app/modules/add_friend/add_friend_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 
 class FriendRequestScreen extends GetView<AddFriendController> {

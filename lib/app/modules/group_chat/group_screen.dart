@@ -1,11 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:valo_chat_app/app/modules/chat/chat_controller.dart';
-import 'package:valo_chat_app/app/modules/chat/group_info/add_member_binding.dart';
-import 'package:valo_chat_app/app/modules/chat/group_info/add_member_screen.dart';
-import 'package:valo_chat_app/app/modules/chat/group_info/member_screen.dart';
-import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_menu.dart';
-import 'package:valo_chat_app/app/themes/theme.dart';
+part of 'group.dart';
 
 class ProfileGroupScreen extends GetView<ChatController> {
   const ProfileGroupScreen({Key? key}) : super(key: key);
@@ -53,6 +46,7 @@ class ProfileGroupScreen extends GetView<ChatController> {
                     icon: "assets/icons/add-member.svg",
                     press: () {
                       Get.to(() => AddMemberScreen(),
+                          arguments: {"conversationId": controller.id},
                           binding: AddMemberBinding());
                     },
                   ),
@@ -117,7 +111,7 @@ class ProfileGroupScreen extends GetView<ChatController> {
                                 controller.leaveGroup(controller.id);
                                 // Get.back();
                               },
-                              icon:const Icon(Icons.check_circle),
+                              icon: const Icon(Icons.check_circle),
                               // style: ButtonStyle(backgroundColor: Colors.blue),
                               label: const Text(
                                 "Xác nhận",
