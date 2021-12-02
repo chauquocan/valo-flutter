@@ -22,7 +22,7 @@ class Body extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ProfileInforWidget(),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ProfileMenu(
               text: "Notifications",
               icon: "assets/icons/Bell.svg",
@@ -44,8 +44,8 @@ class Body extends StatelessWidget {
               press: () {
                 Get.dialog(
                   AlertDialog(
-                    title: Center(child: Text('Lưu ý')),
-                    content: SingleChildScrollView(
+                    title: const Center(child: Text('Lưu ý')),
+                    content: const SingleChildScrollView(
                       child: Text('Bạn có chắc chắn muốn thoát?'),
                     ),
                     actionsAlignment: MainAxisAlignment.spaceEvenly,
@@ -54,9 +54,9 @@ class Body extends StatelessWidget {
                         onPressed: () {
                           controller.logout();
                         },
-                        icon: Icon(Icons.check_circle),
+                        icon: const Icon(Icons.check_circle),
                         // style: ButtonStyle(backgroundColor: Colors.blue),
-                        label: Text(
+                        label: const Text(
                           "Xác nhận",
                           style: TextStyle(color: Colors.white),
                         ),
@@ -65,15 +65,15 @@ class Body extends StatelessWidget {
                         onPressed: () {
                           Get.back();
                         },
-                        icon: Icon(Icons.cancel),
+                        icon: const Icon(Icons.cancel),
                         // style: ButtonStyle(backgroundColor: Colors.blue),
-                        label: Text(
+                        label: const Text(
                           "Hủy",
                           style: TextStyle(color: Colors.white),
                         ),
                       )
                     ],
-                    shape: RoundedRectangleBorder(
+                    shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10))),
                   ),
                 );

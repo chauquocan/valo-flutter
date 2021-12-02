@@ -1,7 +1,7 @@
 part of 'widgets.dart';
 
 class WidgetAvatarChat extends StatelessWidget {
-  final List<Profile> members;
+  final List<User> members;
   final bool isGroup;
   final double? size;
   final double? avatarSize;
@@ -17,8 +17,8 @@ class WidgetAvatarChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (!isGroup) {
-      final user =
-          members.firstWhere((element) => element.id != Storage.getUser()?.id);
+      final user = members
+          .firstWhere((element) => element.id != LocalStorage.getUser()?.id);
       return WidgetAvatar(url: "assets/icons/logo.svg", size: size);
     }
     if (members.length <= 2) {

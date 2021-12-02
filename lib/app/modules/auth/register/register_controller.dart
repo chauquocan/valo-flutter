@@ -11,7 +11,7 @@ class RegisterController extends GetxController {
   final TextEditingController _confirmPasswordInput = TextEditingController();
 
   //Form key for valid
-  final _RegisterFormKey = GlobalKey<FormState>();
+  final _registerFormKey = GlobalKey<FormState>();
   final isLoading = false.obs;
 
   //pass's state
@@ -23,15 +23,14 @@ class RegisterController extends GetxController {
   //Sign up
   Future register(String phoneNumber, String fullName, String password,
       String email) async {
-    if (_RegisterFormKey.currentState!.validate()) {
-      print('Thông tin hợp lệ');
-      final RegisterRequest = {
+    if (_registerFormKey.currentState!.validate()) {
+      final registerRequest = {
         'username': phoneNumber,
         'fullname': fullName,
         'password': password,
         'email': email,
       };
-      final response = await authProvider.register(RegisterRequest);
+      final response = await authProvider.register(registerRequest);
       if (response.ok) {
         Get.offAll(
           () => WelcomeScreen(),
@@ -58,6 +57,7 @@ class RegisterController extends GetxController {
   void onClose() {
     _phoneInput.dispose();
     _emailInput.dispose();
+    _fullNameInput.dispose();
     _passwordInput.dispose();
     _confirmPasswordInput.dispose();
     super.onClose();

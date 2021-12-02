@@ -6,7 +6,6 @@ import 'package:valo_chat_app/app/utils/regex.dart';
 
 //widgets
 import 'package:valo_chat_app/app/widgets/widgets.dart';
-import 'package:valo_chat_app/app/widgets/custom/dialog_loading.dart';
 
 //utils
 import 'package:valo_chat_app/app/themes/theme.dart';

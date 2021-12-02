@@ -12,13 +12,15 @@ import 'package:valo_chat_app/app/utils/storage_service.dart';
 // sua profile cua minh
 class EditProfileScreen extends StatelessWidget {
   final controller = Get.find<TabProfileController>();
+
+  EditProfileScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar(),
       body: Container(
-        color: Color.fromRGBO(240, 245, 245, 1),
-        padding: EdgeInsets.only(left: 16, top: 25, right: 16),
+        color: const Color.fromRGBO(240, 245, 245, 1),
+        padding: const EdgeInsets.only(left: 16, top: 25, right: 16),
         child: GestureDetector(
           onTap: () {
             FocusScope.of(context).unfocus();
@@ -40,7 +42,7 @@ class EditProfileScreen extends StatelessWidget {
                               border:
                                   Border.all(width: 1, color: AppColors.dark),
                               shape: BoxShape.circle,
-                              image: DecorationImage(
+                              image: const DecorationImage(
                                 fit: BoxFit.cover,
                                 image: AssetImage(
                                     "assets/images/place_avatar.png"),
@@ -60,7 +62,7 @@ class EditProfileScreen extends StatelessWidget {
                                 backgroundImage: imageProvider,
                                 // radius: 50,
                               ),
-                              placeholder: (context, url) => CircleAvatar(
+                              placeholder: (context, url) => const CircleAvatar(
                                 backgroundImage: AssetImage(
                                     "assets/images/place_avatar.png"),
                                 child: Center(
@@ -70,7 +72,7 @@ class EditProfileScreen extends StatelessWidget {
                                 ),
                               ),
                               errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
+                                  const Icon(Icons.error),
                             );
                           } else {
                             return Container(
@@ -83,7 +85,7 @@ class EditProfileScreen extends StatelessWidget {
                                   image: DecorationImage(
                                     fit: BoxFit.cover,
                                     image: NetworkImage(
-                                        '${Storage.getUser()?.imgUrl}'),
+                                        '${LocalStorage.getUser()?.imgUrl}'),
                                   )),
                             );
                           }
@@ -100,7 +102,7 @@ class EditProfileScreen extends StatelessWidget {
                             style: TextButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50),
-                                side: BorderSide(color: Colors.grey),
+                                side: const BorderSide(color: Colors.grey),
                               ),
                               primary: Colors.white,
                               backgroundColor: Color(0xFFF5F6F9),
@@ -151,14 +153,14 @@ class EditProfileScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               //Phone numbers input
-              buildTextField("Phone", '${Storage.getUser()?.phone}',
+              buildTextField("Phone", '${LocalStorage.getUser()?.phone}',
                   controller.inputPhone, false, (value) {}),
               //Name input
               buildTextField(
                   "Name",
-                  '${Storage.getUser()?.name}',
+                  '${LocalStorage.getUser()?.name}',
                   controller.inputName,
                   true,
                   (value) => Regex.fullNameValidator(value!)),
@@ -166,17 +168,17 @@ class EditProfileScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 30),
                 child: DateTimePicker(
                   decoration: InputDecoration(
-                    label: Text('Birthday'),
+                    label: const Text('Birthday'),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10)),
-                    hintStyle: TextStyle(
+                    hintStyle: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
                   ),
-                  initialValue: '${Storage.getUser()?.dateOfBirth}',
+                  initialValue: '${LocalStorage.getUser()?.dateOfBirth}',
                   firstDate: DateTime(1950),
                   lastDate: DateTime.now(),
                   dateLabelText: 'Date',
@@ -191,18 +193,18 @@ class EditProfileScreen extends StatelessWidget {
               //Email input
               buildTextField(
                   "E-mail",
-                  '${Storage.getUser()?.email}',
+                  '${LocalStorage.getUser()?.email}',
                   controller.inputEmail,
                   true,
                   (value) => Regex.emailValidator(value!)),
               //Address input
               buildTextField(
                   "Address",
-                  '${Storage.getUser()?.address}',
+                  '${LocalStorage.getUser()?.address}',
                   controller.inputAdress,
                   true,
                   (value) => Regex.fullNameValidator(value!)),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               //bottom buttons
@@ -214,7 +216,7 @@ class EditProfileScreen extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       primary: Colors.blue,
                       alignment: Alignment.centerRight,
-                      padding: EdgeInsets.symmetric(horizontal: 50),
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
                       elevation: 2,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
@@ -224,8 +226,8 @@ class EditProfileScreen extends StatelessWidget {
                       FocusScope.of(context).unfocus(),
                       Get.dialog(
                         AlertDialog(
-                          title: Center(child: Text('Lưu ý')),
-                          content: SingleChildScrollView(
+                          title: const Center(child: Text('Lưu ý')),
+                          content: const SingleChildScrollView(
                             child: Text(
                                 'Bạn có chắc chắn muốn cập nhật thông tin?'),
                           ),
@@ -243,9 +245,9 @@ class EditProfileScreen extends StatelessWidget {
                                 );
                                 Get.back();
                               },
-                              icon: Icon(Icons.check_circle),
+                              icon: const Icon(Icons.check_circle),
                               // style: ButtonStyle(backgroundColor: Colors.blue),
-                              label: Text(
+                              label: const Text(
                                 "Xác nhận",
                                 style: TextStyle(color: Colors.white),
                               ),
@@ -254,21 +256,21 @@ class EditProfileScreen extends StatelessWidget {
                               onPressed: () {
                                 Get.back();
                               },
-                              icon: Icon(Icons.cancel),
+                              icon: const Icon(Icons.cancel),
                               // style: ButtonStyle(backgroundColor: Colors.blue),
-                              label: Text(
+                              label: const Text(
                                 "Hủy",
                                 style: TextStyle(color: Colors.white),
                               ),
                             )
                           ],
-                          shape: RoundedRectangleBorder(
+                          shape: const RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10))),
                         ),
                       ),
                     },
-                    child: Text(
+                    child: const Text(
                       "SAVE",
                       style: TextStyle(
                           fontSize: 16,
@@ -308,26 +310,24 @@ class EditProfileScreen extends StatelessWidget {
                       placeholder = value;
                     },
                     controller: txtController,
-                    decoration:
-                        InputDecoration(hintText: "Text Field in Dialog"),
                   ),
                   actions: <Widget>[
                     TextButton(
-                      child: Text('CANCEL'),
+                      child: const Text('CANCEL'),
                       onPressed: () => Get.back(),
                     ),
                     TextButton(
-                      child: Text('OK'),
+                      child: const Text('OK'),
                       onPressed: () => Get.back(),
                     ),
                   ],
                 ));
               },
-              icon: Icon(Icons.edit)),
+              icon: const Icon(Icons.edit)),
           labelText: labelText,
           floatingLabelBehavior: FloatingLabelBehavior.always,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
             color: Colors.black,
@@ -339,18 +339,18 @@ class EditProfileScreen extends StatelessWidget {
 
   AppBar _appBar() {
     return AppBar(
-      title: Text(
+      title: const Text(
         'My account',
         style: TextStyle(color: AppColors.light),
       ),
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
       ),
       backgroundColor: Colors.lightBlue,
       // actions: [
       //   IconButton(
       //       onPressed: () {
-      //         Get.reset();
+      //         controller.refreshToken();
       //       },
       //       icon: Icon(Icons.refresh))
       // ],

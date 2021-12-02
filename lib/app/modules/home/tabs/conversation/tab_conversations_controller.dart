@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
 import 'package:valo_chat_app/app/data/models/conversation_model.dart';
-import 'package:valo_chat_app/app/data/models/message_model.dart';
 import 'package:valo_chat_app/app/data/models/profile_model.dart';
 import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
 import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
-import 'package:valo_chat_app/app/utils/date.dart';
 import 'package:valo_chat_app/app/utils/stomp_service.dart';
 import 'package:valo_chat_app/app/utils/storage_service.dart';
 
@@ -24,7 +22,7 @@ class TabConversationController extends GetxController {
   final isLoading = true.obs;
   final conversationsLoaded = false.obs;
   final conversations = <ConversationContent>[].obs;
-  final userList = <Profile>[].obs;
+  final userList = <User>[].obs;
 
   @override
   void onInit() {
@@ -35,13 +33,13 @@ class TabConversationController extends GetxController {
   @override
   void onReady() {
     paginateMessages();
-    Future.delayed(Duration(milliseconds: 500), () {
-      SubscribeChannel();
+    Future.delayed(const Duration(milliseconds: 500), () {
+      subscribeChannel();
     });
     super.onReady();
   }
 
-  void SubscribeChannel() async {
+  void subscribeChannel() async {
     StompService.stompClient.subscribe(
       destination: '/users/queue/messages',
       callback: (StompFrame frame) => onMessagesReceive(frame),
@@ -55,45 +53,67 @@ class TabConversationController extends GetxController {
     );
   }
 
-  String lastMess(LastMessage? lastMess) {
-    if (lastMess == null) return 'Send your first message';
-    var mess = lastMess.message.content;
-    if (lastMess.message.content.length > 10) {
-      mess = lastMess.message.content.substring(0, 10) + ' ...  ';
-    }
-    if (lastMess.message.senderId != "") {
-      if (lastMess.message.senderId == Storage.getUser()?.id) {
-        if (lastMess.message.messageType == 'IMAGE') {
-          return 'You send a photo';
-        } else if (lastMess.message.messageType == 'STICKER') {
-          return 'You send a sticker';
-        } else if (lastMess.message.messageType == 3) {
-          return 'You send a location';
-        }
-        return 'You : $mess  •  ${formatDate(lastMess.message.sendAt)}';
-      } else {
-        if (lastMess.message.messageType == 'IMAGE') {
-          return '${lastMess.userName} send a photo';
-        } else if (lastMess.message.messageType == 'STICKER') {
-          return '${lastMess.userName} send a sticker';
-        } else if (lastMess.message.messageType == 3) {
-          return '${lastMess.userName} send a location';
-        }
-        return '${lastMess.userName} : $mess';
-      }
-    }
-    return '$mess • ${formatDate(lastMess.message.sendAt)}';
+  Future onMessagesReceive(StompFrame frame) async {
+    var socket = jsonDecode(frame.body!);
+    LastMessage mess = LastMessage.fromJson(socket);
+    var conversation = conversations.value.firstWhere((e) =>
+        e.lastMessage.message.conversationId == mess.message.conversationId);
+    conversation.lastMessage.message = mess.message;
+    conversations.remove(conversation);
+    conversations.insert(0, conversation);
+    conversations.refresh();
   }
 
-  Future onMessagesReceive(StompFrame frame) async {}
+  String lastMess(ConversationContent? conversation) {
+    if (conversation == null) return 'Send your first message';
+    var mess = conversation.lastMessage.message.content;
+    if (conversation.lastMessage.message.content.length > 30) {
+      mess =
+          conversation.lastMessage.message.content.substring(0, 30) + ' ...  ';
+    }
+    if (conversation.lastMessage.message.senderId != "") {
+      if (conversation.lastMessage.message.senderId ==
+          LocalStorage.getUser()?.id) {
+        if (conversation.lastMessage.message.messageType == 'IMAGE') {
+          return 'You send a photo';
+        } else if (conversation.lastMessage.message.messageType == 'STICKER') {
+          return 'You send a sticker';
+        } else if (conversation.lastMessage.message.messageType == 'FILE') {
+          return 'You send a file';
+        }
+        return 'You : $mess';
+      } else {
+        if (conversation.isGroup) {
+          if (conversation.lastMessage.message.messageType == 'IMAGE') {
+            return '${conversation.lastMessage.userName} send a photo';
+          } else if (conversation.lastMessage.message.messageType ==
+              'STICKER') {
+            return '${conversation.lastMessage.userName} send a sticker';
+          } else if (conversation.lastMessage.message.messageType == 'FILE') {
+            return '${conversation.lastMessage.userName} send a file';
+          }
+          return mess;
+        }
+        if (conversation.lastMessage.message.messageType == 'IMAGE') {
+          return '${conversation.lastMessage.userName} send a photo';
+        } else if (conversation.lastMessage.message.messageType == 'STICKER') {
+          return '${conversation.lastMessage.userName} send a sticker';
+        } else if (conversation.lastMessage.message.messageType == 'FILE') {
+          return '${conversation.lastMessage.userName} send a file';
+        }
+        return mess;
+      }
+    }
+    return mess;
+  }
 
   /* 
     Get conversation
    */
   Future getConversations() async {
     List<ConversationContent> _conversations = [];
-    String? currentUserId = Storage.getUser()?.id;
-    final response = await chatProvider.GetConversations(_page.value);
+    String? currentUserId = LocalStorage.getUser()?.id;
+    final response = await chatProvider.getConversations(_page.value);
     if (response.ok) {
       if (response.data!.content.length > 0) {
         for (var content in response.data!.content) {
@@ -147,8 +167,8 @@ class TabConversationController extends GetxController {
    */
   Future getMoreConversation() async {
     List<ConversationContent> _conversations = [];
-    String currentUserId = Storage.getUser()!.id;
-    final response = await chatProvider.GetConversations(_page.value);
+    String currentUserId = LocalStorage.getUser()!.id;
+    final response = await chatProvider.getConversations(_page.value);
     if (response.ok) {
       if (response.data!.content.length > 0) {
         for (var content in response.data!.content) {

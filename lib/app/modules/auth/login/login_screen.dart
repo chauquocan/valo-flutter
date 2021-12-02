@@ -32,7 +32,6 @@ class LoginScreen extends GetView<LoginController> {
                   RoundedInputField(
                     controller: controller._phoneInput,
                     hintText: "Enter phone number",
-                    labelText: 'Phone number:',
                     keyboardType: TextInputType.phone,
                     inputFormat: [FilteringTextInputFormatter.digitsOnly],
                     textColor: AppColors.light,
@@ -44,7 +43,6 @@ class LoginScreen extends GetView<LoginController> {
                     () => RoundedInputField(
                       controller: controller._passwordInput,
                       hintText: 'Enter Password',
-                      labelText: 'Password:',
                       password: controller._showPass.value,
                       icon: Icons.lock,
                       textColor: AppColors.light,
@@ -70,19 +68,20 @@ class LoginScreen extends GetView<LoginController> {
                   //Sign in button
                   Obx(
                     () => controller._isLoading.value
-                        ? CircularProgressIndicator(
+                        ? const CircularProgressIndicator(
                             backgroundColor: AppColors.light,
                           )
                         : RoundedButton(
                             buttonText: 'signin'.tr.toUpperCase(),
                             width: size.width * 0.8,
-                            colors: [AppColors.light, AppColors.light],
+                            colors: const [AppColors.light, AppColors.light],
                             color: AppColors.light,
                             textColor: AppColors.dark,
-                            onPressed: () => controller.login(
-                                controller._phoneInput.text,
-                                controller._passwordInput.text),
-                          ),
+                            onPressed: () {
+                              FocusScope.of(context).unfocus();
+                              controller.login(controller._phoneInput.text,
+                                  controller._passwordInput.text);
+                            }),
                   ),
                   SizedBox(height: size.height * 0.03),
                   //Check

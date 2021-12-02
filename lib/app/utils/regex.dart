@@ -20,11 +20,11 @@ class Regex {
   //Validator
   static String? fullNameValidator(String value) {
     if (value.isEmpty) {
-      customSnackbar().snackbarDialog('Lỗi', 'Bạn chưa nhập họ tên');
+      // customSnackbar().snackbarDialog('Lỗi', 'Bạn chưa nhập họ tên');
       return 'Please enter your name';
     }
     if (!isName(value)) {
-      customSnackbar().snackbarDialog('Lỗi', 'Tên không hợp lệ');
+      // customSnackbar().snackbarDialog('Lỗi', 'Tên không hợp lệ');
       return 'Invalid name';
     }
     return null;
@@ -32,11 +32,11 @@ class Regex {
 
   static String? emailValidator(String value) {
     if (value.isEmpty) {
-      customSnackbar().snackbarDialog('Lỗi', 'Bạn chưa nhập email');
+      // customSnackbar().snackbarDialog('Lỗi', 'Bạn chưa nhập email');
       return 'Please enter your email';
     }
     if (!value.isEmail) {
-      customSnackbar().snackbarDialog('Lỗi', 'Email không hợp lệ');
+      // customSnackbar().snackbarDialog('Lỗi', 'Email không hợp lệ');
       return 'Invalid email';
     }
     return null;
@@ -44,10 +44,12 @@ class Regex {
 
   static String? passwordValidator(String value) {
     if (value.isEmpty) {
-      customSnackbar().snackbarDialog('Lỗi', 'Bạn chưa nhập mật khẩu');
+      // customSnackbar().snackbarDialog('Lỗi', 'Bạn chưa nhập mật khẩu');
       return 'Please enter password';
     }
     if (!isPasswordValid(value)) {
+      customSnackbar().snackbarDialog('Lưu ý',
+          'Mật khẩu tối thiểu 8 kí tự bao gồm chữ, số, kí tự đặc biệt');
       return 'Invalid password';
     }
     return null;
@@ -55,7 +57,7 @@ class Regex {
 
   static String? confirmPasswordValidator(String value, String password) {
     if (value.isEmpty) {
-      customSnackbar().snackbarDialog('Lỗi', 'Bạn chưa xác nhận lại mật khẩu');
+      // customSnackbar().snackbarDialog('Lỗi', 'Bạn chưa xác nhận lại mật khẩu');
       return 'Please confirm password';
     }
     if (!(value.compareTo(password) == 0)) {
@@ -66,11 +68,11 @@ class Regex {
 
   static String? phoneValidator(String value) {
     if (value.isEmpty) {
-      customSnackbar().snackbarDialog('Lỗi', 'Bạn chưa nhập số điện thoại!');
+      // customSnackbar().snackbarDialog('Lỗi', 'Bạn chưa nhập số điện thoại!');
       return 'Please enter phone number';
     }
     if (!value.isPhoneNumber) {
-      customSnackbar().snackbarDialog('Lỗi', 'Số điện thoại không hợp lệ!');
+      // customSnackbar().snackbarDialog('Lỗi', 'Số điện thoại không hợp lệ!');
       return 'Invalid phone number';
     }
     return null;
@@ -78,11 +80,11 @@ class Regex {
 
   static String? pinValidator(String value) {
     if (value.isEmpty) {
-      customSnackbar().snackbarDialog('Lỗi', 'Bạn chưa nhập mã xác thực!');
+      // customSnackbar().snackbarDialog('Lỗi', 'Bạn chưa nhập mã xác thực!');
       return 'Please enter OTP Code';
     }
     if (value.length < 6) {
-      customSnackbar().snackbarDialog('Lỗi', 'Mã xác thực gồm 6 số!');
+      // customSnackbar().snackbarDialog('Lỗi', 'Mã xác thực gồm 6 số!');
       return 'OTP Code must have 6 digits';
     }
     return null;
@@ -95,7 +97,6 @@ class Regex {
     if (value.length < 2) {
       return 'Invalid address';
     }
-    // if()
     return null;
   }
 }

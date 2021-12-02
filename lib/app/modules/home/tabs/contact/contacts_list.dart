@@ -4,8 +4,7 @@ import 'package:valo_chat_app/app/data/models/contact_model.dart';
 
 class ContactsList extends StatelessWidget {
   final List<ContactCustom> contacts;
-  ContactsList({Key? key, required this.contacts})
-      : super(key: key);
+  const ContactsList({Key? key, required this.contacts}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -25,7 +24,7 @@ class ContactsList extends StatelessWidget {
                     backgroundColor: Colors.blueGrey,
                     radius: 30,
                     child: SvgPicture.asset(
-                      '${"assets/icons/user_icon.svg"}',
+                      "assets/icons/user_icon.svg",
                       height: 38,
                       width: 38,
                     ),
@@ -37,7 +36,7 @@ class ContactsList extends StatelessWidget {
                   ),
             trailing: IconButton(
               onPressed: () {},
-              icon: Icon(Icons.call),
+              icon: const Icon(Icons.call),
             ),
           );
         },

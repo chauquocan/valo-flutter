@@ -7,7 +7,9 @@ String formatDate(String thoigian) {
   if (time.year < now.year) {
     sendTime = DateFormat.yMMMMd().format(time);
   } else {
-    if (time.day == now.day) {
+    if (now.difference(time).inHours < 6) {
+      sendTime = DateFormat('HH:mm').format(time);
+    } else if (time.day == now.day) {
       sendTime = 'Today';
       // + DateFormat('jm').format(time);
     } else if (now.difference(time).inDays == 1) {

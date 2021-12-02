@@ -6,19 +6,18 @@ import 'package:valo_chat_app/app/utils/storage_service.dart';
 
 class ContactProvider {
   //end point
-
   static const String getFriendsUrl = '/friends';
-
-  //curent token
-  final _token = Storage.getToken()?.accessToken;
 
   //Get frineds
   Future<NetworkResponse<ContactPage>> getFriends(int page) async {
     try {
       final response = await ConnectService().get(
-        '${getFriendsUrl}',
+        getFriendsUrl,
         params: {'page': page},
-        options: Options(headers: {'Authorization': 'Bearer $_token'}),
+        options: Options(headers: {
+          'Authorization':
+              'Bearer ${LocalStorage.getToken()?.accessToken.toString()}'
+        }),
       );
       return NetworkResponse.fromResponse(
         response,

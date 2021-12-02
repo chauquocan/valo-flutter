@@ -4,17 +4,21 @@ import 'package:valo_chat_app/app/data/models/auth_model.dart';
 import '../data/models/profile_model.dart';
 
 //Storage service for storing local data
-class Storage {
-  Storage._();
+class LocalStorage {
+  LocalStorage._();
+  static LocalStorage _instance = LocalStorage._();
+  factory LocalStorage() => _instance;
   static late SharedPreferences _pref;
+
   //init
-  static Future init() async {
+  static Future<void> init() async {
     _pref = await SharedPreferences.getInstance();
   }
 
   //save token
-  static Future saveToken(LoginRespone user) async {
-    await _pref.setString('token', user.toRawJson());
+  static Future saveToken(LoginRespone token) async {
+    await _pref.remove('token');
+    await _pref.setString('token', token.toRawJson());
   }
 
   //get token
@@ -29,11 +33,11 @@ class Storage {
   }
 
   //save user
-  static Future saveUser(Profile user) async {
+  static Future saveUser(User user) async {
     await _pref.setString('user', user.toRawJson());
   }
 
-  static Future updateUser(Profile user) async {
+  static Future updateUser(User user) async {
     _pref.remove('user');
     await _pref.setString('user', user.toRawJson());
   }
@@ -43,14 +47,14 @@ class Storage {
   }
 
   //get user
-  static Profile? getUser() {
+  static User? getUser() {
     final raw = _pref.getString('user');
     if (raw == null) return null;
-    return Profile.fromRawJson(raw);
+    return User.fromRawJson(raw);
   }
 
   //check token is expired
-  static bool ExpireToken() {
+  static bool checkTokenExpire() {
     if (getToken() != null) {
       String token = getToken()!.accessToken.toString();
       String rfToken = getToken()!.refreshToken.toString();
@@ -62,27 +66,16 @@ class Storage {
       // else if (isExpire && !refresh) {
       //   // refreshToken(rfToken);
       // }
-      else {
-        print('token expired');
-        _pref.remove('user');
-        _pref.remove('token');
-        _pref.clear();
-        return false;
-      }
+      // else {
+      //   Get.offAllNamed('/');
+      //   _pref.remove('user');
+      //   _pref.remove('token');
+      //   _pref.clear();
+      //   return false;
+      // }
     }
     return false;
   }
-
-  // static refreshToken(String rfToken) async {
-  //   final map = {'refreshToken': rfToken};
-  //   final refreshResponse = await _authProvider.refreshToken();
-  //   if (refreshResponse.ok) {
-  //     print('token refreshed');
-  //     await Storage.saveToken(refreshResponse.data!);
-  //   } else {
-  //     print('Loi khi refresh token');
-  //   }
-  // }
 
   //Log out
   static Future logout() async {

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:valo_chat_app/app/modules/chat/chat_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
-import 'package:valo_chat_app/app/widgets/widgets.dart';
 
 class ProfileFriendScreen extends GetView<ChatController> {
   const ProfileFriendScreen({Key? key}) : super(key: key);
@@ -26,14 +25,14 @@ class ProfileFriendScreen extends GetView<ChatController> {
                     radius: 60,
                     backgroundImage: NetworkImage(controller.avatar),
                   ))),
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
           buildTextField("Name:    ", controller.name),
           buildTextField("Phone:   ", "0772555445"),
           buildTextField("E-mail:   ", "S2taaa@gmail.com"),
           buildTextField("Address:", "Gia Nghia"),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Row(
@@ -45,7 +44,7 @@ class ProfileFriendScreen extends GetView<ChatController> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
                 onPressed: () {},
-                child: Text(
+                child: const Text(
                   "Block",
                   style: TextStyle(
                       fontSize: 14, letterSpacing: 2.2, color: Colors.white),
@@ -64,24 +63,24 @@ class ProfileFriendScreen extends GetView<ChatController> {
       child: TextButton(
         style: TextButton.styleFrom(
           primary: Colors.lightBlue,
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          backgroundColor: Color(0xFFF5F6F9),
+          backgroundColor: const Color(0xFFF5F6F9),
         ),
         onPressed: () {},
         child: Row(
           children: [
             Text(
               labelText,
-              style: TextStyle(fontSize: 20, color: Colors.black38),
+              style: const TextStyle(fontSize: 20, color: Colors.black38),
             ),
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
             Align(
               alignment: Alignment.centerRight,
               child: Text(
                 text,
-                style: TextStyle(fontSize: 20),
+                style: const TextStyle(fontSize: 20),
               ),
             ),
           ],
@@ -92,11 +91,11 @@ class ProfileFriendScreen extends GetView<ChatController> {
 
   AppBar _appBar() {
     return AppBar(
-      title: Text(
+      title: const Text(
         'Friend Profile',
         style: TextStyle(color: AppColors.light),
       ),
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
       ),
       backgroundColor: Colors.lightBlue,

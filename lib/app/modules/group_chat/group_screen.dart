@@ -1,11 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:valo_chat_app/app/modules/chat/chat_controller.dart';
-import 'package:valo_chat_app/app/modules/chat/group_info/add_member_binding.dart';
-import 'package:valo_chat_app/app/modules/chat/group_info/add_member_screen.dart';
-import 'package:valo_chat_app/app/modules/chat/group_info/member_screen.dart';
-import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_menu.dart';
-import 'package:valo_chat_app/app/themes/theme.dart';
+part of 'group.dart';
 
 class ProfileGroupScreen extends GetView<ChatController> {
   const ProfileGroupScreen({Key? key}) : super(key: key);
@@ -37,7 +30,7 @@ class ProfileGroupScreen extends GetView<ChatController> {
                           backgroundImage: NetworkImage(controller.avatar),
                         )),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   buildTextField("Name:    ", controller.name, Colors.blue),
@@ -53,6 +46,7 @@ class ProfileGroupScreen extends GetView<ChatController> {
                     icon: "assets/icons/add-member.svg",
                     press: () {
                       Get.to(() => AddMemberScreen(),
+                          arguments: {"conversationId": controller.id},
                           binding: AddMemberBinding());
                     },
                   ),
@@ -62,8 +56,8 @@ class ProfileGroupScreen extends GetView<ChatController> {
                     press: () {
                       Get.dialog(
                         AlertDialog(
-                          title: Center(child: Text('Lưu ý')),
-                          content: SingleChildScrollView(
+                          title: const Center(child: Text('Lưu ý')),
+                          content: const SingleChildScrollView(
                             child: Text('Bạn có chắc chắn muốn xóa group?'),
                           ),
                           actionsAlignment: MainAxisAlignment.spaceEvenly,
@@ -73,9 +67,9 @@ class ProfileGroupScreen extends GetView<ChatController> {
                                 controller.deleteGroup(controller.id);
                                 // Get.back();
                               },
-                              icon: Icon(Icons.check_circle),
+                              icon: const Icon(Icons.check_circle),
                               // style: ButtonStyle(backgroundColor: Colors.blue),
-                              label: Text(
+                              label: const Text(
                                 "Xác nhận",
                                 style: TextStyle(color: Colors.white),
                               ),
@@ -84,15 +78,15 @@ class ProfileGroupScreen extends GetView<ChatController> {
                               onPressed: () {
                                 Get.back();
                               },
-                              icon: Icon(Icons.cancel),
+                              icon: const Icon(Icons.cancel),
                               // style: ButtonStyle(backgroundColor: Colors.blue),
-                              label: Text(
+                              label: const Text(
                                 "Hủy",
                                 style: TextStyle(color: Colors.white),
                               ),
                             )
                           ],
-                          shape: RoundedRectangleBorder(
+                          shape: const RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10))),
                         ),
@@ -105,8 +99,8 @@ class ProfileGroupScreen extends GetView<ChatController> {
                     press: () {
                       Get.dialog(
                         AlertDialog(
-                          title: Center(child: Text('Lưu ý')),
-                          content: SingleChildScrollView(
+                          title: const Center(child: Text('Lưu ý')),
+                          content: const SingleChildScrollView(
                             child:
                                 Text('Bạn có chắc chắn muốn rời khỏi group?'),
                           ),
@@ -117,9 +111,9 @@ class ProfileGroupScreen extends GetView<ChatController> {
                                 controller.leaveGroup(controller.id);
                                 // Get.back();
                               },
-                              icon: Icon(Icons.check_circle),
+                              icon: const Icon(Icons.check_circle),
                               // style: ButtonStyle(backgroundColor: Colors.blue),
-                              label: Text(
+                              label: const Text(
                                 "Xác nhận",
                                 style: TextStyle(color: Colors.white),
                               ),
@@ -128,15 +122,15 @@ class ProfileGroupScreen extends GetView<ChatController> {
                               onPressed: () {
                                 Get.back();
                               },
-                              icon: Icon(Icons.cancel),
+                              icon: const Icon(Icons.cancel),
                               // style: ButtonStyle(backgroundColor: Colors.blue),
-                              label: Text(
+                              label: const Text(
                                 "Hủy",
                                 style: TextStyle(color: Colors.white),
                               ),
                             )
                           ],
-                          shape: RoundedRectangleBorder(
+                          shape: const RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10))),
                         ),
@@ -154,10 +148,10 @@ class ProfileGroupScreen extends GetView<ChatController> {
       child: TextButton(
         style: TextButton.styleFrom(
           primary: Colors.black,
-          padding: EdgeInsets.all(25),
+          padding: const EdgeInsets.all(25),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          backgroundColor: Color(0xFFF2F4FB),
+          backgroundColor: const Color(0xFFF2F4FB),
         ),
         onPressed: () {},
         child: Row(
@@ -166,12 +160,12 @@ class ProfileGroupScreen extends GetView<ChatController> {
               labelText,
               style: TextStyle(fontSize: 20, color: color),
             ),
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
             Align(
               alignment: Alignment.centerRight,
               child: Text(
                 text,
-                style: TextStyle(fontSize: 20),
+                style: const TextStyle(fontSize: 20),
               ),
             ),
           ],
@@ -182,11 +176,11 @@ class ProfileGroupScreen extends GetView<ChatController> {
 
   AppBar _appBar() {
     return AppBar(
-      title: Text(
+      title: const Text(
         'Group profile',
         style: TextStyle(color: AppColors.light),
       ),
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
       ),
       backgroundColor: Colors.lightBlue,

@@ -10,53 +10,59 @@ class FriendRequestProvider {
   static const String sendfriendRequestUrl = '/friend-request/to/';
   static const String accpectFriendRequestUrl = '/friend-request';
 
-  final _token = Storage.getToken()?.accessToken;
-
   //Get friend request
-  // Future<NetworkResponse<List<Content>>> GetFriendRequests(
-  Future<NetworkResponse<FriendRequestPage>> GetFriendRequests() async {
+  Future<NetworkResponse<FriendRequestPage>> getFriendRequests() async {
     try {
       final response = await ConnectService().get(
-        '$getFriendRequestUrl',
-        options: Options(headers: {'Authorization': 'Bearer $_token'}),
+        getFriendRequestUrl,
+        options: Options(headers: {
+          'Authorization':
+              'Bearer ${LocalStorage.getToken()?.accessToken.toString()}'
+        }),
       );
       return NetworkResponse.fromResponse(
         response,
         (json) => FriendRequestPage.fromJson(json),
       );
-    } on DioError catch (e, s) {
+    } on DioError catch (e) {
       return NetworkResponse.withError(e.response);
     }
   }
 
   //Send friend request
-  Future<NetworkResponse<ResponseMessage>> SendFriendRequest(
+  Future<NetworkResponse<ResponseMessage>> sendFriendRequest(
       String toId) async {
     try {
       final response = await ConnectService().post(
-        '${sendfriendRequestUrl}${toId}',
-        options: Options(headers: {'Authorization': 'Bearer $_token'}),
+        '$sendfriendRequestUrl$toId',
+        options: Options(headers: {
+          'Authorization':
+              'Bearer ${LocalStorage.getToken()?.accessToken.toString()}'
+        }),
       );
       return NetworkResponse.fromResponse(
           response, (json) => ResponseMessage.fromJson(json));
-    } on DioError catch (e, s) {
+    } on DioError catch (e) {
       return NetworkResponse.withError(e.response);
     }
   }
 
   //Accept friend request
-  Future<NetworkResponse<ResponseMessage>> AcceptFriendRequest(
+  Future<NetworkResponse<ResponseMessage>> acceptFriendRequest(
       String id) async {
     try {
       final response = await ConnectService().put(
-        '${accpectFriendRequestUrl}/${id}',
-        options: Options(headers: {'Authorization': 'Bearer $_token'}),
+        '$accpectFriendRequestUrl/$id',
+        options: Options(headers: {
+          'Authorization':
+              'Bearer ${LocalStorage.getToken()?.accessToken.toString()}'
+        }),
       );
       return NetworkResponse.fromResponse(
         response,
         (json) => ResponseMessage.fromJson(json),
       );
-    } on DioError catch (e, s) {
+    } on DioError catch (e) {
       return NetworkResponse.withError(e.response);
     }
   }

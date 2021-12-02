@@ -78,7 +78,7 @@
     <!-- Permissions options for the `access notification policy` group -->
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
    <application
-        android:label="valo_chat_app"
+        android:label="Valo"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

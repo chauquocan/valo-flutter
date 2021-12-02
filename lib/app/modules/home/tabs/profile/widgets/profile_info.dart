@@ -13,8 +13,8 @@ class ProfileInforWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        boxShadow: const [
+      decoration: const BoxDecoration(
+        boxShadow: [
           BoxShadow(
               color: Colors.black26, offset: Offset(0, 2), blurRadius: 5.0),
         ],
@@ -22,9 +22,9 @@ class ProfileInforWidget extends StatelessWidget {
         borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(7), bottomRight: Radius.circular(7)),
       ),
-      padding: EdgeInsets.only(top: 15, bottom: 15, left: 10, right: 10),
+      padding: const EdgeInsets.only(top: 15, bottom: 15, left: 10, right: 10),
       child: ListTile(
-        trailing: Icon(
+        trailing: const Icon(
           Icons.person,
         ),
         onTap: () => Get.toNamed('/editprofile'),
@@ -65,7 +65,8 @@ class ProfileInforWidget extends StatelessWidget {
               } else {
                 return CircleAvatar(
                   backgroundColor: Colors.transparent,
-                  backgroundImage: NetworkImage('${Storage.getUser()?.imgUrl}'),
+                  backgroundImage:
+                      NetworkImage('${LocalStorage.getUser()?.imgUrl}'),
                   radius: 32,
                 );
               }
@@ -73,11 +74,11 @@ class ProfileInforWidget extends StatelessWidget {
           },
         ),
         title: Text(
-          '${Storage.getUser()?.name}',
+          '${LocalStorage.getUser()?.name}',
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         subtitle: Row(
-          children: [
+          children: const [
             Text(
               'Xem trang cá nhân',
               style: const TextStyle(fontSize: 13),

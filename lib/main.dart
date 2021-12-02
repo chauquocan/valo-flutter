@@ -1,22 +1,15 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/routes/app_pages.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:valo_chat_app/app/utils/app_binding.dart';
+import 'package:valo_chat_app/app/utils/global.dart';
 import 'app/routes/routes.dart';
 import 'app/utils/storage_service.dart';
 import 'package:valo_chat_app/app/lang/lang.dart';
 
-Future main() async {
-  await dotenv.load(fileName: ".env"); // dotenv
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(); //firebase auth
-  await Storage.init(); //storage service
-  runApp(MyApp());
-}
+Future main() => Global.init().then((e) => runApp(MyApp()));
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -36,7 +29,7 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.light, //theme
       getPages: AppPages.pages, //routes
       initialRoute:
-          Storage.ExpireToken() == false ? Routes.WELCOME : Routes.HOME,
+          LocalStorage.checkTokenExpire() == false ? Routes.WELCOME : Routes.HOME,
       initialBinding: AppBinding(),
     );
   }

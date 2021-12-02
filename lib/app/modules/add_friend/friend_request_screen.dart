@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:valo_chat_app/app/modules/chat/add_friend/add_friend_controller.dart';
+import 'package:valo_chat_app/app/modules/add_friend/add_friend_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 
 class FriendRequestScreen extends GetView<AddFriendController> {
@@ -9,7 +9,7 @@ class FriendRequestScreen extends GetView<AddFriendController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lời mời kết bạn'),
+        title: const Text('Lời mời kết bạn'),
       ),
       body: SafeArea(
         child: GetX<AddFriendController>(
@@ -31,23 +31,22 @@ class FriendRequestScreen extends GetView<AddFriendController> {
                             child: CircleAvatar(
                               backgroundColor: Colors.blueGrey,
                               radius: 30,
-                              backgroundImage: NetworkImage('${user.imgUrl}'),
+                              backgroundImage: NetworkImage(user.imgUrl),
                             )),
                         title: Text(
                           user.name,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                         subtitle: Text(friendReq.sendAt),
                         trailing: TextButton(
                           onPressed: () {
-                            controller
-                                .acceptFriendRequest('${friendReq.fromId}');
+                            controller.acceptFriendRequest(friendReq.fromId);
                           },
                           child: Obx(
                             () => controller.isAccepted.value
-                                ? Text('Bạn bè')
-                                : Text('Chấp nhận'),
+                                ? const Text('Bạn bè')
+                                : const Text('Chấp nhận'),
                           ),
                         ));
                   },

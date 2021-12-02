@@ -2,12 +2,11 @@ part of 'register.dart';
 
 //Create/Register user infomation
 class RegisterScreen extends GetView<RegisterController> {
-  String numberPhone;
-  RegisterScreen({Key? key, required this.numberPhone}) : super(key: key);
+  final String numberPhone;
+  const RegisterScreen({Key? key, required this.numberPhone}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    print('signup screen: ${numberPhone}');
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
@@ -19,7 +18,7 @@ class RegisterScreen extends GetView<RegisterController> {
         body: Background(
           child: SingleChildScrollView(
             child: Form(
-              key: controller._RegisterFormKey,
+              key: controller._registerFormKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -103,7 +102,7 @@ class RegisterScreen extends GetView<RegisterController> {
                   RoundedButton(
                     buttonText: 'SIGN UP',
                     width: size.width * 0.8,
-                    colors: [AppColors.light, AppColors.light],
+                    colors: const [AppColors.light, AppColors.light],
                     color: AppColors.light,
                     textColor: AppColors.dark,
                     onPressed: () => controller.register(

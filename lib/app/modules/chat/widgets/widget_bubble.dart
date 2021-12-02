@@ -17,18 +17,9 @@ class WidgetBubble extends GetView<ChatController> {
     this.avatar,
   });
 
+  @override
   Widget build(BuildContext context) {
-    final uri = Uri.tryParse(message);
-    if (uri != null && type != 'IMAGE' && type != 'STICKER') {
-      if (uri.isAbsolute) {
-        return _WidgetUrlPreview(
-          url: message,
-          avatar: avatar,
-          dateTime: dateTime,
-          isMe: isMe,
-        );
-      }
-    }
+    final ext = message.toLowerCase();
     if (status == 'CANCELED') {
       return _buildTextBubble();
     } else {
@@ -36,19 +27,40 @@ class WidgetBubble extends GetView<ChatController> {
         return _buildSystemBubble();
       } else if (type == 'TEXT') {
         return _buildTextBubble();
-      } else if (type == 'IMAGE') {
+      } else if (type == 'IMAGE' ||
+          ext.endsWith(".jpg") ||
+          ext.endsWith(".jpeg") ||
+          ext.endsWith(".png")) {
         return _buildImageBubble(context);
-      } else if (type == 'STICKER') {
+      } else if (type == 'STICKER' || ext.endsWith(".gif")) {
         return _buildStickerBubble(context);
-      } else if (type == 3) {
-        List<String> dataList = message.split(' ');
-        double lat = double.parse(dataList[0]);
-        double long = double.parse(dataList[1]);
-        return _buildMapviewBubble(context, lat, long);
+      } else if (ext.isPDFFileName ||
+          ext.isDocumentFileName ||
+          ext.isExcelFileName ||
+          ext.isPPTFileName) {
+        // return _buildFileBubble(context);
+        return _WidgetUrlPreview(
+          url: message,
+          avatar: avatar,
+          dateTime: dateTime,
+          isMe: isMe,
+        );
       } else {
-        return SizedBox();
+        final uri = Uri.tryParse(message);
+        if (uri != null && type != 'IMAGE' && type != 'STICKER') {
+          if (uri.isAbsolute) {
+            return _WidgetUrlPreview(
+              url: message,
+              avatar: avatar,
+              dateTime: dateTime,
+              isMe: isMe,
+            );
+          }
+        }
       }
     }
+
+    return SizedBox();
   }
 
   Widget _buildSystemBubble() {
@@ -429,162 +441,126 @@ class WidgetBubble extends GetView<ChatController> {
     );
   }
 
-  Widget _buildMapviewBubble(
-      BuildContext context, double latitude, double longitude) {
-    MarkerId markerId1 = MarkerId("1");
+  Widget _buildFileBubble(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(10),
-      child: isMe
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(5),
-                  child: Text(
-                    dateTime,
-                    style: TextStyle(color: Colors.black26),
-                  ),
-                ),
-                SizedBox(width: 5),
-                SizedBox(
-                  height: 150,
-                  width: 220,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(15),
-                      topLeft: Radius.circular(15),
-                      bottomRight: Radius.circular(isMe ? 0 : 15),
-                      bottomLeft: Radius.circular(isMe ? 0 : 15),
-                    ),
-                    child: Stack(
-                      children: [
-                        GoogleMap(
-                          markers: {
-                            Marker(
-                              markerId: markerId1,
-                              position: LatLng(latitude, longitude),
-                              icon: BitmapDescriptor.defaultMarkerWithHue(
-                                  BitmapDescriptor.hueAzure),
-                            )
-                          },
-                          myLocationButtonEnabled: false,
-                          zoomControlsEnabled: false,
-                          myLocationEnabled: false,
-                          scrollGesturesEnabled: false,
-                          zoomGesturesEnabled: false,
-                          initialCameraPosition: CameraPosition(
-                            target: LatLng(latitude, longitude),
-                            zoom: 11,
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: TextButton(
-                            onPressed: () =>
-                                _showMap(context, latitude, longitude),
-                            child: Text('View'),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            )
-          : Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                WidgetAvatar(
-                  url: avatar,
-                  isActive: false,
-                  size: 45,
-                ),
-                SizedBox(width: 5),
-                SizedBox(
-                  height: 150,
-                  width: 220,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(15),
-                      topLeft: Radius.circular(15),
-                      bottomRight: Radius.circular(isMe ? 0 : 15),
-                      bottomLeft: Radius.circular(isMe ? 0 : 15),
-                    ),
-                    child: Stack(
-                      children: [
-                        GoogleMap(
-                          markers: {
-                            Marker(
-                              markerId: markerId1,
-                              position: LatLng(latitude, longitude),
-                              icon: BitmapDescriptor.defaultMarkerWithHue(
-                                  BitmapDescriptor.hueAzure),
-                            )
-                          },
-                          myLocationButtonEnabled: false,
-                          zoomControlsEnabled: false,
-                          myLocationEnabled: false,
-                          scrollGesturesEnabled: false,
-                          zoomGesturesEnabled: false,
-                          initialCameraPosition: CameraPosition(
-                            target: LatLng(latitude, longitude),
-                            zoom: 11,
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: TextButton(
-                            onPressed: () =>
-                                _showMap(context, latitude, longitude),
-                            child: Text('View'),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(width: 5),
-                Padding(
-                  padding: const EdgeInsets.all(5),
-                  child: Text(
-                    dateTime,
-                    style: TextStyle(color: Colors.black26),
-                  ),
-                ),
-              ],
-            ),
-    );
-  }
-
-  _showMap(BuildContext context, double latitude, double longitude) {
-    MarkerId markerId1 = MarkerId("1");
-    showModalBottomSheet(
-        context: context,
-        builder: (context) => Scaffold(
-              body: Container(
-                padding: EdgeInsets.all(12),
-                child: GoogleMap(
-                  initialCameraPosition: CameraPosition(
-                      target: LatLng(latitude, longitude), zoom: 11),
-                  markers: {
-                    Marker(
-                      markerId: markerId1,
-                      position: LatLng(latitude, longitude),
-                      icon: BitmapDescriptor.defaultMarkerWithHue(
-                          BitmapDescriptor.hueAzure),
+      margin: EdgeInsets.all(5),
+      padding: isMe ? EdgeInsets.only(left: 40) : EdgeInsets.only(right: 40),
+      child: Column(
+        crossAxisAlignment:
+            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        children: [
+          isMe
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Flexible(
+                      child: GetX<ChatController>(
+                        builder: (_) {
+                          return Column(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(15),
+                                decoration: BoxDecoration(
+                                  color: controller.showMoreMess
+                                      ? AppColors.primary
+                                      : AppColors.primary,
+                                  borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(15),
+                                    topLeft: Radius.circular(15),
+                                    bottomRight: Radius.circular(isMe ? 0 : 15),
+                                    bottomLeft: Radius.circular(!isMe ? 0 : 15),
+                                  ),
+                                ),
+                                child: SelectableText(
+                                  message,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(color: Colors.white),
+                                  onTap: () {
+                                    Clipboard.setData(
+                                        ClipboardData(text: message));
+                                    controller.showMoreMess =
+                                        !controller.showMoreMess;
+                                  },
+                                ),
+                              ),
+                              Visibility(
+                                visible: controller.showMoreMess,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5),
+                                  child: Text(
+                                    dateTime,
+                                    style: TextStyle(
+                                      color: Colors.black26,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          );
+                        },
+                      ),
                     )
-                  },
-                  scrollGesturesEnabled: true,
-                  zoomControlsEnabled: false,
-                  zoomGesturesEnabled: true,
+                  ],
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    WidgetAvatar(
+                      url: avatar,
+                      isActive: false,
+                      size: 45,
+                    ),
+                    SizedBox(width: 5),
+                    Flexible(
+                      child: GetX<ChatController>(builder: (_) {
+                        return Column(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                color: controller.showMoreMess
+                                    ? Colors.grey.shade200
+                                    : Colors.grey.shade200,
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(15),
+                                  topLeft: Radius.circular(15),
+                                  bottomRight: Radius.circular(isMe ? 0 : 15),
+                                  bottomLeft: Radius.circular(!isMe ? 0 : 15),
+                                ),
+                              ),
+                              child: SelectableText(
+                                message,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  color: Colors.black87,
+                                ),
+                                onTap: () {
+                                  Clipboard.setData(
+                                      ClipboardData(text: message));
+                                  controller.showMoreMess =
+                                      !controller.showMoreMess;
+                                },
+                              ),
+                            ),
+                            Visibility(
+                              visible: controller.showMoreMess,
+                              child: Padding(
+                                padding: const EdgeInsets.all(5),
+                                child: Text(
+                                  dateTime,
+                                  style: TextStyle(color: Colors.black26),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }),
+                    ),
+                  ],
                 ),
-              ),
-              floatingActionButton: FloatingActionButton(
-                backgroundColor: Colors.green,
-                onPressed: () => Get.back(),
-                child: Icon(Icons.arrow_back),
-              ),
-            ));
+        ],
+      ),
+    );
   }
 }
 

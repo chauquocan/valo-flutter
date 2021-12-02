@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:valo_chat_app/app/modules/chat/add_friend/add_friend_controller.dart';
+import 'package:valo_chat_app/app/modules/add_friend/add_friend_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 
 class AddFriendScreen extends StatelessWidget {
-  AddFriendController controller = Get.find<AddFriendController>();
+  final controller = Get.find<AddFriendController>();
+
+  AddFriendScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +36,7 @@ class AddFriendScreen extends StatelessWidget {
                   decoration: InputDecoration(
                       hintText: 'Enter phone number or name',
                       suffixIcon: IconButton(
-                          onPressed: () {}, icon: Icon(Icons.search))),
+                          onPressed: () {}, icon: const Icon(Icons.search))),
                 ),
               ),
             ),
@@ -50,30 +52,36 @@ class AddFriendScreen extends StatelessWidget {
                         ? ListView.builder(
                             itemCount: controller.searchResults.length,
                             itemBuilder: (context, index) {
-                              final user = controller.searchResults[index];
+                              final searchResponse =
+                                  controller.searchResults[index];
                               return ListTile(
                                 onTap: () {},
                                 leading: Hero(
-                                  tag: user.id,
+                                  tag: searchResponse.user.id,
                                   child: CircleAvatar(
                                     backgroundColor: Colors.blueGrey,
                                     radius: 30,
-                                    backgroundImage: NetworkImage(user.imgUrl),
+                                    backgroundImage: NetworkImage(
+                                        searchResponse.user.imgUrl),
                                   ),
                                 ),
                                 title: Text(
-                                  user.name,
-                                  style: TextStyle(
+                                  searchResponse.user.name,
+                                  style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                subtitle: Text(user.phone),
+                                subtitle: Text(searchResponse.user.phone),
                                 trailing: TextButton(
-                                  onPressed: () =>
-                                      controller.SendFriendReq('${user.id}'),
-                                  child: Obx(() => controller.isSent.value
-                                      ? Text('Đã gửi')
-                                      : Text('Kết bạn')),
+                                  onPressed: () => searchResponse.friend
+                                      ? () {}
+                                      : controller.sendFriendReq(
+                                          searchResponse.user.id),
+                                  child: searchResponse.friend
+                                      ? const Text('Bạn bè')
+                                      : Obx(() => controller.isSent.value
+                                          ? const Text('Đã gửi')
+                                          : const Text('Kết bạn')),
                                 ),
                               );
                             })
@@ -82,7 +90,7 @@ class AddFriendScreen extends StatelessWidget {
                               controller.isSearch.value
                                   ? 'No user found'
                                   : 'Search friend',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: AppColors.dark,
                                 fontSize: 18,
                               ),
@@ -99,7 +107,7 @@ class AddFriendScreen extends StatelessWidget {
 
 AppBar _appBar() {
   return AppBar(
-    title: Text(
+    title: const Text(
       'Add new friend',
       style: TextStyle(color: AppColors.light),
     ),

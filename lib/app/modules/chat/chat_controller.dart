@@ -18,6 +18,7 @@ import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controll
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
 import 'package:valo_chat_app/app/utils/stomp_service.dart';
 import 'package:valo_chat_app/app/utils/storage_service.dart';
+import 'package:valo_chat_app/app/widgets/widgets.dart';
 
 class ChatController extends GetxController {
   final conversationController = Get.find<TabConversationController>();
@@ -36,7 +37,7 @@ class ChatController extends GetxController {
   final textController = TextEditingController();
   final keyboardController = KeyboardVisibilityController();
   final scrollController = ScrollController();
-  final currentUserId = Storage.getUser()?.id;
+  final currentUserId = LocalStorage.getUser()?.id;
 
   final _id = ''.obs;
   final _name = ''.obs;
@@ -45,9 +46,9 @@ class ChatController extends GetxController {
   final _isGroup = false.obs;
   final _page = 0.obs;
 
-  final _users = <Profile>[].obs;
+  final _users = <User>[].obs;
 
-  List<Profile> get users => _users;
+  List<User> get users => _users;
 
   set users(value) {
     _users.value = value;
@@ -73,8 +74,8 @@ class ChatController extends GetxController {
   final _messagesLoaded = false.obs;
 
   final _tagging = false.obs;
-  final _members = <Profile>[].obs;
-  final _listTagged = <Profile>[].obs;
+  final _members = <User>[].obs;
+  final _listTagged = <User>[].obs;
 
   get showMore => _showMore.value;
 
@@ -190,16 +191,17 @@ class ChatController extends GetxController {
     _tagging.value = value;
   }
 
-  List<Profile> get members => _members;
+  List<User> get members => _members;
 
-  List<Profile> get membersWithoutMe =>
-      _members.where((element) => element.id != Storage.getUser()?.id).toList();
+  List<User> get membersWithoutMe => _members
+      .where((element) => element.id != LocalStorage.getUser()?.id)
+      .toList();
 
   set members(value) {
     _members.value = value;
   }
 
-  List<Profile> get listTagged => _listTagged;
+  List<User> get listTagged => _listTagged;
 
   set listTagged(value) {
     _listTagged.value = value;
@@ -220,11 +222,11 @@ class ChatController extends GetxController {
 
     StompService.stompClient.subscribe(
       destination: '/users/queue/messages',
-      callback: (StompFrame frame) => OnMessageReceive(frame),
+      callback: (StompFrame frame) => onMessageReceive(frame),
     );
     StompService.stompClient.subscribe(
       destination: '/users/queue/messages/delete',
-      callback: (StompFrame frame) => OnCancelMessage(frame),
+      callback: (StompFrame frame) => onCancelMessage(frame),
     );
 
     var keyboardVisibilityController = KeyboardVisibilityController();
@@ -257,7 +259,7 @@ class ChatController extends GetxController {
 
   //get member in group
   Future getmembers() async {
-    List<Profile> membersTemp = [];
+    List<User> membersTemp = [];
     for (var content in participants) {
       final profile = await profileProvider.getUserById(content.userId);
       if (profile.ok) {
@@ -275,7 +277,6 @@ class ChatController extends GetxController {
       Get.snackbar('Sucessful', 'Member has been kicked');
       Get.back();
     } else {
-      print(respones);
       Get.snackbar('Failed', 'You are not Admin');
     }
   }
@@ -323,7 +324,7 @@ class ChatController extends GetxController {
     if (respones.ok) {
       Get.back();
     } else
-      (print(respones));
+      print(respones);
   }
 
   // delete group
@@ -333,26 +334,20 @@ class ChatController extends GetxController {
       Get.back();
       Get.snackbar('Sucessful', 'Member has been added');
     } else
-      (print(respones));
+      print(respones);
     Get.snackbar('Failed', 'You are not Admin');
   }
 
   ///
   /*------------------------*/
-  void AddMess(MessageContent mess) {
-    messages.insert(0, mess);
-    update();
-  }
-
-  Future OnMessageReceive(StompFrame frame) async {
+  Future onMessageReceive(StompFrame frame) async {
     var response = jsonDecode(frame.body!);
-    print(response);
     MessageContent mess = MessageContent.fromJson(response);
-    AddMess(mess);
+    messages.insert(0, mess);
     _messages.refresh();
   }
 
-  Future OnCancelMessage(StompFrame frame) async {
+  Future onCancelMessage(StompFrame frame) async {
     var response = jsonDecode(frame.body!);
     MessageContent mess = MessageContent.fromJson(response);
     var text =
@@ -366,7 +361,7 @@ class ChatController extends GetxController {
    */
   Future getMessages(String id, int page) async {
     List<MessageContent> _messages = [];
-    final response = await chatProvider.GetMessages(id, page);
+    final response = await chatProvider.getMesages(id, page);
     if (response.ok) {
       if (response.data!.content.length > 0) {
         for (var content in response.data!.content) {
@@ -377,7 +372,6 @@ class ChatController extends GetxController {
         messagesLoaded = true;
         _page.value++;
       } else {
-        print('ko co mess');
         isLoading = false;
         messagesLoaded = false;
       }
@@ -391,7 +385,7 @@ class ChatController extends GetxController {
    */
   Future getMoreMessages(String id, int page) async {
     List<MessageContent> _messages = [];
-    final response = await chatProvider.GetMessages(id, page);
+    final response = await chatProvider.getMesages(id, page);
     if (response.ok) {
       if (response.data!.content.length > 0) {
         for (var content in response.data!.content) {
@@ -422,7 +416,7 @@ class ChatController extends GetxController {
     });
   }
 
-  void onTagSelect(Profile user) {
+  void onTagSelect(User user) {
     tagging = !tagging;
     textController.text += user.name;
     listTagged.add(user);
@@ -432,10 +426,10 @@ class ChatController extends GetxController {
   void sendTextMessage() {
     if (textController.text.isNotEmpty) {
       String body = json.encode({
-        "conversationId": '${id}',
+        "conversationId": '$id',
         "messageType": 0,
-        "content": '${textController.text}',
-        "senderId": '${currentUserId}',
+        "content": textController.text,
+        "senderId": '$currentUserId',
         "replyId": '',
       });
       StompService.stompClient.send(
@@ -444,7 +438,7 @@ class ChatController extends GetxController {
       );
       if (messages.length >= 1) {
         scrollController.animateTo(0,
-            duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+            duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
       }
       textController.clear();
     }
@@ -492,7 +486,6 @@ class ChatController extends GetxController {
 
   void updateReadMessage() async {
     for (var mess in messages) {
-      print(mess);
       String body = json.encode({
         "messageId": mess.message.id,
         "conversationId": id,
@@ -508,10 +501,10 @@ class ChatController extends GetxController {
 
   void sendSticker(String? url) async {
     String body = json.encode({
-      "conversationId": '${id}',
+      "conversationId": '$id',
       "messageType": 2,
       "content": url,
-      "senderId": '${currentUserId}',
+      "senderId": '$currentUserId',
       "replyId": '',
     });
     StompService.stompClient.send(
@@ -555,10 +548,10 @@ class ChatController extends GetxController {
     if (gif != null) {
       // print(gif);
       String body = json.encode({
-        "conversationId": '${id}',
+        "conversationId": '$id',
         "messageType": 2,
         "content": gif.images?.original?.webp,
-        "senderId": '${currentUserId}',
+        "senderId": '$currentUserId',
         "replyId": '',
       });
       StompService.stompClient.send(
@@ -578,10 +571,10 @@ class ChatController extends GetxController {
         final listFile = [];
         for (var image in response.data) {
           String body = json.encode({
-            "conversationId": '${id}',
+            "conversationId": '$id',
             "messageType": 1,
             "content": image,
-            "senderId": '${Storage.getUser()!.id}',
+            "senderId": '${LocalStorage.getUser()!.id}',
             "replyId": '',
           });
           StompService.stompClient.send(
@@ -612,10 +605,10 @@ class ChatController extends GetxController {
       if (response.statusCode == 200) {
         for (var image in response.data) {
           String body = json.encode({
-            "conversationId": '${id}',
+            "conversationId": '$id',
             "messageType": 1,
             "content": image,
-            "senderId": '${Storage.getUser()!.id}',
+            "senderId": '${LocalStorage.getUser()!.id}',
             "replyId": '',
           });
           StompService.stompClient.send(
@@ -646,10 +639,10 @@ class ChatController extends GetxController {
       if (response.statusCode == 200) {
         for (var image in response.data) {
           String body = json.encode({
-            "conversationId": '${id}',
+            "conversationId": '$id',
             "messageType": 5,
             "content": image,
-            "senderId": '${Storage.getUser()!.id}',
+            "senderId": '${LocalStorage.getUser()!.id}',
             "replyId": '',
           });
           StompService.stompClient.send(
@@ -675,12 +668,19 @@ class ChatController extends GetxController {
     final text =
         messages.firstWhere((element) => element.message.id == messageId);
     if (text.message.senderId == currentUserId) {
-      if (text.message.messageStatus != 'CANCELED') {
-        await chatProvider.deleteMessage(messageId);
-        Get.back();
-      } else {
-        Get.snackbar('Thong bao', 'tin nhan nay da duoc thu hoi');
-      }
+      CustomDialog().confirmDialog(
+        'Lưu ý',
+        'Bạn có chắc muốn thu hồi tin nhắn này?',
+        () async {
+          if (text.message.messageStatus != 'CANCELED') {
+            await chatProvider.deleteMessage(messageId);
+            Get.back();
+          } else {
+            Get.snackbar('Thong bao', 'tin nhan nay da duoc thu hoi');
+          }
+        },
+        () => Get.back(),
+      );
     } else {
       Get.snackbar(
           'Thong bao', 'ban khong the thu hoi tin nhan cua nguoi khac');

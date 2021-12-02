@@ -7,6 +7,7 @@ import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
 import 'package:valo_chat_app/app/utils/storage_service.dart';
+import 'package:valo_chat_app/app/widgets/widgets.dart';
 
 class AddFriendController extends GetxController {
   final chatController = Get.find<TabConversationController>();
@@ -20,9 +21,9 @@ class AddFriendController extends GetxController {
 
   var searchController = TextEditingController();
 
-  final searchResults = <Profile>[].obs;
+  final searchResults = <UserContent>[].obs;
   final friendReqList = <FriendRequest>[].obs;
-  final userList = <Profile>[].obs;
+  final userList = <User>[].obs;
   final searchFormKey = GlobalKey<FormState>();
 
   //loading
@@ -55,14 +56,13 @@ class AddFriendController extends GetxController {
   /* 
     Gửi lời mời
    */
-  Future SendFriendReq(String toId) async {
-    final response = await friendProvider.SendFriendRequest(toId);
+  Future sendFriendReq(String toId) async {
+    final response = await friendProvider.sendFriendRequest(toId);
     if (response.ok) {
       isSent.value = true;
-      Get.snackbar('Success', 'Request sent');
+      customSnackbar().snackbarDialog('Success', 'Request sent');
     } else {
-      Get.snackbar('Fail', 'You already sent request',
-          snackPosition: SnackPosition.BOTTOM);
+      customSnackbar().snackbarDialog('Fail', 'You already sent request');
     }
   }
 
@@ -71,8 +71,7 @@ class AddFriendController extends GetxController {
    */
   Future getFriendReqList() async {
     isLoading.value = true;
-    List<FriendRequest> _friendList = [];
-    final response = await friendProvider.GetFriendRequests();
+    final response = await friendProvider.getFriendRequests();
     if (response.ok) {
       if (response.data!.content.length > 0) {
         for (var request in response.data!.content) {
@@ -95,14 +94,14 @@ class AddFriendController extends GetxController {
     Chấp nhận lời mời
    */
   Future acceptFriendRequest(String id) async {
-    final response = await friendProvider.AcceptFriendRequest(id);
+    final response = await friendProvider.acceptFriendRequest(id);
     if (response.ok) {
-      Get.snackbar('Thanh cong', '${response.data}');
+      customSnackbar().snackbarDialog('Thanh cong', '${response.data}');
       chatController.getConversations();
       contactController.getContactsFromAPI();
       isAccepted.value = true;
     } else {
-      Get.snackbar('That bai', '${response.data}');
+      customSnackbar().snackbarDialog('That bai', '${response.data}');
     }
   }
 
@@ -112,18 +111,18 @@ class AddFriendController extends GetxController {
   Future searchUser(String textToSearch) async {
     if (searchFormKey.currentState!.validate()) {
       isLoading.value = true;
-      List<Profile> _profiles = [];
-      final currentUser = Storage.getUser();
+      List<UserContent> _profiles = [];
+      final currentUser = LocalStorage.getUser();
       final searchResponse = await userProvider.searchUser(
         textToSearch,
       );
       if (searchResponse.ok) {
         if (searchResponse.data!.content.length > 0) {
-          Future.delayed(Duration(milliseconds: 200), () {
+          Future.delayed(const Duration(milliseconds: 200), () {
             // Do something
             for (var item in searchResponse.data!.content) {
-              if (currentUser!.phone != item.phone ||
-                  currentUser.name != item.name) {
+              if (currentUser!.phone != item.user.phone ||
+                  currentUser.name != item.user.name) {
                 _profiles.add(item);
               }
             }
@@ -136,8 +135,8 @@ class AddFriendController extends GetxController {
           usersLoadded.value = false;
         }
       } else {
-        Get.snackbar('Search failed', 'Something wrong');
         isLoading.value = false;
+        usersLoadded.value = false;
       }
     }
     isSearch.value = true;

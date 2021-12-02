@@ -1,13 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:valo_chat_app/app/data/models/conversation_model.dart';
-import 'package:valo_chat_app/app/data/models/profile_model.dart';
-import 'package:valo_chat_app/app/data/providers/contact_provider.dart';
-import 'package:valo_chat_app/app/data/providers/group_chat_provider.dart';
-import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
-import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
-import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
-import 'package:valo_chat_app/app/utils/storage_service.dart';
+part of '../group.dart';
+
 
 class CreateGroupChatController extends GetxController {
   final chatController = Get.find<TabConversationController>();
@@ -28,8 +20,8 @@ class CreateGroupChatController extends GetxController {
   final _participants = <Participant>[].obs;
   //
   final _isLoading = true.obs;
-  final _users = <Profile>[].obs;
-  final _selected = <Profile>[].obs;
+  final _users = <User>[].obs;
+  final _selected = <User>[].obs;
   final nameFormKey = GlobalKey<FormState>();
 
   get name => _name.value;
@@ -51,13 +43,13 @@ class CreateGroupChatController extends GetxController {
     _isLoading.value = value;
   }
 
-  List<Profile> get users => _users;
+  List<User> get users => _users;
 
   set users(value) {
     _users.value = value;
   }
 
-  List<Profile> get selected => _selected;
+  List<User> get selected => _selected;
 
   set selected(value) {
     _selected.value = value;
@@ -84,11 +76,11 @@ class CreateGroupChatController extends GetxController {
 
   @override
   void onClose() {
-    // TODO: implement onClose
+    textCtrl.dispose();
     super.onClose();
   }
 
-  void onSelect(Profile item) {
+  void onSelect(User item) {
     if (selected.contains(item)) {
       selected.removeWhere((element) => element == item);
     } else {
@@ -101,7 +93,7 @@ class CreateGroupChatController extends GetxController {
       for (var content in selected) {
         participants.add(Participant(
           userId: content.id,
-          addByUserId: Storage.getUser()!.id,
+          addByUserId: LocalStorage.getUser()!.id,
           addTime: DateTime.now().toString(),
           admin: false,
         ));
