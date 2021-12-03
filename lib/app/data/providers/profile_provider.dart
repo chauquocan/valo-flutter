@@ -59,6 +59,7 @@ class ProfileProvider {
           },
         ),
       );
+      
       return NetworkResponse.fromResponse(
           response, (json) => User.fromJson(json));
     } on DioError catch (e) {

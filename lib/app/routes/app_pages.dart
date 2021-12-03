@@ -54,10 +54,6 @@ abstract class AppPages {
       binding: AuthBinding(),
     ),
     GetPage(
-      name: Routes.EDITPROFILE,
-      page: () => EditProfileScreen(),
-    ),
-    GetPage(
       name: Routes.CREATEGROUP,
       page: () => CreateGroupChatScreen(),
       binding: CreateGroupChatBinding(),

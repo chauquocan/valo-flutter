@@ -63,6 +63,9 @@ class LoginController extends GetxController {
         } else if (response.code == HttpStatus.badRequest) {
           showInfoDialog('Login failed',
               'Phone number or password incorrect! Please try again');
+        } else {
+          showInfoDialog(
+              'Login failed', 'Something wrong! please wait and try again');
         }
       }
     }

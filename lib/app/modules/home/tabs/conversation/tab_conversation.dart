@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
@@ -79,8 +80,9 @@ class ConversationTab extends GetView<TabConversationController> {
                           child: CircleAvatar(
                             backgroundColor: Colors.blueGrey,
                             radius: 30,
-                            backgroundImage: NetworkImage(
-                                conversation.conversation.imageUrl),
+                            backgroundImage: CachedNetworkImageProvider(
+                              conversation.conversation.imageUrl,
+                            ),
                           ),
                         ),
                         title: Text(

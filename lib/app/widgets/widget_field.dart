@@ -4,6 +4,7 @@ part of 'widgets.dart';
 class WidgetField extends StatelessWidget {
   final TextEditingController? controller;
   final String hint;
+  final String? labelText;
   final EdgeInsets? padding;
   final EdgeInsets? margin;
   final String? Function(String?)? validator;
@@ -15,6 +16,7 @@ class WidgetField extends StatelessWidget {
     this.padding,
     this.margin,
     this.validator,
+    this.labelText,
   }) : super(key: key);
 
   @override
@@ -32,6 +34,7 @@ class WidgetField extends StatelessWidget {
           validator: validator,
           controller: controller,
           decoration: InputDecoration(
+            label: Text(labelText ?? ""),
             hintText: hint,
             border: InputBorder.none,
           ),

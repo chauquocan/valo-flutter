@@ -63,15 +63,15 @@ class _ContactTabState extends State<ContactTab> {
                     ),
                   ),
                   Expanded(
-                    flex: 1,
+                    flex: 2,
                     child: Column(
                       children: [
                         ListTile(
                           onTap: () {},
-                          // leading: CircleAvatar(
-                          //   child:
-                          //       Image.asset('assets/images/place_avatar.png'),
-                          // ),
+                          leading: CircleAvatar(
+                            child:
+                                Image.asset('assets/images/place_avatar.png'),
+                          ),
                           title: Text('Cập nhật danh bạ'),
                         ),
                       ],

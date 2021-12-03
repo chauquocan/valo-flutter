@@ -141,3 +141,4 @@ class User {
         "status": status,
       };
 }
+enum Gender {male, female}

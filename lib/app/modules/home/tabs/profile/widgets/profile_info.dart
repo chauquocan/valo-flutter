@@ -28,7 +28,7 @@ class ProfileInforWidget extends StatelessWidget {
         trailing: const Icon(
           Icons.person,
         ),
-        onTap: () => Get.to(MyProfile()),
+        onTap: () => Get.to(() => MyProfile()),
         leading: Obx(
           () {
             if (controller.isLoading.value) {
@@ -66,8 +66,8 @@ class ProfileInforWidget extends StatelessWidget {
               } else {
                 return CircleAvatar(
                   backgroundColor: Colors.transparent,
-                  backgroundImage:
-                      NetworkImage('${LocalStorage.getUser()?.imgUrl}'),
+                  backgroundImage: CachedNetworkImageProvider(
+                      LocalStorage.getUser()!.imgUrl.toString()),
                   radius: 32,
                 );
               }

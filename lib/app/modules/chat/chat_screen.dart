@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
@@ -151,26 +152,11 @@ class ChatScreen extends GetView<ChatController> {
       ),
       leadingWidth: 40,
       titleSpacing: 0,
-      leading: InkWell(
-        onTap: () {
-          Get.offNamed('/home');
-        },
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.arrow_back,
-              size: 30,
-            ),
-            // Hero(
-            //   tag: controller.id,
-            //   child: CircleAvatar(
-            //     radius: 20,
-            //     backgroundColor: Colors.blueGrey,
-            //     backgroundImage: NetworkImage(controller.avatar),
-            //   ),
-            // ),
-          ],
+      leading: IconButton(
+        onPressed: () => Get.back(),
+        icon: Icon(
+          Icons.arrow_back,
+          size: 30,
         ),
       ),
       title: Container(
@@ -182,7 +168,7 @@ class ChatScreen extends GetView<ChatController> {
               child: CircleAvatar(
                 radius: 20,
                 backgroundColor: Colors.blueGrey,
-                backgroundImage: NetworkImage(controller.avatar),
+                backgroundImage: CachedNetworkImageProvider(controller.avatar),
               ),
             ),
             Column(

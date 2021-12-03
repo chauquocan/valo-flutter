@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:valo_chat_app/app/data/models/contact_model.dart';
-import 'package:valo_chat_app/app/themes/theme.dart';
 
 class ContactsList extends StatelessWidget {
   final List<ContactCustom> contacts;
@@ -12,16 +11,19 @@ class ContactsList extends StatelessWidget {
       flex: 9,
       child: Column(
         children: [
-          Text('Bạn bè'),
+          const Text(
+            'Bạn bè',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
           ListView.builder(
             shrinkWrap: true,
             itemCount: contacts.length,
             itemBuilder: (context, index) {
               ContactCustom contact = contacts[index];
               return Container(
-                decoration: BoxDecoration(
-                  color: AppColors.light,
-                ),
                 child: ListTile(
                   onTap: () {},
                   onLongPress: () {},

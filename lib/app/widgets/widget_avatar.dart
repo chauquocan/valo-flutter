@@ -58,7 +58,7 @@ class WidgetAvatar extends StatelessWidget {
           ),
         ),
         child: CircleAvatar(
-          backgroundImage: NetworkImage(url.toString()),
+          backgroundImage: CachedNetworkImageProvider(url.toString()),
         ));
   }
 }

@@ -130,6 +130,13 @@ class ConnectService {
     return response;
   }
 
+  Future postAuth(String path,
+      {dynamic params, Options? options}) async {
+    Options requestOptions = options ?? Options();
+    var response = await dio.post(path, data: params, options: requestOptions);
+    return response;
+  }
+
   Future postRefreshToken(String path,
       {dynamic params, Options? options}) async {
     Options requestOptions = options ?? Options();

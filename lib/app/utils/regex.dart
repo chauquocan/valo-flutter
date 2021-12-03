@@ -54,6 +54,7 @@ class Regex {
     }
     return null;
   }
+  
 
   static String? confirmPasswordValidator(String value, String password) {
     if (value.isEmpty) {
