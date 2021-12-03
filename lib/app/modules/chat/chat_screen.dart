@@ -72,16 +72,12 @@ class ChatScreen extends GetView<ChatController> {
               textEditingController: controller.textController,
               onSubmit: () => controller.sendTextMessage(),
               sendImageFromCamera: () => controller.pickImageFromCamera(),
-              sendImageFromGallery: () =>
-                  // controller.pickImageFromCamera(ImageSource.gallery),
-                  controller.pickImagesFromGallery(),
+              sendImageFromGallery: () => controller.pickImagesFromGallery(),
               sendIcon: () =>
                   controller.emojiShowing = !controller.emojiShowing,
               sendSticker: () =>
                   controller.stickerShowing = !controller.stickerShowing,
-              // sendGif: () => controller.gifShowing = !controller.gifShowing,
               sendGif: () => controller.sendGif(context),
-
               sendFile: () => controller.pickFilesFromGallery(),
               isEmojiVisible: controller.emojiShowing,
               isKeyboardVisible: controller.isKeyboardVisible,
@@ -97,8 +93,15 @@ class ChatScreen extends GetView<ChatController> {
   Widget _buildSticker() {
     return GetX<ChatController>(
       builder: (_) {
-        return Visibility(
-            visible: controller.stickerShowing, child: const WidgetSticker());
+        return AnimatedSize(
+          duration: Duration(milliseconds: 300),
+          child: SizedBox(
+            height: controller.stickerShowing ? null : 0.0,
+            child: const WidgetSticker(),
+          ),
+        );
+        // return Visibility(
+        //     visible: controller.stickerShowing, child: const WidgetSticker());
       },
     );
   }
@@ -146,7 +149,7 @@ class ChatScreen extends GetView<ChatController> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
       ),
-      leadingWidth: 70,
+      leadingWidth: 40,
       titleSpacing: 0,
       leading: InkWell(
         onTap: () {
@@ -159,6 +162,21 @@ class ChatScreen extends GetView<ChatController> {
               Icons.arrow_back,
               size: 30,
             ),
+            // Hero(
+            //   tag: controller.id,
+            //   child: CircleAvatar(
+            //     radius: 20,
+            //     backgroundColor: Colors.blueGrey,
+            //     backgroundImage: NetworkImage(controller.avatar),
+            //   ),
+            // ),
+          ],
+        ),
+      ),
+      title: Container(
+        margin: const EdgeInsets.all(5),
+        child: Row(
+          children: [
             Hero(
               tag: controller.id,
               child: CircleAvatar(
@@ -167,27 +185,24 @@ class ChatScreen extends GetView<ChatController> {
                 backgroundImage: NetworkImage(controller.avatar),
               ),
             ),
-          ],
-        ),
-      ),
-      title: Container(
-        margin: const EdgeInsets.all(5),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              controller.name,
-              style: const TextStyle(
-                fontSize: 18.5,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const Text(
-              'last seen today',
-              style: TextStyle(
-                fontSize: 13,
-              ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  controller.name,
+                  style: const TextStyle(
+                    fontSize: 18.5,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                // const Text(
+                //   'last seen today',
+                //   style: TextStyle(
+                //     fontSize: 13,
+                //   ),
+                // ),
+              ],
             ),
           ],
         ),

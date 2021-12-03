@@ -29,20 +29,20 @@ class _ContactTabState extends State<ContactTab> {
                 onPressed: () {
                   Get.toNamed('/newfriend');
                 },
-                icon:const  Icon(Icons.person_add),
+                icon: const Icon(Icons.person_add),
               ),
               IconButton(
                 onPressed: () {},
-                icon:const  Icon(Icons.contacts),
+                icon: const Icon(Icons.contacts),
               ),
             ],
           ),
           body: GetBuilder<TabContactController>(
             builder: (_) => Container(
-              padding: const EdgeInsets.all(10),
               child: Column(
                 children: <Widget>[
                   Container(
+                    margin: const EdgeInsets.all(10),
                     child: TextField(
                       controller: controller.searchController,
                       onChanged: (value) {
@@ -60,6 +60,21 @@ class _ContactTabState extends State<ContactTab> {
                                   color: Theme.of(context).primaryColor)),
                           suffixIcon: Icon(Icons.search,
                               color: Theme.of(context).primaryColor)),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      children: [
+                        ListTile(
+                          onTap: () {},
+                          // leading: CircleAvatar(
+                          //   child:
+                          //       Image.asset('assets/images/place_avatar.png'),
+                          // ),
+                          title: Text('Cập nhật danh bạ'),
+                        ),
+                      ],
                     ),
                   ),
                   Obx(() => controller.contactsLoaded.value

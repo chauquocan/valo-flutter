@@ -68,11 +68,11 @@ class Regex {
 
   static String? phoneValidator(String value) {
     if (value.isEmpty) {
-      // customSnackbar().snackbarDialog('Lỗi', 'Bạn chưa nhập số điện thoại!');
+      customSnackbar().snackbarDialog('Lỗi', 'Bạn chưa nhập số điện thoại!');
       return 'Please enter phone number';
     }
     if (!value.isPhoneNumber) {
-      // customSnackbar().snackbarDialog('Lỗi', 'Số điện thoại không hợp lệ!');
+      customSnackbar().snackbarDialog('Lỗi', 'Số điện thoại không hợp lệ!');
       return 'Invalid phone number';
     }
     return null;

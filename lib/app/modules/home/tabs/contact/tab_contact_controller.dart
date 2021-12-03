@@ -56,11 +56,13 @@ class TabContactController extends GetxController {
       contactId.value = response.data!.content;
       for (var contact in response.data!.content) {
         final user = await userProvider.getUserById(contact.friendId);
-        _contactsTemp.add(ContactCustom(
-            id: user.data!.id,
-            name: user.data!.name,
-            phone: user.data!.phone,
-            imgUrl: user.data!.imgUrl));
+        _contactsTemp.add(
+          ContactCustom(
+              id: user.data!.id,
+              name: user.data!.name,
+              phone: user.data!.phone,
+              imgUrl: user.data!.imgUrl),
+        );
       }
       contacts.value = _contactsTemp;
       contactsLoaded.value = true;
