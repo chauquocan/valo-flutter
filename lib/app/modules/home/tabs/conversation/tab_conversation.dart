@@ -38,7 +38,6 @@ class ConversationTab extends GetView<TabConversationController> {
               if (controller.conversationsLoaded.value) {
                 return ListView.builder(
                     itemCount: controller.conversations.length,
-                    shrinkWrap: true,
                     itemBuilder: (context, i) {
                       final conversation = controller.conversations[i];
                       return ListTile(
@@ -50,7 +49,7 @@ class ConversationTab extends GetView<TabConversationController> {
                               conversation.conversation.participants,
                           "avatar": conversation.conversation.imageUrl,
                           "isGroup": conversation.isGroup,
-                          "unreadMess":conversation.unReadMessage,
+                          "unreadMess": conversation.unReadMessage,
                         }),
                         leading: Hero(
                           tag: conversation.conversation.id,
