@@ -27,7 +27,7 @@ class ProfileGroupScreen extends GetView<ChatController> {
                         ),
                         child: CircleAvatar(
                           radius: 60,
-                          backgroundImage: NetworkImage(controller.avatar),
+                          backgroundImage: CachedNetworkImageProvider(controller.avatar),
                         )),
                   ),
                   const SizedBox(

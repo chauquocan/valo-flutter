@@ -1,8 +1,7 @@
 part of 'auth.dart';
 
 class AuthController extends GetxController {
-  AuthController({required this.authProvider});
-  final AuthProvider authProvider;
+  final  authProvider = Get.find<AuthProvider>();
 
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _otpController = TextEditingController();

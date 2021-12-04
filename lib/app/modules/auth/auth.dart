@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 import 'package:valo_chat_app/app/data/providers/auth_provider.dart';
 
-import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
+import 'package:valo_chat_app/app/data/providers/user_provider.dart';
 import 'package:valo_chat_app/app/modules/auth/login/login.dart';
 import 'package:valo_chat_app/app/modules/auth/register/register.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';

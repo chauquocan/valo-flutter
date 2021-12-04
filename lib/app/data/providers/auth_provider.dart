@@ -80,12 +80,6 @@ class AuthProvider {
       final response = await ConnectService().post(
         logoutURL,
         params: map,
-        options: Options(
-          headers: <String, String>{
-            'Authorization':
-                'Bearer ${LocalStorage.getToken()?.accessToken.toString()}',
-          },
-        ),
       );
       return NetworkResponse.fromResponse(
         response,

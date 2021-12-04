@@ -1,18 +1,12 @@
 part of '../group.dart';
 
-
 class CreateGroupChatController extends GetxController {
   final chatController = Get.find<TabConversationController>();
-  final ProfileProvider userProvider;
-  final ContactProvider contactProvider;
-  final GroupChatProvider groupChatProvider;
+  final  userProvider=Get.find<ProfileProvider>();
+  final  contactProvider=Get.find<ContactProvider>();
+  final  groupChatProvider=Get.find<GroupChatProvider>();
 
   final contactController = Get.find<TabContactController>();
-
-  CreateGroupChatController(
-      {required this.userProvider,
-      required this.contactProvider,
-      required this.groupChatProvider});
 
   final textCtrl = TextEditingController();
   //
@@ -55,21 +49,9 @@ class CreateGroupChatController extends GetxController {
     _selected.value = value;
   }
 
-  // @override
-  // void onInit() {
-  //   getContacts();
-  //   super.onInit();
-  // }
-
 //them minh la user dau tien
   @override
   void onInit() {
-    // participants.add(Participants(
-    //   userId: Storage.getUser()!.id,
-    //   addByUserId: Storage.getUser()!.id,
-    //   addTime: DateTime.now().toString(),
-    //   admin: true,
-    // ));
     getContacts();
     super.onInit();
   }
@@ -100,8 +82,8 @@ class CreateGroupChatController extends GetxController {
       }
       final map = {'name': textCtrl.text, 'participants': participants};
       final respones = await groupChatProvider.createGroupChat(map);
-
       if (respones.ok) {
+        customSnackbar().snackbarDialog('Thanh Cong', 'Tao nhom thanh cong');
         chatController.getConversations();
       } else
         print(respones);
@@ -115,17 +97,4 @@ class CreateGroupChatController extends GetxController {
       users.add(user.data!);
     }
   }
-
-  // lay all user //userProvider.getAllUser
-  // Future getAllUser() async {
-  //   final response = await userProvider.getAllUser(
-  //     Storage.getToken()!.accessToken,
-  //   );
-  //   if (response.ok) {
-  //     users.addAll(response.data!);
-  //     print(users.toString());
-  //   } else {
-  //     Get.snackbar('Search failed', 'Something wrong');
-  //   }
-  // }
 }

@@ -2,14 +2,13 @@ part of 'login.dart';
 
 //Controller for login view
 class LoginController extends GetxController {
-  LoginController({required this.authProvider, required this.userProvider});
   //Controller text field
   final TextEditingController _phoneInput = TextEditingController();
   final TextEditingController _passwordInput = TextEditingController();
 
   //User service
-  final AuthProvider authProvider;
-  final ProfileProvider userProvider;
+  final authProvider = Get.find<AuthProvider>();
+  final userProvider = Get.find<ProfileProvider>();
 
   //Form key for valid
   final _loginFormKey = GlobalKey<FormState>();

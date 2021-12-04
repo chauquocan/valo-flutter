@@ -22,6 +22,7 @@ class RetryOnConnectionChangeInterceptor extends Interceptor {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
+    print(response);
     handler.next(response);
   }
 
@@ -40,7 +41,7 @@ class RetryOnConnectionChangeInterceptor extends Interceptor {
         if (response.ok) {
           await LocalStorage.saveToken(response.data!);
           err.requestOptions.headers["Authorization"] =
-              "Bearer" + response.data!.accessToken;
+              "Bearer" + response.data!.accessToken.toString();
           final opts = Options(
             method: err.requestOptions.method,
             headers: err.requestOptions.headers,
@@ -59,9 +60,7 @@ class RetryOnConnectionChangeInterceptor extends Interceptor {
               queryParameters: err.requestOptions.queryParameters);
           return handler.resolve(clonnReq);
         }
-      } catch (e) {
-        throw Exception(e);
-      }
+      } catch (e) {}
     }
     handler.next(err);
   }

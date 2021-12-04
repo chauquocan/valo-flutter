@@ -7,62 +7,65 @@ class CreateGroupChatScreen extends GetView<CreateGroupChatController> {
   Widget build(BuildContext context) {
     return GetX<CreateGroupChatController>(
       builder: (controller) {
-        return Scaffold(
-          backgroundColor: Colors.white,
-          appBar: WidgetAppBar(
-            title: 'Create group chat',
-            actions: [
-              controller.selected.length >= 2 &&
-                      controller.textCtrl.toString() != ""
-                  ? IconButton(
-                      onPressed: () => controller.onSubmit(),
-                      icon: const Icon(Icons.add),
-                      color: Colors.white,
-                    )
-                  : IconButton(
-                      onPressed: () {
-                        Get.rawSnackbar(
-                          title: 'Something wrong',
-                          message:
-                              'Members must be up to 2 or Group names not null',
+        return GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Scaffold(
+            backgroundColor: Colors.white,
+            appBar: WidgetAppBar(
+              title: 'Create group chat',
+              actions: [
+                controller.selected.length >= 2 &&
+                        controller.textCtrl.toString() != ""
+                    ? IconButton(
+                        onPressed: () => controller.onSubmit(),
+                        icon: const Icon(Icons.add),
+                        color: Colors.white,
+                        tooltip: 'Tạo nhóm',
+                      )
+                    : IconButton(
+                        onPressed: () {
+                          customSnackbar().snackbarDialog(
+                            'Something wrong',
+                            'Members must be up to 2 or Group names not null',
+                          );
+                        },
+                        icon: const Icon(Icons.add),
+                        color: Colors.white,
+                        tooltip: 'Tạo nhóm',
+                      ),
+              ],
+            ),
+            body: SafeArea(
+              child: Column(
+                children: [
+                  Flexible(
+                    child: GetX<CreateGroupChatController>(
+                      builder: (_) {
+                        return Form(
+                          key: controller.nameFormKey,
+                          child: Column(
+                            children: [
+                              WidgetField(
+                                controller: controller.textCtrl,
+                                validator: (value) =>
+                                    Regex.fullNameValidator(value!),
+                                hint: 'Enter group name',
+                                padding: EdgeInsets.all(8),
+                                margin: const EdgeInsets.symmetric(
+                                  vertical: 5,
+                                  horizontal: 10,
+                                ),
+                              ),
+                              _buildListSelected(),
+                              _buildListUser(),
+                            ],
+                          ),
                         );
                       },
-                      icon: const Icon(Icons.add),
-                      color: Colors.white,
-                    )
-            ],
-          ),
-          body: SafeArea(
-            child: Column(
-              children: [
-                Flexible(
-                  child: GetX<CreateGroupChatController>(
-                    builder: (_) {
-                      return Form(
-                        key: controller.nameFormKey,
-                        child: Column(
-                          children: [
-                            WidgetField(
-                              controller: controller.textCtrl,
-                              validator: (value) =>
-                                  Regex.fullNameValidator(value!),
-                              hint: 'Enter group name',
-                              margin: const EdgeInsets.symmetric(
-                                vertical: 10,
-                                horizontal: 10,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            _buildListSelected(),
-                            const SizedBox(height: 10),
-                            _buildListUser(),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                )
-              ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         );

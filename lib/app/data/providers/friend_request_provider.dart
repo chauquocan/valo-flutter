@@ -15,10 +15,6 @@ class FriendRequestProvider {
     try {
       final response = await ConnectService().get(
         getFriendRequestUrl,
-        options: Options(headers: {
-          'Authorization':
-              'Bearer ${LocalStorage.getToken()?.accessToken.toString()}'
-        }),
       );
       return NetworkResponse.fromResponse(
         response,
@@ -35,10 +31,6 @@ class FriendRequestProvider {
     try {
       final response = await ConnectService().post(
         '$sendfriendRequestUrl$toId',
-        options: Options(headers: {
-          'Authorization':
-              'Bearer ${LocalStorage.getToken()?.accessToken.toString()}'
-        }),
       );
       return NetworkResponse.fromResponse(
           response, (json) => ResponseMessage.fromJson(json));
@@ -53,10 +45,6 @@ class FriendRequestProvider {
     try {
       final response = await ConnectService().put(
         '$accpectFriendRequestUrl/$id',
-        options: Options(headers: {
-          'Authorization':
-              'Bearer ${LocalStorage.getToken()?.accessToken.toString()}'
-        }),
       );
       return NetworkResponse.fromResponse(
         response,

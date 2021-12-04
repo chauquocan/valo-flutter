@@ -24,20 +24,18 @@ class WidgetField extends StatelessWidget {
     return Container(
       padding: padding,
       margin: margin,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-        decoration: BoxDecoration(
-          color: Colors.grey.shade200,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: TextFormField(
-          validator: validator,
-          controller: controller,
-          decoration: InputDecoration(
-            label: Text(labelText ?? ""),
-            hintText: hint,
-            border: InputBorder.none,
-          ),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade200,
+        
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: TextFormField(
+        validator: validator,
+        controller: controller,
+        decoration: InputDecoration(
+          label: Text(labelText ?? ""),
+          hintText: hint,
+          border: InputBorder.none,
         ),
       ),
     );

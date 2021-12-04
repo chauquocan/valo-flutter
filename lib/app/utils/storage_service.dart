@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:valo_chat_app/app/data/models/auth_model.dart';
-import '../data/models/profile_model.dart';
+import '../data/models/user_model.dart';
 
 //Storage service for storing local data
 class LocalStorage {

@@ -1,17 +1,18 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/status/http_status.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:valo_chat_app/app/data/models/profile_model.dart';
+import 'package:valo_chat_app/app/data/models/user_model.dart';
 import 'package:valo_chat_app/app/data/providers/auth_provider.dart';
-import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
+import 'package:valo_chat_app/app/data/providers/user_provider.dart';
 import 'package:valo_chat_app/app/utils/storage_service.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
 
 class TabProfileController extends GetxController {
   //user service
-  final ProfileProvider userProvider;
-  final AuthProvider authProvider;
+  final ProfileProvider userProvider = Get.find<ProfileProvider>();
+  final AuthProvider authProvider = Get.find<AuthProvider>();
 
   //text field controller
   final TextEditingController inputName = TextEditingController();
@@ -19,9 +20,6 @@ class TabProfileController extends GetxController {
   final TextEditingController inputEmail = TextEditingController();
   final TextEditingController inputAdress = TextEditingController();
   final TextEditingController inputDate = TextEditingController();
-
-  TabProfileController(
-      {required this.userProvider, required this.authProvider});
 
   var isLoading = false.obs;
   //image
@@ -144,18 +142,16 @@ class TabProfileController extends GetxController {
   }
 
   //upload image function
-  void uploadImage(ImageSource imageSource) async {
+  void uploadImage() async {
     try {
       final pickedFile =
-          await _picker.pickImage(source: imageSource, imageQuality: 50);
+          await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
       isLoading(true);
       if (pickedFile != null) {
         var response = await userProvider.uploadFile(pickedFile.path);
         if (response.ok) {
           //get image url from api response
           imageURL = response.data!.imgUrl;
-          print(response.data);
-          print(imageURL);
           await LocalStorage.updateUser(response.data!);
           Get.snackbar('Success', 'Image uploaded successfully',
               margin: const EdgeInsets.only(top: 5, left: 10, right: 10));
@@ -168,6 +164,29 @@ class TabProfileController extends GetxController {
       } else {
         Get.snackbar('Failed', 'Image not selected',
             margin: const EdgeInsets.only(top: 5, left: 10, right: 10));
+      }
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  void pickImagesFromGallery() async {
+    try {
+      FilePickerResult? result =
+          await FilePicker.platform.pickFiles(type: FileType.image);
+      isLoading(true);
+      if (result != null) {
+        var response = await userProvider.uploadFile(result.files.single.path);
+        if (response.ok) {
+          imageURL = response.data!.imgUrl;
+          await LocalStorage.updateUser(response.data!);
+          currentUser.value.imgUrl = response.data!.imgUrl;
+          Get.snackbar('Success', 'Image uploaded successfully',
+              margin: const EdgeInsets.only(top: 5, left: 10, right: 10));
+        } else {
+          print(response);
+          Get.snackbar('Loi', "Loi gui api");
+        }
       }
     } finally {
       isLoading(false);
@@ -194,9 +213,12 @@ class TabProfileController extends GetxController {
         final response = await ProfileProvider().updateUserInfo(map);
         print('Update Response: ${response.toString()}');
         if (response.ok) {
+          Get.back();
+
           await LocalStorage.updateUser(response.data!);
           currentUser.value = response.data!;
-          customSnackbar().snackbarDialog('edit susscessfully', '');
+          customSnackbar().snackbarDialog(
+              'Susscessfully', 'Edit information susscessfully');
           Get.reload();
         } else {
           if (response.code == HttpStatus.forbidden) {
@@ -210,10 +232,8 @@ class TabProfileController extends GetxController {
                 .snackbarDialog('failed', 'Sometihing went wrong, try again');
           }
         }
-      } finally {
-        // TODO
-      }
-    }
+      } finally {}
+    } else {}
   }
 
   //Logout

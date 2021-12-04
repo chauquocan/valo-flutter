@@ -54,7 +54,6 @@ class Regex {
     }
     return null;
   }
-  
 
   static String? confirmPasswordValidator(String value, String password) {
     if (value.isEmpty) {
@@ -91,11 +90,20 @@ class Regex {
     return null;
   }
 
+  static bool isAddress(String name) {
+    RegExp regExp = RegExp(
+        r"^[\S][a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ.,/\s+]+[\S]$");
+    return regExp.hasMatch(name);
+  }
+
   static String? addressValidator(String value) {
     if (value.isEmpty) {
       return 'Please enter address';
     }
     if (value.length < 2) {
+      return 'Invalid address';
+    }
+    if (!isAddress(value)) {
       return 'Invalid address';
     }
     return null;

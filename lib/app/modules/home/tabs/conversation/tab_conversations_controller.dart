@@ -3,20 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
 import 'package:valo_chat_app/app/data/models/conversation_model.dart';
-import 'package:valo_chat_app/app/data/models/profile_model.dart';
+import 'package:valo_chat_app/app/data/models/user_model.dart';
 import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
-import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
+import 'package:valo_chat_app/app/data/providers/user_provider.dart';
 import 'package:valo_chat_app/app/utils/stomp_service.dart';
 import 'package:valo_chat_app/app/utils/storage_service.dart';
 
 class TabConversationController extends GetxController {
-  final ChatProvider chatProvider;
-  final ProfileProvider userProvider;
+  final chatProvider = Get.find<ChatProvider>();
+  final userProvider = Get.find<ProfileProvider>();
 
-  TabConversationController({
-    required this.chatProvider,
-    required this.userProvider,
-  });
   final scrollController = ScrollController();
   final _page = 0.obs;
   final isLoading = true.obs;
@@ -113,7 +109,7 @@ class TabConversationController extends GetxController {
   Future getConversations() async {
     List<ConversationContent> _conversations = [];
     String? currentUserId = LocalStorage.getUser()?.id;
-    final response = await chatProvider.getConversations(_page.value);
+    final response = await chatProvider.getConversations(0);
     if (response.ok) {
       if (response.data!.content.length > 0) {
         for (var content in response.data!.content) {

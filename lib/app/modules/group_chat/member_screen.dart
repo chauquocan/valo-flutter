@@ -29,7 +29,7 @@ class MemberScreen extends GetView<ChatController> {
                 leading: CircleAvatar(
                   backgroundColor: Colors.blueGrey,
                   radius: 30,
-                  backgroundImage: NetworkImage(member.imgUrl),
+                  backgroundImage: CachedNetworkImageProvider(member.imgUrl),
                 ),
                 title: Text(
                   member.name,

@@ -3,8 +3,7 @@ import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:valo_chat_app/app/data/models/profile_model.dart';
+import 'package:valo_chat_app/app/data/models/user_model.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/profile/tab_profile_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:valo_chat_app/app/utils/regex.dart';
@@ -133,51 +132,14 @@ class MyProfile extends StatelessWidget {
                       child: const Text('OK'),
                       onPressed: () => {
                         FocusScope.of(context).unfocus(),
-                        Get.dialog(
-                          AlertDialog(
-                            title: const Center(child: Text('Lưu ý')),
-                            content: const SingleChildScrollView(
-                              child: Text(
-                                  'Bạn có chắc chắn muốn cập nhật thông tin?'),
-                            ),
-                            actionsAlignment: MainAxisAlignment.spaceEvenly,
-                            actions: [
-                              ElevatedButton.icon(
-                                onPressed: () {
-                                  controller.editProfileInfo(
-                                    controller.inputName.text,
-                                    controller.selectedGender == Gender.male
-                                        ? "Nam"
-                                        : "Nữ",
-                                    controller.inputEmail.text,
-                                    controller.inputAdress.text,
-                                    controller.inputDate.text,
-                                  );
-                                  Get.back();
-                                },
-                                icon: const Icon(Icons.check_circle),
-                                // style: ButtonStyle(backgroundColor: Colors.blue),
-                                label: const Text(
-                                  "Xác nhận",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                              ElevatedButton.icon(
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                icon: const Icon(Icons.cancel),
-                                // style: ButtonStyle(backgroundColor: Colors.blue),
-                                label: const Text(
-                                  "Hủy",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              )
-                            ],
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                          ),
+                        controller.editProfileInfo(
+                          controller.inputName.text,
+                          controller.selectedGender == Gender.male
+                              ? "Nam"
+                              : "Nữ",
+                          controller.inputEmail.text,
+                          controller.inputAdress.text,
+                          controller.inputDate.text,
                         ),
                       },
                     ),
@@ -279,7 +241,7 @@ class MyProfile extends StatelessWidget {
                                                   shape: BoxShape.circle,
                                                   image: DecorationImage(
                                                     fit: BoxFit.cover,
-                                                    image: NetworkImage(
+                                                    image: CachedNetworkImageProvider(
                                                         controller.currentUser
                                                             .value.imgUrl),
                                                   )),
@@ -334,9 +296,7 @@ class MyProfile extends StatelessWidget {
                                                         onTap: () {
                                                           Get.back();
                                                           controller
-                                                              .uploadImage(
-                                                                  ImageSource
-                                                                      .camera);
+                                                              .uploadImage();
                                                         },
                                                       ),
                                                       ListTile(
@@ -347,9 +307,7 @@ class MyProfile extends StatelessWidget {
                                                         onTap: () {
                                                           Get.back();
                                                           controller
-                                                              .uploadImage(
-                                                                  ImageSource
-                                                                      .gallery);
+                                                              .pickImagesFromGallery();
                                                         },
                                                       ),
                                                     ],
@@ -378,6 +336,7 @@ class MyProfile extends StatelessWidget {
                     ),
                   ),
                   buildInfoField("Phone", controller.currentUser.value.phone),
+                  buildInfoField("Gender", controller.currentUser.value.gender),
                   buildInfoField(
                       "Birthday",
                       DateFormat('dd/MM/yyyy')

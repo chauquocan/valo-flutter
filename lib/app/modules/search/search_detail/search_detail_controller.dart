@@ -1,9 +1,12 @@
+
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/data/models/user_model.dart';
 import 'package:valo_chat_app/app/data/providers/user_provider.dart';
+import 'package:valo_chat_app/app/modules/search/add_friend/add_friend_controller.dart';
 
-class ProfileFriendController extends GetxController {
+class SearchDetailController extends GetxController{
   final profileProvider = Get.find<ProfileProvider>();
+  final addFriendController = Get.find<AddFriendController>();
 
   final _userProfile = UserContent(
     user: User(

@@ -1,13 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_friend_controller.dart';
+import 'package:valo_chat_app/app/modules/search/search_detail/search_detail_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
+import 'package:intl/intl.dart';
 
-class ProfileFriendScreen extends GetView<ProfileFriendController> {
-  const ProfileFriendScreen({Key? key}) : super(key: key);
+class SearchDetailScreen extends GetView<SearchDetailController> {
+  const SearchDetailScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -86,8 +85,9 @@ class ProfileFriendScreen extends GetView<ProfileFriendController> {
                                             shape: BoxShape.circle,
                                             image: DecorationImage(
                                               fit: BoxFit.cover,
-                                              image: CachedNetworkImageProvider(controller
-                                                  .userProfile.user.imgUrl),
+                                              image: CachedNetworkImageProvider(
+                                                  controller
+                                                      .userProfile.user.imgUrl),
                                             )),
                                       );
                                     }
@@ -96,7 +96,9 @@ class ProfileFriendScreen extends GetView<ProfileFriendController> {
                                 ],
                               ),
                               Text(
-                                controller.userProfile.user.name,
+                                controller.userProfile.user.name == ""
+                                    ? "No name"
+                                    : controller.userProfile.user.name,
                                 style: TextStyle(
                                     fontSize: 26, color: AppColors.light),
                               ),
@@ -108,17 +110,27 @@ class ProfileFriendScreen extends GetView<ProfileFriendController> {
                   ],
                 ),
               ),
+              buildInfoField("Phone:", controller.userProfile.user.phone),
+              buildInfoField("E-mail:", controller.userProfile.user.email),
+              SizedBox(
+                height: 20,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton.icon(
-                    onPressed: () {},
+                    onPressed: controller.userProfile.friend
+                        ? () {}
+                        : () => controller.addFriendController
+                            .sendFriendReq(controller.userProfile.user.id),
                     icon: controller.userProfile.friend
                         ? Icon(Icons.check_circle_outline)
                         : Icon(Icons.person_add_alt_1_outlined),
                     label: controller.userProfile.friend
                         ? Text('Bạn bè')
-                        : Text('kết bạn'),
+                        : Obx(() => controller.addFriendController.isSent.value
+                            ? const Text('Đã gửi')
+                            : const Text('Kết bạn')),
                     style: TextButton.styleFrom(
                       padding:
                           EdgeInsets.symmetric(horizontal: 30, vertical: 10),
@@ -131,33 +143,6 @@ class ProfileFriendScreen extends GetView<ProfileFriendController> {
                   ),
                 ],
               ),
-              buildInfoField("Phone:", controller.userProfile.user.phone),
-              buildInfoField("Gender:", controller.userProfile.user.gender),
-              buildInfoField(
-                  "birth-day:",
-                  DateFormat('dd/MM/yyyy')
-                      .format(controller.userProfile.user.dateOfBirth)),
-              buildInfoField("E-mail:", controller.userProfile.user.email),
-              buildInfoField("Address:", controller.userProfile.user.address),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     RaisedButton(
-              //       color: Colors.red[400],
-              //       padding: EdgeInsets.symmetric(horizontal: 30),
-              //       shape: RoundedRectangleBorder(
-              //           borderRadius: BorderRadius.circular(10)),
-              //       onPressed: () {},
-              //       child: const Text(
-              //         "Block",
-              //         style: TextStyle(
-              //             fontSize: 14,
-              //             letterSpacing: 2.2,
-              //             color: Colors.white),
-              //       ),
-              //     ),
-              //   ],
-              // ),
             ],
           ),
         ),
@@ -188,7 +173,7 @@ class ProfileFriendScreen extends GetView<ProfileFriendController> {
             ),
             Expanded(
               child: Text(
-                text,
+                text == "" ? "không có thông tin" : text,
                 style: const TextStyle(fontSize: 18),
               ),
             ),

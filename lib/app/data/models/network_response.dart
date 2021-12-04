@@ -29,7 +29,7 @@ class NetworkResponse<T> {
     } catch (e, s) {
       print('decode json error 29: $e');
       print('stacktrace: $s');
-      return NetworkResponse.withError(null);
+      return NetworkResponse.withError(response);
     }
   }
 

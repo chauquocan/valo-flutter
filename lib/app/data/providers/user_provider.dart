@@ -1,10 +1,10 @@
-// ignore_for_file: unnecessary_brace_in_string_interps
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:valo_chat_app/app/utils/storage_service.dart';
+import 'package:valo_chat_app/app/data/models/response_model.dart';
 import '../connect_service.dart';
 import '../models/network_response.dart';
-import '../models/profile_model.dart';
+import '../models/user_model.dart';
 
 class ProfileProvider {
   static const String userURL = 'users';
@@ -16,11 +16,9 @@ class ProfileProvider {
   //Get user bằng số id
   Future<NetworkResponse<User>> getUserById(String id) async {
     try {
-      final response = await ConnectService().get('$userURL/$id',
-          options: Options(headers: {
-            'Authorization':
-                'Bearer ${LocalStorage.getToken()?.accessToken.toString()}'
-          }));
+      final response = await ConnectService().get(
+        '$userURL/$id',
+      );
       return NetworkResponse.fromResponse(
         response,
         (json) => User.fromJson(json),
@@ -34,8 +32,7 @@ class ProfileProvider {
   Future<NetworkResponse<User>> getUserByPhone(
       String numberPhone, String accessToken) async {
     try {
-      final response = await ConnectService().get(
-          '${userPhoneURL}${numberPhone}',
+      final response = await ConnectService().get('$userPhoneURL$numberPhone',
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       return NetworkResponse.fromResponse(
         response,
@@ -52,14 +49,8 @@ class ProfileProvider {
       final response = await ConnectService().patch(
         updateURL,
         params: map,
-        options: Options(
-          headers: <String, String>{
-            'Authorization':
-                'Bearer ${LocalStorage.getToken()?.accessToken.toString()}'
-          },
-        ),
       );
-      
+
       return NetworkResponse.fromResponse(
           response, (json) => User.fromJson(json));
     } on DioError catch (e) {
@@ -70,14 +61,12 @@ class ProfileProvider {
   //Search user
   Future<NetworkResponse<UserPage>> searchUser(String textToSearch) async {
     try {
-      final response = await ConnectService().get(searchURL,
-          params: {
-            'textToSearch': textToSearch,
-          },
-          options: Options(headers: {
-            'Authorization':
-                'Bearer ${LocalStorage.getToken()?.accessToken.toString()}'
-          }));
+      final response = await ConnectService().get(
+        searchURL,
+        params: {
+          'textToSearch': textToSearch,
+        },
+      );
       return NetworkResponse.fromResponse(
         response,
         (json) => UserPage.fromJson(json),
@@ -90,23 +79,28 @@ class ProfileProvider {
   //upload hình
   Future<NetworkResponse<User>> uploadFile(filePath) async {
     try {
-      FormData formData = FormData.fromMap({
-        "multipartFile": await MultipartFile.fromFile(filePath, filename: 'avt')
-      });
+      FormData formData = FormData.fromMap(
+          {"multipartFile": await MultipartFile.fromFile(filePath)});
       Response response = await ConnectService().put(
         changImageURL,
         params: formData,
-        options: Options(
-          headers: <String, String>{
-            'Authorization':
-                'Bearer ${LocalStorage.getToken()?.accessToken.toString()}',
-          },
-        ),
       );
       return NetworkResponse.fromResponse(
         response,
         (json) => User.fromJson(json),
       );
+    } on DioError catch (e) {
+      return NetworkResponse.withError(e.response);
+    }
+  }
+
+  Future<NetworkResponse<UserPage>> getUsersFromContact(
+      List<String?> phoneNumbers) async {
+    try {
+      final response = await ConnectService().post('$userURL/phoneNumbers',
+          params: {"phoneNumbers": phoneNumbers});
+      return NetworkResponse.fromResponse(
+          response, (json) => UserPage.fromJson(json));
     } on DioError catch (e) {
       return NetworkResponse.withError(e.response);
     }

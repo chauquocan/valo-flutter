@@ -3,9 +3,7 @@ part of 'home.dart';
 //Controller for home view
 class HomeController extends GetxController {
   //user service
-  final ProfileProvider provider;
-
-  HomeController({required this.provider});
+  final provider = Get.find<ProfileProvider>();
 
   //current tab in home nav bar
   final _currentTab = 0.obs;

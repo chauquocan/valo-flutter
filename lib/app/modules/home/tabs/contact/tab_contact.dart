@@ -3,6 +3,9 @@ import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/contacts_list.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
 
+import 'import_contact/import_contact_binding.dart';
+import 'import_contact/import_contact_screen.dart';
+
 class ContactTab extends StatefulWidget {
   const ContactTab({Key? key}) : super(key: key);
 
@@ -24,22 +27,18 @@ class _ContactTabState extends State<ContactTab> {
                 bottom: Radius.circular(10),
               ),
             ),
-            actions: [
-              IconButton(
-                onPressed: () {
-                  Get.toNamed('/newfriend');
-                },
-                icon: const Icon(Icons.person_add),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.contacts),
-              ),
-            ],
           ),
+          floatingActionButton: FloatingActionButton(
+              heroTag: 'btnContact',
+              onPressed: () {
+                Get.toNamed('/newfriend');
+              },
+              child:
+                  Tooltip(message: 'Thêm bạn', child: Icon(Icons.person_add))),
           body: GetBuilder<TabContactController>(
-            builder: (_) => Container(
+            builder: (_) => SingleChildScrollView(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
                     margin: const EdgeInsets.all(10),
@@ -62,50 +61,78 @@ class _ContactTabState extends State<ContactTab> {
                               color: Theme.of(context).primaryColor)),
                     ),
                   ),
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      children: [
-                        ListTile(
-                          onTap: () {},
-                          leading: CircleAvatar(
-                            child:
-                                Image.asset('assets/images/place_avatar.png'),
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5, bottom: 5),
+                        child: ListTile(
+                          contentPadding: EdgeInsets.all(10),
+                          leading: const CircleAvatar(
+                            radius: 30,
+                            child: ClipRRect(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(29)),
+                              child: Icon(Icons.person_add_alt),
+                            ),
                           ),
                           title: Text('Cập nhật danh bạ'),
+                          onTap: () => Get.to(() => ImportContactScreen(),
+                              binding: ImportContactBinding()),
                         ),
-                      ],
-                    ),
-                  ),
-                  Obx(() => controller.contactsLoaded.value
-                      ? // if the contacts have not been loaded yet
-                      ((controller.searchController.text.isNotEmpty &&
-                                  controller.contactsFiltered.length > 0) ||
-                              (!controller.searchController.text.isNotEmpty &&
-                                  controller.contacts.length > 0))
-                          ? // if we have contacts to show
-                          ContactsList(
-                              contacts: controller.isSearch.value
-                                  ? controller.contactsFiltered
-                                  : controller.contacts,
-                            )
-                          : Container(
-                              padding: const EdgeInsets.only(top: 40),
-                              child: Text(
-                                controller.isSearch.value
-                                    ? 'No search results to show'
-                                    : 'No contacts exist',
-                                style: const TextStyle(
-                                    color: Colors.grey, fontSize: 20),
-                              ),
-                            )
-                      : Container(
-                          // still loading contacts
-                          padding: const EdgeInsets.only(top: 40),
-                          child: const Center(
-                            child: Text('No contacts'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5, bottom: 5),
+                        child: ListTile(
+                          contentPadding: EdgeInsets.all(10),
+                          leading: const CircleAvatar(
+                            radius: 30,
+                            child: ClipRRect(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(29)),
+                              child: Icon(Icons.three_p),
+                            ),
                           ),
-                        ))
+                          title: Text('Lời mời kết bạn'),
+                          onTap: () => Get.toNamed('/friendrequest'),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    'Danh bạ',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Obx(
+                    () => controller.contactsLoaded.value
+                        ? // if the contacts have not been loaded yet
+                        ((controller.searchController.text.isNotEmpty &&
+                                    controller.contactsFiltered.length > 0) ||
+                                (!controller.searchController.text.isNotEmpty &&
+                                    controller.contacts.length > 0))
+                            ? // if we have contacts to show
+                            ContactsList(
+                                contacts: controller.isSearch.value
+                                    ? controller.contactsFiltered
+                                    : controller.contacts,
+                              )
+                            : Container(
+                                padding: const EdgeInsets.only(top: 40),
+                                child: Text(
+                                  controller.isSearch.value
+                                      ? 'No search results to show'
+                                      : 'No contacts exist',
+                                  style: const TextStyle(
+                                      color: Colors.grey, fontSize: 20),
+                                ),
+                              )
+                        : Container(
+                            // still loading contacts
+                            padding: const EdgeInsets.only(top: 40),
+                            child: const Center(
+                              child: Text('No contacts'),
+                            ),
+                          ),
+                  )
                 ],
               ),
             ),

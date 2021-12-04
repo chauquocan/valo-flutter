@@ -6,6 +6,8 @@
 		<string>$(PRODUCT_NAME) Camera Usage!</string>
 		<key>NSMicrophoneUsageDescription</key>
 		<string>$(PRODUCT_NAME) Microphone Usage!</string>
+		<key>NSContactsUsageDescription</key>  
+<string>This app requires contacts access to function properly.</string>
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleExecutable</key>

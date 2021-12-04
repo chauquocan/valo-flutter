@@ -13,7 +13,7 @@ class ConnectService {
   static final ConnectService _instance = ConnectService._internal();
   factory ConnectService() => _instance;
 
-  late Dio dio;
+  static Dio dio = Dio();
   CancelToken cancelToken = CancelToken();
 
   ConnectService._internal() {
@@ -130,8 +130,7 @@ class ConnectService {
     return response;
   }
 
-  Future postAuth(String path,
-      {dynamic params, Options? options}) async {
+  Future postAuth(String path, {dynamic params, Options? options}) async {
     Options requestOptions = options ?? Options();
     var response = await dio.post(path, data: params, options: requestOptions);
     return response;

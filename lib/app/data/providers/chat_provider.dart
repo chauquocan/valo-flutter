@@ -18,12 +18,6 @@ class ChatProvider {
       final response = await ConnectService().get(
         conversationURL,
         params: {'page': page},
-        options: Options(
-          headers: {
-            'Authorization':
-                'Bearer ${LocalStorage.getToken()?.accessToken.toString()}',
-          },
-        ),
       );
       return NetworkResponse.fromResponse(
         response,
@@ -40,12 +34,6 @@ class ChatProvider {
       final response = await ConnectService().get(
         messageURL + id,
         params: {'page': page},
-        options: Options(
-          headers: {
-            'Authorization':
-                'Bearer ${LocalStorage.getToken()?.accessToken.toString()}',
-          },
-        ),
       );
       return NetworkResponse.fromResponse(
           response, (json) => MessagePage.fromJson(json));
@@ -62,12 +50,6 @@ class ChatProvider {
       final response = await ConnectService().post(
         fileURL,
         params: formData,
-        options: Options(
-          headers: <String, String>{
-            'Authorization':
-                'Bearer ${LocalStorage.getToken()?.accessToken.toString()}',
-          },
-        ),
       );
       return response;
     } on DioError catch (e) {
@@ -84,12 +66,6 @@ class ChatProvider {
       final response = await ConnectService().post(
         fileURL,
         params: formData,
-        options: Options(
-          headers: <String, String>{
-            'Authorization':
-                'Bearer ${LocalStorage.getToken()?.accessToken.toString()}',
-          },
-        ),
       );
       return response;
     } on DioError catch (e) {
@@ -102,12 +78,6 @@ class ChatProvider {
     try {
       final response = await ConnectService().delete(
         '$deleteURL/$messageId',
-        options: Options(
-          headers: <String, String>{
-            'Authorization':
-                'Bearer ${LocalStorage.getToken()?.accessToken.toString()}',
-          },
-        ),
       );
       return response;
     } on DioError catch (e) {

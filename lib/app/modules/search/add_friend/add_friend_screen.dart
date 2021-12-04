@@ -1,16 +1,22 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:valo_chat_app/app/modules/add_friend/add_friend_controller.dart';
+import 'package:valo_chat_app/app/modules/search/search_detail/search_detail_binding.dart';
+import 'package:valo_chat_app/app/modules/search/search_detail/search_detail_screen.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
+import 'add_friend_controller.dart';
 
-class AddFriendScreen extends StatelessWidget {
-  final controller = Get.find<AddFriendController>();
-
-  AddFriendScreen({Key? key}) : super(key: key);
+class AddFriendScreen extends GetView<AddFriendController> {
+  const AddFriendScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBar(),
+      appBar: AppBar(
+        title: const Text(
+          'Find a friend',
+          style: TextStyle(color: AppColors.light),
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -25,7 +31,7 @@ class AddFriendScreen extends StatelessWidget {
                   validator: (value) => controller.searchValidator(value!),
                   controller: controller.searchController,
                   onChanged: (value) {
-                    if (value.isNotEmpty) {
+                    if (value.isNotEmpty && value.length > 0) {
                       controller.searchUser(value);
                       controller.isSearch.value = true;
                     } else {
@@ -55,18 +61,24 @@ class AddFriendScreen extends StatelessWidget {
                               final searchResponse =
                                   controller.searchResults[index];
                               return ListTile(
-                                onTap: () {},
+                                onTap: () => Get.to(
+                                  () => SearchDetailScreen(),
+                                  arguments: {"userProfile": searchResponse},
+                                  binding: SearchDetailBinding(),
+                                ),
                                 leading: Hero(
                                   tag: searchResponse.user.id,
                                   child: CircleAvatar(
                                     backgroundColor: Colors.blueGrey,
                                     radius: 30,
-                                    backgroundImage: NetworkImage(
+                                    backgroundImage: CachedNetworkImageProvider(
                                         searchResponse.user.imgUrl),
                                   ),
                                 ),
                                 title: Text(
-                                  searchResponse.user.name,
+                                  searchResponse.user.name == ""
+                                      ? "No name"
+                                      : searchResponse.user.name,
                                   style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold),
@@ -103,13 +115,4 @@ class AddFriendScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-AppBar _appBar() {
-  return AppBar(
-    title: const Text(
-      'Add new friend',
-      style: TextStyle(color: AppColors.light),
-    ),
-  );
 }

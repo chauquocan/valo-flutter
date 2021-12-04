@@ -144,6 +144,9 @@ class Conversation {
       };
 }
 
+List<Participant> participantsFromJson(String str) =>
+    List<Participant>.from(jsonDecode(str).map((x) => Participant.fromJson(x)));
+
 class Participant {
   Participant({
     required this.userId,
@@ -206,39 +209,42 @@ class LastMessage {
       };
 }
 
-class ListParticipant {
-    ListParticipant({
-        required this.content,
-        required this.pageable,
-        required this.last,
-        required this.totalElements,
-        required this.totalPages,
-        required this.first,
-        required this.sort,
-        required this.size,
-        required this.number,
-        required this.numberOfElements,
-        required this.empty,
-    });
+class ListFriendsCanAdd {
+  ListFriendsCanAdd({
+    required this.content,
+    required this.pageable,
+    required this.last,
+    required this.totalElements,
+    required this.totalPages,
+    required this.first,
+    required this.sort,
+    required this.size,
+    required this.number,
+    required this.numberOfElements,
+    required this.empty,
+  });
 
-    List<FriendsCanAdd> content;
-    Pageable pageable;
-    bool last;
-    int totalElements;
-    int totalPages;
-    bool first;
-    Sort sort;
-    int size;
-    int number;
-    int numberOfElements;
-    bool empty;
+  List<FriendsCanAdd> content;
+  Pageable pageable;
+  bool last;
+  int totalElements;
+  int totalPages;
+  bool first;
+  Sort sort;
+  int size;
+  int number;
+  int numberOfElements;
+  bool empty;
 
-    factory ListParticipant.fromRawJson(String str) => ListParticipant.fromJson(json.decode(str));
+  factory ListFriendsCanAdd.fromRawJson(String str) =>
+      ListFriendsCanAdd.fromJson(json.decode(str));
 
-    String toRawJson() => json.encode(toJson());
+  String toRawJson() => json.encode(toJson());
 
-    factory ListParticipant.fromJson(Map<String, dynamic> json) => ListParticipant(
-        content: List<FriendsCanAdd>.from(json["content"].map((x) => FriendsCanAdd.fromJson(x))),
+  factory ListFriendsCanAdd.fromJson(Map<String, dynamic> json) =>
+      ListFriendsCanAdd(
+        content: List<FriendsCanAdd>.from(
+            json["content"].map((x) => FriendsCanAdd.fromJson(x))),
         pageable: Pageable.fromJson(json["pageable"]),
         last: json["last"],
         totalElements: json["totalElements"],
@@ -249,9 +255,9 @@ class ListParticipant {
         number: json["number"],
         numberOfElements: json["numberOfElements"],
         empty: json["empty"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "content": List<dynamic>.from(content.map((x) => x.toJson())),
         "pageable": pageable.toJson(),
         "last": last,
@@ -263,38 +269,101 @@ class ListParticipant {
         "number": number,
         "numberOfElements": numberOfElements,
         "empty": empty,
-    };
+      };
 }
 
 class FriendsCanAdd {
-    FriendsCanAdd({
-        required this.id,
-        required this.userId,
-        required this.friendId,
-        required this.addDateAt,
-    });
+  FriendsCanAdd({
+    required this.id,
+    required this.userId,
+    required this.friendId,
+    required this.addDateAt,
+  });
 
-    String id;
-    String userId;
-    String friendId;
-    String addDateAt;
+  String id;
+  String userId;
+  String friendId;
+  String addDateAt;
 
-    factory FriendsCanAdd.fromRawJson(String str) => FriendsCanAdd.fromJson(json.decode(str));
+  factory FriendsCanAdd.fromRawJson(String str) =>
+      FriendsCanAdd.fromJson(json.decode(str));
 
-    String toRawJson() => json.encode(toJson());
+  String toRawJson() => json.encode(toJson());
 
-    factory FriendsCanAdd.fromJson(Map<String, dynamic> json) => FriendsCanAdd(
+  factory FriendsCanAdd.fromJson(Map<String, dynamic> json) => FriendsCanAdd(
         id: json["id"],
         userId: json["userId"],
         friendId: json["friendId"],
         addDateAt: json["addDateAt"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "userId": userId,
         "friendId": friendId,
         "addDateAt": addDateAt,
-    };
+      };
 }
 
+class ListParticipant {
+  ListParticipant({
+    required this.content,
+    required this.pageable,
+    required this.last,
+    required this.totalElements,
+    required this.totalPages,
+    required this.size,
+    required this.number,
+    required this.sort,
+    required this.first,
+    required this.numberOfElements,
+    required this.empty,
+  });
+
+  List<Participant> content;
+  Pageable pageable;
+  bool last;
+  int totalElements;
+  int totalPages;
+  int size;
+  int number;
+  Sort sort;
+  bool first;
+  int numberOfElements;
+  bool empty;
+
+  factory ListParticipant.fromRawJson(String str) =>
+      ListParticipant.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory ListParticipant.fromJson(Map<String, dynamic> json) =>
+      ListParticipant(
+        content: List<Participant>.from(
+            json["content"].map((x) => Participant.fromJson(x))),
+        pageable: Pageable.fromJson(json["pageable"]),
+        last: json["last"],
+        totalElements: json["totalElements"],
+        totalPages: json["totalPages"],
+        size: json["size"],
+        number: json["number"],
+        sort: Sort.fromJson(json["sort"]),
+        first: json["first"],
+        numberOfElements: json["numberOfElements"],
+        empty: json["empty"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "content": List<dynamic>.from(content.map((x) => x.toJson())),
+        "pageable": pageable.toJson(),
+        "last": last,
+        "totalElements": totalElements,
+        "totalPages": totalPages,
+        "size": size,
+        "number": number,
+        "sort": sort.toJson(),
+        "first": first,
+        "numberOfElements": numberOfElements,
+        "empty": empty,
+      };
+}

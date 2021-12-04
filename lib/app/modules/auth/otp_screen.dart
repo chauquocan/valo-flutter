@@ -12,7 +12,7 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   //controller
-  final authController = Get.put(AuthController(authProvider: AuthProvider()));
+  final authController = Get.find<AuthController>();
 
   final FocusNode _pinPutFocusNode = FocusNode();
   //time out otp
