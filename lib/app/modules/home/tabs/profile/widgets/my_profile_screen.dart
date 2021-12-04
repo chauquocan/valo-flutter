@@ -40,7 +40,7 @@ class MyProfile extends StatelessWidget {
                 Get.dialog(AlertDialog(
                   scrollable: true,
                   title: Text(
-                    'Edit information',
+                    'editinformation'.tr,
                     textAlign: TextAlign.center,
                   ),
                   content: StatefulBuilder(

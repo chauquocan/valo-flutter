@@ -24,22 +24,22 @@ class Body extends StatelessWidget {
             ProfileInforWidget(),
             const SizedBox(height: 10),
             ProfileMenu(
-              text: "Notifications",
+              text: "notification".tr,
               icon: "assets/icons/Bell.svg",
               press: () {},
             ),
             ProfileMenu(
-              text: "Help Center",
+              text: "helpcenter".tr,
               icon: "assets/icons/Question mark.svg",
               press: () {},
             ),
             ProfileMenu(
-              text: "Settings",
+              text: "setting".tr,
               icon: "assets/icons/Settings.svg",
               press: () => Get.toNamed('/setting'),
             ),
             ProfileMenu(
-              text: "Log Out",
+              text: "logout".tr,
               icon: "assets/icons/Log out.svg",
               press: () {
                 Get.dialog(

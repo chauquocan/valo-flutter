@@ -77,7 +77,7 @@ class AddFriendScreen extends GetView<AddFriendController> {
                                 ),
                                 title: Text(
                                   searchResponse.user.name == ""
-                                      ? "No name"
+                                      ? "Không có tên"
                                       : searchResponse.user.name,
                                   style: const TextStyle(
                                       fontSize: 16,

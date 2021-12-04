@@ -5,6 +5,7 @@ import 'package:focused_menu/modals.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:valo_chat_app/app/modules/chat/chat_detail/chat_detail_binding.dart';
 import 'package:valo_chat_app/app/modules/chat/chat_detail/chat_detail_screen.dart';
 import 'package:valo_chat_app/app/modules/chat/widgets/widgets.dart';
 import 'package:valo_chat_app/app/modules/group_chat/group.dart';
@@ -66,7 +67,7 @@ class ChatScreen extends GetView<ChatController> {
             if (controller.isGroup == true) {
               Get.to(() => ProfileGroupScreen(), arguments: ['uid']);
             } else
-              Get.to(() => ChatDetailScreen());
+              Get.to(() => ChatDetailScreen(),binding: ChatDetailBinding());
           },
           icon: const Icon(Icons.list_outlined),
         ),

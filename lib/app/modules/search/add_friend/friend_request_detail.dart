@@ -85,8 +85,9 @@ class FriendReqDetailScreen extends GetView<SearchDetailController> {
                                             shape: BoxShape.circle,
                                             image: DecorationImage(
                                               fit: BoxFit.cover,
-                                              image: CachedNetworkImageProvider(controller
-                                                  .userProfile.user.imgUrl),
+                                              image: CachedNetworkImageProvider(
+                                                  controller
+                                                      .userProfile.user.imgUrl),
                                             )),
                                       );
                                     }
@@ -96,7 +97,7 @@ class FriendReqDetailScreen extends GetView<SearchDetailController> {
                               ),
                               Text(
                                 controller.userProfile.user.name == ""
-                                    ? "No name"
+                                    ? "Không có tên"
                                     : controller.userProfile.user.name,
                                 style: TextStyle(
                                     fontSize: 26, color: AppColors.light),
@@ -109,8 +110,16 @@ class FriendReqDetailScreen extends GetView<SearchDetailController> {
                   ],
                 ),
               ),
-              buildInfoField("Phone:", controller.userProfile.user.phone),
-              buildInfoField("E-mail:", controller.userProfile.user.email),
+              buildInfoField(
+                  "Phone:",
+                  controller.userProfile.user.phone == ""
+                      ? "Không có thông tin"
+                      : controller.userProfile.user.phone),
+              buildInfoField(
+                  "E-mail:",
+                  controller.userProfile.user.email == ""
+                      ? "Không có thông tin"
+                      : controller.userProfile.user.email),
               SizedBox(
                 height: 20,
               ),

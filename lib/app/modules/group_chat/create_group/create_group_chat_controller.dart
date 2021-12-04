@@ -2,9 +2,9 @@ part of '../group.dart';
 
 class CreateGroupChatController extends GetxController {
   final chatController = Get.find<TabConversationController>();
-  final  userProvider=Get.find<ProfileProvider>();
-  final  contactProvider=Get.find<ContactProvider>();
-  final  groupChatProvider=Get.find<GroupChatProvider>();
+  final userProvider = Get.find<ProfileProvider>();
+  final contactProvider = Get.find<ContactProvider>();
+  final groupChatProvider = Get.find<GroupChatProvider>();
 
   final contactController = Get.find<TabContactController>();
 
@@ -83,8 +83,9 @@ class CreateGroupChatController extends GetxController {
       final map = {'name': textCtrl.text, 'participants': participants};
       final respones = await groupChatProvider.createGroupChat(map);
       if (respones.ok) {
-        customSnackbar().snackbarDialog('Thanh Cong', 'Tao nhom thanh cong');
+        customSnackbar().snackbarDialog('Thông báo', 'Tạo nhóm thành công');
         chatController.getConversations();
+        Get.offAllNamed('/home');
       } else
         print(respones);
     }

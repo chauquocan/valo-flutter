@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
       locale: TranslationService.locale,
       fallbackLocale: TranslationService.fallbackLocale,
       theme: AppTheme.light, //theme
+      darkTheme: AppTheme.dark,
       getPages: AppPages.pages, //routes
       initialRoute: LocalStorage.checkTokenExpire() == false
           ? Routes.WELCOME
