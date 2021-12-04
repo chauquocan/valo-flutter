@@ -1,5 +1,6 @@
 // English
 const Map<String, String> en = {
+  'language':'Languages',
   'chooselang': 'Choose language',
   'submit': 'Submit',
   'enterphonenumber': 'Enter phone number',
@@ -10,6 +11,7 @@ const Map<String, String> en = {
   'loading': 'Loading...',
   // 'en': 'English',
   // 'vi': 'Vietnamese',
+  'setting':'Settings',
   'changelang': 'English',
   'signin': 'Sign in',
   'signup': 'Sign up',

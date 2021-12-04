@@ -16,8 +16,16 @@ class HomeController extends GetxController {
 
   @override
   void onInit() {
-    StompService().startStomp();
+    StompService().startStomp(
+      LocalStorage.getUser()!.phone,
+      LocalStorage.getToken()!.accessToken,
+    );
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
   }
 
   //tabs

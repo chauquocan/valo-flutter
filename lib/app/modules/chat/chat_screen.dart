@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/chat/chat_detail/chat_detail_screen.dart';
 import 'package:valo_chat_app/app/modules/chat/widgets/widgets.dart';
 import 'package:valo_chat_app/app/modules/group_chat/group.dart';
-import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_friend_screen.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
 import 'chat_controller.dart';
 

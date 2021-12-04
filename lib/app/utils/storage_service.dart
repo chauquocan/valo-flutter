@@ -1,6 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:valo_chat_app/app/data/models/auth_model.dart';
+import 'package:valo_chat_app/app/utils/stomp_service.dart';
 import '../data/models/user_model.dart';
 
 //Storage service for storing local data
@@ -59,27 +60,16 @@ class LocalStorage {
       String rfToken = getToken()!.refreshToken.toString();
       bool isExpire = Jwt.isExpired(token);
       bool refresh = Jwt.isExpired(rfToken);
-      if (!isExpire) {
+      if (!isExpire && !refresh) {
         return true;
       }
-      // else if (isExpire && !refresh) {
-      //   // refreshToken(rfToken);
-      // }
-      // else {
-      //   Get.offAllNamed('/');
-      //   _pref.remove('user');
-      //   _pref.remove('token');
-      //   _pref.clear();
-      //   return false;
-      // }
     }
     return false;
   }
 
   //Log out
   static Future logout() async {
-    await removeToken();
-    await removeUser();
+    StompService().desTroyStomp();
     await _pref.clear();
   }
 

@@ -62,6 +62,8 @@ dependencies:
   flutter_keyboard_visibility: ^5.1.0
   contacts_service: ^0.6.3
   connectivity_plus: ^2.0.3
+  settings_ui: ^1.0.0
+  device_preview: ^1.0.0
 
   file_picker: ^4.2.4
   photo_view: ^0.13.0

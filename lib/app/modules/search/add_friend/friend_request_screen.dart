@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/search/add_friend/add_friend_controller.dart';
 import 'package:valo_chat_app/app/modules/search/add_friend/friend_request_detail.dart';
 import 'package:valo_chat_app/app/modules/search/search_detail/search_detail_binding.dart';
-import 'package:valo_chat_app/app/modules/search/search_detail/search_detail_screen.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:valo_chat_app/app/utils/date.dart';
 
@@ -30,7 +29,8 @@ class FriendRequestScreen extends GetView<AddFriendController> {
                     final friendReq = controller.friendReqList[i];
                     return ListTile(
                         onLongPress: () {},
-                        onTap: () => Get.to(() => FriendReqDetailScreen(req:friendReq),
+                        onTap: () => Get.to(
+                            () => FriendReqDetailScreen(req: friendReq),
                             binding: SearchDetailBinding(),
                             arguments: {"userProfile": userReq}),
                         leading: Hero(
@@ -38,8 +38,8 @@ class FriendRequestScreen extends GetView<AddFriendController> {
                             child: CircleAvatar(
                               backgroundColor: Colors.blueGrey,
                               radius: 30,
-                              backgroundImage:
-                                  CachedNetworkImageProvider(userReq.user.imgUrl),
+                              backgroundImage: CachedNetworkImageProvider(
+                                  userReq.user.imgUrl),
                             )),
                         title: Text(
                           userReq.user.name,
@@ -47,11 +47,30 @@ class FriendRequestScreen extends GetView<AddFriendController> {
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                         subtitle: Text(formatDate(friendReq.sendAt)),
-                        trailing: TextButton(
-                          onPressed: () {
-                            controller.acceptFriendRequest(friendReq.fromId);
-                          },
-                          child: const Text('Chấp nhận'),
+                        trailing: Wrap(
+                          spacing: 10,
+                          children: [
+                            Tooltip(
+                                message: 'Chấp nhận',
+                                child: IconButton(
+                                    onPressed: () => {
+                                          controller.acceptFriendRequest(
+                                              friendReq.fromId),
+                                          controller.friendReqList
+                                              .remove(friendReq)
+                                        },
+                                    icon: Icon(Icons.check))),
+                            Tooltip(
+                                message: 'Từ chối',
+                                child: IconButton(
+                                    onPressed: () => {
+                                          controller.rejectFriendRequest(
+                                              friendReq.fromId),
+                                          controller.friendReqList
+                                              .remove(friendReq)
+                                        },
+                                    icon: Icon(Icons.close))),
+                          ],
                         ));
                   },
                 );
