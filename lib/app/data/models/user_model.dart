@@ -68,10 +68,12 @@ class UserContent {
   UserContent({
     required this.user,
     required this.friend,
+    this.isSent = false,
   });
 
   User user;
   bool friend;
+  bool isSent;
 
   factory UserContent.fromRawJson(String str) =>
       UserContent.fromJson(json.decode(str));
@@ -141,3 +143,5 @@ class User {
         "status": status,
       };
 }
+
+enum Gender { male, female }

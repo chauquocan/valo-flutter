@@ -31,7 +31,7 @@ class AddMemberScreen extends GetView<AddMemberController> {
                   leading: CircleAvatar(
                     backgroundColor: Colors.blueGrey,
                     radius: 30,
-                    backgroundImage: NetworkImage(user.imgUrl),
+                    backgroundImage: CachedNetworkImageProvider(user.imgUrl),
                   ),
                   title: Text(
                     user.name,

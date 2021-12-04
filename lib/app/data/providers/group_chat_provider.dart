@@ -1,9 +1,10 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:valo_chat_app/app/data/connect_service.dart';
 import 'package:valo_chat_app/app/data/models/conversation_model.dart';
 import 'package:valo_chat_app/app/data/models/network_response.dart';
 import 'package:valo_chat_app/app/data/models/response_model.dart';
-import 'package:valo_chat_app/app/utils/storage_service.dart';
 
 class GroupChatProvider {
   static const String userURL = 'users/';
@@ -17,10 +18,6 @@ class GroupChatProvider {
       final response = await ConnectService().post(
         conversationURL,
         params: map,
-        options: Options(headers: {
-          'Authorization':
-              'Bearer ${LocalStorage.getToken()?.accessToken.toString()}'
-        }),
       );
       return NetworkResponse.fromResponse(
           response, (json) => Conversation.fromJson(json));
@@ -31,35 +28,27 @@ class GroupChatProvider {
 
   // Future<NetworkResponse>
 
-  Future<NetworkResponse<ResponseMessage>> addMember(Map map) async {
+  Future<NetworkResponse<ListParticipant>> addMember(Map map) async {
     try {
       final response = await ConnectService().put(
         '$conversationURL/add',
         params: map,
-        options: Options(headers: {
-          'Authorization':
-              'Bearer ${LocalStorage.getToken()?.accessToken.toString()}'
-        }),
       );
       return NetworkResponse.fromResponse(
-          response, (json) => ResponseMessage.fromJson(json));
+          response, (json) => ListParticipant.fromJson(json));
     } on DioError catch (e) {
       return NetworkResponse.withError(e.response);
     }
   }
 
-  Future<NetworkResponse<ResponseMessage>> kickMember(Map map) async {
+  Future<NetworkResponse<ListParticipant>> kickMember(Map map) async {
     try {
       final response = await ConnectService().put(
         '$conversationURL/kick',
         params: map,
-        options: Options(headers: {
-          'Authorization':
-              'Bearer ${LocalStorage.getToken()?.accessToken.toString()}'
-        }),
       );
       return NetworkResponse.fromResponse(
-          response, (json) => ResponseMessage.fromJson(json));
+          response, (json) => ListParticipant.fromJson(json));
     } on DioError catch (e) {
       return NetworkResponse.withError(e.response);
     }
@@ -69,10 +58,6 @@ class GroupChatProvider {
     try {
       final response = await ConnectService().delete(
         '$conversationURL/delete/$id',
-        options: Options(headers: {
-          'Authorization':
-              'Bearer ${LocalStorage.getToken()?.accessToken.toString()}'
-        }),
       );
       return NetworkResponse.fromResponse(
           response, (json) => ResponseMessage.fromJson(json));
@@ -85,10 +70,6 @@ class GroupChatProvider {
     try {
       final response = await ConnectService().put(
         '$conversationURL/leave/$id',
-        options: Options(headers: {
-          'Authorization':
-              'Bearer ${LocalStorage.getToken()?.accessToken.toString()}'
-        }),
       );
       return NetworkResponse.fromResponse(
           response, (json) => ResponseMessage.fromJson(json));
@@ -97,14 +78,14 @@ class GroupChatProvider {
     }
   }
 
-  Future<NetworkResponse<ListParticipant>> getFriendsCanAddToGroup(
+  Future<NetworkResponse<ListFriendsCanAdd>> getFriendsCanAddToGroup(
       String conversationId) async {
     try {
       final response = await ConnectService().get(
         '$membersCanAddURL$conversationId',
       );
       return NetworkResponse.fromResponse(
-          response, (json) => ListParticipant.fromJson(json));
+          response, (json) => ListFriendsCanAdd.fromJson(json));
     } on DioError catch (e) {
       return NetworkResponse.withError(e.response);
     }

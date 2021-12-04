@@ -1,12 +1,33 @@
 import 'package:get/get.dart';
-import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
+import 'package:valo_chat_app/app/data/models/user_model.dart';
+import 'package:valo_chat_app/app/data/providers/user_provider.dart';
 
 class ProfileFriendController extends GetxController {
-  final ProfileProvider profileProvider;
+  final profileProvider = Get.find<ProfileProvider>();
 
-  ProfileFriendController({required this.profileProvider});
+  final _userProfile = UserContent(
+    user: User(
+        id: '',
+        name: '',
+        gender: '',
+        dateOfBirth: DateTime.now(),
+        phone: '',
+        email: '',
+        address: '',
+        imgUrl: '',
+        status: ''),
+    friend: false,
+  ).obs;
 
-  final _id = ''.obs;
-  final _name = ''.obs;
-  final _avatar = ''.obs;
+  UserContent get userProfile => _userProfile.value;
+
+  set userProfile(value) {
+    _userProfile.value = value;
+  }
+
+  @override
+  void onInit() {
+    userProfile = Get.arguments['userProfile'];
+    super.onInit();
+  }
 }

@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
+import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_friend_screen.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:valo_chat_app/app/utils/date.dart';
 
@@ -10,6 +12,11 @@ class ConversationTab extends GetView<TabConversationController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        heroTag: 'btnConversation',
+        child: const Tooltip(message: 'Tạo nhóm', child: Icon(Icons.add)),
+        onPressed: () => Get.toNamed('/creategroup'),
+      ),
       appBar: AppBar(
         title: Text('chat'.tr),
         shape: const RoundedRectangleBorder(
@@ -18,38 +25,8 @@ class ConversationTab extends GetView<TabConversationController> {
         actions: [
           IconButton(
               onPressed: () => Get.toNamed('/newfriend'),
-              icon: const Icon(Icons.search)),
-          PopupMenuButton<String>(
-            onSelected: (value) {
-              switch (value) {
-                case ("newgroup"):
-                  Get.toNamed('/creategroup');
-                  break;
-                case ("newfriend"):
-                  Get.toNamed('/newfriend');
-                  break;
-                case ("friendrequest"):
-                  Get.toNamed('/friendrequest');
-                  break;
-              }
-            },
-            itemBuilder: (BuildContext context) {
-              return [
-                const PopupMenuItem(
-                  child: Text("New friend"),
-                  value: "newfriend",
-                ),
-                const PopupMenuItem(
-                  child: Text("New group"),
-                  value: "newgroup",
-                ),
-                const PopupMenuItem(
-                  child: Text("Friend Request"),
-                  value: "friendrequest",
-                ),
-              ];
-            },
-          )
+              icon: const Tooltip(
+                  message: 'Tìm bạn', child: const Icon(Icons.search))),
         ],
       ),
       body: SafeArea(
@@ -73,14 +50,16 @@ class ConversationTab extends GetView<TabConversationController> {
                               conversation.conversation.participants,
                           "avatar": conversation.conversation.imageUrl,
                           "isGroup": conversation.isGroup,
+                          "unreadMess":conversation.unReadMessage,
                         }),
                         leading: Hero(
                           tag: conversation.conversation.id,
                           child: CircleAvatar(
                             backgroundColor: Colors.blueGrey,
                             radius: 30,
-                            backgroundImage: NetworkImage(
-                                conversation.conversation.imageUrl),
+                            backgroundImage: CachedNetworkImageProvider(
+                              conversation.conversation.imageUrl,
+                            ),
                           ),
                         ),
                         title: Text(

@@ -1,7 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:valo_chat_app/app/modules/add_friend/add_friend_controller.dart';
+import 'package:valo_chat_app/app/modules/search/add_friend/add_friend_controller.dart';
+import 'package:valo_chat_app/app/modules/search/add_friend/friend_request_detail.dart';
+import 'package:valo_chat_app/app/modules/search/search_detail/search_detail_binding.dart';
+import 'package:valo_chat_app/app/modules/search/search_detail/search_detail_screen.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
+import 'package:valo_chat_app/app/utils/date.dart';
 
 class FriendRequestScreen extends GetView<AddFriendController> {
   const FriendRequestScreen({Key? key}) : super(key: key);
@@ -21,33 +26,32 @@ class FriendRequestScreen extends GetView<AddFriendController> {
                 return ListView.builder(
                   itemCount: controller.friendReqList.length,
                   itemBuilder: (context, i) {
-                    final user = controller.userList[i];
+                    final userReq = controller.userList[i];
                     final friendReq = controller.friendReqList[i];
                     return ListTile(
                         onLongPress: () {},
-                        onTap: () {},
+                        onTap: () => Get.to(() => FriendReqDetailScreen(req:friendReq),
+                            binding: SearchDetailBinding(),
+                            arguments: {"userProfile": userReq}),
                         leading: Hero(
-                            tag: user.id,
+                            tag: userReq.user,
                             child: CircleAvatar(
                               backgroundColor: Colors.blueGrey,
                               radius: 30,
-                              backgroundImage: NetworkImage(user.imgUrl),
+                              backgroundImage:
+                                  CachedNetworkImageProvider(userReq.user.imgUrl),
                             )),
                         title: Text(
-                          user.name,
+                          userReq.user.name,
                           style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
-                        subtitle: Text(friendReq.sendAt),
+                        subtitle: Text(formatDate(friendReq.sendAt)),
                         trailing: TextButton(
                           onPressed: () {
                             controller.acceptFriendRequest(friendReq.fromId);
                           },
-                          child: Obx(
-                            () => controller.isAccepted.value
-                                ? const Text('Bạn bè')
-                                : const Text('Chấp nhận'),
-                          ),
+                          child: const Text('Chấp nhận'),
                         ));
                   },
                 );

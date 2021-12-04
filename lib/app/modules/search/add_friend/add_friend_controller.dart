@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/data/models/friend_request.dart';
-import 'package:valo_chat_app/app/data/models/profile_model.dart';
+import 'package:valo_chat_app/app/data/models/user_model.dart';
 import 'package:valo_chat_app/app/data/providers/friend_request_provider.dart';
-import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
+import 'package:valo_chat_app/app/data/providers/user_provider.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
 import 'package:valo_chat_app/app/utils/storage_service.dart';
@@ -13,17 +13,14 @@ class AddFriendController extends GetxController {
   final chatController = Get.find<TabConversationController>();
   final contactController = Get.find<TabContactController>();
   //User service
-  final ProfileProvider userProvider;
-  final FriendRequestProvider friendProvider;
-
-  AddFriendController(
-      {required this.userProvider, required this.friendProvider});
+  final userProvider = Get.find<ProfileProvider>();
+  final friendProvider = Get.find<FriendRequestProvider>();
 
   var searchController = TextEditingController();
 
   final searchResults = <UserContent>[].obs;
   final friendReqList = <FriendRequest>[].obs;
-  final userList = <User>[].obs;
+  final userList = <UserContent>[].obs;
   final searchFormKey = GlobalKey<FormState>();
 
   //loading
@@ -59,7 +56,7 @@ class AddFriendController extends GetxController {
   Future sendFriendReq(String toId) async {
     final response = await friendProvider.sendFriendRequest(toId);
     if (response.ok) {
-      isSent.value = true;
+      // isSent.value = true;
       customSnackbar().snackbarDialog('Success', 'Request sent');
     } else {
       customSnackbar().snackbarDialog('Fail', 'You already sent request');
@@ -76,7 +73,7 @@ class AddFriendController extends GetxController {
       if (response.data!.content.length > 0) {
         for (var request in response.data!.content) {
           final user = await userProvider.getUserById(request.fromId);
-          userList.add(user.data!);
+          userList.add(UserContent(user: user.data!, friend: false));
         }
         friendReqList.value = response.data!.content;
         isLoading.value = false;
@@ -99,6 +96,7 @@ class AddFriendController extends GetxController {
       customSnackbar().snackbarDialog('Thanh cong', '${response.data}');
       chatController.getConversations();
       contactController.getContactsFromAPI();
+      getFriendReqList();
       isAccepted.value = true;
     } else {
       customSnackbar().snackbarDialog('That bai', '${response.data}');
@@ -118,18 +116,19 @@ class AddFriendController extends GetxController {
       );
       if (searchResponse.ok) {
         if (searchResponse.data!.content.length > 0) {
-          Future.delayed(const Duration(milliseconds: 200), () {
-            // Do something
-            for (var item in searchResponse.data!.content) {
-              if (currentUser!.phone != item.user.phone ||
-                  currentUser.name != item.user.name) {
-                _profiles.add(item);
-              }
+          // Future.delayed(const Duration(milliseconds: 200), () {
+          // Do something
+          for (var item in searchResponse.data!.content) {
+            if (currentUser!.phone != item.user.phone ||
+                currentUser.name != item.user.name) {
+              _profiles.add(item);
             }
-            searchResults.value = _profiles;
-            isLoading.value = false;
-            usersLoadded.value = true;
-          });
+          }
+          searchResults.value = _profiles;
+          isLoading.value = false;
+          usersLoadded.value = true;
+          // }
+          // );
         } else {
           isLoading.value = false;
           usersLoadded.value = false;

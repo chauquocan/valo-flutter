@@ -14,10 +14,6 @@ class ContactProvider {
       final response = await ConnectService().get(
         getFriendsUrl,
         params: {'page': page},
-        options: Options(headers: {
-          'Authorization':
-              'Bearer ${LocalStorage.getToken()?.accessToken.toString()}'
-        }),
       );
       return NetworkResponse.fromResponse(
         response,
@@ -27,4 +23,5 @@ class ContactProvider {
       throw Exception("$e///////////$s");
     }
   }
+
 }

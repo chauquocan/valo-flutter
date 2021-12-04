@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:intl/intl.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +11,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
 import 'package:valo_chat_app/app/data/models/conversation_model.dart';
 import 'package:valo_chat_app/app/data/models/message_model.dart';
-import 'package:valo_chat_app/app/data/models/profile_model.dart';
+import 'package:valo_chat_app/app/data/models/user_model.dart';
 import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
 import 'package:valo_chat_app/app/data/providers/group_chat_provider.dart';
-import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
+import 'package:valo_chat_app/app/data/providers/user_provider.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
 import 'package:valo_chat_app/app/utils/stomp_service.dart';
@@ -22,22 +23,16 @@ import 'package:valo_chat_app/app/widgets/widgets.dart';
 
 class ChatController extends GetxController {
   final conversationController = Get.find<TabConversationController>();
-  final ChatProvider chatProvider;
-  final ProfileProvider profileProvider;
-  final GroupChatProvider groupChatProvider;
+  final chatProvider = Get.find<ChatProvider>();
+  final profileProvider = Get.find<ProfileProvider>();
+  final groupChatProvider = Get.find<GroupChatProvider>();
 
-  TabContactController contactController = Get.find();
-
-  ChatController({
-    required this.chatProvider,
-    required this.profileProvider,
-    required this.groupChatProvider,
-  });
+  final contactController = Get.find<TabContactController>();
 
   final textController = TextEditingController();
   final keyboardController = KeyboardVisibilityController();
   final scrollController = ScrollController();
-  final currentUserId = LocalStorage.getUser()?.id;
+  final currentUserId = LocalStorage.getUser()?.id.toString();
 
   final _id = ''.obs;
   final _name = ''.obs;
@@ -76,6 +71,7 @@ class ChatController extends GetxController {
   final _tagging = false.obs;
   final _members = <User>[].obs;
   final _listTagged = <User>[].obs;
+  final _unreadMess= 0.obs;
 
   get showMore => _showMore.value;
 
@@ -124,6 +120,13 @@ class ChatController extends GetxController {
   set isGroup(value) {
     _isGroup.value = value;
   }
+
+  get unreadMess => _unreadMess.value;
+
+  set unreadMess(value) {
+    _unreadMess.value = value;
+  }
+
 
   get emojiShowing => _emojiShowing.value;
 
@@ -216,9 +219,9 @@ class ChatController extends GetxController {
     avatar = Get.arguments['avatar'];
     isGroup = Get.arguments['isGroup'];
     participants = Get.arguments['participants'];
-
-    getmembers();
-    getMessages(id, _page.value);
+    unreadMess = Get.arguments['unreadMess'];
+    getMembers();
+    getMessages(id);
 
     StompService.stompClient.subscribe(
       destination: '/users/queue/messages',
@@ -227,6 +230,10 @@ class ChatController extends GetxController {
     StompService.stompClient.subscribe(
       destination: '/users/queue/messages/delete',
       callback: (StompFrame frame) => onCancelMessage(frame),
+    );
+    StompService.stompClient.subscribe(
+      destination: '/users/queue/read',
+      callback: (StompFrame frame) => onReadMessage(frame),
     );
 
     var keyboardVisibilityController = KeyboardVisibilityController();
@@ -258,7 +265,7 @@ class ChatController extends GetxController {
   }
 
   //get member in group
-  Future getmembers() async {
+  Future getMembers() async {
     List<User> membersTemp = [];
     for (var content in participants) {
       final profile = await profileProvider.getUserById(content.userId);
@@ -272,70 +279,37 @@ class ChatController extends GetxController {
   // kick member
   Future kickMember(userId, conversationId) async {
     final map = {'userId': userId, 'conversationId': conversationId};
-    final respones = await groupChatProvider.kickMember(map);
-    if (respones.ok) {
-      Get.snackbar('Sucessful', 'Member has been kicked');
-      Get.back();
+    final response = await groupChatProvider.kickMember(map);
+    if (response.ok) {
+      participants = response.data!.content;
+      getMembers();
+      customSnackbar().snackbarDialog('Sucessful', 'Member has been kicked');
     } else {
-      Get.snackbar('Failed', 'You are not Admin');
+      customSnackbar().snackbarDialog('Failed', 'You are not Admin');
     }
   }
-
-  ///////// add member
-  // Future addMember(userId, conversationId) async {
-  //   final map = {'userId': userId, 'conversationId': conversationId};
-  //   final respones = await groupChatProvider.addMember(map);
-  //   if (respones.ok) {
-  //     Get.back();
-  //     Get.snackbar('Sucessful', 'Member has been added');
-  //   } else
-  //     (print(respones));
-  //   Get.snackbar('Failed', 'You are not Admin');
-  // }
-
-  // // lấy ds bạn bè k có trong conversation
-  // Future getContacts() async {
-  //   contactController.getContactsFromAPI();
-  //   users.clear();
-  //   for (var contact in contactController.contactId) {
-  //     final user = await profileProvider.getUserById(contact.friendId);
-  //     for (Profile content in members) {
-  //       if (content.id != user.data!.id) {
-  //         users.add(
-  //           Profile(
-  //               id: user.data!.id,
-  //               name: user.data!.name,
-  //               gender: user.data!.gender,
-  //               dateOfBirth: user.data!.dateOfBirth,
-  //               phone: user.data!.phone,
-  //               email: user.data!.email,
-  //               address: user.data!.address,
-  //               imgUrl: user.data!.imgUrl,
-  //               status: user.data!.status),
-  //         );
-  //       }
-  //     }
-  //   }
-  // }
 
   // leave group
   Future leaveGroup(String id) async {
     final respones = await groupChatProvider.leaveGroup(id);
     if (respones.ok) {
-      Get.back();
-    } else
-      print(respones);
+      conversationController.getConversations();
+      Get.offAllNamed('/home');
+    } else {}
   }
 
   // delete group
   Future deleteGroup(String id) async {
     final respones = await groupChatProvider.deleteGroup(id);
     if (respones.ok) {
+      conversationController.getConversations();
+      Get.offAllNamed('/home');
+      customSnackbar()
+          .snackbarDialog('Sucessfully', 'Delete group sucessfully');
+    } else {
       Get.back();
-      Get.snackbar('Sucessful', 'Member has been added');
-    } else
-      print(respones);
-    Get.snackbar('Failed', 'You are not Admin');
+      customSnackbar().snackbarDialog('Failed', 'You are not Admin');
+    }
   }
 
   ///
@@ -356,12 +330,22 @@ class ChatController extends GetxController {
     _messages.refresh();
   }
 
+  Future onReadMessage(StompFrame frame) async {
+    var response = jsonDecode(frame.body!);
+    print(response);
+    // MessageContent mess = MessageContent.fromJson(response);
+    // var text =
+    //     messages.firstWhere((element) => element.message.id == mess.message.id);
+    // text.message = mess.message;
+    // _messages.refresh();
+  }
+
   /* 
     Get Messages
    */
-  Future getMessages(String id, int page) async {
+  Future getMessages(String id) async {
     List<MessageContent> _messages = [];
-    final response = await chatProvider.getMesages(id, page);
+    final response = await chatProvider.getMesages(id, 0);
     if (response.ok) {
       if (response.data!.content.length > 0) {
         for (var content in response.data!.content) {
@@ -370,7 +354,7 @@ class ChatController extends GetxController {
         messages.assignAll(_messages);
         isLoading = false;
         messagesLoaded = true;
-        _page.value++;
+        updateReadMessage();
       } else {
         isLoading = false;
         messagesLoaded = false;
@@ -486,16 +470,19 @@ class ChatController extends GetxController {
 
   void updateReadMessage() async {
     for (var mess in messages) {
-      String body = json.encode({
-        "messageId": mess.message.id,
-        "conversationId": id,
-        "userId": currentUserId,
-        "readAt": DateTime.now(),
-      });
-      StompService.stompClient.send(
-        destination: "/app/read",
-        body: body,
-      );
+      if (mess.message.senderId != currentUserId) {
+        String body = json.encode({
+          "messageId": mess.message.id,
+          "conversationId": id,
+          "userId": currentUserId,
+          "readAt":
+              DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").format(DateTime.now()),
+        });
+        StompService.stompClient.send(
+          destination: "/app/read",
+          body: body,
+        );
+      }
     }
   }
 
@@ -657,7 +644,7 @@ class ChatController extends GetxController {
         }
       } else {
         print(response);
-        Get.snackbar('Loi', "Loi gui api");
+        customSnackbar().snackbarDialog('Loi', "Loi gui api");
       }
     } else {
       // User canceled the picker
@@ -676,13 +663,14 @@ class ChatController extends GetxController {
             await chatProvider.deleteMessage(messageId);
             Get.back();
           } else {
-            Get.snackbar('Thong bao', 'tin nhan nay da duoc thu hoi');
+            customSnackbar()
+                .snackbarDialog('Thong bao', 'tin nhan nay da duoc thu hoi');
           }
         },
         () => Get.back(),
       );
     } else {
-      Get.snackbar(
+      customSnackbar().snackbarDialog(
           'Thong bao', 'ban khong the thu hoi tin nhan cua nguoi khac');
     }
   }

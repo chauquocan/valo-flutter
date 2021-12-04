@@ -4,8 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:valo_chat_app/app/data/providers/auth_provider.dart';
 import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
 import 'package:valo_chat_app/app/data/providers/contact_provider.dart';
+import 'package:valo_chat_app/app/data/providers/friend_request_provider.dart';
+import 'package:valo_chat_app/app/data/providers/group_chat_provider.dart';
 
-import 'package:valo_chat_app/app/data/providers/profile_provider.dart';
+import 'package:valo_chat_app/app/data/providers/user_provider.dart';
+import 'package:valo_chat_app/app/modules/chat/chat.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversation.dart';

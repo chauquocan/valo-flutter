@@ -68,11 +68,11 @@ class Regex {
 
   static String? phoneValidator(String value) {
     if (value.isEmpty) {
-      // customSnackbar().snackbarDialog('Lỗi', 'Bạn chưa nhập số điện thoại!');
+      customSnackbar().snackbarDialog('Lỗi', 'Bạn chưa nhập số điện thoại!');
       return 'Please enter phone number';
     }
     if (!value.isPhoneNumber) {
-      // customSnackbar().snackbarDialog('Lỗi', 'Số điện thoại không hợp lệ!');
+      customSnackbar().snackbarDialog('Lỗi', 'Số điện thoại không hợp lệ!');
       return 'Invalid phone number';
     }
     return null;
@@ -90,11 +90,20 @@ class Regex {
     return null;
   }
 
+  static bool isAddress(String name) {
+    RegExp regExp = RegExp(
+        r"^[\S][a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ.,/\s+]+[\S]$");
+    return regExp.hasMatch(name);
+  }
+
   static String? addressValidator(String value) {
     if (value.isEmpty) {
       return 'Please enter address';
     }
     if (value.length < 2) {
+      return 'Invalid address';
+    }
+    if (!isAddress(value)) {
       return 'Invalid address';
     }
     return null;

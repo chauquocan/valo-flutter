@@ -1,14 +1,12 @@
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/auth/auth.dart';
-import 'package:valo_chat_app/app/modules/add_friend/add_friend_binding.dart';
-import 'package:valo_chat_app/app/modules/add_friend/add_friend_screen.dart';
-import 'package:valo_chat_app/app/modules/add_friend/friend_request_screen.dart';
 import 'package:valo_chat_app/app/modules/chat/chat.dart';
 import 'package:valo_chat_app/app/modules/group_chat/group.dart';
 import 'package:valo_chat_app/app/modules/home/home.dart';
 import 'package:valo_chat_app/app/modules/auth/login/login.dart';
-import 'package:valo_chat_app/app/modules/auth/register/register.dart';
-import 'package:valo_chat_app/app/modules/home/tabs/profile/profile.dart';
+import 'package:valo_chat_app/app/modules/search/add_friend/add_friend_binding.dart';
+import 'package:valo_chat_app/app/modules/search/add_friend/add_friend_screen.dart';
+import 'package:valo_chat_app/app/modules/search/add_friend/friend_request_screen.dart';
 import 'package:valo_chat_app/app/modules/settings/setting_binding.dart';
 import 'package:valo_chat_app/app/modules/settings/setting_screen.dart';
 import 'package:valo_chat_app/app/modules/welcome/welcome_screen.dart';
@@ -52,10 +50,6 @@ abstract class AppPages {
         numberPhone: '',
       ),
       binding: AuthBinding(),
-    ),
-    GetPage(
-      name: Routes.EDITPROFILE,
-      page: () => EditProfileScreen(),
     ),
     GetPage(
       name: Routes.CREATEGROUP,

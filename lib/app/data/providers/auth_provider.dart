@@ -28,7 +28,7 @@ class AuthProvider {
   //Đăng nhập
   Future<NetworkResponse<LoginRespone>> login(Map map) async {
     try {
-      final response = await ConnectService().post(loginURL, params: map);
+      final response = await ConnectService().postAuth(loginURL, params: map);
       return NetworkResponse.fromResponse(
         response,
         (json) => LoginRespone.fromJson(json),
@@ -41,7 +41,8 @@ class AuthProvider {
   //Đăng ký
   Future<NetworkResponse<ResponseMessage>> register(Map map) async {
     try {
-      final response = await ConnectService().post(registerURL, params: map);
+      final response =
+          await ConnectService().postAuth(registerURL, params: map);
       return NetworkResponse.fromResponse(
         response,
         (json) => ResponseMessage.fromJson(json),
@@ -79,12 +80,6 @@ class AuthProvider {
       final response = await ConnectService().post(
         logoutURL,
         params: map,
-        options: Options(
-          headers: <String, String>{
-            'Authorization':
-                'Bearer ${LocalStorage.getToken()?.accessToken.toString()}',
-          },
-        ),
       );
       return NetworkResponse.fromResponse(
         response,

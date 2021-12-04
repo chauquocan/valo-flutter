@@ -1,17 +1,10 @@
 part of '../group.dart';
 
-
 class AddMemberController extends GetxController {
   final chatController = Get.find<ChatController>();
   final contactController = Get.find<TabContactController>();
-
-  final GroupChatProvider groupChatProvider;
-  final ProfileProvider profileProvider;
-
-  AddMemberController({
-    required this.groupChatProvider,
-    required this.profileProvider,
-  });
+  final  groupChatProvider= Get.find<GroupChatProvider>();
+  final  profileProvider= Get.find<ProfileProvider>();
 
   final _users = <User>[].obs;
   final _id = ''.obs;
@@ -38,11 +31,13 @@ class AddMemberController extends GetxController {
   //////// add member
   Future addMember(userId, conversationId) async {
     final map = {'userId': userId, 'conversationId': conversationId};
-    final respones = await groupChatProvider.addMember(map);
-    if (respones.ok) {
-      Get.back();
+    final response = await groupChatProvider.addMember(map);
+    if (response.ok) {
+      chatController.participants = response.data!.content;
+      chatController.getMembers();
+      customSnackbar().snackbarDialog('Sucessfully', 'Add member sucessfully');
     }
-    print(respones);
+    print(response);
   }
 
   // lấy ds bạn bè k có trong conversation    -- ko lay dc

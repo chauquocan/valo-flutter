@@ -2,7 +2,7 @@ part of 'register.dart';
 
 class RegisterController extends GetxController {
   //user service
-  final AuthProvider authProvider;
+  final  authProvider = Get.find<AuthProvider>();
   //controller field
   final TextEditingController _fullNameInput = TextEditingController();
   final TextEditingController _phoneInput = TextEditingController();
@@ -18,7 +18,6 @@ class RegisterController extends GetxController {
   final _showPass = true.obs;
   final _showConfirmPass = true.obs;
 
-  RegisterController({required this.authProvider});
 
   //Sign up
   Future register(String phoneNumber, String fullName, String password,

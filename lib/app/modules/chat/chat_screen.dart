@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:valo_chat_app/app/modules/chat/chat_detail/chat_detail_screen.dart';
 import 'package:valo_chat_app/app/modules/chat/widgets/widgets.dart';
 import 'package:valo_chat_app/app/modules/group_chat/group.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_friend_screen.dart';
@@ -18,7 +20,59 @@ class ChatScreen extends GetView<ChatController> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        appBar: _appBar(),
+        appBar: AppBar(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
+      ),
+      leadingWidth: 40,
+      titleSpacing: 0,
+      leading: IconButton(
+        onPressed: () => Get.back(),
+        icon: Icon(
+          Icons.arrow_back,
+          size: 30,
+        ),
+      ),
+      title: Container(
+        margin: const EdgeInsets.all(5),
+        child: Row(
+          children: [
+            Hero(
+              tag: controller.id,
+              child: CircleAvatar(
+                radius: 20,
+                backgroundColor: Colors.blueGrey,
+                backgroundImage: CachedNetworkImageProvider(controller.avatar),
+              ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  controller.name,
+                  style: const TextStyle(
+                    fontSize: 18.5,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        IconButton(
+          onPressed: () {
+            if (controller.isGroup == true) {
+              Get.to(() => ProfileGroupScreen(), arguments: ['uid']);
+            } else
+              Get.to(() => ChatDetailScreen());
+          },
+          icon: const Icon(Icons.list_outlined),
+        ),
+      ],
+    ),
         body: Column(
           children: [
             Expanded(
@@ -72,16 +126,12 @@ class ChatScreen extends GetView<ChatController> {
               textEditingController: controller.textController,
               onSubmit: () => controller.sendTextMessage(),
               sendImageFromCamera: () => controller.pickImageFromCamera(),
-              sendImageFromGallery: () =>
-                  // controller.pickImageFromCamera(ImageSource.gallery),
-                  controller.pickImagesFromGallery(),
+              sendImageFromGallery: () => controller.pickImagesFromGallery(),
               sendIcon: () =>
                   controller.emojiShowing = !controller.emojiShowing,
               sendSticker: () =>
                   controller.stickerShowing = !controller.stickerShowing,
-              // sendGif: () => controller.gifShowing = !controller.gifShowing,
               sendGif: () => controller.sendGif(context),
-
               sendFile: () => controller.pickFilesFromGallery(),
               isEmojiVisible: controller.emojiShowing,
               isKeyboardVisible: controller.isKeyboardVisible,
@@ -97,8 +147,15 @@ class ChatScreen extends GetView<ChatController> {
   Widget _buildSticker() {
     return GetX<ChatController>(
       builder: (_) {
-        return Visibility(
-            visible: controller.stickerShowing, child: const WidgetSticker());
+        return AnimatedSize(
+          duration: Duration(milliseconds: 300),
+          child: SizedBox(
+            height: controller.stickerShowing ? null : 0.0,
+            child: const WidgetSticker(),
+          ),
+        );
+        // return Visibility(
+        //     visible: controller.stickerShowing, child: const WidgetSticker());
       },
     );
   }
@@ -141,80 +198,7 @@ class ChatScreen extends GetView<ChatController> {
     });
   }
 
-  AppBar _appBar() {
-    return AppBar(
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
-      ),
-      leadingWidth: 70,
-      titleSpacing: 0,
-      leading: InkWell(
-        onTap: () {
-          Get.offNamed('/home');
-        },
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.arrow_back,
-              size: 30,
-            ),
-            Hero(
-              tag: controller.id,
-              child: CircleAvatar(
-                radius: 20,
-                backgroundColor: Colors.blueGrey,
-                backgroundImage: NetworkImage(controller.avatar),
-              ),
-            ),
-          ],
-        ),
-      ),
-      title: Container(
-        margin: const EdgeInsets.all(5),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              controller.name,
-              style: const TextStyle(
-                fontSize: 18.5,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const Text(
-              'last seen today',
-              style: TextStyle(
-                fontSize: 13,
-              ),
-            ),
-          ],
-        ),
-      ),
-      actions: [
-        // IconButton(
-        //   onPressed: () {
-        // Get.to(VideoCallScreen());
-        //   },
-        //   icon:const Icon(Icons.videocam),
-        // ),
-        // IconButton(
-        //   onPressed: () {},
-        //   icon:const Icon(Icons.call),
-        // ),
-        IconButton(
-          onPressed: () {
-            if (controller.isGroup == true) {
-              Get.to(() => ProfileGroupScreen(), arguments: ['uid']);
-            } else
-              Get.to(() => ProfileFriendScreen());
-          },
-          icon: const Icon(Icons.list_outlined),
-        ),
-      ],
-    );
-  }
+  
 
   Widget buildListTag() {
     return GetX<ChatController>(

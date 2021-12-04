@@ -28,8 +28,9 @@ class MyApp extends StatelessWidget {
       fallbackLocale: TranslationService.fallbackLocale,
       theme: AppTheme.light, //theme
       getPages: AppPages.pages, //routes
-      initialRoute:
-          LocalStorage.checkTokenExpire() == false ? Routes.WELCOME : Routes.HOME,
+      initialRoute: LocalStorage.checkTokenExpire() == false
+          ? Routes.WELCOME
+          : Routes.HOME,
       initialBinding: AppBinding(),
     );
   }

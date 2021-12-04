@@ -4,12 +4,17 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:valo_chat_app/app/data/connect_service.dart';
 import 'package:valo_chat_app/app/utils/storage_service.dart';
 
+import 'notification_service.dart';
+
 class Global {
   static Future init() async {
     await dotenv.load(fileName: ".env"); // dotenv
     await LocalStorage.init();
     await Firebase.initializeApp(); //firebase auth
     WidgetsFlutterBinding.ensureInitialized();
+
+    // await NotificationService().init(); //
+    // await NotificationService().requestIOSPermissions(); //
     ConnectService();
   }
 }
