@@ -49,7 +49,7 @@ class Regex {
     }
     if (!isPasswordValid(value)) {
       customSnackbar().snackbarDialog('Lưu ý',
-          'Mật khẩu tối thiểu 8 kí tự bao gồm chữ, số, kí tự đặc biệt');
+          'Mật khẩu tối thiểu 8 kí tự bao gồm chữ thường, chữ hoa, số, kí tự đặc biệt');
       return 'Invalid password';
     }
     return null;

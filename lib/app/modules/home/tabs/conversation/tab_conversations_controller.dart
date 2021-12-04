@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
@@ -6,6 +7,7 @@ import 'package:valo_chat_app/app/data/models/conversation_model.dart';
 import 'package:valo_chat_app/app/data/models/user_model.dart';
 import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
 import 'package:valo_chat_app/app/data/providers/user_provider.dart';
+import 'package:valo_chat_app/app/modules/chat/chat.dart';
 import 'package:valo_chat_app/app/utils/stomp_service.dart';
 import 'package:valo_chat_app/app/utils/storage_service.dart';
 
@@ -14,7 +16,7 @@ class TabConversationController extends GetxController {
   final userProvider = Get.find<ProfileProvider>();
 
   final scrollController = ScrollController();
-  final _page = 0.obs;
+  final _page = 1.obs;
   final isLoading = true.obs;
   final conversationsLoaded = false.obs;
   final conversations = <ConversationContent>[].obs;
@@ -55,8 +57,9 @@ class TabConversationController extends GetxController {
     var conversation = conversations.value.firstWhere((e) =>
         e.lastMessage.message.conversationId == mess.message.conversationId);
     conversation.lastMessage.message = mess.message;
-    if(mess.message.senderId!=LocalStorage.getUser()?.id){
+    if (mess.message.senderId != LocalStorage.getUser()?.id) {
       conversation.unReadMessage++;
+      sendNotification(conversation);
     }
     conversations.remove(conversation);
     conversations.insert(0, conversation);
@@ -225,6 +228,34 @@ class TabConversationController extends GetxController {
         getMoreConversation();
         update();
       }
+    });
+  }
+
+  void sendNotification(ConversationContent conversation) {
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        AwesomeNotifications().requestPermissionToSendNotifications();
+      }
+    });
+    AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        id: 1,
+        channelKey: '_message',
+        title: conversation.lastMessage.userName,
+        body: conversation.lastMessage.message.content,
+        backgroundColor: Colors.lightBlue,
+      ),
+    );
+
+    AwesomeNotifications().actionStream.listen((event) {
+      Get.toNamed('/chat', arguments: {
+        "id": conversation.conversation.id,
+        "name": conversation.conversation.name,
+        "participants": conversation.conversation.participants,
+        "avatar": conversation.conversation.imageUrl,
+        "isGroup": conversation.isGroup,
+        "unreadMess": conversation.unReadMessage,
+      });
     });
   }
 }

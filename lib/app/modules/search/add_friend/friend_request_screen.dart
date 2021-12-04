@@ -42,7 +42,9 @@ class FriendRequestScreen extends GetView<AddFriendController> {
                                   userReq.user.imgUrl),
                             )),
                         title: Text(
-                          userReq.user.name,
+                          userReq.user.name == ""
+                              ? "Không có thông tin"
+                              : userReq.user.name,
                           style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),

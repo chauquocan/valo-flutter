@@ -20,7 +20,7 @@ class _SettingScreenState extends State<SettingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings'),
+        title: Text('setting'.tr),
       ),
       body: buildSettingsList(),
     );
@@ -38,16 +38,16 @@ class _SettingScreenState extends State<SettingScreen> {
                 leading: Icon(Icons.language),
                 onPressed: (context) => Get.to(() => LanguagesScreen())),
             SettingsTile.switchTile(
-              title: 'Dark mode',
+              title: 'darkmode'.tr,
               subtitle: Get.isDarkMode ? "Dark" : "Light",
               leading: Icon(Icons.color_lens_outlined),
               switchValue: darkMode,
               onToggle: (value) {
-                setState(() {
-                  darkMode = value;
-                  Get.changeTheme(
-                      Get.isDarkMode ? ThemeData.light() : ThemeData.dark());
-                });
+                // setState(() {
+                //   darkMode = value;
+                //   Get.changeTheme(
+                //       Get.isDarkMode ? ThemeData.light() : ThemeData.dark());
+                // });
               },
             ),
           ],
@@ -56,17 +56,17 @@ class _SettingScreenState extends State<SettingScreen> {
           title: 'Account',
           tiles: [
             SettingsTile(
-              title: 'Phone number',
+              title: 'phoneNumber'.tr,
               leading: Icon(Icons.phone),
               subtitle: LocalStorage.getUser()?.phone,
             ),
             SettingsTile(
-              title: 'Email',
+              title: 'email'.tr,
               leading: Icon(Icons.email),
               subtitle: LocalStorage.getUser()?.email,
             ),
             SettingsTile(
-              title: 'Sign out',
+              title: 'logout'.tr,
               leading: Icon(Icons.exit_to_app),
               onPressed: (context) {
                 Get.dialog(
@@ -111,10 +111,9 @@ class _SettingScreenState extends State<SettingScreen> {
         SettingsSection(
           title: 'Misc',
           tiles: [
+            SettingsTile(title: 'terms'.tr, leading: Icon(Icons.description)),
             SettingsTile(
-                title: 'Terms of Service', leading: Icon(Icons.description)),
-            SettingsTile(
-                title: 'Open source licenses',
+                title: 'licenses'.tr,
                 leading: Icon(Icons.collections_bookmark)),
           ],
         ),
@@ -131,7 +130,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 ),
               ),
               Text(
-                'Version: 1.0',
+                'version'.tr + ': 1.0',
                 style: TextStyle(color: Color(0xFF777777)),
               ),
             ],

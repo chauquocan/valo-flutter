@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/search/search_detail/search_detail_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
-import 'package:intl/intl.dart';
 
 class SearchDetailScreen extends GetView<SearchDetailController> {
   const SearchDetailScreen({Key? key}) : super(key: key);
@@ -17,7 +16,7 @@ class SearchDetailScreen extends GetView<SearchDetailController> {
           elevation: 0,
           leading: IconButton(
             onPressed: () => Get.back(),
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back,
               size: 30,
             ),
@@ -110,8 +109,16 @@ class SearchDetailScreen extends GetView<SearchDetailController> {
                   ],
                 ),
               ),
-              buildInfoField("Phone:", controller.userProfile.user.phone),
-              buildInfoField("E-mail:", controller.userProfile.user.email),
+              buildInfoField(
+                  "Phone:",
+                  controller.userProfile.user.phone == ""
+                      ? "Không có thông tin"
+                      : controller.userProfile.user.phone),
+              buildInfoField(
+                  "E-mail:",
+                  controller.userProfile.user.email == ""
+                      ? "Không có thông tin"
+                      : controller.userProfile.user.email),
               SizedBox(
                 height: 20,
               ),

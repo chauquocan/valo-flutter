@@ -86,8 +86,9 @@ class ProfileFriendScreen extends GetView<ProfileFriendController> {
                                             shape: BoxShape.circle,
                                             image: DecorationImage(
                                               fit: BoxFit.cover,
-                                              image: CachedNetworkImageProvider(controller
-                                                  .userProfile.user.imgUrl),
+                                              image: CachedNetworkImageProvider(
+                                                  controller
+                                                      .userProfile.user.imgUrl),
                                             )),
                                       );
                                     }
@@ -121,9 +122,9 @@ class ProfileFriendScreen extends GetView<ProfileFriendController> {
                         : Text('kết bạn'),
                     style: TextButton.styleFrom(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                          EdgeInsets.symmetric(horizontal: 50, vertical: 10),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
+                          borderRadius: BorderRadius.circular(20)),
                       elevation: 0,
                       primary: Colors.white,
                       backgroundColor: Colors.lightBlue,
@@ -131,33 +132,30 @@ class ProfileFriendScreen extends GetView<ProfileFriendController> {
                   ),
                 ],
               ),
-              buildInfoField("Phone:", controller.userProfile.user.phone),
-              buildInfoField("Gender:", controller.userProfile.user.gender),
+              buildInfoField(
+                  "Phone:",
+                  controller.userProfile.user.phone == ""
+                      ? "Không có thông tin"
+                      : controller.userProfile.user.phone),
+              buildInfoField(
+                  "Gender:",
+                  controller.userProfile.user.gender == ""
+                      ? "Không có thông tin"
+                      : controller.userProfile.user.gender),
               buildInfoField(
                   "birth-day:",
                   DateFormat('dd/MM/yyyy')
                       .format(controller.userProfile.user.dateOfBirth)),
-              buildInfoField("E-mail:", controller.userProfile.user.email),
-              buildInfoField("Address:", controller.userProfile.user.address),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     RaisedButton(
-              //       color: Colors.red[400],
-              //       padding: EdgeInsets.symmetric(horizontal: 30),
-              //       shape: RoundedRectangleBorder(
-              //           borderRadius: BorderRadius.circular(10)),
-              //       onPressed: () {},
-              //       child: const Text(
-              //         "Block",
-              //         style: TextStyle(
-              //             fontSize: 14,
-              //             letterSpacing: 2.2,
-              //             color: Colors.white),
-              //       ),
-              //     ),
-              //   ],
-              // ),
+              buildInfoField(
+                  "E-mail:",
+                  controller.userProfile.user.email == ""
+                      ? "Không có thông tin"
+                      : controller.userProfile.user.email),
+              buildInfoField(
+                  "Address:",
+                  controller.userProfile.user.address == ""
+                      ? "Không có thông tin"
+                      : controller.userProfile.user.address),
             ],
           ),
         ),

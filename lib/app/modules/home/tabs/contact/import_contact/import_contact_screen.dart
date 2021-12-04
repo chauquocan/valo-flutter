@@ -12,7 +12,7 @@ class ImportContactScreen extends GetView<ImportContactController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Nhập từ danh bạ'),
+        title: Text('importcontact'.tr),
         actions: [
           Tooltip(
             message: 'refresh'.tr,
@@ -49,8 +49,9 @@ class ImportContactScreen extends GetView<ImportContactController> {
                                     child: CircleAvatar(
                                       backgroundColor: Colors.blueGrey,
                                       radius: 30,
-                                      backgroundImage: CachedNetworkImageProvider(
-                                          searchResponse.user.imgUrl),
+                                      backgroundImage:
+                                          CachedNetworkImageProvider(
+                                              searchResponse.user.imgUrl),
                                     ),
                                   ),
                                   title: Text(

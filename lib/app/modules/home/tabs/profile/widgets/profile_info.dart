@@ -48,7 +48,6 @@ class ProfileInforWidget extends StatelessWidget {
                   fit: BoxFit.cover,
                   imageBuilder: (context, imageProvider) => CircleAvatar(
                     radius: 32,
-                    backgroundColor: AppColors.light,
                     backgroundImage: imageProvider,
                   ),
                   placeholder: (context, url) => const CircleAvatar(
@@ -56,16 +55,13 @@ class ProfileInforWidget extends StatelessWidget {
                     backgroundImage:
                         AssetImage("assets/images/place_avatar.png"),
                     child: Center(
-                      child: CircularProgressIndicator(
-                        backgroundColor: AppColors.light,
-                      ),
+                      child: CircularProgressIndicator(),
                     ),
                   ),
                   errorWidget: (context, url, error) => Icon(Icons.error),
                 );
               } else {
                 return CircleAvatar(
-                  backgroundColor: Colors.transparent,
                   backgroundImage: CachedNetworkImageProvider(
                       LocalStorage.getUser()!.imgUrl.toString()),
                   radius: 32,
@@ -75,7 +71,9 @@ class ProfileInforWidget extends StatelessWidget {
           },
         ),
         title: Text(
-          '${LocalStorage.getUser()?.name}',
+          '${LocalStorage.getUser()?.name}' == ""
+              ? "No name"
+              : '${LocalStorage.getUser()?.name}',
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         subtitle: Row(

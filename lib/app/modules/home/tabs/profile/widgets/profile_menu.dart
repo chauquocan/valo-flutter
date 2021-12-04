@@ -22,7 +22,7 @@ class ProfileMenu extends StatelessWidget {
           BoxShadow(
               color: Colors.lightBlue, offset: Offset(0, 2), blurRadius: 5.0),
         ],
-        color: Colors.white,
+        color: AppColors.light,
         borderRadius: BorderRadius.circular(7.0),
       ),
       margin: const EdgeInsets.only(top: 10),
@@ -35,7 +35,7 @@ class ProfileMenu extends StatelessWidget {
           child: SvgPicture.asset(
             icon,
             fit: BoxFit.cover,
-            color: Colors.blue,
+            color: AppColors.primary,
             height: 40,
             width: 40,
           ),
