@@ -6,7 +6,7 @@ import '../data/models/user_model.dart';
 //Storage service for storing local data
 class LocalStorage {
   LocalStorage._();
-  static LocalStorage _instance = LocalStorage._();
+  static final LocalStorage _instance = LocalStorage._();
   factory LocalStorage() => _instance;
   static late SharedPreferences _pref;
 
@@ -17,7 +17,6 @@ class LocalStorage {
 
   //save token
   static Future saveToken(LoginRespone token) async {
-    await _pref.remove('token');
     await _pref.setString('token', token.toRawJson());
   }
 
@@ -82,5 +81,15 @@ class LocalStorage {
     await removeToken();
     await removeUser();
     await _pref.clear();
+  }
+
+  static Future saveThemeStatus(value) async {
+    await _pref.setBool('theme', value);
+  }
+
+  static Future getTheme() async {
+    final raw = _pref.getBool('theme');
+    if (raw == null) return null;
+    return raw;
   }
 }
