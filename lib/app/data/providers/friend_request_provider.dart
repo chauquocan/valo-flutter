@@ -3,7 +3,6 @@ import 'package:valo_chat_app/app/data/connect_service.dart';
 import 'package:valo_chat_app/app/data/models/friend_request.dart';
 import 'package:valo_chat_app/app/data/models/network_response.dart';
 import 'package:valo_chat_app/app/data/models/response_model.dart';
-import 'package:valo_chat_app/app/utils/storage_service.dart';
 
 class FriendRequestProvider {
   static const String getFriendRequestUrl = '/friend-request';
@@ -50,6 +49,17 @@ class FriendRequestProvider {
         response,
         (json) => ResponseMessage.fromJson(json),
       );
+    } on DioError catch (e) {
+      return NetworkResponse.withError(e.response);
+    }
+  }
+
+  Future<NetworkResponse<ResponseMessage>> rejectFriendRequest(
+      String id) async {
+    try {
+      final response = await ConnectService().delete('$getFriendRequestUrl/$id');
+      return NetworkResponse.fromResponse(
+          response, (json) => ResponseMessage.fromJson(json));
     } on DioError catch (e) {
       return NetworkResponse.withError(e.response);
     }

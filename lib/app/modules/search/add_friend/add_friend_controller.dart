@@ -93,13 +93,22 @@ class AddFriendController extends GetxController {
   Future acceptFriendRequest(String id) async {
     final response = await friendProvider.acceptFriendRequest(id);
     if (response.ok) {
-      customSnackbar().snackbarDialog('Thanh cong', '${response.data}');
+      customSnackbar().snackbarDialog('Thông báo', 'Kết bạn thành công');
       chatController.getConversations();
       contactController.getContactsFromAPI();
       getFriendReqList();
       isAccepted.value = true;
     } else {
-      customSnackbar().snackbarDialog('That bai', '${response.data}');
+      customSnackbar().snackbarDialog('Thông báo', 'Có lỗi! hãy thử lại sau');
+    }
+  }
+
+  Future rejectFriendRequest(String id) async {
+    final response = await friendProvider.rejectFriendRequest(id);
+    if (response.ok) {
+      customSnackbar().snackbarDialog('Thông báo', 'Từ chối thành công');
+    } else {
+      customSnackbar().snackbarDialog('Thông báo', 'Có lỗi! hãy thử lại sau');
     }
   }
 
