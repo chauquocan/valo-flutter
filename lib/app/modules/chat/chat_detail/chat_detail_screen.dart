@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_menu.dart';
+import 'package:valo_chat_app/app/modules/chat/chat_detail/media/media_binding.dart';
+import 'package:valo_chat_app/app/modules/chat/chat_detail/media/media_screen.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
-
 import '../chat_controller.dart';
 
 class ChatDetailScreen extends GetView<ChatController> {
@@ -28,7 +28,7 @@ class ChatDetailScreen extends GetView<ChatController> {
           width: double.infinity,
           child: SingleChildScrollView(
             child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Center(
@@ -50,13 +50,25 @@ class ChatDetailScreen extends GetView<ChatController> {
                     height: 30,
                   ),
                   buildTextField("Name:", controller.name, Colors.blue),
-                  ProfileMenu(
-                    text: "Media",
-                    icon: "assets/icons/group.svg",
-                    press: () {
-                      // Get.to(() => MemberScreen());
-                    },
-                  ),
+                  SizedBox(
+                    height: size.height * 0.085,
+                    width: size.width * 0.85,
+                    child: TextButton.icon(
+                      onPressed: () =>
+                          Get.to(() => MediaScreen(), binding: MediaBinding()),
+                      icon: Icon(Icons.mms),
+                      label: Text(
+                        'Media',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      style: TextButton.styleFrom(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        backgroundColor: const Color(0xFFF2F4FB),
+                      ),
+                    ),
+                  )
                 ]),
           )),
     );

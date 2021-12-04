@@ -39,7 +39,7 @@ class ChatController extends GetxController {
   final _avatar = ''.obs;
   final _senderAvatar = <String>[].obs;
   final _isGroup = false.obs;
-  final _page = 0.obs;
+  final _page = 1.obs;
 
   final _users = <User>[].obs;
 
@@ -71,7 +71,7 @@ class ChatController extends GetxController {
   final _tagging = false.obs;
   final _members = <User>[].obs;
   final _listTagged = <User>[].obs;
-  final _unreadMess= 0.obs;
+  final _unreadMess = 0.obs;
 
   get showMore => _showMore.value;
 
@@ -126,7 +126,6 @@ class ChatController extends GetxController {
   set unreadMess(value) {
     _unreadMess.value = value;
   }
-
 
   get emojiShowing => _emojiShowing.value;
 

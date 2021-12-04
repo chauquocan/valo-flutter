@@ -22,7 +22,6 @@ class RetryOnConnectionChangeInterceptor extends Interceptor {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    print(response);
     handler.next(response);
   }
 

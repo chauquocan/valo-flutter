@@ -55,6 +55,9 @@ class TabConversationController extends GetxController {
     var conversation = conversations.value.firstWhere((e) =>
         e.lastMessage.message.conversationId == mess.message.conversationId);
     conversation.lastMessage.message = mess.message;
+    if(mess.message.senderId!=LocalStorage.getUser()?.id){
+      conversation.unReadMessage++;
+    }
     conversations.remove(conversation);
     conversations.insert(0, conversation);
     conversations.refresh();

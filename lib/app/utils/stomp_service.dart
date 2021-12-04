@@ -11,9 +11,9 @@ class StompService {
   final _userId = LocalStorage.getToken()?.username;
   final _token = LocalStorage.getToken()?.accessToken;
 
-  void startStomp() {
+  void startStomp(String numberPhone,String token) {
     if (stompClient == null) {
-      initStomp();
+      initStomp(numberPhone,token);
     }
     stompClient.activate();
   }
@@ -24,7 +24,7 @@ class StompService {
     }
   }
 
-  void initStomp() {
+  void initStomp(String numberPhone,String token) {
     stompClient = StompClient(
       config: StompConfig.SockJS(
           url: '${wsUrl}',
@@ -38,12 +38,12 @@ class StompService {
             print(error.toString());
           },
           stompConnectHeaders: {
-            'userId': _userId.toString(),
-            'token': _token.toString(),
+            'userId': numberPhone,
+            'token': token,
           },
           webSocketConnectHeaders: {
-            'userId': _userId,
-            'token': _token,
+            'userId': numberPhone,
+            'token': token,
           }),
     );
   }

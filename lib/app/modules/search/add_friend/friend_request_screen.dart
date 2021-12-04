@@ -53,14 +53,22 @@ class FriendRequestScreen extends GetView<AddFriendController> {
                             Tooltip(
                                 message: 'Chấp nhận',
                                 child: IconButton(
-                                    onPressed: () => controller
-                                        .acceptFriendRequest(friendReq.fromId),
+                                    onPressed: () => {
+                                          controller.acceptFriendRequest(
+                                              friendReq.fromId),
+                                          controller.friendReqList
+                                              .remove(friendReq)
+                                        },
                                     icon: Icon(Icons.check))),
                             Tooltip(
                                 message: 'Từ chối',
                                 child: IconButton(
-                                    onPressed: () => controller
-                                        .rejectFriendRequest(friendReq.fromId),
+                                    onPressed: () => {
+                                          controller.rejectFriendRequest(
+                                              friendReq.fromId),
+                                          controller.friendReqList
+                                              .remove(friendReq)
+                                        },
                                     icon: Icon(Icons.close))),
                           ],
                         ));
