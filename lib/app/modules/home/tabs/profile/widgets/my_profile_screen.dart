@@ -100,7 +100,7 @@ class MyProfile extends StatelessWidget {
                                   lastDate: DateTime.now(),
                                   dateLabelText: 'Date',
                                   onChanged: (val) => {
-                                    controller.inputDate.text,
+                                    controller.inputDate.text=val,
                                   },
                                   validator: (val) {
                                     return null;
