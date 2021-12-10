@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:valo_chat_app/app/data/models/auth_model.dart';
@@ -81,5 +83,19 @@ class LocalStorage {
     final raw = _pref.getBool('theme');
     if (raw == null) return null;
     return raw;
+  }
+
+  ThemeMode getThemeMode(){
+    return isSavedDarkMode()?ThemeMode.dark:ThemeMode.light;
+  }
+  bool isSavedDarkMode(){
+    return _pref.getBool('isDarkMode')??false;
+  }
+  void saveThemeMode(bool isDarkMode){
+    _pref.setBool('isDarkMode', isDarkMode);
+  }
+  void changeThemeMode(){
+    Get.changeThemeMode(isSavedDarkMode()?ThemeMode.light:ThemeMode.dark);
+    saveThemeMode(!isSavedDarkMode());
   }
 }

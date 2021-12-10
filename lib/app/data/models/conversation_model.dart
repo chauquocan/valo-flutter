@@ -72,12 +72,14 @@ class ConversationContent {
     required this.lastMessage,
     required this.unReadMessage,
     this.isGroup = false,
+    this.status ='offline',
   });
 
   Conversation conversation;
   LastMessage lastMessage;
   int unReadMessage;
   bool isGroup;
+  String status;
 
   factory ConversationContent.fromRawJson(String str) =>
       ConversationContent.fromJson(json.decode(str));

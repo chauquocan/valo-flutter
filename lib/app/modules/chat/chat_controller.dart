@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:intl/intl.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:file_picker/file_picker.dart';
@@ -8,6 +9,8 @@ import 'package:get/get.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:giphy_get/giphy_get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
 import 'package:valo_chat_app/app/data/models/conversation_model.dart';
 import 'package:valo_chat_app/app/data/models/message_model.dart';
@@ -26,7 +29,6 @@ class ChatController extends GetxController {
   final chatProvider = Get.find<ChatProvider>();
   final profileProvider = Get.find<ProfileProvider>();
   final groupChatProvider = Get.find<GroupChatProvider>();
-
   final contactController = Get.find<TabContactController>();
 
   final textController = TextEditingController();
@@ -331,12 +333,7 @@ class ChatController extends GetxController {
 
   Future onReadMessage(StompFrame frame) async {
     var response = jsonDecode(frame.body!);
-    print(response);
-    // MessageContent mess = MessageContent.fromJson(response);
-    // var text =
-    //     messages.firstWhere((element) => element.message.id == mess.message.id);
-    // text.message = mess.message;
-    // _messages.refresh();
+    print(response.toString());
   }
 
   /* 
@@ -389,7 +386,7 @@ class ChatController extends GetxController {
   /* 
     Pagination
    */
-  paginateMessages() async {
+  Future<void> paginateMessages() async {
     scrollController.addListener(() {
       if (scrollController.position.maxScrollExtent ==
           scrollController.position.pixels) {
@@ -425,46 +422,6 @@ class ChatController extends GetxController {
       }
       textController.clear();
     }
-
-    // textController.
-    // if (textController.text.isNotEmpty) {
-    //   // TODO(ff3105): need to optimize
-    //   if (listTagged.isNotEmpty) {
-    //     for (var value in listTagged) {
-    //       ntfProvider.pushNotifyToPeer(
-    //           name,
-    //           UserProvider.getCurrentUser().displayName! + ' has mention you',
-    //           UserProvider.getCurrentUser().uid,
-    //           value.deviceToken ?? []);
-    //     }
-    //   }
-
-    //   final message = Message(
-    //     senderUID: UserProvider.getCurrentUser().uid,
-    //     senderName: UserProvider.getCurrentUser().displayName!,
-    //     senderAvatar: UserProvider.getCurrentUser().photoURL,
-    //     message: textController.text,
-    //     createdAt: DateTime.now().millisecondsSinceEpoch,
-    //     type: 0,
-    //   );
-    //   if (fromContact) {
-    //     provider.sendMessageFromContact(id, message);
-    //     ntfProvider.pushNotifyToPeer(
-    //         UserProvider.getCurrentUser().displayName!,
-    //         textController.text,
-    //         UserProvider.getCurrentUser().uid,
-    //         deviceToken ?? []);
-    //   } else {
-    //     provider.sendMessage(id, message);
-    //     ntfProvider.pushNotifyToPeer(
-    //         name,
-    //         UserProvider.getCurrentUser().displayName! +
-    //             ': ${textController.text}',
-    //         UserProvider.getCurrentUser().uid,
-    //         deviceToken ?? []);
-    //   }
-
-    // }
   }
 
   void updateReadMessage() async {
@@ -481,6 +438,10 @@ class ChatController extends GetxController {
           destination: "/app/read",
           body: body,
         );
+        final read = conversationController.conversations
+            .firstWhere((element) => element.conversation.id == id);
+        read.unReadMessage = 0;
+        conversationController.conversations.refresh();
       }
     }
   }
@@ -497,29 +458,6 @@ class ChatController extends GetxController {
       destination: "/app/chat",
       body: body,
     );
-
-    // final message = Message(
-    //     senderUID: UserProvider.getCurrentUser().uid,
-    //     senderName: UserProvider.getCurrentUser().displayName!,
-    //     senderAvatar: UserProvider.getCurrentUser().photoURL,
-    //     message: url!,
-    //     createdAt: DateTime.now().millisecondsSinceEpoch,
-    //     type: 2);
-    // if (fromContact) {
-    //   provider.sendMessageFromContact(id, message);
-    //   ntfProvider.pushNotifyToPeer(
-    //       UserProvider.getCurrentUser().displayName!,
-    //       UserProvider.getCurrentUser().displayName! + ' send a sticker',
-    //       UserProvider.getCurrentUser().uid,
-    //       deviceToken ?? []);
-    // } else {
-    //   provider.sendMessage(id, message);
-    //   ntfProvider.pushNotifyToPeer(
-    //       name,
-    //       UserProvider.getCurrentUser().displayName! + ' send a sticker ',
-    //       UserProvider.getCurrentUser().uid,
-    //       deviceToken ?? []);
-    // }
   }
 
   void sendGif(context) async {
@@ -709,5 +647,23 @@ class ChatController extends GetxController {
   void _moveCursorToLast() {
     textController.selection = TextSelection.fromPosition(
         TextPosition(offset: textController.text.length));
+  }
+
+  void downloadFile(String fileUrl, String filename) async {
+    final status = await Permission.storage.request();
+    if (status.isGranted) {
+      final downloadsDirectory = await getExternalStorageDirectory();
+      final id = await FlutterDownloader.enqueue(
+        url: fileUrl,
+        savedDir: downloadsDirectory!.path,
+        fileName: filename,
+        showNotification:
+            true, // show download progress in status bar (for Android)
+        openFileFromNotification:
+            true, // click on notification to open downloaded file (for Android)
+      );
+    } else {
+      customSnackbar().snackbarDialog('Thông báo', 'Quyền truy cập bị từ chối');
+    }
   }
 }

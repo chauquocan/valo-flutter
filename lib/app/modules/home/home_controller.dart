@@ -34,21 +34,21 @@ class HomeController extends GetxController {
     PersistentBottomNavBarItem(
       icon: const Icon(CupertinoIcons.chat_bubble_text_fill),
       title: 'chat'.tr,
-      activeColorPrimary: AppColors.secondary,
+      activeColorPrimary: Color.fromRGBO(33, 150, 243, 1),
       inactiveColorPrimary: CupertinoColors.systemGrey,
     ),
     //Contact tab
     PersistentBottomNavBarItem(
       icon: const Icon(CupertinoIcons.group_solid),
       title: 'contact'.tr,
-      activeColorPrimary: AppColors.secondary,
+      activeColorPrimary: Color.fromRGBO(33, 150, 243, 1),
       inactiveColorPrimary: CupertinoColors.systemGrey,
     ),
     //Profile tab
     PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.person_alt_circle),
         title: 'personal'.tr,
-        activeColorPrimary: AppColors.secondary,
+        activeColorPrimary: Color.fromRGBO(33, 150, 243, 1),
         inactiveColorPrimary: CupertinoColors.systemGrey),
   ];
   final tabs = [

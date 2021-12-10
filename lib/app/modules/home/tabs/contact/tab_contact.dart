@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/contacts_list.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
+import 'package:valo_chat_app/app/widgets/widgets.dart';
 
 import 'import_contact/import_contact_binding.dart';
 import 'import_contact/import_contact_screen.dart';
@@ -20,13 +21,10 @@ class _ContactTabState extends State<ContactTab> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-          appBar: AppBar(
-            title: Text('contact'.tr),
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(10),
-              ),
-            ),
+          backgroundColor: Theme.of(context).backgroundColor,
+          appBar: WidgetAppBar(
+            title: 'contact'.tr,
+            blackButton: false,
           ),
           floatingActionButton: FloatingActionButton(
               heroTag: 'btnContact',
@@ -52,13 +50,13 @@ class _ContactTabState extends State<ContactTab> {
                         }
                       },
                       decoration: InputDecoration(
-                          labelText: 'Search',
-                          hintText: 'Phone number, name',
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor)),
-                          suffixIcon: Icon(Icons.search,
-                              color: Theme.of(context).primaryColor)),
+                        labelText: 'Search',
+                        hintText: 'Phone number, name',
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Theme.of(context).primaryColor)),
+                        suffixIcon: Icon(Icons.search),
+                      ),
                     ),
                   ),
                   Column(
@@ -66,6 +64,9 @@ class _ContactTabState extends State<ContactTab> {
                       Padding(
                         padding: const EdgeInsets.only(top: 5, bottom: 5),
                         child: ListTile(
+                          tileColor: Get.isDarkMode
+                              ? Colors.grey.shade900
+                              : Colors.white,
                           contentPadding: EdgeInsets.all(10),
                           leading: const CircleAvatar(
                             radius: 30,
@@ -83,6 +84,9 @@ class _ContactTabState extends State<ContactTab> {
                       Padding(
                         padding: const EdgeInsets.only(top: 5, bottom: 5),
                         child: ListTile(
+                          tileColor: Get.isDarkMode
+                              ? Colors.grey.shade900
+                              : Colors.white,
                           contentPadding: EdgeInsets.all(10),
                           leading: const CircleAvatar(
                             radius: 30,

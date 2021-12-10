@@ -1,16 +1,25 @@
-part of 'auth.dart';
+import 'dart:async';
 
-//OTP view
-class OtpScreen extends StatefulWidget {
-  const OtpScreen({Key? key, required this.phoneNumber}) : super(key: key);
-  //Phone number from auth view
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:pinput/pin_put/pin_put.dart';
+import 'package:valo_chat_app/app/themes/theme.dart';
+import 'package:valo_chat_app/app/utils/regex.dart';
+import 'package:valo_chat_app/app/widgets/widgets.dart';
+
+import '../auth.dart';
+
+class OtpResetScreen extends StatefulWidget {
+  OtpResetScreen({Key? key, required this.phoneNumber}) : super(key: key);
   final String phoneNumber;
 
   @override
-  State<OtpScreen> createState() => _OtpScreenState();
+  _OtpResetScreenState createState() => _OtpResetScreenState();
 }
 
-class _OtpScreenState extends State<OtpScreen> {
+class _OtpResetScreenState extends State<OtpResetScreen> {
   //controller
   final authController = Get.find<AuthController>();
 
@@ -52,7 +61,7 @@ class _OtpScreenState extends State<OtpScreen> {
   void _resendCode() {
     //other code here
     setState(() {
-      authController.verifyPhoneNumber(widget.phoneNumber);
+      authController.verifyResetPasswordPhoneNumber(widget.phoneNumber);
       secondsRemaining = 60;
       enableResend = false;
     });
@@ -76,7 +85,7 @@ class _OtpScreenState extends State<OtpScreen> {
       body: Background(
         child: SingleChildScrollView(
           child: Form(
-            key: authController._otpFormKey,
+            key: authController.otpResetFormKey,
             child: Column(
               children: [
                 //title
@@ -99,7 +108,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   child: PinPut(
                     validator: (value) => Regex.pinValidator(value!),
                     fieldsCount: 6,
-                    controller: authController.otpController,
+                    controller: authController.otpResetController,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     autofillHints: const [AutofillHints.creditCardNumber],
                     focusNode: _pinPutFocusNode,
@@ -130,8 +139,8 @@ class _OtpScreenState extends State<OtpScreen> {
                           width: size.width * 0.6,
                           onPressed: () {
                             FocusScope.of(context).unfocus();
-                            authController
-                                ._verifyOTP(authController.otpController.text);
+                            authController.verifyResetPasswordOTP(
+                                authController.otpResetController.text);
                           }),
                 ),
                 const SizedBox(height: 30),

@@ -17,13 +17,13 @@ const Map<String, String> vi = {
   'editinformation': 'Sửa thông tin',
   'version': 'Phiên bản',
 
-  'importcontact':'Tìm bạn từ danh bạ',
-
+  'importcontact': 'Tìm bạn từ danh bạ',
 
   'submit': 'Xác nhận',
   'enterphonenumber': 'Nhập số điện thoại',
   'authTitle': 'Xác thực số điện thoại',
   'enterotp': 'Nhập code OTP',
+  'forgot': 'Quên mật khẩu?',
   'sendOTP': 'Gửi tin nhắn xác thực',
   'resendOTP': 'Gửi lại mã xác thực',
   'loading': 'Đang xử lý...',

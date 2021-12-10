@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:valo_chat_app/app/routes/app_pages.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:valo_chat_app/app/utils/app_binding.dart';
@@ -16,9 +17,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.blue),
-    ); //status bar
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+    )); //status bar
     return GetMaterialApp(
       title: 'Valo chat app',
       debugShowCheckedModeBanner: false,
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
       translations: TranslationService(),
       locale: TranslationService.locale,
       fallbackLocale: TranslationService.fallbackLocale,
+      themeMode: LocalStorage().getThemeMode(),
       theme: AppTheme.light, //theme
       darkTheme: AppTheme.dark,
       getPages: AppPages.pages, //routes

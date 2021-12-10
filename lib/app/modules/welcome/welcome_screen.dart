@@ -1,63 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nb_utils/nb_utils.dart';
+import 'package:valo_chat_app/app/modules/welcome/welcome_controller.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 
 //Welcome screen
 class WelcomeScreen extends StatelessWidget {
-  //languages
-  final List locale = [
-    {'name': 'English', 'locale': const Locale('en', 'US')},
-    {'name': 'Vietnamese', 'locale': const Locale('vi', 'VN')},
-  ];
+  final controller = Get.put(WelcomeController());
 
   WelcomeScreen({Key? key}) : super(key: key);
-  //Get language
-  updateLanguage(Locale locale) {
-    Get.back();
-    Get.updateLocale(locale);
-  }
-
-  //Choosing language dialog
-  buildLanguageDialog(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (builder) {
-          return AlertDialog(
-            title: Text('chooselang'.tr),
-            content: SizedBox(
-              width: double.maxFinite,
-              child: ListView.separated(
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GestureDetector(
-                        child: Text(locale[index]['name']),
-                        onTap: () {
-                          updateLanguage(locale[index]['locale']);
-                        },
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return const Divider(
-                      color: Colors.blue,
-                    );
-                  },
-                  itemCount: locale.length),
-            ),
-          );
-        });
-  }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return SafeArea(
-      child: Scaffold(
-        body: Background(
+    return Scaffold(
+      body: Background(
+        child: SafeArea(
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -96,25 +56,16 @@ class WelcomeScreen extends StatelessWidget {
                   onPressed: () => Get.toNamed('/auth'),
                 ),
                 //Choose language button
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        buildLanguageDialog(context);
-                      },
-                      child: Text(
-                        'changelang'.tr,
-                        style: const TextStyle(
-                            color: AppColors.light,
-                            decoration: TextDecoration.underline),
-                      ),
-                    ),
-                    const Icon(
-                      Icons.arrow_drop_down_outlined,
-                      color: AppColors.light,
-                    ),
-                  ],
+                TextButton(
+                  onPressed: () {
+                    controller.buildLanguageDialog(context);
+                  },
+                  child: Text(
+                    'changelang'.tr,
+                    style: const TextStyle(
+                        color: AppColors.light,
+                        decoration: TextDecoration.underline),
+                  ),
                 ),
               ],
             ),

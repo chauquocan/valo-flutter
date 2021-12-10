@@ -1,10 +1,14 @@
-part of 'register.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:valo_chat_app/app/modules/auth/reset_password/reset_password_controller.dart';
+import 'package:valo_chat_app/app/themes/theme.dart';
+import 'package:valo_chat_app/app/utils/regex.dart';
+import 'package:valo_chat_app/app/widgets/widgets.dart';
 
-//Create/Register user infomation
-class RegisterScreen extends GetView<RegisterController> {
+class ResetPasswordScreen extends GetView<ResetPasswordController> {
+  const ResetPasswordScreen({Key? key, required this.numberPhone})
+      : super(key: key);
   final String numberPhone;
-  const RegisterScreen({Key? key, required this.numberPhone}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -17,12 +21,12 @@ class RegisterScreen extends GetView<RegisterController> {
       body: Background(
         child: SingleChildScrollView(
           child: Form(
-            key: controller._registerFormKey,
+            key: controller.resetFormKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  'signup'.toUpperCase().tr,
+                  'resetpassword'.toUpperCase().tr,
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
@@ -30,29 +34,12 @@ class RegisterScreen extends GetView<RegisterController> {
                   ),
                 ),
                 SizedBox(height: size.height * 0.05),
-                //FulName input
-                RoundedInputField(
-                  controller: controller._fullNameInput,
-                  hintText: "Enter name",
-                  textColor: AppColors.light,
-                  icon: Icons.person,
-                  validator: (value) => Regex.fullNameValidator(value!),
-                ),
-                //Email input
-                RoundedInputField(
-                  controller: controller._emailInput,
-                  // labelText: 'Email:',
-                  hintText: "Enter email",
-                  textColor: AppColors.light,
-                  icon: Icons.email,
-                  validator: (value) => Regex.emailValidator(value!),
-                ),
                 //Password input
                 Obx(
                   () => RoundedInputField(
-                    controller: controller._passwordInput,
+                    controller: controller.passwordInput,
                     hintText: "Enter password",
-                    password: controller._showPass.value,
+                    password: controller.showPass.value,
                     textColor: AppColors.light,
                     icon: Icons.lock,
                     validator: (value) => Regex.passwordValidator(value!),
@@ -63,7 +50,7 @@ class RegisterScreen extends GetView<RegisterController> {
                       icon: Padding(
                         padding: const EdgeInsets.only(top: 15),
                         child: Icon(
-                          controller._showPass.value
+                          controller.showPass.value
                               ? Icons.visibility
                               : Icons.visibility_off,
                           color: AppColors.light,
@@ -74,13 +61,13 @@ class RegisterScreen extends GetView<RegisterController> {
                 ),
                 Obx(
                   () => RoundedInputField(
-                    controller: controller._confirmPasswordInput,
+                    controller: controller.confirmPasswordInput,
                     hintText: "Confirm password",
-                    password: controller._showConfirmPass.value,
+                    password: controller.showConfirmPass.value,
                     textColor: AppColors.light,
                     icon: Icons.lock,
                     validator: (value) => Regex.confirmPasswordValidator(
-                        value!, controller._passwordInput.text),
+                        value!, controller.passwordInput.text),
                     suffixIcon: IconButton(
                       onPressed: () {
                         controller.onShowConfirmPass();
@@ -88,7 +75,7 @@ class RegisterScreen extends GetView<RegisterController> {
                       icon: Padding(
                         padding: const EdgeInsets.only(top: 15),
                         child: Icon(
-                          controller._showConfirmPass.value
+                          controller.showConfirmPass.value
                               ? Icons.visibility
                               : Icons.visibility_off,
                           color: AppColors.light,
@@ -99,18 +86,13 @@ class RegisterScreen extends GetView<RegisterController> {
                 ),
                 //Sign up submit button
                 RoundedButton(
-                  buttonText: 'SIGN UP',
-                  width: size.width * 0.8,
-                  colors: const [AppColors.light, AppColors.light],
-                  color: AppColors.light,
-                  textColor: AppColors.dark,
-                  onPressed: () => controller.register(
-                    numberPhone,
-                    controller._fullNameInput.text,
-                    controller._passwordInput.text,
-                    controller._emailInput.text,
-                  ),
-                ),
+                    buttonText: 'SIGN UP',
+                    width: size.width * 0.8,
+                    colors: const [AppColors.light, AppColors.light],
+                    color: AppColors.light,
+                    textColor: AppColors.dark,
+                    onPressed: () => controller.resetPassword(
+                        numberPhone, controller.confirmPasswordInput.text)),
               ],
             ),
           ),

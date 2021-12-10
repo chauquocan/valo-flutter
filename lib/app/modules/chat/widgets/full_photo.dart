@@ -2,8 +2,9 @@ part of 'widgets.dart';
 
 class FullPhoto extends StatelessWidget {
   final String url;
+  final String? sender;
 
-  const FullPhoto({Key? key, required this.url}) : super(key: key);
+  const FullPhoto({Key? key, required this.url, this.sender}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +15,7 @@ class FullPhoto extends StatelessWidget {
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
         elevation: 0,
+        title: sender == null ? Text('') : Text('Người gửi: $sender'),
       ),
       body: Container(
         child: PhotoView(
@@ -22,7 +24,6 @@ class FullPhoto extends StatelessWidget {
           heroAttributes: PhotoViewHeroAttributes(tag: url),
           imageProvider: CachedNetworkImageProvider(url),
           enableRotation: true,
-          
         ),
       ),
     );

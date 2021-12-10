@@ -14,12 +14,14 @@ class ProfileInforWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
               color: Colors.black26, offset: Offset(0, 2), blurRadius: 5.0),
         ],
-        color: Colors.white,
+        color: Get.isDarkMode
+            ? Colors.grey.shade900
+            : Theme.of(context).backgroundColor,
         borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(7), bottomRight: Radius.circular(7)),
       ),

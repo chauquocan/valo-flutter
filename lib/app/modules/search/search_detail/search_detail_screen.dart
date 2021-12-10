@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:valo_chat_app/app/modules/chat/widgets/widgets.dart';
 import 'package:valo_chat_app/app/modules/search/search_detail/search_detail_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 
@@ -11,6 +12,7 @@ class SearchDetailScreen extends GetView<SearchDetailController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Theme.of(context).backgroundColor,
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           elevation: 0,
@@ -29,8 +31,10 @@ class SearchDetailScreen extends GetView<SearchDetailController> {
               Container(
                 padding: const EdgeInsets.only(top: 20),
                 decoration: const BoxDecoration(
-                  color: AppColors.secondary,
-                ),
+                    gradient: LinearGradient(colors: <Color>[
+                  Color.fromRGBO(33, 150, 243, 1),
+                  Colors.indigo,
+                ])),
                 height: 200,
                 width: double.infinity,
                 child: Stack(
@@ -47,47 +51,59 @@ class SearchDetailScreen extends GetView<SearchDetailController> {
                                     if (controller
                                             .userProfile.user.imgUrl.length !=
                                         0) {
-                                      return CachedNetworkImage(
-                                        height: 130,
-                                        width: 120,
-                                        imageUrl:
-                                            controller.userProfile.user.imgUrl,
-                                        fit: BoxFit.cover,
-                                        imageBuilder:
-                                            (context, imageProvider) =>
-                                                CircleAvatar(
-                                          backgroundColor: AppColors.light,
-                                          backgroundImage: imageProvider,
-                                          // radius: 50,
-                                        ),
-                                        placeholder: (context, url) =>
-                                            const CircleAvatar(
-                                          backgroundImage: AssetImage(
-                                              "assets/images/place_avatar.png"),
-                                          child: Center(
-                                            child: CircularProgressIndicator(
-                                              backgroundColor: AppColors.light,
+                                      return GestureDetector(
+                                        onTap: () => Get.to(() => FullPhoto(
+                                            url: controller
+                                                .userProfile.user.imgUrl)),
+                                        child: CachedNetworkImage(
+                                          height: 130,
+                                          width: 120,
+                                          imageUrl: controller
+                                              .userProfile.user.imgUrl,
+                                          fit: BoxFit.cover,
+                                          imageBuilder:
+                                              (context, imageProvider) =>
+                                                  CircleAvatar(
+                                            backgroundColor: AppColors.light,
+                                            backgroundImage: imageProvider,
+                                            // radius: 50,
+                                          ),
+                                          placeholder: (context, url) =>
+                                              const CircleAvatar(
+                                            backgroundImage: AssetImage(
+                                                "assets/images/place_avatar.png"),
+                                            child: Center(
+                                              child: CircularProgressIndicator(
+                                                backgroundColor:
+                                                    AppColors.light,
+                                              ),
                                             ),
                                           ),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.error),
                                         ),
-                                        errorWidget: (context, url, error) =>
-                                            const Icon(Icons.error),
                                       );
                                     } else {
-                                      return Container(
-                                        width: 120,
-                                        height: 130,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                width: 1,
-                                                color: AppColors.dark),
-                                            shape: BoxShape.circle,
-                                            image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: CachedNetworkImageProvider(
-                                                  controller
-                                                      .userProfile.user.imgUrl),
-                                            )),
+                                      return GestureDetector(
+                                        onTap: () => Get.to(() => FullPhoto(
+                                            url: controller
+                                                .userProfile.user.imgUrl)),
+                                        child: Container(
+                                          width: 120,
+                                          height: 130,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  width: 1,
+                                                  color: AppColors.dark),
+                                              shape: BoxShape.circle,
+                                              image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image:
+                                                    CachedNetworkImageProvider(
+                                                        controller.userProfile
+                                                            .user.imgUrl),
+                                              )),
+                                        ),
                                       );
                                     }
                                   }),
@@ -166,7 +182,8 @@ class SearchDetailScreen extends GetView<SearchDetailController> {
           padding: const EdgeInsets.only(left: 15, top: 20, bottom: 20),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          backgroundColor: const Color(0xFFF5F6F9),
+          backgroundColor:
+              Get.isDarkMode ? Colors.grey.shade900 : const Color(0xFFF5F6F9),
         ),
         onPressed: () {},
         child: Row(
@@ -175,7 +192,9 @@ class SearchDetailScreen extends GetView<SearchDetailController> {
               width: 100,
               child: Text(
                 labelText,
-                style: const TextStyle(fontSize: 18, color: Colors.black38),
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Get.isDarkMode ? Colors.white : Colors.black38),
               ),
             ),
             Expanded(

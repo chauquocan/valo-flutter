@@ -1,9 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nb_utils/src/utils/date_time_utils.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
-import 'package:valo_chat_app/app/utils/date.dart';
+import 'package:valo_chat_app/app/widgets/widgets.dart';
 
 class ConversationTab extends GetView<TabConversationController> {
   const ConversationTab({Key? key}) : super(key: key);
@@ -11,22 +12,21 @@ class ConversationTab extends GetView<TabConversationController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        heroTag: 'btnConversation',
-        child: const Tooltip(message: 'Tạo nhóm', child: Icon(Icons.add)),
-        onPressed: () => Get.toNamed('/creategroup'),
-      ),
-      appBar: AppBar(
-        title: Text('chat'.tr),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
-        ),
+      backgroundColor: Theme.of(context).backgroundColor,
+      appBar: WidgetAppBar(
+        title: 'chat'.tr,
         actions: [
           IconButton(
               onPressed: () => Get.toNamed('/newfriend'),
               icon: const Tooltip(
                   message: 'Tìm bạn', child: const Icon(Icons.search))),
         ],
+        blackButton: false,
+      ),
+      floatingActionButton: FloatingActionButton(
+        heroTag: 'btnConversation',
+        child: const Tooltip(message: 'Tạo nhóm', child: Icon(Icons.add)),
+        onPressed: () => Get.toNamed('/creategroup'),
       ),
       body: SafeArea(
         child: GetX<TabConversationController>(
@@ -53,7 +53,8 @@ class ConversationTab extends GetView<TabConversationController> {
                         leading: Hero(
                           tag: conversation.conversation.id,
                           child: CircleAvatar(
-                            backgroundColor: Colors.blueGrey,
+                            backgroundColor:
+                                Get.isDarkMode ? Colors.white : Colors.blueGrey,
                             radius: 30,
                             backgroundImage: CachedNetworkImageProvider(
                               conversation.conversation.imageUrl,
@@ -66,8 +67,7 @@ class ConversationTab extends GetView<TabConversationController> {
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                         trailing: Text(
-                          formatDate(conversation.lastMessage.message.sendAt),
-                        ),
+                            conversation.lastMessage.message.sendAt.timeAgo),
                         subtitle: Row(
                           children: [
                             conversation.unReadMessage > 0

@@ -20,6 +20,7 @@ const Map<String, String> en = {
   'submit': 'Submit',
   'enterphonenumber': 'Enter phone number',
   'authTitle': 'Phone number verification',
+  'forgot':'Forgot your password?',
   'enterotp': 'Enter OTP code',
   'sendOTP': 'Send SMS code',
   'resendOTP': 'Resend OTP Code',

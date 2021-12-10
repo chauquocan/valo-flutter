@@ -42,6 +42,24 @@ class ChatProvider {
     }
   }
 
+  //Get messages by type
+  Future<NetworkResponse<MessagePage>> getMesagesByType(
+      String id, String type, int page) async {
+    try {
+      final response = await ConnectService().get(
+        '${messageURL}type/$id',
+        params: {
+          'type': type,
+          'page': page,
+        },
+      );
+      return NetworkResponse.fromResponse(
+          response, (json) => MessagePage.fromJson(json));
+    } on DioError catch (e) {
+      return NetworkResponse.withError(e.response);
+    }
+  }
+
   //Pick file
   Future<Response> uploadFile(filePath) async {
     try {

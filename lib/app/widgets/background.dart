@@ -11,18 +11,17 @@ class Background extends StatelessWidget {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            stops: [
-              0.2,
-              0.8,
-            ],
-            colors: <Color>[
-              Color.fromRGBO(33, 150, 243, 1),
-              Color.fromRGBO(110, 198, 255, 1),
-            ],
+            colors: Get.isDarkMode
+                ? <Color>[
+                    Color.fromRGBO(33, 150, 243, 1),
+                    Color.fromRGBO(38, 43, 102, 1),
+                  ]
+                : <Color>[
+                    Color.fromRGBO(33, 150, 243, 1),
+                    Colors.indigo,
+                  ],
           ),
         ),
         height: size.height,
