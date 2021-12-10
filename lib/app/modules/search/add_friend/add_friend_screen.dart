@@ -11,6 +11,7 @@ class AddFriendScreen extends GetView<AddFriendController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: const Text(
           'Find a friend',
@@ -102,8 +103,10 @@ class AddFriendScreen extends GetView<AddFriendController> {
                               controller.isSearch.value
                                   ? 'No user found'
                                   : 'Search friend',
-                              style: const TextStyle(
-                                color: AppColors.dark,
+                              style: TextStyle(
+                                color: Get.isDarkMode
+                                    ? Colors.white
+                                    : AppColors.dark,
                                 fontSize: 18,
                               ),
                             ),

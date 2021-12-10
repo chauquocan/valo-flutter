@@ -5,6 +5,8 @@ import 'package:focused_menu/modals.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nb_utils/src/utils/date_time_utils.dart';
+import 'package:valo_chat_app/app/data/models/message_model.dart';
 import 'package:valo_chat_app/app/modules/chat/chat_detail/chat_detail_binding.dart';
 import 'package:valo_chat_app/app/modules/chat/chat_detail/chat_detail_screen.dart';
 import 'package:valo_chat_app/app/modules/chat/widgets/widgets.dart';
@@ -17,62 +19,65 @@ class ChatScreen extends GetView<ChatController> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
+    return WillPopScope(
+      onWillPop: () => controller.onBackPress(),
       child: Scaffold(
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
-      ),
-      leadingWidth: 40,
-      titleSpacing: 0,
-      leading: IconButton(
-        onPressed: () => Get.back(),
-        icon: Icon(
-          Icons.arrow_back,
-          size: 30,
-        ),
-      ),
-      title: Container(
-        margin: const EdgeInsets.all(5),
-        child: Row(
-          children: [
-            Hero(
-              tag: controller.id,
-              child: CircleAvatar(
-                radius: 20,
-                backgroundColor: Colors.blueGrey,
-                backgroundImage: CachedNetworkImageProvider(controller.avatar),
-              ),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
+          ),
+          leadingWidth: 40,
+          titleSpacing: 0,
+          leading: IconButton(
+            onPressed: () => Get.back(),
+            icon: Icon(
+              Icons.arrow_back,
+              size: 30,
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+          ),
+          title: Container(
+            margin: const EdgeInsets.all(5),
+            child: Row(
               children: [
-                Text(
-                  controller.name,
-                  style: const TextStyle(
-                    fontSize: 18.5,
-                    fontWeight: FontWeight.bold,
+                Hero(
+                  tag: controller.id,
+                  child: CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.blueGrey,
+                    backgroundImage:
+                        CachedNetworkImageProvider(controller.avatar),
                   ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      controller.name,
+                      style: const TextStyle(
+                        fontSize: 18.5,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                if (controller.isGroup == true) {
+                  Get.to(() => ProfileGroupScreen(), arguments: ['uid']);
+                } else
+                  Get.to(() => ChatDetailScreen(),
+                      binding: ChatDetailBinding());
+              },
+              icon: const Icon(Icons.list_outlined),
+            ),
           ],
         ),
-      ),
-      actions: [
-        IconButton(
-          onPressed: () {
-            if (controller.isGroup == true) {
-              Get.to(() => ProfileGroupScreen(), arguments: ['uid']);
-            } else
-              Get.to(() => ChatDetailScreen(),binding: ChatDetailBinding());
-          },
-          icon: const Icon(Icons.list_outlined),
-        ),
-      ],
-    ),
         body: Column(
           children: [
             Expanded(
@@ -88,28 +93,53 @@ class ChatScreen extends GetView<ChatController> {
                         physics: const AlwaysScrollableScrollPhysics(),
                         itemCount: controller.messages.length,
                         itemBuilder: (context, i) {
-                          final item = controller.messages[i];
+                          final message = controller.messages[i];
+                          MessageContent? messageBefore =
+                              controller.messages[i.sign];
                           return FocusedMenuHolder(
                             blurSize: 0,
                             menuItems: <FocusedMenuItem>[
                               FocusedMenuItem(
-                                title: const Text('Delete'),
+                                backgroundColor: Get.isDarkMode
+                                    ? Colors.black54
+                                    : Colors.white,
+                                title: Text('Delete'),
                                 trailingIcon: const Icon(Icons.delete),
                                 onPressed: () {
-                                  controller.deleteMessage(item.message.id);
+                                  controller.deleteMessage(message.message.id);
                                 },
-                              )
+                              ),
+                              if (message.message.content.isURL &&
+                                  message.message.messageType != "TEXT")
+                                FocusedMenuItem(
+                                  backgroundColor: Get.isDarkMode
+                                      ? Colors.black54
+                                      : Colors.white,
+                                  title: Text('Download'),
+                                  trailingIcon: const Icon(Icons.download),
+                                  onPressed: () {
+                                    controller.downloadFile(
+                                      message.message.content,
+                                      message.message.content
+                                          .split("/")
+                                          .last
+                                          .split("_")
+                                          .last,
+                                    );
+                                  },
+                                )
                             ],
                             onPressed: () {},
                             child: WidgetBubble(
-                              message: item.message.content,
-                              isMe: item.message.senderId ==
+                              id: message.message.id,
+                              message: message.message.content,
+                              isMe: message.message.senderId ==
                                   controller.currentUserId,
-                              dateTime: DateFormat('h:mm a')
-                                  .format(DateTime.parse(item.message.sendAt)),
-                              type: item.message.messageType,
-                              status: item.message.messageStatus,
-                              avatar: item.userImgUrl,
+                              senderName: message.userName,
+                              dateTime: message.message.sendAt.timeAgo,
+                              type: message.message.messageType,
+                              status: message.message.messageStatus,
+                              avatar: message.userImgUrl,
                             ),
                           );
                         },
@@ -147,12 +177,9 @@ class ChatScreen extends GetView<ChatController> {
   Widget _buildSticker() {
     return GetX<ChatController>(
       builder: (_) {
-        return AnimatedSize(
-          duration: Duration(milliseconds: 300),
-          child: SizedBox(
-            height: controller.stickerShowing ? null : 0.0,
-            child: const WidgetSticker(),
-          ),
+        return SizedBox(
+          height: controller.stickerShowing ? null : 0.0,
+          child: const WidgetSticker(),
         );
         // return Visibility(
         //     visible: controller.stickerShowing, child: const WidgetSticker());
@@ -173,13 +200,14 @@ class ChatScreen extends GetView<ChatController> {
             onBackspacePressed: () {
               controller.onBackspacePressed();
             },
-            config: const Config(
+            config: Config(
               columns: 7,
               emojiSizeMax: 32.0,
               verticalSpacing: 0,
               horizontalSpacing: 0,
               initCategory: Category.RECENT,
-              bgColor: Color(0xFFF2F2F2),
+              bgColor:
+                  Get.isDarkMode ? Colors.grey.shade900 : Color(0xFFF2F2F2),
               indicatorColor: Colors.blue,
               iconColor: Colors.grey,
               iconColorSelected: Colors.blue,
@@ -197,8 +225,6 @@ class ChatScreen extends GetView<ChatController> {
       );
     });
   }
-
-  
 
   Widget buildListTag() {
     return GetX<ChatController>(

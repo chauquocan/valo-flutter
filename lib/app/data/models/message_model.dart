@@ -114,7 +114,7 @@ class Message {
   String id;
   String conversationId;
   String senderId;
-  String sendAt;
+  DateTime sendAt;
   String messageType;
   String content;
   String messageStatus;
@@ -130,7 +130,7 @@ class Message {
         id: json["id"] ?? "",
         conversationId: json["conversationId"] ?? "",
         senderId: json["senderId"] ?? "",
-        sendAt: json["sendAt"] ?? "",
+        sendAt: DateTime.parse(json["sendAt"]),
         messageType: json["messageType"] ?? "",
         content: json["content"] ?? "",
         messageStatus: json["messageStatus"] ?? "",
@@ -146,7 +146,7 @@ class Message {
         "id": id,
         "conversationId": conversationId,
         "senderId": senderId == null ? null : senderId,
-        "sendAt": sendAt,
+        "sendAt": sendAt.toIso8601String(),
         "messageType": messageType,
         "content": content,
         "messageStatus": messageStatus == null ? null : messageStatus,

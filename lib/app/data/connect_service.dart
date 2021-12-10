@@ -1,5 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:valo_chat_app/app/data/providers/auth_provider.dart';
 import 'package:valo_chat_app/app/utils/storage_service.dart';
@@ -15,6 +16,12 @@ class ConnectService {
 
   static Dio dio = Dio();
   CancelToken cancelToken = CancelToken();
+  late DioCacheManager _dioCacheManager;
+
+  DioCacheManager get dioCacheManager {
+    _dioCacheManager = DioCacheManager(CacheConfig(baseUrl: baseUrl));
+    return _dioCacheManager;
+  }
 
   ConnectService._internal() {
     BaseOptions options = BaseOptions(
@@ -26,7 +33,6 @@ class ConnectService {
     );
 
     dio = Dio(options);
-
     dio.interceptors.add(RetryOnConnectionChangeInterceptor(
       authProvider: AuthProvider(),
       requestRetrier: DioConnectivityRequestRetrier(
@@ -34,6 +40,7 @@ class ConnectService {
         connectivity: Connectivity(),
       ),
     ));
+    dio.interceptors.add(dioCacheManager.interceptor);
   }
 
   ///token
@@ -50,7 +57,8 @@ class ConnectService {
 
   /// restful get
   Future get(String path, {dynamic params, Options? options}) async {
-    Options requestOptions = options ?? Options();
+    Options requestOptions =
+        options ?? buildCacheOptions(Duration(days: 3), forceRefresh: true);
 
     Map<String, dynamic>? _authorization = getAuthorizationHeader();
     if (_authorization != null) {

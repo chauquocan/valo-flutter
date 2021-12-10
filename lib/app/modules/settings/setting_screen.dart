@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:valo_chat_app/app/modules/settings/setting_controller.dart';
+import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:valo_chat_app/app/utils/storage_service.dart';
 import 'languages_screen.dart';
 
@@ -28,6 +29,7 @@ class _SettingScreenState extends State<SettingScreen> {
 
   Widget buildSettingsList() {
     return SettingsList(
+      backgroundColor: Theme.of(context).backgroundColor,
       sections: [
         SettingsSection(
           title: 'Common',
@@ -43,11 +45,10 @@ class _SettingScreenState extends State<SettingScreen> {
               leading: Icon(Icons.color_lens_outlined),
               switchValue: darkMode,
               onToggle: (value) {
-                // setState(() {
-                //   darkMode = value;
-                //   Get.changeTheme(
-                //       Get.isDarkMode ? ThemeData.light() : ThemeData.dark());
-                // });
+                setState(() {
+                  darkMode = value;
+                  LocalStorage().changeThemeMode();
+                });
               },
             ),
           ],
@@ -124,13 +125,17 @@ class _SettingScreenState extends State<SettingScreen> {
                 padding: const EdgeInsets.only(top: 22, bottom: 8),
                 child: Image.asset(
                   'assets/icons/valo.png',
-                  height: 50,
-                  width: 50,
+                  height: 70,
+                  width: 70,
                   color: Color(0xFF777777),
                 ),
               ),
               Text(
-                'version'.tr + ': 1.0',
+                'Nhóm 23',
+                style: TextStyle(color: Color(0xFF777777)),
+              ),
+              Text(
+                'version'.tr + ': 2.0',
                 style: TextStyle(color: Color(0xFF777777)),
               ),
             ],

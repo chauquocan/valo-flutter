@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/profile/tab_profile_controller.dart';
+import 'package:valo_chat_app/app/widgets/widgets.dart';
 import 'body.dart';
 
 //Profile tab view
@@ -10,21 +11,9 @@ class TabProfile extends GetView<TabProfileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBar(),
-      //body view
+      backgroundColor: Theme.of(context).backgroundColor,
+      appBar: WidgetAppBar(title: 'personal'.tr),
       body: Body(),
-    );
-  }
-
-  //app bar
-  AppBar _appBar() {
-    return AppBar(
-      title: Text('personal'.tr),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          bottom: Radius.circular(10),
-        ),
-      ),
     );
   }
 }

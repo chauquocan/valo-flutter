@@ -80,11 +80,11 @@ class Regex {
 
   static String? pinValidator(String value) {
     if (value.isEmpty) {
-      // customSnackbar().snackbarDialog('Lỗi', 'Bạn chưa nhập mã xác thực!');
+      customSnackbar().snackbarDialog('Lỗi', 'Bạn chưa nhập mã xác thực!');
       return 'Please enter OTP Code';
     }
     if (value.length < 6) {
-      // customSnackbar().snackbarDialog('Lỗi', 'Mã xác thực gồm 6 số!');
+      customSnackbar().snackbarDialog('Lỗi', 'Mã xác thực gồm 6 số!');
       return 'OTP Code must have 6 digits';
     }
     return null;

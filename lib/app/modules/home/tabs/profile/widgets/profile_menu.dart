@@ -28,6 +28,7 @@ class ProfileMenu extends StatelessWidget {
       margin: const EdgeInsets.only(top: 10),
       padding: const EdgeInsets.all(10),
       child: ListTile(
+        onLongPress: () {},
         onTap: press,
         leading: CircleAvatar(
           backgroundColor: Colors.transparent,

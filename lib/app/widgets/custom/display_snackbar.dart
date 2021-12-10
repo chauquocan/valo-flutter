@@ -5,8 +5,9 @@ class customSnackbar {
     Get.snackbar(
       title, message,
       // animationDuration: Duration(seconds: 2),
-      backgroundColor: AppColors.light,
-      colorText: AppColors.dark,
+
+      backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
+      colorText: Get.isDarkMode ? Colors.white : Colors.black,
     );
   }
 }

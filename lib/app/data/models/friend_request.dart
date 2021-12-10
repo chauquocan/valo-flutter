@@ -73,7 +73,7 @@ class FriendRequest {
     String id;
     String fromId;
     String toId;
-    String sendAt;
+    DateTime sendAt;
 
     factory FriendRequest.fromRawJson(String str) => FriendRequest.fromJson(json.decode(str));
 
@@ -83,14 +83,14 @@ class FriendRequest {
         id: json["id"],
         fromId: json["fromId"],
         toId: json["toId"],
-        sendAt: json["sendAt"],
+        sendAt:DateTime.parse(json["sendAt"]),
     );
 
     Map<String, dynamic> toJson() => {
         "id": id,
         "fromId": fromId,
         "toId": toId,
-        "sendAt": sendAt,
+        "sendAt": sendAt.toIso8601String(),
     };
 }
 

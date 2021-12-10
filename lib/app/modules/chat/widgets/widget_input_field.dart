@@ -10,7 +10,6 @@ class WidgetInputField extends GetView<ChatController> {
   final Function()? sendGif;
   final Function()? sendFile;
 
-  final Function()? sendLocation;
   final bool isKeyboardVisible;
   final bool isEmojiVisible;
 
@@ -23,7 +22,6 @@ class WidgetInputField extends GetView<ChatController> {
     this.sendImageFromGallery,
     this.sendSticker,
     this.sendGif,
-    this.sendLocation,
     this.sendFile,
     required this.isKeyboardVisible,
     required this.isEmojiVisible,
@@ -92,11 +90,13 @@ class WidgetInputField extends GetView<ChatController> {
                 return IconButton(
                     icon: Icon(
                       controller.showMore ? Icons.cancel : Icons.add_circle,
-                      color: Colors.lightBlue,
+                      color: Get.isDarkMode ? Colors.white : Colors.lightBlue,
                       size: 30,
                     ),
                     onPressed: () {
                       controller.showMore = !controller.showMore;
+                      controller.emojiShowing = false;
+                      controller.stickerShowing = false;
                     });
               },
             ),
@@ -106,7 +106,8 @@ class WidgetInputField extends GetView<ChatController> {
                 padding: const EdgeInsets.only(
                     top: 5, left: 15, bottom: 5, right: 10),
                 decoration: BoxDecoration(
-                  color: Colors.lightBlue.shade100,
+                  color:
+                      Get.isDarkMode ? Colors.white : Colors.lightBlue.shade100,
                   borderRadius: BorderRadius.circular(18),
                 ),
                 child: Row(
@@ -115,10 +116,13 @@ class WidgetInputField extends GetView<ChatController> {
                       child: TextFormField(
                         controller: textEditingController,
                         keyboardType: TextInputType.text,
-                        decoration: const InputDecoration(
-                          hintText: 'Enter Message',
-                          border: InputBorder.none,
-                        ),
+                        decoration: InputDecoration(
+                            hintText: 'Enter Message',
+                            border: InputBorder.none,
+                            hintStyle: TextStyle(
+                                color: Get.isDarkMode
+                                    ? Colors.black
+                                    : Colors.black54)),
                       ),
                     ),
                     IconButton(

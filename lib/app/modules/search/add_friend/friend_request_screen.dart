@@ -1,17 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nb_utils/src/utils/date_time_utils.dart';
 import 'package:valo_chat_app/app/modules/search/add_friend/add_friend_controller.dart';
 import 'package:valo_chat_app/app/modules/search/add_friend/friend_request_detail.dart';
 import 'package:valo_chat_app/app/modules/search/search_detail/search_detail_binding.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
-import 'package:valo_chat_app/app/utils/date.dart';
 
 class FriendRequestScreen extends GetView<AddFriendController> {
   const FriendRequestScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: const Text('Lời mời kết bạn'),
       ),
@@ -48,7 +49,7 @@ class FriendRequestScreen extends GetView<AddFriendController> {
                           style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
-                        subtitle: Text(formatDate(friendReq.sendAt)),
+                        subtitle: Text(friendReq.sendAt.timeAgo),
                         trailing: Wrap(
                           spacing: 10,
                           children: [
@@ -77,11 +78,11 @@ class FriendRequestScreen extends GetView<AddFriendController> {
                   },
                 );
               } else {
-                return const Center(
+                return Center(
                   child: Text(
                     'No friend request',
                     style: TextStyle(
-                      color: AppColors.dark,
+                      color: Get.isDarkMode ? Colors.white : AppColors.dark,
                       fontSize: 18,
                     ),
                   ),

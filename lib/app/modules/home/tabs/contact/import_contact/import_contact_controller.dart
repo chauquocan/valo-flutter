@@ -11,7 +11,6 @@ class ImportContactController extends GetxController {
   final userProvider = Get.find<ProfileProvider>();
   final contactProvider = Get.find<ContactProvider>();
   final addFriendController = Get.find<AddFriendController>();
-  
 
   final contacts = <UserContent>[].obs;
   final contactsLoaded = false.obs;
@@ -39,18 +38,19 @@ class ImportContactController extends GetxController {
   getContactsFromPhoneAndCheck() async {
     isLoading.value = true;
     List<UserContent> _temp = [];
-    final _phoneNumbersTemp =
-        (await ContactsService.getContacts()).map((contact) {
-      return contact.phones!.elementAt(0).value;
-    }).toList();
-    if (_phoneNumbersTemp.isNotEmpty) {
-      final response =
-          await userProvider.getUsersFromContact(_phoneNumbersTemp);
+    List<String?> phones = [];
+    Iterable<Contact> _contacts =
+        await ContactsService.getContacts(withThumbnails: false);
+    _contacts.forEach((contact) {
+      contact.phones!.toSet().forEach((phone) {
+        phones.add(phone.value);
+      });
+    });
+    if (phones.isNotEmpty) {
+      final response = await userProvider.getUsersFromContact(phones);
       if (response.ok) {
         for (var item in response.data!.content) {
-          if (
-              // !item.friend &&
-              item.user.phone != LocalStorage.getUser()!.phone.toString()) {
+          if (item.user.phone != LocalStorage.getUser()!.phone.toString()) {
             _temp.add(item);
           }
         }
@@ -58,16 +58,12 @@ class ImportContactController extends GetxController {
         isLoading.value = false;
         contactsLoaded.value = true;
       } else {
-        print(response);
         isLoading.value = false;
-
         contactsLoaded.value = false;
       }
     } else {
       isLoading.value = false;
-
       contactsLoaded.value = false;
     }
   }
-
 }

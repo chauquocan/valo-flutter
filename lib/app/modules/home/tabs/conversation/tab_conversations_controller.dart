@@ -7,7 +7,6 @@ import 'package:valo_chat_app/app/data/models/conversation_model.dart';
 import 'package:valo_chat_app/app/data/models/user_model.dart';
 import 'package:valo_chat_app/app/data/providers/chat_provider.dart';
 import 'package:valo_chat_app/app/data/providers/user_provider.dart';
-import 'package:valo_chat_app/app/modules/chat/chat.dart';
 import 'package:valo_chat_app/app/utils/stomp_service.dart';
 import 'package:valo_chat_app/app/utils/storage_service.dart';
 
@@ -41,13 +40,6 @@ class TabConversationController extends GetxController {
     StompService.stompClient.subscribe(
       destination: '/users/queue/messages',
       callback: (StompFrame frame) => onMessagesReceive(frame),
-    );
-    StompService.stompClient.subscribe(
-      destination: '/users/queue/read',
-      callback: (StompFrame frame) {
-        var response = jsonDecode(frame.body!);
-        print(response);
-      },
     );
   }
 
@@ -146,6 +138,7 @@ class TabConversationController extends GetxController {
                     lastMessage: content.lastMessage,
                     unReadMessage: content.unReadMessage,
                     isGroup: false,
+                    status: user.data!.status,
                   ),
                 );
               }
@@ -201,6 +194,7 @@ class TabConversationController extends GetxController {
                     lastMessage: content.lastMessage,
                     unReadMessage: content.unReadMessage,
                     isGroup: false,
+                    status: user.data!.status,
                   ),
                 );
               }
