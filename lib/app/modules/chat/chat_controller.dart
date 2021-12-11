@@ -731,8 +731,6 @@ class ChatController extends GetxController {
         print(response);
         Get.snackbar('Loi', "Loi gui api");
       }
-    } finally {
-      isLoading(false);
     }
   }
 }
