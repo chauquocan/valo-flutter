@@ -682,30 +682,32 @@ class ChatController extends GetxController {
 
   //upload image function
   void uploadImage() async {
-    try {
-      final pickedFile =
-          await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
-      isLoading(true);
-      if (pickedFile != null) {
-        var response = await groupChatProvider.uploadFile(id, pickedFile.path);
-        if (response.ok) {
-          //get image url from api response
-          imageURL = response.data!.imageUrl;
-          // await LocalStorage.updateUser(response.data!);
-          Get.snackbar('Success', 'Image uploaded successfully',
-              margin: const EdgeInsets.only(top: 5, left: 10, right: 10));
-        } else if (response.code == HttpStatus.unauthorized) {
-          Get.snackbar('Unauthorization', 'token expired');
-        } else {
-          Get.snackbar('Failed', 'Error Code: $response',
-              margin: const EdgeInsets.only(top: 5, left: 10, right: 10));
-        }
+    final pickedFile =
+        await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
+
+    if (pickedFile != null) {
+      var response = await groupChatProvider.uploadFile(id, pickedFile.path);
+      if (response.ok) {
+        //get image url from api response
+        imageURL = response.data!.imageUrl;
+        avatar = response.data!.imageUrl;
+
+        final newConversation = conversationController.conversations.value
+            .firstWhere(
+                (element) => element.conversation.id == response.data!.id);
+        newConversation.conversation = response.data!;
+        conversationController.conversations.refresh();
+        Get.snackbar('Success', 'Image uploaded successfully',
+            margin: const EdgeInsets.only(top: 5, left: 10, right: 10));
+      } else if (response.code == HttpStatus.unauthorized) {
+        Get.snackbar('Unauthorization', 'token expired');
       } else {
-        Get.snackbar('Failed', 'Image not selected',
+        Get.snackbar('Failed', 'Error Code: $response',
             margin: const EdgeInsets.only(top: 5, left: 10, right: 10));
       }
-    } finally {
-      isLoading(false);
+    } else {
+      Get.snackbar('Failed', 'Image not selected',
+          margin: const EdgeInsets.only(top: 5, left: 10, right: 10));
     }
   }
 

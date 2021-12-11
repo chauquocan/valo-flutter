@@ -40,13 +40,17 @@ class ProfileGroupScreen extends GetView<ChatController> {
                     child: Stack(
                       children: [
                         Obx(() {
-                          return CircleAvatar(
-                            radius: 60,
-                            backgroundColor: Get.isDarkMode
-                                ? Colors.white
-                                : Colors.transparent,
-                            backgroundImage:
-                                CachedNetworkImageProvider(controller.avatar),
+                          return GestureDetector(
+                            onTap: () =>
+                                Get.to(() => FullPhoto(url: controller.avatar)),
+                            child: CircleAvatar(
+                              radius: 60,
+                              backgroundColor: Get.isDarkMode
+                                  ? Colors.white
+                                  : Colors.transparent,
+                              backgroundImage:
+                                  CachedNetworkImageProvider(controller.avatar),
+                            ),
                           );
                         }),
                         Positioned(
