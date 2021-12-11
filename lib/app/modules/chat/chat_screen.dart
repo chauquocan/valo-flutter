@@ -40,13 +40,15 @@ class ChatScreen extends GetView<ChatController> {
             margin: const EdgeInsets.all(5),
             child: Row(
               children: [
-                Hero(
-                  tag: controller.id,
-                  child: CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Colors.blueGrey,
-                    backgroundImage:
-                        CachedNetworkImageProvider(controller.avatar),
+                Obx(
+                  () => Hero(
+                    tag: controller.id,
+                    child: CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Colors.blueGrey,
+                      backgroundImage:
+                          CachedNetworkImageProvider(controller.avatar),
+                    ),
                   ),
                 ),
                 Column(

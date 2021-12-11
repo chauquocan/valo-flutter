@@ -720,6 +720,11 @@ class ChatController extends GetxController {
         imageURL = response.data!.imageUrl;
         //  await LocalStorage.updateUser(response.data!);
         avatar = response.data!.imageUrl;
+        final newConversation = conversationController.conversations.value
+            .firstWhere(
+                (element) => element.conversation.id == response.data!.id);
+        newConversation.conversation = response.data!;
+        conversationController.conversations.refresh();
         Get.snackbar('Success', 'Image uploaded successfully',
             margin: const EdgeInsets.only(top: 5, left: 10, right: 10));
       } else {
