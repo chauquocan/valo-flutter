@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:get/get_connect/http/src/status/http_status.dart';
 import 'package:intl/intl.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:file_picker/file_picker.dart';
@@ -49,6 +50,18 @@ class ChatController extends GetxController {
 
   set users(value) {
     _users.value = value;
+  }
+
+  //image
+  final ImagePicker _picker = ImagePicker();
+  var imageURL = '';
+
+  final _imgUrl = ''.obs;
+
+  String get imgUrl => _imgUrl.value;
+
+  set imgUrl(value) {
+    _imgUrl.value = value;
   }
 
   //
@@ -664,6 +677,55 @@ class ChatController extends GetxController {
       );
     } else {
       customSnackbar().snackbarDialog('Thông báo', 'Quyền truy cập bị từ chối');
+    }
+  }
+
+  //upload image function
+  void uploadImage() async {
+    try {
+      final pickedFile =
+          await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
+      isLoading(true);
+      if (pickedFile != null) {
+        var response = await groupChatProvider.uploadFile(id, pickedFile.path);
+        if (response.ok) {
+          //get image url from api response
+          imageURL = response.data!.imageUrl;
+          // await LocalStorage.updateUser(response.data!);
+          Get.snackbar('Success', 'Image uploaded successfully',
+              margin: const EdgeInsets.only(top: 5, left: 10, right: 10));
+        } else if (response.code == HttpStatus.unauthorized) {
+          Get.snackbar('Unauthorization', 'token expired');
+        } else {
+          Get.snackbar('Failed', 'Error Code: $response',
+              margin: const EdgeInsets.only(top: 5, left: 10, right: 10));
+        }
+      } else {
+        Get.snackbar('Failed', 'Image not selected',
+            margin: const EdgeInsets.only(top: 5, left: 10, right: 10));
+      }
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  void pickImagesFromGallery_group() async {
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(type: FileType.image);
+    // isLoading(true);
+    if (result != null) {
+      var response =
+          await groupChatProvider.uploadFile(id, result.files.single.path);
+      if (response.ok) {
+        imageURL = response.data!.imageUrl;
+        //  await LocalStorage.updateUser(response.data!);
+        avatar = response.data!.imageUrl;
+        Get.snackbar('Success', 'Image uploaded successfully',
+            margin: const EdgeInsets.only(top: 5, left: 10, right: 10));
+      } else {
+        print(response);
+        Get.snackbar('Loi', "Loi gui api");
+      }
     }
   }
 }
