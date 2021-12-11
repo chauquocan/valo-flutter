@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+
 import 'package:valo_chat_app/app/data/connect_service.dart';
 import 'package:valo_chat_app/app/data/models/conversation_model.dart';
 import 'package:valo_chat_app/app/data/models/network_response.dart';
 import 'package:valo_chat_app/app/data/models/response_model.dart';
+import 'package:valo_chat_app/app/data/models/user_model.dart';
 
 class GroupChatProvider {
   static const String userURL = 'users/';
@@ -86,6 +88,23 @@ class GroupChatProvider {
       );
       return NetworkResponse.fromResponse(
           response, (json) => ListFriendsCanAdd.fromJson(json));
+    } on DioError catch (e) {
+      return NetworkResponse.withError(e.response);
+    }
+  }
+
+  //upload hình group
+  Future<NetworkResponse<Conversation>> uploadFile(
+      String conversatiobID, filePath) async {
+    try {
+      FormData formData = FormData.fromMap(
+          {"multipartFile": await MultipartFile.fromFile(filePath)});
+      Response response = await ConnectService().put(
+        '$conversationURL/$conversatiobID/changeImage',
+        params: formData,
+      );
+      return NetworkResponse.fromResponse(
+          response, (json) => Conversation.fromJson(json));
     } on DioError catch (e) {
       return NetworkResponse.withError(e.response);
     }

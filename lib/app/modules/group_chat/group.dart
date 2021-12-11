@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:valo_chat_app/app/data/models/conversation_model.dart';
@@ -18,7 +19,6 @@ import 'package:valo_chat_app/app/utils/regex.dart';
 import 'package:valo_chat_app/app/utils/storage_service.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
 
-
 part 'add_member/add_member_binding.dart';
 part 'add_member/add_member_controller.dart';
 part 'add_member/add_member_screen.dart';
@@ -27,7 +27,3 @@ part 'create_group/create_group_chat_controller.dart';
 part 'create_group/create_group_chat_screen.dart';
 part 'group_screen.dart';
 part 'member_screen.dart';
-
-
-
-

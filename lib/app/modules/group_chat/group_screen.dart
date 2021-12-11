@@ -37,12 +37,75 @@ class ProfileGroupScreen extends GetView<ChatController> {
                             : Colors.grey.shade200,
                       ),
                     ),
-                    child: CircleAvatar(
-                      radius: 60,
-                      backgroundColor:
-                          Get.isDarkMode ? Colors.white : Colors.transparent,
-                      backgroundImage:
-                          CachedNetworkImageProvider(controller.avatar),
+                    child: Stack(
+                      children: [
+                        CircleAvatar(
+                          radius: 60,
+                          backgroundColor: Get.isDarkMode
+                              ? Colors.white
+                              : Colors.transparent,
+                          backgroundImage:
+                              CachedNetworkImageProvider(controller.avatar),
+                        ),
+                        Positioned(
+                          right: 0,
+                          bottom: 0,
+                          child: SizedBox(
+                            height: 35,
+                            width: 35,
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                  side: const BorderSide(
+                                      color: Colors.transparent),
+                                ),
+                                primary: Colors.white,
+                                backgroundColor: Color(0xFFF5F6F9),
+                              ),
+                              onPressed: () {
+                                Get.bottomSheet(
+                                  Container(
+                                    decoration: const BoxDecoration(
+                                      color: AppColors.light,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(16.0),
+                                        topRight: Radius.circular(16.0),
+                                      ),
+                                    ),
+                                    child: Wrap(
+                                      alignment: WrapAlignment.end,
+                                      crossAxisAlignment:
+                                          WrapCrossAlignment.end,
+                                      children: [
+                                        ListTile(
+                                          leading: const Icon(Icons.camera),
+                                          title: const Text('Camera'),
+                                          onTap: () {
+                                            Get.back();
+                                            controller.uploadImage();
+                                          },
+                                        ),
+                                        ListTile(
+                                          leading: const Icon(Icons.image),
+                                          title: const Text('Gallery'),
+                                          onTap: () {
+                                            Get.back();
+                                            controller
+                                                .pickImagesFromGallery_group();
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: SvgPicture.asset(
+                                  "assets/icons/Camera Icon.svg"),
+                            ),
+                          ),
+                        ),
+                      ],
                     )),
               ),
               AppButton(
