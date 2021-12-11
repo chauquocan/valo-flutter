@@ -710,22 +710,26 @@ class ChatController extends GetxController {
   }
 
   void pickImagesFromGallery_group() async {
-    FilePickerResult? result =
-        await FilePicker.platform.pickFiles(type: FileType.image);
-    // isLoading(true);
-    if (result != null) {
-      var response =
-          await groupChatProvider.uploadFile(id, result.files.single.path);
-      if (response.ok) {
-        imageURL = response.data!.imageUrl;
-        //  await LocalStorage.updateUser(response.data!);
-        avatar = response.data!.imageUrl;
-        Get.snackbar('Success', 'Image uploaded successfully',
-            margin: const EdgeInsets.only(top: 5, left: 10, right: 10));
-      } else {
-        print(response);
-        Get.snackbar('Loi', "Loi gui api");
+    try {
+      FilePickerResult? result =
+          await FilePicker.platform.pickFiles(type: FileType.image);
+      isLoading(true);
+      if (result != null) {
+        var response =
+            await groupChatProvider.uploadFile(id, result.files.single.path);
+        if (response.ok) {
+          imageURL = response.data!.imageUrl;
+          // await LocalStorage.updateUser(response.data!);
+          avatar = response.data!.imageUrl;
+          Get.snackbar('Success', 'Image uploaded successfully',
+              margin: const EdgeInsets.only(top: 5, left: 10, right: 10));
+        } else {
+          print(response);
+          Get.snackbar('Loi', "Loi gui api");
+        }
       }
+    } finally {
+      isLoading(false);
     }
   }
 }
