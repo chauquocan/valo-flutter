@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/contacts_list.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
+import 'package:valo_chat_app/app/modules/search/add_friend/add_friend_binding.dart';
+import 'package:valo_chat_app/app/modules/search/add_friend/sugguest_screen.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
 
 import 'import_contact/import_contact_binding.dart';
@@ -79,6 +81,26 @@ class _ContactTabState extends State<ContactTab> {
                           title: Text('Cập nhật danh bạ'),
                           onTap: () => Get.to(() => ImportContactScreen(),
                               binding: ImportContactBinding()),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5, bottom: 5),
+                        child: ListTile(
+                          tileColor: Get.isDarkMode
+                              ? Colors.grey.shade900
+                              : Colors.white,
+                          contentPadding: EdgeInsets.all(10),
+                          leading: const CircleAvatar(
+                            radius: 30,
+                            child: ClipRRect(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(29)),
+                              child: Icon(Icons.three_p),
+                            ),
+                          ),
+                          title: Text('Tìm bạn theo địa chỉ'),
+                          onTap: () => Get.to(() => SuggestScreen(),
+                              binding: AddFriendBinding()),
                         ),
                       ),
                       Padding(

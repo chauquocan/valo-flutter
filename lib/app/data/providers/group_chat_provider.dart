@@ -1,18 +1,23 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+
 import 'package:valo_chat_app/app/data/connect_service.dart';
 import 'package:valo_chat_app/app/data/models/conversation_model.dart';
 import 'package:valo_chat_app/app/data/models/network_response.dart';
 import 'package:valo_chat_app/app/data/models/response_model.dart';
+import 'package:valo_chat_app/app/data/models/user_model.dart';
 
 class GroupChatProvider {
   static const String userURL = 'users/';
   static const String conversationURL = 'conversations/';
   static const String membersCanAddURL = '$conversationURL/add/';
-
   static const String friendURL = 'friends/';
 
+  /* 
+    Create group chat
+    Params: map:{ name, participants }
+   */
   Future<NetworkResponse<Conversation>> createGroupChat(Map map) async {
     try {
       final response = await ConnectService().post(
@@ -26,8 +31,10 @@ class GroupChatProvider {
     }
   }
 
-  // Future<NetworkResponse>
-
+  /* 
+    Add member to group chat
+    Params: map:{ userId, conversationId }
+   */
   Future<NetworkResponse<ListParticipant>> addMember(Map map) async {
     try {
       final response = await ConnectService().put(
@@ -41,6 +48,10 @@ class GroupChatProvider {
     }
   }
 
+  /* 
+    Kick member out
+    Params:{ userId, conversationId }
+   */
   Future<NetworkResponse<ListParticipant>> kickMember(Map map) async {
     try {
       final response = await ConnectService().put(
@@ -54,6 +65,10 @@ class GroupChatProvider {
     }
   }
 
+  /* 
+    Delete group chat (admin)
+    Params: conversationId
+   */
   Future<NetworkResponse<ResponseMessage>> deleteGroup(String id) async {
     try {
       final response = await ConnectService().delete(
@@ -66,6 +81,10 @@ class GroupChatProvider {
     }
   }
 
+  /* 
+    Leave group chat
+    Params: conversationId
+   */
   Future<NetworkResponse<ResponseMessage>> leaveGroup(String id) async {
     try {
       final response = await ConnectService().put(
@@ -78,6 +97,10 @@ class GroupChatProvider {
     }
   }
 
+  /* 
+    Get friends can add to group
+    Params: conversationId
+   */
   Future<NetworkResponse<ListFriendsCanAdd>> getFriendsCanAddToGroup(
       String conversationId) async {
     try {
@@ -86,6 +109,42 @@ class GroupChatProvider {
       );
       return NetworkResponse.fromResponse(
           response, (json) => ListFriendsCanAdd.fromJson(json));
+    } on DioError catch (e) {
+      return NetworkResponse.withError(e.response);
+    }
+  }
+
+  /* 
+    Change group avatar
+    Params: conversationId, image
+   */
+  Future<NetworkResponse<Conversation>> uploadFile(
+      String conversatiobID, filePath) async {
+    try {
+      FormData formData = FormData.fromMap(
+          {"multipartFile": await MultipartFile.fromFile(filePath)});
+      Response response = await ConnectService().put(
+        '$conversationURL/$conversatiobID/changeImage',
+        params: formData,
+      );
+      return NetworkResponse.fromResponse(
+          response, (json) => Conversation.fromJson(json));
+    } on DioError catch (e) {
+      return NetworkResponse.withError(e.response);
+    }
+  }
+
+  /* 
+    Change group's name
+    Params: newName, conversationId
+   */
+  Future<NetworkResponse<Conversation>> renameGroup(
+      Map newName, String conversatiobID) async {
+    try {
+      final response = await ConnectService()
+          .put('$conversationURL/rename/$conversatiobID', queryParams: newName);
+      return NetworkResponse.fromResponse(
+          response, (json) => Conversation.fromJson(json));
     } on DioError catch (e) {
       return NetworkResponse.withError(e.response);
     }

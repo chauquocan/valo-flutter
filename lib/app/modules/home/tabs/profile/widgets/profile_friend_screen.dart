@@ -125,27 +125,88 @@ class ProfileFriendScreen extends GetView<ProfileFriendController> {
                 ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton.icon(
-                  onPressed: () {},
-                  icon: controller.userProfile.friend
-                      ? Icon(Icons.check_circle_outline)
-                      : Icon(Icons.person_add_alt_1_outlined),
-                  label: controller.userProfile.friend
-                      ? Text('Bạn bè')
-                      : Text('kết bạn'),
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    elevation: 0,
-                    primary: Colors.white,
-                    backgroundColor: Colors.lightBlue,
+            Obx(
+              () => Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton.icon(
+                        onPressed: () =>
+                            controller.showMore = !controller.showMore,
+                        icon: controller.userProfile.friend
+                            ? Icon(Icons.check_circle_outline)
+                            : Icon(Icons.person_add_alt_1_outlined),
+                        label: controller.userProfile.friend
+                            ? Text('Bạn bè')
+                            : Text('kết bạn'),
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 50, vertical: 10),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          elevation: 0,
+                          primary: Colors.white,
+                          backgroundColor: Colors.lightBlue,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                  Visibility(
+                    visible: controller.showMore,
+                    child: TextButton.icon(
+                      onPressed: () => Get.dialog(
+                        AlertDialog(
+                          title: const Center(child: Text('Lưu ý')),
+                          content: const SingleChildScrollView(
+                            child: Text('Bạn có chắc chắn muốn hủy kết bạn?'),
+                          ),
+                          actionsAlignment: MainAxisAlignment.spaceEvenly,
+                          actions: [
+                            ElevatedButton.icon(
+                              onPressed: () {
+                                Get.back();
+                                controller.deleteFriend();
+                              },
+                              icon: const Icon(Icons.check_circle),
+                              // style: ButtonStyle(backgroundColor: Colors.blue),
+                              label: const Text(
+                                "Xác nhận",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            ElevatedButton.icon(
+                              onPressed: () {
+                                Get.back();
+                              },
+                              icon: const Icon(Icons.cancel),
+                              // style: ButtonStyle(backgroundColor: Colors.blue),
+                              label: const Text(
+                                "Hủy",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            )
+                          ],
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                        ),
+                      ),
+                      icon: Icon(Icons.person_remove),
+                      label: Text('Hủy kết bạn'),
+                      style: TextButton.styleFrom(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        elevation: 0,
+                        primary: Colors.white,
+                        backgroundColor: Colors.red,
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
             buildInfoField(
                 "Phone:",

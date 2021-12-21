@@ -134,15 +134,22 @@ class WidgetBubble extends GetView<ChatController> {
                               bottomLeft: Radius.circular(!isMe ? 0 : 15),
                             ),
                           ),
-                          child: SelectableText(
-                            message,
-                            textAlign: TextAlign.start,
-                            style: TextStyle(color: Colors.white),
-                            onTap: () {
-                              Clipboard.setData(ClipboardData(text: message));
-                              controller.showMoreMess =
-                                  !controller.showMoreMess;
-                            },
+                          child: TextSelectionTheme(
+                            data: TextSelectionThemeData(
+                              selectionColor: Colors.grey,
+                              selectionHandleColor: Colors.white,
+                            ),
+                            child: SelectableText(
+                              message,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(color: Colors.white),
+                              toolbarOptions:
+                                  ToolbarOptions(copy: true, selectAll: true),
+                              onTap: () {
+                                controller.showMoreMess =
+                                    !controller.showMoreMess;
+                              },
+                            ),
                           ),
                         ),
                       )
@@ -169,17 +176,22 @@ class WidgetBubble extends GetView<ChatController> {
                               bottomLeft: Radius.circular(!isMe ? 0 : 15),
                             ),
                           ),
-                          child: SelectableText(
-                            message,
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              color: Colors.black87,
+                          child: TextSelectionTheme(
+                            data: TextSelectionThemeData(
+                              selectionColor: Colors.grey,
+                              selectionHandleColor: Colors.black87,
                             ),
-                            onTap: () {
-                              Clipboard.setData(ClipboardData(text: message));
-                              controller.showMoreMess =
-                                  !controller.showMoreMess;
-                            },
+                            child: SelectableText(
+                              message,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(color: Colors.black87),
+                              toolbarOptions:
+                                  ToolbarOptions(copy: true, selectAll: true),
+                              onTap: () {
+                                controller.showMoreMess =
+                                    !controller.showMoreMess;
+                              },
+                            ),
                           ),
                         ),
                       ),
@@ -566,9 +578,12 @@ class WidgetBubble extends GetView<ChatController> {
                                         Icons.insert_drive_file,
                                         color: Colors.black,
                                       ),
-                                      Text(
-                                        fileName,
-                                        style: TextStyle(color: Colors.black),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          fileName,
+                                          style: TextStyle(color: Colors.black),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -624,17 +639,14 @@ class WidgetBubble extends GetView<ChatController> {
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Visibility(
-                          visible: controller.showMoreMess,
-                          child: Padding(
-                            padding: const EdgeInsets.all(5),
-                            child: Text(
-                              dateTime,
-                              style: TextStyle(
-                                  color: Get.isDarkMode
-                                      ? Colors.white60
-                                      : Colors.black26),
-                            ),
+                        Padding(
+                          padding: const EdgeInsets.all(5),
+                          child: Text(
+                            dateTime,
+                            style: TextStyle(
+                                color: Get.isDarkMode
+                                    ? Colors.white60
+                                    : Colors.black26),
                           ),
                         ),
                         Expanded(
@@ -660,18 +672,15 @@ class WidgetBubble extends GetView<ChatController> {
                             child: WidgetVideoMessage(videoUrl: message),
                           ),
                         ),
-                        Visibility(
-                          visible: controller.showMoreMess,
-                          child: Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.all(5),
-                              child: Text(
-                                dateTime,
-                                style: TextStyle(
-                                    color: Get.isDarkMode
-                                        ? Colors.white60
-                                        : Colors.black26),
-                              ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: Text(
+                              dateTime,
+                              style: TextStyle(
+                                  color: Get.isDarkMode
+                                      ? Colors.white60
+                                      : Colors.black26),
                             ),
                           ),
                         ),

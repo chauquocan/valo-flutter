@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:get/get_connect/http/src/status/http_status.dart';
 import 'package:intl/intl.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:file_picker/file_picker.dart';
@@ -32,9 +33,12 @@ class ChatController extends GetxController {
   final contactController = Get.find<TabContactController>();
 
   final textController = TextEditingController();
+  final inputChangeName = TextEditingController();
   final keyboardController = KeyboardVisibilityController();
   final scrollController = ScrollController();
   final currentUserId = LocalStorage.getUser()?.id.toString();
+
+  final editFormKey = GlobalKey<FormState>();
 
   final _id = ''.obs;
   final _name = ''.obs;
@@ -49,6 +53,18 @@ class ChatController extends GetxController {
 
   set users(value) {
     _users.value = value;
+  }
+
+  //image
+  final ImagePicker _picker = ImagePicker();
+  var imageURL = '';
+
+  final _imgUrl = ''.obs;
+
+  String get imgUrl => _imgUrl.value;
+
+  set imgUrl(value) {
+    _imgUrl.value = value;
   }
 
   //
@@ -279,14 +295,19 @@ class ChatController extends GetxController {
 
   // kick member
   Future kickMember(userId, conversationId) async {
-    final map = {'userId': userId, 'conversationId': conversationId};
-    final response = await groupChatProvider.kickMember(map);
-    if (response.ok) {
-      participants = response.data!.content;
-      getMembers();
-      customSnackbar().snackbarDialog('Sucessful', 'Member has been kicked');
+    if (members.length > 3) {
+      final map = {'userId': userId, 'conversationId': conversationId};
+      final response = await groupChatProvider.kickMember(map);
+      if (response.ok) {
+        participants = response.data!.content;
+        getMembers();
+        customSnackbar().snackbarDialog('Sucessful', 'Member has been kicked');
+      } else {
+        customSnackbar().snackbarDialog('Failed', 'You are not Admin');
+      }
     } else {
-      customSnackbar().snackbarDialog('Failed', 'You are not Admin');
+      customSnackbar()
+          .snackbarDialog('Failed', 'Group chat must have at least 3 members');
     }
   }
 
@@ -296,7 +317,9 @@ class ChatController extends GetxController {
     if (respones.ok) {
       conversationController.getConversations();
       Get.offAllNamed('/home');
-    } else {}
+    } else {
+      customSnackbar().snackbarDialog('Failed', 'You can not leave group');
+    }
   }
 
   // delete group
@@ -340,6 +363,7 @@ class ChatController extends GetxController {
     Get Messages
    */
   Future getMessages(String id) async {
+    isLoading = true;
     List<MessageContent> _messages = [];
     final response = await chatProvider.getMesages(id, 0);
     if (response.ok) {
@@ -356,7 +380,8 @@ class ChatController extends GetxController {
         messagesLoaded = false;
       }
     } else {
-      print(response);
+      isLoading = false;
+      messagesLoaded = false;
     }
   }
 
@@ -378,9 +403,7 @@ class ChatController extends GetxController {
         messagesLoaded = true;
         _page.value++;
       }
-    } else {
-      print(response);
-    }
+    } else {}
   }
 
   /* 
@@ -472,7 +495,7 @@ class ChatController extends GetxController {
     if (gif != null) {
       // print(gif);
       String body = json.encode({
-        "conversationId": '$id',
+        "conversationId": id,
         "messageType": 2,
         "content": gif.images?.original?.webp,
         "senderId": '$currentUserId',
@@ -498,7 +521,7 @@ class ChatController extends GetxController {
             "conversationId": '$id',
             "messageType": 1,
             "content": image,
-            "senderId": '${LocalStorage.getUser()!.id}',
+            "senderId": LocalStorage.getUser()!.id,
             "replyId": '',
           });
           StompService.stompClient.send(
@@ -512,11 +535,10 @@ class ChatController extends GetxController {
               duration: Duration(milliseconds: 300), curve: Curves.easeOut);
         }
       } else {
-        print(response);
-        Get.snackbar('Loi', "Loi gui api");
+        customSnackbar().snackbarDialog('Loi', "Loi gui api");
       }
     } else {
-      Get.snackbar('Luu y ', "Vui long chon anh");
+      customSnackbar().snackbarDialog('Luu y ', "Vui long chon anh");
     }
   }
 
@@ -532,41 +554,7 @@ class ChatController extends GetxController {
             "conversationId": '$id',
             "messageType": 1,
             "content": image,
-            "senderId": '${LocalStorage.getUser()!.id}',
-            "replyId": '',
-          });
-          StompService.stompClient.send(
-            destination: "/app/chat",
-            body: body,
-          );
-        }
-        textController.clear();
-        if (messages.length >= 1) {
-          scrollController.animateTo(0,
-              duration: Duration(milliseconds: 300), curve: Curves.easeOut);
-        }
-      } else {
-        print(response);
-        Get.snackbar('Loi', "Loi gui api");
-      }
-    } else {
-      // User canceled the picker
-    }
-  }
-
-  void pickFilesFromGallery() async {
-    FilePickerResult? result = await FilePicker.platform
-        .pickFiles(type: FileType.any, allowMultiple: true);
-
-    if (result != null) {
-      var response = await chatProvider.uploadFiles(result.paths);
-      if (response.statusCode == 200) {
-        for (var image in response.data) {
-          String body = json.encode({
-            "conversationId": '$id',
-            "messageType": 5,
-            "content": image,
-            "senderId": '${LocalStorage.getUser()!.id}',
+            "senderId": LocalStorage.getUser()!.id,
             "replyId": '',
           });
           StompService.stompClient.send(
@@ -582,6 +570,87 @@ class ChatController extends GetxController {
       } else {
         print(response);
         customSnackbar().snackbarDialog('Loi', "Loi gui api");
+      }
+    } else {
+      // User canceled the picker
+    }
+  }
+
+  void pickFilesFromGallery() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: [
+        'doc',
+        'docx',
+        'pdf',
+        'xls',
+        'xlsx',
+        'txt',
+        'ppt',
+        'pptx',
+        'html',
+      ],
+      allowMultiple: true,
+    );
+
+    if (result != null) {
+      var response = await chatProvider.uploadFiles(result.paths);
+      if (response.statusCode == 200) {
+        for (var image in response.data) {
+          String body = json.encode({
+            "conversationId": '$id',
+            "messageType": 5,
+            "content": image,
+            "senderId": LocalStorage.getUser()!.id,
+            "replyId": '',
+          });
+          StompService.stompClient.send(
+            destination: "/app/chat",
+            body: body,
+          );
+        }
+        textController.clear();
+        if (messages.length >= 1) {
+          scrollController.animateTo(0,
+              duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+        }
+      } else {
+        customSnackbar()
+            .snackbarDialog('Failed', "Cannot pick file, please try again!");
+      }
+    } else {
+      // User canceled the picker
+    }
+  }
+
+  void pickVideoFromGallery() async {
+    FilePickerResult? result = await FilePicker.platform
+        .pickFiles(type: FileType.video, allowMultiple: true);
+
+    if (result != null) {
+      var response = await chatProvider.uploadFiles(result.paths);
+      if (response.statusCode == 200) {
+        for (var image in response.data) {
+          String body = json.encode({
+            "conversationId": '$id',
+            "messageType": 3,
+            "content": image,
+            "senderId": LocalStorage.getUser()!.id,
+            "replyId": '',
+          });
+          StompService.stompClient.send(
+            destination: "/app/chat",
+            body: body,
+          );
+        }
+        textController.clear();
+        if (messages.length >= 1) {
+          scrollController.animateTo(0,
+              duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+        }
+      } else {
+        customSnackbar()
+            .snackbarDialog('Failed', "Cannot pick file, please try again!");
       }
     } else {
       // User canceled the picker
@@ -664,6 +733,75 @@ class ChatController extends GetxController {
       );
     } else {
       customSnackbar().snackbarDialog('Thông báo', 'Quyền truy cập bị từ chối');
+    }
+  }
+
+  //upload image function
+  void uploadImage() async {
+    final pickedFile =
+        await _picker.pickImage(source: ImageSource.camera, imageQuality: 50);
+
+    if (pickedFile != null) {
+      var response = await groupChatProvider.uploadFile(id, pickedFile.path);
+      if (response.ok) {
+        //get image url from api response
+        imageURL = response.data!.imageUrl;
+        avatar = response.data!.imageUrl;
+
+        final newConversation = conversationController.conversations.value
+            .firstWhere(
+                (element) => element.conversation.id == response.data!.id);
+        newConversation.conversation = response.data!;
+        conversationController.conversations.refresh();
+        customSnackbar()
+            .snackbarDialog('Success', 'Image uploaded successfully');
+      } else if (response.code == HttpStatus.unauthorized) {
+        customSnackbar().snackbarDialog('Unauthorization', 'token expired');
+      } else {
+        customSnackbar().snackbarDialog('Failed', 'Error Code: $response');
+      }
+    } else {
+      customSnackbar().snackbarDialog('Failed', 'Image not selected');
+    }
+  }
+
+  void pickImagesFromGalleryGroup() async {
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(type: FileType.image);
+    if (result != null) {
+      var response =
+          await groupChatProvider.uploadFile(id, result.files.single.path);
+      if (response.ok) {
+        imageURL = response.data!.imageUrl;
+        avatar = response.data!.imageUrl;
+        final newConversation = conversationController.conversations.value
+            .firstWhere(
+                (element) => element.conversation.id == response.data!.id);
+        newConversation.conversation = response.data!;
+        conversationController.conversations.refresh();
+        customSnackbar()
+            .snackbarDialog('Successfully', 'Image uploaded successfully');
+      } else {
+        customSnackbar().snackbarDialog('Faied', "Loi gui api");
+      }
+    }
+  }
+
+  void renameGroup(String newName, String conversationId) async {
+    final map = {"newName": newName};
+    final response = await groupChatProvider.renameGroup(map, conversationId);
+    if (response.ok) {
+      final newConversation = conversationController.conversations.value
+          .firstWhere(
+              (element) => element.conversation.id == response.data!.id);
+      newConversation.conversation = response.data!;
+      conversationController.conversations.refresh();
+      customSnackbar()
+          .snackbarDialog('Successfully', "Group's name change successfully");
+      Get.back();
+    } else {
+      customSnackbar().snackbarDialog(
+          'Faied', "Cannot change group's name, please try again");
     }
   }
 }

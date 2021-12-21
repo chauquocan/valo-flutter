@@ -10,7 +10,7 @@ class CreateGroupChatScreen extends GetView<CreateGroupChatController> {
         return GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: Theme.of(context).backgroundColor,
             appBar: WidgetAppBar(
               title: 'Create group chat',
               actions: [
@@ -45,15 +45,26 @@ class CreateGroupChatScreen extends GetView<CreateGroupChatController> {
                           key: controller.nameFormKey,
                           child: Column(
                             children: [
-                              WidgetField(
-                                controller: controller.textCtrl,
-                                validator: (value) =>
-                                    Regex.fullNameValidator(value!),
-                                hint: 'Enter group name',
-                                padding: EdgeInsets.all(8),
-                                margin: const EdgeInsets.symmetric(
+                              Container(
+                                margin: const EdgeInsets.all(8),
+                                padding: const EdgeInsets.symmetric(
                                   vertical: 5,
                                   horizontal: 10,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade200,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: AppTextField(
+                                  controller: controller.textCtrl,
+                                  validator: (value) =>
+                                      Regex.fullNameValidator(value!),
+                                  textFieldType: TextFieldType.NAME,
+                                  decoration: InputDecoration(
+                                    hintStyle: TextStyle(color: Colors.black54),
+                                    hintText: 'Nhập tên group',
+                                    border: InputBorder.none,
+                                  ),
                                 ),
                               ),
                               _buildListSelected(),
@@ -93,7 +104,7 @@ class CreateGroupChatScreen extends GetView<CreateGroupChatController> {
             trailing: Container(
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
-                color: l.contains(user) ? Colors.green : Colors.white,
+                color: l.contains(user) ? Colors.blue : Colors.white,
                 shape: BoxShape.circle,
                 border: Border.all(
                   width: 2,
