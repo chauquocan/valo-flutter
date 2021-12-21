@@ -8,6 +8,12 @@ class Regex {
     return regExp.hasMatch(name);
   }
 
+  static bool isGroupName(String name) {
+    RegExp regExp = RegExp(
+        r"^[\S][a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂẾưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ.,/\s+]+[\S]$");
+    return regExp.hasMatch(name);
+  }
+
   static bool isPasswordValid(String password) {
     if (password.length < 8) return false;
     if (!password.contains(RegExp(r"[a-z]"))) return false;
@@ -26,6 +32,19 @@ class Regex {
     if (!isName(value)) {
       // customSnackbar().snackbarDialog('Lỗi', 'Tên không hợp lệ');
       return 'Invalid name';
+    }
+    return null;
+  }
+
+  //Validator
+  static String? groupNameValidator(String value) {
+    if (value.isEmpty) {
+      // customSnackbar().snackbarDialog('Lỗi', 'Bạn chưa nhập họ tên');
+      return "Please enter group's name";
+    }
+    if (!isGroupName(value)) {
+      // customSnackbar().snackbarDialog('Lỗi', 'Tên không hợp lệ');
+      return "Invalid group's name";
     }
     return null;
   }

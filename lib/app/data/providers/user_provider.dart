@@ -9,6 +9,7 @@ import '../models/user_model.dart';
 class ProfileProvider {
   static const String userURL = 'users';
   static const String searchURL = '$userURL/search';
+  static const String suggestURL = '$userURL/suggest';
   static const String userPhoneURL = '$userURL/phone=';
   static const String updateURL = '$userURL/update';
   static const String changImageURL = '$userURL/me/changeImage';
@@ -65,6 +66,24 @@ class ProfileProvider {
         searchURL,
         params: {
           'textToSearch': textToSearch,
+        },
+      );
+      return NetworkResponse.fromResponse(
+        response,
+        (json) => UserPage.fromJson(json),
+      );
+    } on DioError catch (e) {
+      return NetworkResponse.withError(e.response);
+    }
+  }
+
+  //Search user by address
+  Future<NetworkResponse<UserPage>> searchUserByAddress(String address) async {
+    try {
+      final response = await ConnectService().get(
+        suggestURL,
+        params: {
+          'address': address,
         },
       );
       return NetworkResponse.fromResponse(

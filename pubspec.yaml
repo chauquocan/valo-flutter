@@ -74,12 +74,12 @@ dependencies:
   giphy_get: ^2.0.3
   flutter_link_previewer: ^2.5.2
   emoji_picker_flutter: ^1.0.8
-  google_maps_flutter: ^2.1.1
   focused_menu: ^1.0.5
   date_time_picker: ^2.1.0
   just_audio: ^0.9.18
   flutter_downloader: ^1.7.1
   video_player: ^2.2.7
+  video_thumbnail: ^0.4.3
 
   
 dev_dependencies:

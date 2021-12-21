@@ -125,19 +125,6 @@ class SearchDetailScreen extends GetView<SearchDetailController> {
                   ],
                 ),
               ),
-              buildInfoField(
-                  "Phone:",
-                  controller.userProfile.user.phone == ""
-                      ? "Không có thông tin"
-                      : controller.userProfile.user.phone),
-              buildInfoField(
-                  "E-mail:",
-                  controller.userProfile.user.email == ""
-                      ? "Không có thông tin"
-                      : controller.userProfile.user.email),
-              SizedBox(
-                height: 20,
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -166,6 +153,21 @@ class SearchDetailScreen extends GetView<SearchDetailController> {
                   ),
                 ],
               ),
+              buildInfoField(
+                  "Phone:",
+                  controller.userProfile.user.phone == ""
+                      ? "Không có thông tin"
+                      : controller.userProfile.user.phone),
+              buildInfoField(
+                  "E-mail:",
+                  controller.userProfile.user.email == ""
+                      ? "Không có thông tin"
+                      : controller.userProfile.user.email),
+              buildInfoField(
+                  "Address:",
+                  controller.userProfile.user.address == ""
+                      ? "Không có thông tin"
+                      : controller.userProfile.user.address),
             ],
           ),
         ),

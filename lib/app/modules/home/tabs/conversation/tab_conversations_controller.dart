@@ -74,6 +74,8 @@ class TabConversationController extends GetxController {
           return 'You send a sticker';
         } else if (conversation.lastMessage.message.messageType == 'FILE') {
           return 'You send a file';
+        } else if (conversation.lastMessage.message.messageType == 'VIDEO') {
+          return 'You send a video';
         }
         return 'You : $mess';
       } else {
@@ -83,6 +85,8 @@ class TabConversationController extends GetxController {
           } else if (conversation.lastMessage.message.messageType ==
               'STICKER') {
             return '${conversation.lastMessage.userName} send a sticker';
+          } else if (conversation.lastMessage.message.messageType == 'VIDEO') {
+            return '${conversation.lastMessage.userName} send a video';
           } else if (conversation.lastMessage.message.messageType == 'FILE') {
             return '${conversation.lastMessage.userName} send a file';
           }
@@ -92,6 +96,8 @@ class TabConversationController extends GetxController {
           return '${conversation.lastMessage.userName} send a photo';
         } else if (conversation.lastMessage.message.messageType == 'STICKER') {
           return '${conversation.lastMessage.userName} send a sticker';
+        } else if (conversation.lastMessage.message.messageType == 'VIDEO') {
+          return '${conversation.lastMessage.userName} send a video';
         } else if (conversation.lastMessage.message.messageType == 'FILE') {
           return '${conversation.lastMessage.userName} send a file';
         }

@@ -14,7 +14,6 @@ import 'package:valo_chat_app/app/modules/chat/chat_detail/media/media_screen.da
 import 'package:valo_chat_app/app/modules/chat/widgets/widgets.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
-import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_menu.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:valo_chat_app/app/utils/regex.dart';
 import 'package:valo_chat_app/app/utils/storage_service.dart';

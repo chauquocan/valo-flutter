@@ -6,6 +6,7 @@ import 'package:valo_chat_app/app/data/providers/friend_request_provider.dart';
 import 'package:valo_chat_app/app/data/providers/user_provider.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
+import 'package:valo_chat_app/app/utils/regex.dart';
 import 'package:valo_chat_app/app/utils/storage_service.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
 
@@ -17,19 +18,28 @@ class AddFriendController extends GetxController {
   final friendProvider = Get.find<FriendRequestProvider>();
 
   var searchController = TextEditingController();
+  var suggestController = TextEditingController();
 
   final searchResults = <UserContent>[].obs;
+  final suggestResults = <UserContent>[].obs;
+
   final friendReqList = <FriendRequest>[].obs;
   final userList = <UserContent>[].obs;
   final searchFormKey = GlobalKey<FormState>();
+  final suggestFormKey = GlobalKey<FormState>();
 
   //loading
   final isLoading = false.obs;
+  final isSuggestLoading = false.obs;
   //requestsLoaded
   final requestsLoaded = false.obs;
   //usersLoaded
   final usersLoadded = false.obs;
+  final usersSuggested = false.obs;
+
   final isSearch = false.obs;
+  final isSuggest = false.obs;
+
   final isAccepted = false.obs;
   //isSent
   final isSent = false.obs;
@@ -42,10 +52,14 @@ class AddFriendController extends GetxController {
 
   String? searchValidator(String value) {
     if (value.isEmpty) {
-      return '';
+      return 'Enter name or phone to search';
     }
-    if (RegExp(r"\s").hasMatch(value)) {
-      return '';
+    return null;
+  }
+
+  String? suggestValidator(String value) {
+    if (value.isEmpty) {
+      return 'Enter address to search';
     }
     return null;
   }
@@ -125,19 +139,17 @@ class AddFriendController extends GetxController {
       );
       if (searchResponse.ok) {
         if (searchResponse.data!.content.length > 0) {
-          // Future.delayed(const Duration(milliseconds: 200), () {
-          // Do something
-          for (var item in searchResponse.data!.content) {
-            if (currentUser!.phone != item.user.phone ||
-                currentUser.name != item.user.name) {
-              _profiles.add(item);
+          Future.delayed(const Duration(milliseconds: 200), () {
+            for (var item in searchResponse.data!.content) {
+              if (currentUser!.phone != item.user.phone ||
+                  currentUser.name != item.user.name) {
+                _profiles.add(item);
+              }
             }
-          }
-          searchResults.value = _profiles;
-          isLoading.value = false;
-          usersLoadded.value = true;
-          // }
-          // );
+            searchResults.value = _profiles;
+            isLoading.value = false;
+            usersLoadded.value = true;
+          });
         } else {
           isLoading.value = false;
           usersLoadded.value = false;
@@ -148,5 +160,39 @@ class AddFriendController extends GetxController {
       }
     }
     isSearch.value = true;
+  }
+
+  /* 
+    Search user by address
+   */
+  Future searchUserByAdress(String address) async {
+    if (suggestFormKey.currentState!.validate()) {
+      isSuggestLoading.value = true;
+      List<UserContent> _profiles = [];
+      final currentUser = LocalStorage.getUser();
+      final searchResponse = await userProvider.searchUserByAddress(address);
+      if (searchResponse.ok) {
+        if (searchResponse.data!.content.length > 0) {
+          Future.delayed(const Duration(milliseconds: 200), () {
+            for (var item in searchResponse.data!.content) {
+              if (currentUser!.phone != item.user.phone ||
+                  currentUser.name != item.user.name) {
+                _profiles.add(item);
+              }
+            }
+            suggestResults.value = _profiles;
+            isSuggestLoading.value = false;
+            usersSuggested.value = true;
+          });
+        } else {
+          isSuggestLoading.value = false;
+          usersSuggested.value = false;
+        }
+      } else {
+        isSuggestLoading.value = false;
+        usersSuggested.value = false;
+      }
+    }
+    isSuggest.value = true;
   }
 }
