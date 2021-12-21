@@ -98,7 +98,7 @@ class ProfileGroupScreen extends GetView<ChatController> {
                                           onTap: () {
                                             Get.back();
                                             controller
-                                                .pickImagesFromGallery_group();
+                                                .pickImagesFromGalleryGroup();
                                           },
                                         ),
                                       ],
@@ -133,17 +133,57 @@ class ProfileGroupScreen extends GetView<ChatController> {
                         color: Colors.blue,
                       ),
                     ),
-                    Expanded(
-                      flex: 2,
-                      child: Text(
-                        controller.name,
-                        style: TextStyle(fontSize: 20),
+                    Obx(
+                      () => Expanded(
+                        flex: 2,
+                        child: Text(
+                          controller.name,
+                          style: TextStyle(fontSize: 20),
+                        ),
                       ),
                     ),
                     Expanded(
                       flex: 1,
                       child: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.dialog(AlertDialog(
+                            scrollable: true,
+                            title: Text(
+                              'editinformation'.tr,
+                              textAlign: TextAlign.center,
+                            ),
+                            content: StatefulBuilder(
+                              builder: (context, setState) => Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Form(
+                                    key: controller.editFormKey,
+                                    child: Column(children: [
+                                      buildTextField(
+                                          "Name",
+                                          '${controller.name}',
+                                          controller.inputChangeName,
+                                          (value) =>
+                                              Regex.groupNameValidator(value!)),
+                                    ])),
+                              ),
+                            ),
+                            actions: <Widget>[
+                              TextButton(
+                                child: const Text('CANCEL'),
+                                onPressed: () => Get.back(),
+                              ),
+                              TextButton(
+                                child: const Text('OK'),
+                                onPressed: () => {
+                                  FocusScope.of(context).unfocus(),
+                                  controller.renameGroup(
+                                      controller.inputChangeName.text,
+                                      controller.id)
+                                },
+                              ),
+                            ],
+                          ));
+                        },
                         icon: Icon(Icons.edit),
                       ),
                     ),
@@ -197,7 +237,7 @@ class ProfileGroupScreen extends GetView<ChatController> {
                 height: size.height * 0.1,
                 elevation: 0,
                 child: Row(
-                  children: const [
+                  children: [
                     Expanded(
                       flex: 1,
                       child: Icon(
@@ -398,6 +438,30 @@ class ProfileGroupScreen extends GetView<ChatController> {
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildTextField(
+      String labelText,
+      String placeholder,
+      TextEditingController txtController,
+      String? Function(String?)? validator) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: TextFormField(
+        validator: validator,
+        controller: txtController..text = placeholder,
+        decoration: InputDecoration(
+          labelText: labelText,
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+          hintStyle: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
           ),
         ),
       ),

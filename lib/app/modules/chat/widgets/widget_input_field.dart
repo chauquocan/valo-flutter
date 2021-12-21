@@ -6,6 +6,7 @@ class WidgetInputField extends GetView<ChatController> {
   final Function()? sendIcon;
   final Function()? sendImageFromCamera;
   final Function()? sendImageFromGallery;
+  final Function()? sendVideoFromGallery;
   final Function()? sendSticker;
   final Function()? sendGif;
   final Function()? sendFile;
@@ -20,6 +21,7 @@ class WidgetInputField extends GetView<ChatController> {
     this.sendIcon,
     this.sendImageFromCamera,
     this.sendImageFromGallery,
+    this.sendVideoFromGallery,
     this.sendSticker,
     this.sendGif,
     this.sendFile,
@@ -37,46 +39,74 @@ class WidgetInputField extends GetView<ChatController> {
                 visible: controller.showMore,
                 child: Row(
                   children: [
-                    IconButton(
-                      onPressed: sendImageFromCamera,
-                      icon: const Icon(
-                        Icons.camera_alt,
-                        color: Colors.lightBlue,
+                    Tooltip(
+                      message: 'camera',
+                      child: IconButton(
+                        onPressed: sendImageFromCamera,
+                        icon: const Icon(
+                          Icons.camera_alt,
+                          color: Colors.lightBlue,
+                        ),
                       ),
                     ),
-                    IconButton(
-                      onPressed: sendImageFromGallery,
-                      icon: const Icon(
-                        Icons.image,
-                        color: Colors.lightBlue,
+                    Tooltip(
+                      message: 'gallery',
+                      child: IconButton(
+                        onPressed: sendImageFromGallery,
+                        icon: const Icon(
+                          Icons.image,
+                          color: Colors.lightBlue,
+                        ),
                       ),
                     ),
-                    IconButton(
-                      onPressed: sendSticker,
-                      icon: const Icon(
-                        Icons.face,
-                        color: Colors.lightBlue,
+                    Tooltip(
+                      message: 'video',
+                      child: IconButton(
+                        onPressed: sendVideoFromGallery,
+                        icon: const Icon(
+                          Icons.video_camera_back,
+                          color: Colors.lightBlue,
+                        ),
                       ),
                     ),
-                    IconButton(
-                      onPressed: sendIcon,
-                      icon: const Icon(
-                        Icons.emoji_emotions,
-                        color: Colors.lightBlue,
+                    Tooltip(
+                      message: 'sticker',
+                      child: IconButton(
+                        onPressed: sendSticker,
+                        icon: const Icon(
+                          Icons.face,
+                          color: Colors.lightBlue,
+                        ),
                       ),
                     ),
-                    IconButton(
-                      onPressed: sendGif,
-                      icon: const Icon(
-                        Icons.gif_outlined,
-                        color: Colors.lightBlue,
+                    Tooltip(
+                      message: 'emoji',
+                      child: IconButton(
+                        onPressed: sendIcon,
+                        icon: const Icon(
+                          Icons.emoji_emotions,
+                          color: Colors.lightBlue,
+                        ),
                       ),
                     ),
-                    IconButton(
-                      onPressed: sendFile,
-                      icon: const Icon(
-                        Icons.attach_file,
-                        color: Colors.lightBlue,
+                    Tooltip(
+                      message: 'gif',
+                      child: IconButton(
+                        onPressed: sendGif,
+                        icon: const Icon(
+                          Icons.gif_outlined,
+                          color: Colors.lightBlue,
+                        ),
+                      ),
+                    ),
+                    Tooltip(
+                      message: 'file',
+                      child: IconButton(
+                        onPressed: sendFile,
+                        icon: const Icon(
+                          Icons.attach_file,
+                          color: Colors.lightBlue,
+                        ),
                       ),
                     ),
                   ],
@@ -116,13 +146,15 @@ class WidgetInputField extends GetView<ChatController> {
                       child: TextFormField(
                         controller: textEditingController,
                         keyboardType: TextInputType.text,
+                        style: TextStyle(color: Colors.black),
                         decoration: InputDecoration(
-                            hintText: 'Enter Message',
-                            border: InputBorder.none,
-                            hintStyle: TextStyle(
-                                color: Get.isDarkMode
-                                    ? Colors.black
-                                    : Colors.black54)),
+                          hintText: 'Enter Message',
+                          border: InputBorder.none,
+                          hintStyle: TextStyle(
+                              color: Get.isDarkMode
+                                  ? Colors.black
+                                  : Colors.black54),
+                        ),
                       ),
                     ),
                     IconButton(

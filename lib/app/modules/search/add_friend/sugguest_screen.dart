@@ -6,15 +6,15 @@ import 'package:valo_chat_app/app/modules/search/search_detail/search_detail_scr
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'add_friend_controller.dart';
 
-class AddFriendScreen extends GetView<AddFriendController> {
-  const AddFriendScreen({Key? key}) : super(key: key);
+class SuggestScreen extends GetView<AddFriendController> {
+  const SuggestScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: const Text(
-          'Find a friend',
+          'Find friend by address',
           style: TextStyle(color: AppColors.light),
         ),
       ),
@@ -27,72 +27,71 @@ class AddFriendScreen extends GetView<AddFriendController> {
                 horizontal: 10,
               ),
               child: Form(
-                key: controller.searchFormKey,
+                key: controller.suggestFormKey,
                 child: TextFormField(
-                  validator: (value) => controller.searchValidator(value!),
-                  controller: controller.searchController,
+                  validator: (value) => controller.suggestValidator(value!),
+                  controller: controller.suggestController,
                   onChanged: (value) {
                     if (value.isNotEmpty && value.length > 0) {
-                      controller.searchUser(value);
-                      controller.isSearch.value = true;
+                      controller.searchUserByAdress(value);
+                      controller.isSuggest.value = true;
                     } else {
-                      controller.searchResults.value.clear();
-                      controller.isSearch.value = false;
+                      controller.suggestResults.value.clear();
+                      controller.isSuggest.value = false;
                     }
                   },
                   decoration: InputDecoration(
-                      hintText: 'Enter phone number or name',
+                      hintText: 'Enter address',
                       suffixIcon: IconButton(
-                          onPressed: () => controller
-                              .searchUser(controller.searchController.text),
+                          onPressed: () => controller.searchUserByAdress(
+                              controller.suggestController.text),
                           icon: const Icon(Icons.search))),
                 ),
               ),
             ),
             Expanded(
               child: GetX<AddFriendController>(
-                builder: (_) => controller.isLoading.value
+                builder: (_) => controller.isSuggestLoading.value
                     ? const Center(
                         child: CircularProgressIndicator(
                           backgroundColor: Colors.white,
                         ),
                       )
-                    : controller.usersLoadded.value
+                    : controller.usersSuggested.value
                         ? ListView.builder(
-                            itemCount: controller.searchResults.length,
+                            itemCount: controller.suggestResults.length,
                             itemBuilder: (context, index) {
-                              final searchResponse =
-                                  controller.searchResults[index];
+                              final result = controller.suggestResults[index];
                               return ListTile(
                                 onTap: () => Get.to(
                                   () => SearchDetailScreen(),
-                                  arguments: {"userProfile": searchResponse},
+                                  arguments: {"userProfile": result},
                                   binding: SearchDetailBinding(),
                                 ),
                                 leading: Hero(
-                                  tag: searchResponse.user.id,
+                                  tag: result.user.id,
                                   child: CircleAvatar(
                                     backgroundColor: Colors.blueGrey,
                                     radius: 30,
                                     backgroundImage: CachedNetworkImageProvider(
-                                        searchResponse.user.imgUrl),
+                                        result.user.imgUrl),
                                   ),
                                 ),
                                 title: Text(
-                                  searchResponse.user.name == ""
+                                  result.user.name == ""
                                       ? "Không có tên"
-                                      : searchResponse.user.name,
+                                      : result.user.name,
                                   style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                subtitle: Text(searchResponse.user.phone),
+                                subtitle: Text(result.user.phone),
                                 trailing: TextButton(
-                                  onPressed: () => searchResponse.friend
+                                  onPressed: () => result.friend
                                       ? () {}
-                                      : controller.sendFriendReq(
-                                          searchResponse.user.id),
-                                  child: searchResponse.friend
+                                      : controller
+                                          .sendFriendReq(result.user.id),
+                                  child: result.friend
                                       ? const Text('Bạn bè')
                                       : Obx(() => controller.isSent.value
                                           ? const Text('Đã gửi')
@@ -102,7 +101,7 @@ class AddFriendScreen extends GetView<AddFriendController> {
                             })
                         : Center(
                             child: Text(
-                              controller.isSearch.value
+                              controller.isSuggest.value
                                   ? 'No user found'
                                   : 'Search friend',
                               style: TextStyle(

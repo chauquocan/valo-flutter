@@ -64,7 +64,7 @@ class _WidgetVideoMessageState extends State<WidgetVideoMessage> {
                 ),
               ),
               Container(
-                color: Colors.black,
+                color: Get.isDarkMode ? Colors.indigo : Colors.black,
                 child: Row(
                   children: [
                     Padding(
@@ -74,7 +74,7 @@ class _WidgetVideoMessageState extends State<WidgetVideoMessage> {
                             videoPlayerController.value.isPlaying
                                 ? Icons.pause
                                 : Icons.play_arrow,
-                            color: Colors.white,
+                            color: Get.isDarkMode ? Colors.blue : Colors.white,
                           ),
                           onPressed: () {
                             setState(() {
@@ -88,7 +88,8 @@ class _WidgetVideoMessageState extends State<WidgetVideoMessage> {
                       child: Slider(
                         value: currentDuration,
                         max: videoDuration,
-                        inactiveColor: Colors.white,
+                        inactiveColor:
+                            Get.isDarkMode ? Colors.blue : Colors.white,
                         onChanged: (value) => videoPlayerController
                             .seekTo(Duration(milliseconds: value.toInt())),
                       ),

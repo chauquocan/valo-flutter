@@ -20,78 +20,78 @@ class Body extends StatelessWidget {
           children: <Widget>[
             ProfileInforWidget(),
             const SizedBox(height: 10),
-            AppButton(
-              color: Get.isDarkMode
-                  ? Colors.grey.shade900
-                  : Theme.of(context).backgroundColor,
-              margin: const EdgeInsets.only(bottom: 5),
-              width: size.width,
-              height: size.height * 0.1,
-              elevation: 4,
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Icon(
-                      Icons.notifications,
-                      size: 30,
-                      color: Colors.blue,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Text(
-                      "notification".tr,
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Icon(
-                      Icons.arrow_forward,
-                      size: 30,
-                    ),
-                  ),
-                ],
-              ),
-              onTap: () {},
-            ),
-            AppButton(
-              color: Get.isDarkMode
-                  ? Colors.grey.shade900
-                  : Theme.of(context).backgroundColor,
-              margin: const EdgeInsets.only(bottom: 5),
-              width: size.width,
-              height: size.height * 0.1,
-              elevation: 4,
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Icon(
-                      Icons.help_outline,
-                      size: 30,
-                      color: Colors.blue,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Text(
-                      "helpcenter".tr,
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Icon(
-                      Icons.arrow_forward,
-                      size: 30,
-                    ),
-                  ),
-                ],
-              ),
-              onTap: () {},
-            ),
+            // AppButton(
+            //   color: Get.isDarkMode
+            //       ? Colors.grey.shade900
+            //       : Theme.of(context).backgroundColor,
+            //   margin: const EdgeInsets.only(bottom: 5),
+            //   width: size.width,
+            //   height: size.height * 0.1,
+            //   elevation: 4,
+            //   child: Row(
+            //     children: [
+            //       Expanded(
+            //         flex: 1,
+            //         child: Icon(
+            //           Icons.notifications,
+            //           size: 30,
+            //           color: Colors.blue,
+            //         ),
+            //       ),
+            //       Expanded(
+            //         flex: 2,
+            //         child: Text(
+            //           "notification".tr,
+            //           style: TextStyle(fontSize: 18),
+            //         ),
+            //       ),
+            //       Expanded(
+            //         flex: 1,
+            //         child: Icon(
+            //           Icons.arrow_forward,
+            //           size: 30,
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            //   onTap: () {},
+            // ),
+            // AppButton(
+            //   color: Get.isDarkMode
+            //       ? Colors.grey.shade900
+            //       : Theme.of(context).backgroundColor,
+            //   margin: const EdgeInsets.only(bottom: 5),
+            //   width: size.width,
+            //   height: size.height * 0.1,
+            //   elevation: 4,
+            //   child: Row(
+            //     children: [
+            //       Expanded(
+            //         flex: 1,
+            //         child: Icon(
+            //           Icons.help_outline,
+            //           size: 30,
+            //           color: Colors.blue,
+            //         ),
+            //       ),
+            //       Expanded(
+            //         flex: 2,
+            //         child: Text(
+            //           "helpcenter".tr,
+            //           style: TextStyle(fontSize: 18),
+            //         ),
+            //       ),
+            //       Expanded(
+            //         flex: 1,
+            //         child: Icon(
+            //           Icons.arrow_forward,
+            //           size: 30,
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            //   onTap: () {},
+            // ),
             AppButton(
               color: Get.isDarkMode
                   ? Colors.grey.shade900

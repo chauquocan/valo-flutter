@@ -27,44 +27,41 @@ class ChatScreen extends GetView<ChatController> {
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
           ),
-          leadingWidth: 40,
           titleSpacing: 0,
-          leading: IconButton(
-            onPressed: () => Get.back(),
-            icon: Icon(
-              Icons.arrow_back,
-              size: 30,
-            ),
-          ),
           title: Container(
-            margin: const EdgeInsets.all(5),
-            child: Row(
-              children: [
-                Hero(
-                  tag: controller.id,
-                  child: CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Colors.blueGrey,
-                    backgroundImage:
-                        CachedNetworkImageProvider(controller.avatar),
-                  ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              margin: const EdgeInsets.all(5),
+              child: Obx(
+                () => Row(
                   children: [
-                    Text(
-                      controller.name,
-                      style: const TextStyle(
-                        fontSize: 18.5,
-                        fontWeight: FontWeight.bold,
+                    Hero(
+                      tag: controller.id,
+                      child: CircleAvatar(
+                        radius: 20,
+                        backgroundColor:
+                            Get.isDarkMode ? Colors.white : Colors.blueGrey,
+                        backgroundImage:
+                            CachedNetworkImageProvider(controller.avatar),
                       ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          controller.name,
+                          style: const TextStyle(
+                            fontSize: 18.5,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
+              )),
           actions: [
             IconButton(
               onPressed: () {
@@ -157,6 +154,7 @@ class ChatScreen extends GetView<ChatController> {
               onSubmit: () => controller.sendTextMessage(),
               sendImageFromCamera: () => controller.pickImageFromCamera(),
               sendImageFromGallery: () => controller.pickImagesFromGallery(),
+              sendVideoFromGallery: () => controller.pickVideoFromGallery(),
               sendIcon: () =>
                   controller.emojiShowing = !controller.emojiShowing,
               sendSticker: () =>

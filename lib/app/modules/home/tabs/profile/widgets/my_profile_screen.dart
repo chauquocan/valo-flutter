@@ -36,7 +36,6 @@ class MyProfile extends StatelessWidget {
         backgroundColor: Colors.transparent,
         actions: [
           TextButton(
-            // onPressed: () => Get.toNamed('/editprofile'),
             onPressed: () {
               Get.dialog(AlertDialog(
                 scrollable: true,
