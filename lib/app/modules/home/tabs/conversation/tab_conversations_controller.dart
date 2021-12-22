@@ -50,12 +50,13 @@ class TabConversationController extends GetxController {
         e.lastMessage.message.conversationId == mess.message.conversationId);
     conversation.lastMessage.message = mess.message;
     if (mess.message.senderId != LocalStorage.getUser()?.id) {
-      conversation.unReadMessage++;
+      // conversation.unReadMessage++;
       sendNotification(conversation);
     }
-    conversations.remove(conversation);
-    conversations.insert(0, conversation);
-    conversations.refresh();
+    getConversations();
+    // conversations.remove(conversation);
+    // conversations.insert(0, conversation);
+    // conversations.refresh();
   }
 
   String lastMess(ConversationContent? conversation) {

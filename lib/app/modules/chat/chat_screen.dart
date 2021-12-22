@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/src/utils/date_time_utils.dart';
 import 'package:valo_chat_app/app/data/models/message_model.dart';
+import 'package:valo_chat_app/app/modules/Network/network_controller.dart';
 import 'package:valo_chat_app/app/modules/chat/chat_detail/chat_detail_binding.dart';
 import 'package:valo_chat_app/app/modules/chat/chat_detail/chat_detail_screen.dart';
 import 'package:valo_chat_app/app/modules/chat/widgets/widgets.dart';
@@ -15,7 +16,8 @@ import 'package:valo_chat_app/app/widgets/widgets.dart';
 import 'chat_controller.dart';
 
 class ChatScreen extends GetView<ChatController> {
-  const ChatScreen({Key? key}) : super(key: key);
+  ChatScreen({Key? key}) : super(key: key);
+  final networkController = Get.find<NetworkController>();
 
   @override
   Widget build(BuildContext context) {
@@ -117,11 +119,7 @@ class ChatScreen extends GetView<ChatController> {
                                   onPressed: () {
                                     controller.downloadFile(
                                       message.message.content,
-                                      message.message.content
-                                          .split("/")
-                                          .last
-                                          .split("_")
-                                          .last,
+                                      message.message.content.split("/").last,
                                     );
                                   },
                                 )
