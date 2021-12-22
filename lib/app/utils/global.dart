@@ -13,7 +13,7 @@ class Global {
     await LocalStorage.init();
     await Firebase.initializeApp(); //firebase auth
     WidgetsFlutterBinding.ensureInitialized();
-    await FlutterDownloader.initialize(debug: true);
+    await FlutterDownloader.initialize(debug: false);
     FlutterDownloader.registerCallback(TestClass.callback);
 
     initialize();

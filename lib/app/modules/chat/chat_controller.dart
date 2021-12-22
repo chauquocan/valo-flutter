@@ -649,8 +649,8 @@ class ChatController extends GetxController {
               duration: Duration(milliseconds: 300), curve: Curves.easeOut);
         }
       } else {
-        customSnackbar()
-            .snackbarDialog('Failed', "Cannot pick file, please try again!");
+        customSnackbar().snackbarDialog(
+            'Failed', "Cannot pick file (File >300mb), please try again!");
       }
     } else {
       // User canceled the picker
@@ -782,7 +782,7 @@ class ChatController extends GetxController {
         customSnackbar()
             .snackbarDialog('Successfully', 'Image uploaded successfully');
       } else {
-        customSnackbar().snackbarDialog('Faied', "Loi gui api");
+        customSnackbar().snackbarDialog('Failed', "Loi gui api");
       }
     }
   }
@@ -801,7 +801,7 @@ class ChatController extends GetxController {
       Get.back();
     } else {
       customSnackbar().snackbarDialog(
-          'Faied', "Cannot change group's name, please try again");
+          'Failed', "Cannot change group's name, please try again");
     }
   }
 }

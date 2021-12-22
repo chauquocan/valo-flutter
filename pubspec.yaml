@@ -62,7 +62,7 @@ dependencies:
   permission_handler: ^8.3.0
 
   cached_network_image: ^3.1.0+1
-  flutter_svg: ^0.23.0+1
+  flutter_svg: ^1.0.0
   flutter_keyboard_visibility: ^5.1.0
   contacts_service: ^0.6.3
   connectivity_plus: ^2.0.3

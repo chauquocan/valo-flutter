@@ -472,7 +472,7 @@ class WidgetBubble extends GetView<ChatController> {
   }
 
   Widget _buildFileBubble(BuildContext context) {
-    final fileName = message.split('/').last.split('_').last;
+    final fileName = message.split('/').last;
     return Container(
       margin: EdgeInsets.all(5),
       padding: isMe ? EdgeInsets.only(left: 50) : EdgeInsets.only(right: 50),
