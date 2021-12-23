@@ -146,7 +146,7 @@ class MyProfile extends StatelessWidget {
               style: TextStyle(fontSize: 18),
             ),
             style: TextButton.styleFrom(
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                   borderRadius:
                       BorderRadius.vertical(bottom: Radius.circular(10)),
                 ),
@@ -279,7 +279,7 @@ class MyProfile extends StatelessWidget {
                                                   color: Colors.transparent),
                                             ),
                                             primary: Colors.white,
-                                            backgroundColor: Color(0xFFF5F6F9),
+                                            backgroundColor: const Color(0xFFF5F6F9),
                                           ),
                                           onPressed: () {
                                             Get.bottomSheet(
@@ -335,7 +335,7 @@ class MyProfile extends StatelessWidget {
                                 ),
                                 Text(
                                   controller.currentUser.value.name,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 26, color: AppColors.light),
                                 ),
                               ],

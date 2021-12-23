@@ -18,7 +18,7 @@ class ContactTab extends StatefulWidget {
 }
 
 class _ContactTabState extends State<ContactTab> {
-  TabContactController controller = Get.find();
+  final controller = Get.find<TabContactController>();
   final networkController = Get.find<NetworkController>();
   @override
   Widget build(BuildContext context) {
@@ -30,6 +30,11 @@ class _ContactTabState extends State<ContactTab> {
         appBar: WidgetAppBar(
           title: 'contact'.tr,
           blackButton: false,
+          actions: [
+            IconButton(
+                onPressed: () => controller.getContactsFromAPI(),
+                icon: const Icon(Icons.refresh_rounded))
+          ],
         ),
         floatingActionButton: FloatingActionButton(
             heroTag: 'btnContact',
@@ -40,7 +45,7 @@ class _ContactTabState extends State<ContactTab> {
         body: GetBuilder<TabContactController>(
           builder: (_) => Obx(
             () => networkController.connectionStatus.value == 0
-                ? Container(
+                ? SizedBox(
                     width: size.width,
                     height: size.height,
                     child: Center(
@@ -73,7 +78,7 @@ class _ContactTabState extends State<ContactTab> {
                               border: OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: Theme.of(context).primaryColor)),
-                              suffixIcon: Icon(Icons.search),
+                              suffixIcon: const Icon(Icons.search),
                             ),
                           ),
                         ),
@@ -85,7 +90,7 @@ class _ContactTabState extends State<ContactTab> {
                                 tileColor: Get.isDarkMode
                                     ? Colors.grey.shade900
                                     : Colors.white,
-                                contentPadding: EdgeInsets.all(10),
+                                contentPadding: const EdgeInsets.all(10),
                                 leading: const CircleAvatar(
                                   radius: 30,
                                   child: ClipRRect(
@@ -145,37 +150,43 @@ class _ContactTabState extends State<ContactTab> {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Obx(
-                          () => controller.contactsLoaded.value
-                              ? // if the contacts have not been loaded yet
-                              ((controller.searchController.text.isNotEmpty &&
-                                          controller.contactsFiltered.length >
-                                              0) ||
-                                      (!controller.searchController.text
-                                              .isNotEmpty &&
-                                          controller.contacts.length > 0))
-                                  ? // if we have contacts to show
-                                  ContactsList(
-                                      contacts: controller.isSearch.value
-                                          ? controller.contactsFiltered
-                                          : controller.contacts,
-                                    )
+                          () => controller.isLoading.value
+                              ? SizedBox(child: CircularProgressIndicator())
+                              : controller.contactsLoaded.value
+                                  ? // if the contacts have not been loaded yet
+                                  ((controller.searchController.text
+                                                  .isNotEmpty &&
+                                              controller
+                                                      .contactsFiltered.length >
+                                                  0) ||
+                                          (!controller.searchController.text
+                                                  .isNotEmpty &&
+                                              controller.contacts.length > 0))
+                                      ? // if we have contacts to show
+                                      ContactsList(
+                                          contacts: controller.isSearch.value
+                                              ? controller.contactsFiltered
+                                              : controller.contacts,
+                                        )
+                                      : Container(
+                                          padding:
+                                              const EdgeInsets.only(top: 40),
+                                          child: Text(
+                                            controller.isSearch.value
+                                                ? 'No search results to show'
+                                                : 'No contacts exist',
+                                            style: const TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 20),
+                                          ),
+                                        )
                                   : Container(
+                                      // still loading contacts
                                       padding: const EdgeInsets.only(top: 40),
-                                      child: Text(
-                                        controller.isSearch.value
-                                            ? 'No search results to show'
-                                            : 'No contacts exist',
-                                        style: const TextStyle(
-                                            color: Colors.grey, fontSize: 20),
+                                      child: const Center(
+                                        child: Text('No contacts'),
                                       ),
-                                    )
-                              : Container(
-                                  // still loading contacts
-                                  padding: const EdgeInsets.only(top: 40),
-                                  child: const Center(
-                                    child: Text('No contacts'),
-                                  ),
-                                ),
+                                    ),
                         )
                       ],
                     ),

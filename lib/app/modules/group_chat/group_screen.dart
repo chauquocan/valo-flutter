@@ -26,7 +26,7 @@ class ProfileGroupScreen extends GetView<ChatController> {
             children: <Widget>[
               Center(
                 child: Container(
-                    margin: EdgeInsets.only(top: 10, bottom: 10),
+                    margin: const EdgeInsets.only(top: 10, bottom: 10),
                     decoration: BoxDecoration(
                       color:
                           Get.isDarkMode ? Colors.blue : Colors.grey.shade200,
@@ -67,7 +67,7 @@ class ProfileGroupScreen extends GetView<ChatController> {
                                       color: Colors.transparent),
                                 ),
                                 primary: Colors.white,
-                                backgroundColor: Color(0xFFF5F6F9),
+                                backgroundColor: const Color(0xFFF5F6F9),
                               ),
                               onPressed: () {
                                 Get.bottomSheet(
@@ -125,7 +125,7 @@ class ProfileGroupScreen extends GetView<ChatController> {
                 elevation: 0,
                 child: Row(
                   children: [
-                    Expanded(
+                    const Expanded(
                       flex: 1,
                       child: Icon(
                         Icons.info,
@@ -138,7 +138,7 @@ class ProfileGroupScreen extends GetView<ChatController> {
                         flex: 2,
                         child: Text(
                           controller.name,
-                          style: TextStyle(fontSize: 20),
+                          style: const TextStyle(fontSize: 20),
                         ),
                       ),
                     ),
@@ -237,7 +237,7 @@ class ProfileGroupScreen extends GetView<ChatController> {
                 height: size.height * 0.1,
                 elevation: 0,
                 child: Row(
-                  children: [
+                  children: const [
                     Expanded(
                       flex: 1,
                       child: Icon(
@@ -267,12 +267,12 @@ class ProfileGroupScreen extends GetView<ChatController> {
                     ? Colors.grey.shade900
                     : const Color(0xFFF2F4FB),
                 // padding: EdgeInsets.all(30),
-                margin: EdgeInsets.all(5),
+                margin: const EdgeInsets.all(5),
                 width: size.width,
                 height: size.height * 0.1,
                 elevation: 0,
                 child: Row(
-                  children: [
+                  children: const [
                     Expanded(
                       flex: 1,
                       child: Icon(

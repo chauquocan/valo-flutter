@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:valo_chat_app/app/utils/regex.dart';
@@ -12,7 +11,7 @@ import 'package:valo_chat_app/app/widgets/widgets.dart';
 import '../auth.dart';
 
 class OtpResetScreen extends StatefulWidget {
-  OtpResetScreen({Key? key, required this.phoneNumber}) : super(key: key);
+  const OtpResetScreen({Key? key, required this.phoneNumber}) : super(key: key);
   final String phoneNumber;
 
   @override

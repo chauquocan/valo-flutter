@@ -18,6 +18,8 @@ class TabContactController extends GetxController {
   final contactId = <ContactContent>[].obs;
 
   final contactsLoaded = false.obs;
+  final isLoading = false.obs;
+
   final isSearch = false.obs;
   final _page = 0.obs;
 
@@ -41,6 +43,7 @@ class TabContactController extends GetxController {
     Get contacts from api
    */
   Future getContactsFromAPI() async {
+    isLoading.value = true;
     List<UserContent> _contactsTemp = [];
     final response = await contactProvider.getFriends(0);
     if (response.ok) {
@@ -50,9 +53,12 @@ class TabContactController extends GetxController {
         _contactsTemp.add(UserContent(user: user.data!, friend: true));
       }
       contacts.value = _contactsTemp;
+      isLoading.value = false;
       contactsLoaded.value = true;
+
       searchController.addListener(() => filterContacts());
     } else {
+      isLoading.value = false;
       contactsLoaded.value = false;
     }
   }

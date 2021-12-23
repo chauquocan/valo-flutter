@@ -23,7 +23,7 @@ class Global {
         channelName: 'Inbox message',
         channelDescription: 'chat',
         enableVibration: true,
-        importance: NotificationImportance.High,
+        importance: NotificationImportance.Default,
       )
     ]);
     ConnectService();

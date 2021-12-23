@@ -509,7 +509,7 @@ class WidgetBubble extends GetView<ChatController> {
                                 children: [
                                   Container(
                                     color: Colors.blue,
-                                    height: 80,
+                                    height: 100,
                                   ),
                                   Column(
                                     children: <Widget>[
@@ -556,6 +556,7 @@ class WidgetBubble extends GetView<ChatController> {
                     ),
                     SizedBox(width: 5),
                     Expanded(
+                      flex: 2,
                       child: ClipRRect(
                         borderRadius: BorderRadius.all(Radius.circular(15)),
                         child: Container(
@@ -570,7 +571,7 @@ class WidgetBubble extends GetView<ChatController> {
                                 children: [
                                   Container(
                                     color: Colors.grey.shade200,
-                                    height: 80,
+                                    height: 100,
                                   ),
                                   Column(
                                     children: <Widget>[

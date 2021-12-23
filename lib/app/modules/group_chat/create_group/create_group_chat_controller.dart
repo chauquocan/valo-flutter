@@ -83,11 +83,14 @@ class CreateGroupChatController extends GetxController {
       final map = {'name': textCtrl.text, 'participants': participants};
       final respones = await groupChatProvider.createGroupChat(map);
       if (respones.ok) {
-        customSnackbar().snackbarDialog('Thông báo', 'Tạo nhóm thành công');
+        customSnackbar()
+            .snackbarDialog('Successfully', 'Create group successfully');
         chatController.getConversations();
         Get.offAllNamed('/home');
-      } else
-        print(respones);
+      } else {
+        customSnackbar()
+            .snackbarDialog('Failed', 'Something wrong, please try again');
+      }
     }
   }
 

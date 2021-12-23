@@ -15,7 +15,7 @@ class FullPhoto extends StatelessWidget {
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
         elevation: 0,
-        title: sender == null ? Text('') : Text('Người gửi: $sender'),
+        title: sender == null ? const Text('') : Text('Người gửi: $sender'),
       ),
       body: Container(
         child: PhotoView(

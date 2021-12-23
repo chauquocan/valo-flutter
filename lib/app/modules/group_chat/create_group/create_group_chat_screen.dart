@@ -60,7 +60,7 @@ class CreateGroupChatScreen extends GetView<CreateGroupChatController> {
                                   validator: (value) =>
                                       Regex.fullNameValidator(value!),
                                   textFieldType: TextFieldType.NAME,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     hintStyle: TextStyle(color: Colors.black54),
                                     hintText: 'Nhập tên group',
                                     border: InputBorder.none,
@@ -125,12 +125,12 @@ class CreateGroupChatScreen extends GetView<CreateGroupChatController> {
 
   Widget _buildListSelected() {
     if (controller.selected.isEmpty) {
-      return Container(
+      return const SizedBox(
         height: 90,
-        child: const Center(child: Text('Choose up to 2 person')),
+        child: Center(child: Text('Choose up to 2 person')),
       );
     } else {
-      return Container(
+      return SizedBox(
         height: 90,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,

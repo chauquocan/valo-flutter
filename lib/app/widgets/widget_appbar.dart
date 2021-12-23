@@ -23,11 +23,11 @@ class WidgetAppBar extends StatelessWidget implements PreferredSizeWidget {
       iconTheme: const IconThemeData(color: Colors.white),
       title: Text(
         title,
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
       ),
       centerTitle: true,
       flexibleSpace: Container(
-        decoration: BoxDecoration(
+        decoration:const  BoxDecoration(
           borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(10),
               bottomRight: Radius.circular(10)),
@@ -36,9 +36,9 @@ class WidgetAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
       ),
-      actionsIconTheme: IconThemeData(color: Colors.white),
+      actionsIconTheme:const  IconThemeData(color: Colors.white),
       actions: actions,
-      shape: RoundedRectangleBorder(
+      shape:const  RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
       ),
     );

@@ -15,7 +15,7 @@ class MediaScreen extends GetView<MediaController> {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        title: Text('Phương tiện'),
+        title: const Text('Phương tiện'),
       ),
       body: SafeArea(
         child: GetX<MediaController>(
@@ -35,7 +35,7 @@ class MediaScreen extends GetView<MediaController> {
                     controller.page = 1;
                   }),
               Container(
-                padding: EdgeInsets.all(5.0),
+                padding: const EdgeInsets.all(5.0),
                 child: controller.isLoading
                     ? const Center(
                         child: CircularProgressIndicator(),
@@ -57,7 +57,7 @@ class MediaScreen extends GetView<MediaController> {
                                 return Card(
                                   child: ClipRRect(
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(15)),
+                                        const BorderRadius.all(Radius.circular(15)),
                                     child: GestureDetector(
                                       onTap: () {
                                         Get.to(() => FullVideoScreen(
@@ -72,7 +72,7 @@ class MediaScreen extends GetView<MediaController> {
                                 return Card(
                                   child: ClipRRect(
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(15)),
+                                        const BorderRadius.all(Radius.circular(15)),
                                     child: GestureDetector(
                                       onTap: () {
                                         Get.to(() => FullPhoto(
@@ -83,15 +83,15 @@ class MediaScreen extends GetView<MediaController> {
                                       child: CachedNetworkImage(
                                         placeholder: (context, url) =>
                                             Container(
-                                          child: CircularProgressIndicator(
+                                          child: const CircularProgressIndicator(
                                             valueColor:
                                                 AlwaysStoppedAnimation<Color>(
                                                     Colors.blue),
                                           ),
                                           width: 200,
                                           height: 200,
-                                          padding: EdgeInsets.all(70.0),
-                                          decoration: BoxDecoration(
+                                          padding: const EdgeInsets.all(70.0),
+                                          decoration: const BoxDecoration(
                                             color: Colors.grey,
                                             borderRadius: BorderRadius.all(
                                               Radius.circular(8.0),
@@ -104,7 +104,7 @@ class MediaScreen extends GetView<MediaController> {
                                             'assets/images/img_not_available.jpg',
                                             fit: BoxFit.cover,
                                           ),
-                                          borderRadius: BorderRadius.all(
+                                          borderRadius: const BorderRadius.all(
                                             Radius.circular(8.0),
                                           ),
                                           clipBehavior: Clip.hardEdge,

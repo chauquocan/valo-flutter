@@ -85,17 +85,20 @@ class LocalStorage {
     return raw;
   }
 
-  ThemeMode getThemeMode(){
-    return isSavedDarkMode()?ThemeMode.dark:ThemeMode.light;
+  ThemeMode getThemeMode() {
+    return isSavedDarkMode() ? ThemeMode.dark : ThemeMode.light;
   }
-  bool isSavedDarkMode(){
-    return _pref.getBool('isDarkMode')??false;
+
+  bool isSavedDarkMode() {
+    return _pref.getBool('isDarkMode') ?? false;
   }
-  void saveThemeMode(bool isDarkMode){
+
+  void saveThemeMode(bool isDarkMode) {
     _pref.setBool('isDarkMode', isDarkMode);
   }
-  void changeThemeMode(){
-    Get.changeThemeMode(isSavedDarkMode()?ThemeMode.light:ThemeMode.dark);
+
+  void changeThemeMode() {
+    Get.changeThemeMode(isSavedDarkMode() ? ThemeMode.light : ThemeMode.dark);
     saveThemeMode(!isSavedDarkMode());
   }
 }

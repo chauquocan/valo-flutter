@@ -84,7 +84,7 @@ class ConnectService {
   }
 
   /// restful put
-  Future put(String path, {dynamic params,dynamic? queryParams, Options? options}) async {
+  Future put(String path, {dynamic params,dynamic queryParams, Options? options}) async {
     Options requestOptions = options ?? Options();
     Map<String, dynamic>? _authorization = getAuthorizationHeader();
     if (_authorization != null) {

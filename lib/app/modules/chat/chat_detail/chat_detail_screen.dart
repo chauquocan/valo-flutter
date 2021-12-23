@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:valo_chat_app/app/modules/chat/chat_detail/media/media_binding.dart';
 import 'package:valo_chat_app/app/modules/chat/chat_detail/media/media_screen.dart';
-import 'package:valo_chat_app/app/modules/home/tabs/profile/widgets/profile_menu.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
 import '../chat_controller.dart';
 
@@ -35,7 +34,7 @@ class ChatDetailScreen extends GetView<ChatController> {
               children: <Widget>[
                 Center(
                   child: Container(
-                      margin: EdgeInsets.only(top: 10, bottom: 10),
+                      margin: const EdgeInsets.only(top: 10, bottom: 10),
                       decoration: BoxDecoration(
                         color: Colors.grey.shade200,
                         shape: BoxShape.circle,
@@ -59,7 +58,7 @@ class ChatDetailScreen extends GetView<ChatController> {
                           borderRadius: BorderRadius.circular(10)),
                       backgroundColor: Get.isDarkMode
                           ? Colors.grey.shade900
-                          : Color(0xFFF2F4FB),
+                          : const Color(0xFFF2F4FB),
                     ),
                     onPressed: () {},
                     child: Row(
@@ -96,9 +95,9 @@ class ChatDetailScreen extends GetView<ChatController> {
                   width: size.width,
                   elevation: 1,
                   child: Row(
-                    children: [
+                    children: const [
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(8.0),
                         child: Icon(Icons.mms),
                       ),
                       SizedBox(

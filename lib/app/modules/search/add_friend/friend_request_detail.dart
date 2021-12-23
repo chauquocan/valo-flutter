@@ -120,7 +120,7 @@ class FriendReqDetailScreen extends GetView<SearchDetailController> {
                   controller.userProfile.user.email == ""
                       ? "Không có thông tin"
                       : controller.userProfile.user.email),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Row(

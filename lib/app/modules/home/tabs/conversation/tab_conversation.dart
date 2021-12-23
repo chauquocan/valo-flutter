@@ -19,9 +19,9 @@ class ConversationTab extends GetView<TabConversationController> {
         title: 'chat'.tr,
         actions: [
           IconButton(
-              onPressed: () => Get.toNamed('/newfriend'),
+              onPressed: () => controller.getConversations(),
               icon: const Tooltip(
-                  message: 'Tìm bạn', child: const Icon(Icons.search))),
+                  message: 'Tải lại', child: Icon(Icons.refresh_rounded))),
         ],
         blackButton: false,
       ),
@@ -37,10 +37,9 @@ class ConversationTab extends GetView<TabConversationController> {
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                  children: const [
                     CircularProgressIndicator(),
-                                        Text('No internet connection')
-
+                    Text('No internet connection')
                   ],
                 ),
               );
@@ -50,6 +49,8 @@ class ConversationTab extends GetView<TabConversationController> {
               } else {
                 if (controller.conversationsLoaded.value) {
                   return ListView.builder(
+                      shrinkWrap: true,
+                      controller: controller.scrollController,
                       itemCount: controller.conversations.length,
                       itemBuilder: (context, i) {
                         final conversation = controller.conversations[i];

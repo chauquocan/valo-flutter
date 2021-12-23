@@ -1,4 +1,5 @@
 part of '../widgets.dart';
+
 //custom rounded button for app
 class RoundedButton extends StatelessWidget {
   final String buttonText;
@@ -30,7 +31,7 @@ class RoundedButton extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            stops: [0.0, 1.0],
+            stops: const [0.0, 1.0],
             colors: colors,
           ),
           color: color,

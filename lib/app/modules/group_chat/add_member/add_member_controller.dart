@@ -3,8 +3,8 @@ part of '../group.dart';
 class AddMemberController extends GetxController {
   final chatController = Get.find<ChatController>();
   final contactController = Get.find<TabContactController>();
-  final  groupChatProvider= Get.find<GroupChatProvider>();
-  final  profileProvider= Get.find<ProfileProvider>();
+  final groupChatProvider = Get.find<GroupChatProvider>();
+  final profileProvider = Get.find<ProfileProvider>();
 
   final _users = <User>[].obs;
   final _id = ''.obs;
@@ -28,7 +28,7 @@ class AddMemberController extends GetxController {
     super.onInit();
   }
 
-  //////// add member
+  // add member
   Future addMember(userId, conversationId) async {
     final map = {'userId': userId, 'conversationId': conversationId};
     final response = await groupChatProvider.addMember(map);
@@ -36,11 +36,13 @@ class AddMemberController extends GetxController {
       chatController.participants = response.data!.content;
       chatController.getMembers();
       customSnackbar().snackbarDialog('Sucessfully', 'Add member sucessfully');
+    } else {
+      customSnackbar()
+          .snackbarDialog('Failed', 'Something wrong, please try again');
     }
-    print(response);
   }
 
-  // lấy ds bạn bè k có trong conversation    -- ko lay dc
+  // lấy ds bạn bè k có trong conversation
   Future getFriendsCanAddToGroup(String conversationId) async {
     final response =
         await groupChatProvider.getFriendsCanAddToGroup(conversationId);

@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:valo_chat_app/app/modules/settings/setting_controller.dart';
-import 'package:valo_chat_app/app/themes/theme.dart';
 import 'package:valo_chat_app/app/utils/storage_service.dart';
 import 'languages_screen.dart';
 
 class SettingScreen extends StatefulWidget {
-  SettingScreen({Key? key}) : super(key: key);
+  const SettingScreen({Key? key}) : super(key: key);
 
   @override
   _SettingScreenState createState() => _SettingScreenState();
@@ -42,7 +41,7 @@ class _SettingScreenState extends State<SettingScreen> {
             SettingsTile.switchTile(
               title: 'darkmode'.tr,
               subtitle: Get.isDarkMode ? "Dark" : "Light",
-              leading: Icon(Icons.color_lens_outlined),
+              leading: const Icon(Icons.color_lens_outlined),
               switchValue: darkMode,
               onToggle: (value) {
                 setState(() {
@@ -58,17 +57,17 @@ class _SettingScreenState extends State<SettingScreen> {
           tiles: [
             SettingsTile(
               title: 'phoneNumber'.tr,
-              leading: Icon(Icons.phone),
+              leading: const Icon(Icons.phone),
               subtitle: LocalStorage.getUser()?.phone,
             ),
             SettingsTile(
               title: 'email'.tr,
-              leading: Icon(Icons.email),
+              leading: const Icon(Icons.email),
               subtitle: LocalStorage.getUser()?.email,
             ),
             SettingsTile(
               title: 'logout'.tr,
-              leading: Icon(Icons.exit_to_app),
+              leading: const Icon(Icons.exit_to_app),
               onPressed: (context) {
                 Get.dialog(
                   AlertDialog(
@@ -112,10 +111,10 @@ class _SettingScreenState extends State<SettingScreen> {
         SettingsSection(
           title: 'Misc',
           tiles: [
-            SettingsTile(title: 'terms'.tr, leading: Icon(Icons.description)),
+            SettingsTile(title: 'terms'.tr, leading: const Icon(Icons.description)),
             SettingsTile(
                 title: 'licenses'.tr,
-                leading: Icon(Icons.collections_bookmark)),
+                leading: const Icon(Icons.collections_bookmark)),
           ],
         ),
         CustomSection(
@@ -127,16 +126,16 @@ class _SettingScreenState extends State<SettingScreen> {
                   'assets/icons/valo.png',
                   height: 70,
                   width: 70,
-                  color: Color(0xFF777777),
+                  color: const Color(0xFF777777),
                 ),
               ),
-              Text(
+              const Text(
                 'Nhóm 23',
                 style: TextStyle(color: Color(0xFF777777)),
               ),
               Text(
                 'version'.tr + ': 2.0',
-                style: TextStyle(color: Color(0xFF777777)),
+                style: const TextStyle(color: Color(0xFF777777)),
               ),
             ],
           ),

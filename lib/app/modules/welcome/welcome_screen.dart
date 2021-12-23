@@ -41,7 +41,7 @@ class WelcomeScreen extends StatelessWidget {
                 //Sign in button
                 RoundedButton(
                   buttonText: 'signin'.tr,
-                  colors: const [AppColors.primary, AppColors.secondary],
+                  colors: [AppColors.primary, AppColors.secondary],
                   color: Colors.blue.shade300,
                   width: size.width * 0.8,
                   onPressed: () => Get.toNamed('/login'),
@@ -50,7 +50,7 @@ class WelcomeScreen extends StatelessWidget {
                 RoundedButton(
                   buttonText: 'signup'.tr,
                   width: size.width * 0.8,
-                  colors: const [AppColors.light, AppColors.hintLight],
+                  colors: [AppColors.light, AppColors.hintLight],
                   color: AppColors.light,
                   textColor: AppColors.dark,
                   onPressed: () => Get.toNamed('/auth'),

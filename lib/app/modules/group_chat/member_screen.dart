@@ -14,7 +14,12 @@ class MemberScreen extends GetView<ChatController> {
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
           ),
-          backgroundColor: Colors.lightBlue,
+          backgroundColor: Colors.blue,
+          actions: [
+            IconButton(
+                onPressed: () => controller.getMembers(),
+                icon: Icon(Icons.refresh_rounded))
+          ],
         ),
         body: ListView.builder(
           shrinkWrap: true,
@@ -32,7 +37,9 @@ class MemberScreen extends GetView<ChatController> {
                   backgroundImage: CachedNetworkImageProvider(member.imgUrl),
                 ),
                 title: Text(
-                  member.name,
+                  member.name == LocalStorage.getUser()!.name
+                      ? member.name + " (me)"
+                      : member.name,
                   style: const TextStyle(fontSize: 18),
                 ),
                 trailing: IconButton(
@@ -48,9 +55,8 @@ class MemberScreen extends GetView<ChatController> {
                         actions: [
                           ElevatedButton.icon(
                             onPressed: () {
+                              Get.back();
                               controller.kickMember(member.id, controller.id);
-                              Get.back();
-                              Get.back();
                             },
                             icon: const Icon(Icons.check_circle),
                             label: const Text(

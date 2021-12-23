@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/src/utils/date_time_utils.dart';
@@ -45,7 +44,7 @@ class ChatScreen extends GetView<ChatController> {
                             CachedNetworkImageProvider(controller.avatar),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Column(
@@ -69,9 +68,10 @@ class ChatScreen extends GetView<ChatController> {
               onPressed: () {
                 if (controller.isGroup == true) {
                   Get.to(() => ProfileGroupScreen(), arguments: ['uid']);
-                } else
+                } else {
                   Get.to(() => ChatDetailScreen(),
                       binding: ChatDetailBinding());
+                }
               },
               icon: const Icon(Icons.list_outlined),
             ),
@@ -102,7 +102,7 @@ class ChatScreen extends GetView<ChatController> {
                                 backgroundColor: Get.isDarkMode
                                     ? Colors.black54
                                     : Colors.white,
-                                title: Text('Delete'),
+                                title: const Text('Delete'),
                                 trailingIcon: const Icon(Icons.delete),
                                 onPressed: () {
                                   controller.deleteMessage(message.message.id);
@@ -114,7 +114,7 @@ class ChatScreen extends GetView<ChatController> {
                                   backgroundColor: Get.isDarkMode
                                       ? Colors.black54
                                       : Colors.white,
-                                  title: Text('Download'),
+                                  title: const Text('Download'),
                                   trailingIcon: const Icon(Icons.download),
                                   onPressed: () {
                                     controller.downloadFile(
@@ -203,7 +203,7 @@ class ChatScreen extends GetView<ChatController> {
               horizontalSpacing: 0,
               initCategory: Category.RECENT,
               bgColor:
-                  Get.isDarkMode ? Colors.grey.shade900 : Color(0xFFF2F2F2),
+                  Get.isDarkMode ? Colors.grey.shade900 : const Color(0xFFF2F2F2),
               indicatorColor: Colors.blue,
               iconColor: Colors.grey,
               iconColorSelected: Colors.blue,
@@ -212,7 +212,7 @@ class ChatScreen extends GetView<ChatController> {
               showRecentsTab: true,
               recentsLimit: 28,
               noRecentsText: 'No Recents',
-              noRecentsStyle: TextStyle(fontSize: 20, color: Colors.black26),
+              noRecentsStyle: const TextStyle(fontSize: 20, color: Colors.black26),
               categoryIcons: CategoryIcons(),
               buttonMode: ButtonMode.MATERIAL,
             ),

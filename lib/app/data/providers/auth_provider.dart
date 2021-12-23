@@ -33,7 +33,7 @@ class AuthProvider {
         response,
         (json) => LoginRespone.fromJson(json),
       );
-    } on DioError catch (e, s) {
+    } on DioError catch (e) {
       return NetworkResponse.withError(e.response);
     }
   }
@@ -47,7 +47,7 @@ class AuthProvider {
         response,
         (json) => ResponseMessage.fromJson(json),
       );
-    } on DioError catch (e, s) {
+    } on DioError catch (e) {
       return NetworkResponse.withError(e.response);
     }
   }
