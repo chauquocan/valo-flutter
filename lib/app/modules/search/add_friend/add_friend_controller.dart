@@ -6,7 +6,6 @@ import 'package:valo_chat_app/app/data/providers/friend_request_provider.dart';
 import 'package:valo_chat_app/app/data/providers/user_provider.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/contact/tab_contact_controller.dart';
 import 'package:valo_chat_app/app/modules/home/tabs/conversation/tab_conversations_controller.dart';
-import 'package:valo_chat_app/app/utils/regex.dart';
 import 'package:valo_chat_app/app/utils/storage_service.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
 

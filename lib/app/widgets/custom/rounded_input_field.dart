@@ -81,7 +81,7 @@ class RoundedInputField extends StatelessWidget {
             fontWeight: FontWeight.normal,
           ),
           icon: Padding(
-            padding: EdgeInsets.only(top: 15),
+            padding: const EdgeInsets.only(top: 15),
             child: Icon(
               icon,
               color: Colors.white,

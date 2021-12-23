@@ -17,13 +17,13 @@ class Body extends StatelessWidget {
     return SafeArea(
       child: Obx(
         () => networkController.connectionStatus.value == 0
-            ? Container(
+            ? SizedBox(
                 width: size.width,
                 height: size.height,
                 child: Center(
                     child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                  children: const [
                     CircularProgressIndicator(),
                     Text('No internet connection')
                   ],
@@ -118,7 +118,7 @@ class Body extends StatelessWidget {
                       elevation: 4,
                       child: Row(
                         children: [
-                          Expanded(
+                          const Expanded(
                             flex: 1,
                             child: Icon(
                               Icons.settings,
@@ -133,7 +133,7 @@ class Body extends StatelessWidget {
                               style: TextStyle(fontSize: 18),
                             ),
                           ),
-                          Expanded(
+                          const Expanded(
                             flex: 1,
                             child: Icon(
                               Icons.arrow_forward,
@@ -154,7 +154,7 @@ class Body extends StatelessWidget {
                       elevation: 4,
                       child: Row(
                         children: [
-                          Expanded(
+                          const Expanded(
                             flex: 1,
                             child: Icon(
                               Icons.login_outlined,
@@ -169,7 +169,7 @@ class Body extends StatelessWidget {
                               style: TextStyle(fontSize: 18),
                             ),
                           ),
-                          Expanded(
+                          const Expanded(
                             flex: 1,
                             child: Icon(
                               Icons.arrow_forward,

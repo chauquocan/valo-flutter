@@ -1,8 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:intl/intl.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';
 
 /// this widget is used to render voice note container
@@ -16,7 +14,7 @@ class AudioMessageWidget extends StatefulWidget {
   final String dateTime;
   final String? avatar;
 
-  AudioMessageWidget({
+  const AudioMessageWidget({
     Key? key,
     required this.message,
     required this.dateTime,
@@ -48,7 +46,7 @@ class _AudioMessageWidgetState extends State<AudioMessageWidget> {
         ? duration = await player.setUrl(widget.message)
         : duration = await player.setFilePath(widget.message);
 
-    if (this.mounted) {
+    if (mounted) {
       setState(() {});
     }
   }
@@ -56,7 +54,7 @@ class _AudioMessageWidgetState extends State<AudioMessageWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(5),
+      margin: const EdgeInsets.all(5),
       child: Column(
         crossAxisAlignment:
             widget.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
@@ -131,7 +129,7 @@ class _AudioMessageWidgetState extends State<AudioMessageWidget> {
                             Text(
                               _printDuration(player.position),
                               style:
-                                  TextStyle(fontSize: 12, color: Colors.white),
+                                  const TextStyle(fontSize: 12, color: Colors.white),
                             ),
                           ],
                         ),
@@ -239,8 +237,6 @@ class _AudioMessageWidgetState extends State<AudioMessageWidget> {
         isPlaying = false;
       });
     }
-    print(player.duration);
-    print(player.position);
     player.play();
 
     player.positionStream.listen((duration) {

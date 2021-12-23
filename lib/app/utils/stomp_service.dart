@@ -24,7 +24,7 @@ class StompService {
   void initStomp(String numberPhone,String token) {
     stompClient = StompClient(
       config: StompConfig.SockJS(
-          url: '${wsUrl}',
+          url: '$wsUrl',
           onConnect: onConnect,
           onDisconnect: onDisconnect,
           beforeConnect: () async {

@@ -28,9 +28,7 @@ class NetworkController extends GetxController {
     late ConnectivityResult result;
     try {
       result = await _connectivity.checkConnectivity();
-    } on PlatformException catch (e) {
-      print(e.toString());
-    }
+    } on PlatformException catch (e) {}
     return _updateConnectionStatus(result);
   }
 
@@ -38,17 +36,13 @@ class NetworkController extends GetxController {
     switch (result) {
       case ConnectivityResult.wifi:
         connectionStatus.value = 1;
-        print(connectionStatus.value);
         break;
       case ConnectivityResult.mobile:
         connectionStatus.value = 2;
-        print(connectionStatus.value);
         break;
       case ConnectivityResult.none:
         connectionStatus.value = 0;
-        print(connectionStatus.value);
         break;
-
       default:
         customSnackbar().snackbarDialog(
             'Network error', 'Failed to get network connection');

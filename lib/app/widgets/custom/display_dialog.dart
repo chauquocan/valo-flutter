@@ -13,24 +13,24 @@ class CustomDialog {
         actions: [
           ElevatedButton.icon(
             onPressed: submit,
-            icon: Icon(Icons.check_circle),
+            icon: const Icon(Icons.check_circle),
             // style: ButtonStyle(backgroundColor: Colors.blue),
-            label: Text(
+            label: const Text(
               "Xác nhận",
               style: TextStyle(color: Colors.white),
             ),
           ),
           ElevatedButton.icon(
             onPressed: cancel,
-            icon: Icon(Icons.cancel),
+            icon: const Icon(Icons.cancel),
             // style: ButtonStyle(backgroundColor: Colors.blue),
-            label: Text(
+            label: const Text(
               "Hủy",
               style: TextStyle(color: Colors.white),
             ),
           )
         ],
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10))),
       ),
     );
@@ -51,11 +51,11 @@ class CustomDialog {
             icon: iconButton,
             label: Text(
               textButton,
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
           ),
         ],
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),

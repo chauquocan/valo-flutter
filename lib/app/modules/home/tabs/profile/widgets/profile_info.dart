@@ -15,14 +15,14 @@ class ProfileInforWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
               color: Colors.black26, offset: Offset(0, 2), blurRadius: 5.0),
         ],
         color: Get.isDarkMode
             ? Colors.grey.shade900
             : Theme.of(context).backgroundColor,
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(7), bottomRight: Radius.circular(7)),
       ),
       padding: const EdgeInsets.only(top: 15, bottom: 15, left: 10, right: 10),
@@ -82,7 +82,7 @@ class ProfileInforWidget extends StatelessWidget {
           children: const [
             Text(
               'Xem trang cá nhân',
-              style: const TextStyle(fontSize: 13),
+              style: TextStyle(fontSize: 13),
             ),
           ],
         ),

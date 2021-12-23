@@ -15,8 +15,7 @@ class AuthProvider {
   static const String refreshTokenUrl = 'auth/refresh_token';
 
   //Check phone number exist
-  Future<Response> checkPhoneExist(
-      String phoneNumber) async {
+  Future<Response> checkPhoneExist(String phoneNumber) async {
     try {
       final response = await ConnectService().get('$checkURL/$phoneNumber');
       return response;
@@ -33,7 +32,7 @@ class AuthProvider {
         response,
         (json) => LoginRespone.fromJson(json),
       );
-    } on DioError catch (e, s) {
+    } on DioError catch (e) {
       return NetworkResponse.withError(e.response);
     }
   }
@@ -47,7 +46,7 @@ class AuthProvider {
         response,
         (json) => ResponseMessage.fromJson(json),
       );
-    } on DioError catch (e, s) {
+    } on DioError catch (e) {
       return NetworkResponse.withError(e.response);
     }
   }
@@ -91,14 +90,15 @@ class AuthProvider {
   }
 
   //Reset password
-  Future<NetworkResponse<ResponseMessage>> resetPassword(String phone,String newPassword) async {
+  Future<NetworkResponse<ResponseMessage>> resetPassword(
+      String phone, String newPassword) async {
     Map map = {
-      'phoneNumber':phone,
-      'newPassword':newPassword,
+      'phoneNumber': phone,
+      'newPassword': newPassword,
     };
     try {
       final response = await ConnectService().put(
-        logoutURL,
+        resetPasswordURL,
         params: map,
       );
       return NetworkResponse.fromResponse(

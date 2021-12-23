@@ -153,17 +153,14 @@ class TabProfileController extends GetxController {
           //get image url from api response
           imageURL = response.data!.imgUrl;
           await LocalStorage.updateUser(response.data!);
-          Get.snackbar('Success', 'Image uploaded successfully',
-              margin: const EdgeInsets.only(top: 5, left: 10, right: 10));
+          customSnackbar().snackbarDialog('Success', 'Image uploaded successfully');
         } else if (response.code == HttpStatus.unauthorized) {
-          Get.snackbar('Unauthorization', 'token expired');
+          customSnackbar().snackbarDialog('Unauthorization', 'token expired');
         } else {
-          Get.snackbar('Failed', 'Error Code: $response',
-              margin: const EdgeInsets.only(top: 5, left: 10, right: 10));
+          customSnackbar().snackbarDialog('Failed', 'Error Code: $response');
         }
       } else {
-        Get.snackbar('Failed', 'Image not selected',
-            margin: const EdgeInsets.only(top: 5, left: 10, right: 10));
+        customSnackbar().snackbarDialog('Failed', 'Image not selected');
       }
     } finally {
       isLoading(false);
@@ -173,7 +170,7 @@ class TabProfileController extends GetxController {
   void pickImagesFromGallery() async {
     try {
       FilePickerResult? result =
-          await FilePicker.platform.pickFiles(type: FileType.image);
+          await FilePicker.platform.pickFiles(type: FileType.custom,allowedExtensions: ["jpg","jpeg","png"]);
       isLoading(true);
       if (result != null) {
         var response = await userProvider.uploadFile(result.files.single.path);
@@ -181,11 +178,10 @@ class TabProfileController extends GetxController {
           imageURL = response.data!.imgUrl;
           await LocalStorage.updateUser(response.data!);
           currentUser.value.imgUrl = response.data!.imgUrl;
-          Get.snackbar('Success', 'Image uploaded successfully',
-              margin: const EdgeInsets.only(top: 5, left: 10, right: 10));
+          customSnackbar().snackbarDialog('Success', 'Image uploaded successfully');
         } else {
-          print(response);
-          Get.snackbar('Loi', "Loi gui api");
+          customSnackbar()
+              .snackbarDialog('failed', 'Something went wrong, try again');
         }
       }
     } finally {
@@ -209,31 +205,27 @@ class TabProfileController extends GetxController {
         'email': email,
         'address': address,
       };
-      try {
-        final response = await ProfileProvider().updateUserInfo(map);
-        print('Update Response: ${response.toString()}');
-        if (response.ok) {
-          Get.back();
-
-          await LocalStorage.updateUser(response.data!);
-          currentUser.value = response.data!;
-          customSnackbar().snackbarDialog(
-              'Susscessfully', 'Edit information susscessfully');
-          Get.reload();
+      final response = await ProfileProvider().updateUserInfo(map);
+      if (response.ok) {
+        Get.back();
+        await LocalStorage.updateUser(response.data!);
+        currentUser.value = response.data!;
+        customSnackbar()
+            .snackbarDialog('Susscessfully', 'Edit information susscessfully');
+        Get.reload();
+      } else {
+        if (response.code == HttpStatus.forbidden) {
+          customSnackbar()
+              .snackbarDialog('failed', 'Something went wrong, try again');
+        } else if (response.code == HttpStatus.unauthorized) {
+          customSnackbar()
+              .snackbarDialog('failed', 'Something went wrong, try again');
         } else {
-          if (response.code == HttpStatus.forbidden) {
-            customSnackbar()
-                .snackbarDialog('failed', 'Sometihing went wrong, try again');
-          } else if (response.code == HttpStatus.unauthorized) {
-            customSnackbar()
-                .snackbarDialog('failed', 'Sometihing went wrong, try again');
-          } else {
-            customSnackbar()
-                .snackbarDialog('failed', 'Sometihing went wrong, try again');
-          }
+          customSnackbar()
+              .snackbarDialog('failed', 'Something went wrong, try again');
         }
-      } finally {}
-    } else {}
+      }
+    }
   }
 
   //Logout
@@ -242,14 +234,5 @@ class TabProfileController extends GetxController {
     LocalStorage.logout();
     Get.deleteAll();
     Get.offAllNamed('/');
-  }
-
-  Future refreshToken() async {
-    final response = await authProvider.refreshToken();
-    if (response.ok) {
-      print(response);
-    } else {
-      print(response);
-    }
   }
 }

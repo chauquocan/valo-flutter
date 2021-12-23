@@ -46,8 +46,8 @@ class MediaController extends GetxController {
 
   int get page => _page.value;
 
-  set page(value){
-    _page.value=value;
+  set page(value) {
+    _page.value = value;
   }
 
   void setSelectedType(String value) {
@@ -62,7 +62,7 @@ class MediaController extends GetxController {
 
   @override
   void onClose() {
-    // TODO: implement onClose
+    scrollController.dispose();
     super.onClose();
   }
 
@@ -73,10 +73,11 @@ class MediaController extends GetxController {
         chatController.id, selectedType.value, 0);
     if (response.ok) {
       if (response.data!.content.length > 0) {
+        print(response.data!.content);
         for (var content in response.data!.content) {
           _messages.add(content);
         }
-        mediaMess.assignAll(_messages);
+        mediaMess = _messages;
         if (selectedType.value == "VIDEO") {
           await getThumbnail();
         }
@@ -109,7 +110,7 @@ class MediaController extends GetxController {
         isLoading = false;
       }
     } else {
-      print(response);
+      isLoading = false;
     }
   }
 
@@ -136,6 +137,6 @@ class MediaController extends GetxController {
         _temp.add(fileName.toString());
       }
     }
-    listThumbnail.addAll(_temp);
+    listThumbnail = _temp;
   }
 }

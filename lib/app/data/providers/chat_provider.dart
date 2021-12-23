@@ -4,7 +4,6 @@ import 'package:valo_chat_app/app/data/connect_service.dart';
 import 'package:valo_chat_app/app/data/models/conversation_model.dart';
 import 'package:valo_chat_app/app/data/models/message_model.dart';
 import 'package:valo_chat_app/app/data/models/network_response.dart';
-import 'package:valo_chat_app/app/utils/storage_service.dart';
 
 class ChatProvider {
   static const String messageURL = 'messages/';

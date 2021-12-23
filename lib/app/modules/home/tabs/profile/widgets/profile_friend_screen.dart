@@ -141,7 +141,7 @@ class ProfileFriendScreen extends GetView<ProfileFriendController> {
                             ? Text('Bạn bè')
                             : Text('kết bạn'),
                         style: TextButton.styleFrom(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 50, vertical: 10),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20)),
@@ -192,11 +192,11 @@ class ProfileFriendScreen extends GetView<ProfileFriendController> {
                                   BorderRadius.all(Radius.circular(10))),
                         ),
                       ),
-                      icon: Icon(Icons.person_remove),
+                      icon: const Icon(Icons.person_remove),
                       label: Text('Hủy kết bạn'),
                       style: TextButton.styleFrom(
                         padding:
-                            EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                            const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)),
                         elevation: 0,

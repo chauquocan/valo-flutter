@@ -281,61 +281,6 @@ class ChatController extends GetxController {
     super.onClose();
   }
 
-  //get member in group
-  Future getMembers() async {
-    List<User> membersTemp = [];
-    for (var content in participants) {
-      final profile = await profileProvider.getUserById(content.userId);
-      if (profile.ok) {
-        membersTemp.add(profile.data!);
-      }
-    }
-    members.assignAll(membersTemp);
-  }
-
-  // kick member
-  Future kickMember(userId, conversationId) async {
-    if (members.length > 3) {
-      final map = {'userId': userId, 'conversationId': conversationId};
-      final response = await groupChatProvider.kickMember(map);
-      if (response.ok) {
-        participants = response.data!.content;
-        getMembers();
-        customSnackbar().snackbarDialog('Sucessful', 'Member has been kicked');
-      } else {
-        customSnackbar().snackbarDialog('Failed', 'You are not Admin');
-      }
-    } else {
-      customSnackbar()
-          .snackbarDialog('Failed', 'Group chat must have at least 3 members');
-    }
-  }
-
-  // leave group
-  Future leaveGroup(String id) async {
-    final respones = await groupChatProvider.leaveGroup(id);
-    if (respones.ok) {
-      conversationController.getConversations();
-      Get.offAllNamed('/home');
-    } else {
-      customSnackbar().snackbarDialog('Failed', 'You can not leave group');
-    }
-  }
-
-  // delete group
-  Future deleteGroup(String id) async {
-    final respones = await groupChatProvider.deleteGroup(id);
-    if (respones.ok) {
-      conversationController.getConversations();
-      Get.offAllNamed('/home');
-      customSnackbar()
-          .snackbarDialog('Sucessfully', 'Delete group sucessfully');
-    } else {
-      Get.back();
-      customSnackbar().snackbarDialog('Failed', 'You are not Admin');
-    }
-  }
-
   ///
   /*------------------------*/
   Future onMessageReceive(StompFrame frame) async {
@@ -354,10 +299,7 @@ class ChatController extends GetxController {
     _messages.refresh();
   }
 
-  Future onReadMessage(StompFrame frame) async {
-    var response = jsonDecode(frame.body!);
-    print(response.toString());
-  }
+  Future onReadMessage(StompFrame frame) async {}
 
   /* 
     Get Messages
@@ -515,7 +457,6 @@ class ChatController extends GetxController {
     if (pickedFile != null) {
       var response = await chatProvider.uploadFile(pickedFile.path);
       if (response.statusCode == 200) {
-        final listFile = [];
         for (var image in response.data) {
           String body = json.encode({
             "conversationId": '$id',
@@ -532,7 +473,8 @@ class ChatController extends GetxController {
         textController.clear();
         if (messages.length >= 1) {
           scrollController.animateTo(0,
-              duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut);
         }
       } else {
         customSnackbar().snackbarDialog('Loi', "Loi gui api");
@@ -544,7 +486,7 @@ class ChatController extends GetxController {
 
   void pickImagesFromGallery() async {
     FilePickerResult? result = await FilePicker.platform
-        .pickFiles(type: FileType.image, allowMultiple: true);
+        .pickFiles(type: FileType.media, allowMultiple: true);
 
     if (result != null) {
       var response = await chatProvider.uploadFiles(result.paths);
@@ -565,10 +507,10 @@ class ChatController extends GetxController {
         textController.clear();
         if (messages.length >= 1) {
           scrollController.animateTo(0,
-              duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut);
         }
       } else {
-        print(response);
         customSnackbar().snackbarDialog('Loi', "Loi gui api");
       }
     } else {
@@ -589,6 +531,7 @@ class ChatController extends GetxController {
         'ppt',
         'pptx',
         'html',
+        'mp3',
       ],
       allowMultiple: true,
     );
@@ -612,7 +555,8 @@ class ChatController extends GetxController {
         textController.clear();
         if (messages.length >= 1) {
           scrollController.animateTo(0,
-              duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut);
         }
       } else {
         customSnackbar()
@@ -646,7 +590,8 @@ class ChatController extends GetxController {
         textController.clear();
         if (messages.length >= 1) {
           scrollController.animateTo(0,
-              duration: Duration(milliseconds: 300), curve: Curves.easeOut);
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut);
         }
       } else {
         customSnackbar().snackbarDialog(
@@ -796,12 +741,72 @@ class ChatController extends GetxController {
               (element) => element.conversation.id == response.data!.id);
       newConversation.conversation = response.data!;
       conversationController.conversations.refresh();
+      Get.back();
       customSnackbar()
           .snackbarDialog('Successfully', "Group's name change successfully");
-      Get.back();
     } else {
       customSnackbar().snackbarDialog(
           'Failed', "Cannot change group's name, please try again");
+    }
+  }
+
+  //get member in group
+  Future getMembers() async {
+    List<User> membersTemp = [];
+    for (var content in participants) {
+      final profile = await profileProvider.getUserById(content.userId);
+      if (profile.ok) {
+        membersTemp.add(profile.data!);
+      }
+    }
+    members.assignAll(membersTemp);
+  }
+
+  // kick member
+  Future kickMember(userId, conversationId) async {
+    if (userId != LocalStorage.getUser()?.id) {
+      if (members.length > 3) {
+        final map = {'userId': userId, 'conversationId': conversationId};
+        final response = await groupChatProvider.kickMember(map);
+        if (response.ok) {
+          participants = response.data!.content;
+          getMembers();
+          customSnackbar()
+              .snackbarDialog('Sucessful', 'Member has been kicked');
+        } else {
+          customSnackbar().snackbarDialog('Failed', 'You are not Admin');
+        }
+      } else {
+        customSnackbar().snackbarDialog(
+            'Failed', 'Group chat must have at least 3 members');
+      }
+    } else {
+      customSnackbar().snackbarDialog('Failed', 'You cannot kick yourself');
+    }
+  }
+
+  // leave group
+  Future leaveGroup(String id) async {
+    final respones = await groupChatProvider.leaveGroup(id);
+    if (respones.ok) {
+      conversationController.getConversations();
+      Get.offAllNamed('/home');
+    } else {
+      customSnackbar().snackbarDialog('Failed', 'You can not leave group');
+    }
+  }
+
+  // delete group
+  Future deleteGroup(String id) async {
+    final respones = await groupChatProvider.deleteGroup(id);
+    if (respones.ok) {
+      conversationController.getConversations();
+      Get.offAllNamed('/home');
+      customSnackbar()
+          .snackbarDialog('Sucessfully', 'Delete group sucessfully');
+    } else {
+      Get.back();
+      customSnackbar().snackbarDialog('Failed', 'You are not Admin');
     }
   }
 }

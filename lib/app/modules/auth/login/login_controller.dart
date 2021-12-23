@@ -51,14 +51,14 @@ class LoginController extends GetxController {
           //direct
           Get.offAllNamed('/home');
         } else {
-          Get.snackbar('Error', 'Get user information failed');
+          customSnackbar().snackbarDialog('Error', 'Get user information failed');
         }
         _isLoading.value = false;
       } else {
         //exception http
         _isLoading.value = false;
         if (response.code == HttpStatus.forbidden) {
-          Get.snackbar('Login failed', 'Phone number or password incorrect');
+          customSnackbar().snackbarDialog('Login failed', 'Phone number or password incorrect');
         } else if (response.code == HttpStatus.badRequest) {
           showInfoDialog('Login failed',
               'Phone number or password incorrect! Please try again');

@@ -3,7 +3,6 @@ import 'package:valo_chat_app/app/modules/auth/auth.dart';
 import 'package:valo_chat_app/app/modules/chat/chat.dart';
 import 'package:valo_chat_app/app/modules/group_chat/group.dart';
 import 'package:valo_chat_app/app/modules/home/home.dart';
-import 'package:valo_chat_app/app/modules/auth/login/login.dart';
 import 'package:valo_chat_app/app/modules/search/add_friend/add_friend_binding.dart';
 import 'package:valo_chat_app/app/modules/search/add_friend/add_friend_screen.dart';
 import 'package:valo_chat_app/app/modules/search/add_friend/friend_request_screen.dart';

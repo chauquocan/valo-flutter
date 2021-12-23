@@ -6,12 +6,12 @@ class AppTheme {
 
   static final ThemeData dark = ThemeData.dark().copyWith(
     backgroundColor: Colors.black87,
-    appBarTheme: AppBarTheme(
+    appBarTheme: const AppBarTheme(
       backgroundColor: Colors.black,
       elevation: 2,
     ),
     floatingActionButtonTheme:
-        FloatingActionButtonThemeData(backgroundColor: Colors.blue),
+        const FloatingActionButtonThemeData(backgroundColor: Colors.blue),
   );
 
   static final ThemeData light = ThemeData.light().copyWith(

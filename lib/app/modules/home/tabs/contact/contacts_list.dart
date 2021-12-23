@@ -37,7 +37,7 @@ class ContactsList extends StatelessWidget {
                   backgroundColor: Colors.blueGrey,
                   radius: 30,
                   backgroundImage:
-                      CachedNetworkImageProvider('${contact.user.imgUrl}'),
+                      CachedNetworkImageProvider(contact.user.imgUrl),
                 ),
           // trailing: IconButton(
           //   onPressed: () {},

@@ -9,7 +9,6 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:valo_chat_app/app/data/providers/auth_provider.dart';
 
 import 'package:valo_chat_app/app/data/providers/user_provider.dart';
-import 'package:valo_chat_app/app/modules/auth/auth.dart';
 import 'package:valo_chat_app/app/modules/auth/reset_password/check_screen.dart';
 import 'package:valo_chat_app/app/utils/regex.dart';
 import 'package:valo_chat_app/app/widgets/widgets.dart';

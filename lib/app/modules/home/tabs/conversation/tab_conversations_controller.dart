@@ -30,6 +30,7 @@ class TabConversationController extends GetxController {
   @override
   void onReady() {
     paginateMessages();
+    refresh();
     Future.delayed(const Duration(milliseconds: 500), () {
       subscribeChannel();
     });
@@ -49,14 +50,13 @@ class TabConversationController extends GetxController {
     var conversation = conversations.value.firstWhere((e) =>
         e.lastMessage.message.conversationId == mess.message.conversationId);
     conversation.lastMessage.message = mess.message;
+    conversations.remove(conversation);
+    conversations.insert(0, conversation);
+    conversations.refresh();
     if (mess.message.senderId != LocalStorage.getUser()?.id) {
-      // conversation.unReadMessage++;
+      conversation.unReadMessage++;
       sendNotification(conversation);
     }
-    getConversations();
-    // conversations.remove(conversation);
-    // conversations.insert(0, conversation);
-    // conversations.refresh();
   }
 
   String lastMess(ConversationContent? conversation) {
@@ -111,7 +111,8 @@ class TabConversationController extends GetxController {
   /* 
     Get conversation
    */
-  Future getConversations() async {
+  Future<void> getConversations() async {
+    isLoading.value = true;
     List<ConversationContent> _conversations = [];
     String? currentUserId = LocalStorage.getUser()?.id;
     final response = await chatProvider.getConversations(0);
@@ -155,7 +156,7 @@ class TabConversationController extends GetxController {
         conversations.value = _conversations;
         isLoading.value = false;
         conversationsLoaded.value = true;
-        _page.value++;
+        conversations.refresh();
       } else {
         isLoading.value = false;
       }
@@ -167,7 +168,7 @@ class TabConversationController extends GetxController {
   /* 
     Get more conversation when scroll to end
    */
-  Future getMoreConversation() async {
+  Future<void> getMoreConversation() async {
     List<ConversationContent> _conversations = [];
     String currentUserId = LocalStorage.getUser()!.id;
     final response = await chatProvider.getConversations(_page.value);
@@ -212,7 +213,6 @@ class TabConversationController extends GetxController {
         isLoading.value = false;
         conversationsLoaded.value = true;
         _page.value++;
-        print(_page.value);
       }
     } else {
       isLoading.value = true;
@@ -243,20 +243,24 @@ class TabConversationController extends GetxController {
         id: 1,
         channelKey: '_message',
         title: conversation.lastMessage.userName,
-        body: conversation.lastMessage.message.content,
+        body: lastMess(conversation),
         backgroundColor: Colors.lightBlue,
       ),
     );
 
-    AwesomeNotifications().actionStream.listen((event) {
-      Get.toNamed('/chat', arguments: {
-        "id": conversation.conversation.id,
-        "name": conversation.conversation.name,
-        "participants": conversation.conversation.participants,
-        "avatar": conversation.conversation.imageUrl,
-        "isGroup": conversation.isGroup,
-        "unreadMess": conversation.unReadMessage,
+    try {
+      AwesomeNotifications().actionStream.listen((event) {
+        Get.toNamed('/chat', arguments: {
+          "id": conversation.conversation.id,
+          "name": conversation.conversation.name,
+          "participants": conversation.conversation.participants,
+          "avatar": conversation.conversation.imageUrl,
+          "isGroup": conversation.isGroup,
+          "unreadMess": conversation.unReadMessage,
+        });
       });
-    });
+    } catch (e) {
+      print(e);
+    }
   }
 }

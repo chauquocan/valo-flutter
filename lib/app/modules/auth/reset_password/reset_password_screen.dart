@@ -86,7 +86,7 @@ class ResetPasswordScreen extends GetView<ResetPasswordController> {
                 ),
                 //Sign up submit button
                 RoundedButton(
-                    buttonText: 'SIGN UP',
+                    buttonText: 'Reset password',
                     width: size.width * 0.8,
                     colors: const [AppColors.light, AppColors.light],
                     color: AppColors.light,

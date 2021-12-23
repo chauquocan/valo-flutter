@@ -6,6 +6,7 @@ import 'package:valo_chat_app/app/modules/search/add_friend/add_friend_controlle
 import 'package:valo_chat_app/app/modules/search/add_friend/friend_request_detail.dart';
 import 'package:valo_chat_app/app/modules/search/search_detail/search_detail_binding.dart';
 import 'package:valo_chat_app/app/themes/theme.dart';
+import 'package:valo_chat_app/app/widgets/widgets.dart';
 
 class FriendRequestScreen extends GetView<AddFriendController> {
   const FriendRequestScreen({Key? key}) : super(key: key);
@@ -13,8 +14,16 @@ class FriendRequestScreen extends GetView<AddFriendController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
-        title: const Text('Lời mời kết bạn'),
+      // appBar: AppBar(
+      //   title: const Text('Lời mời kết bạn'),
+      // ),
+      appBar: WidgetAppBar(
+        title: 'Lời mời kết bạn',
+        actions: [
+          IconButton(
+              onPressed: () => controller.getFriendReqList(),
+              icon: const Icon(Icons.refresh))
+        ],
       ),
       body: SafeArea(
         child: GetX<AddFriendController>(
@@ -62,7 +71,7 @@ class FriendRequestScreen extends GetView<AddFriendController> {
                                           controller.friendReqList
                                               .remove(friendReq)
                                         },
-                                    icon: Icon(Icons.check))),
+                                    icon: const Icon(Icons.check))),
                             Tooltip(
                                 message: 'Từ chối',
                                 child: IconButton(
@@ -72,7 +81,7 @@ class FriendRequestScreen extends GetView<AddFriendController> {
                                           controller.friendReqList
                                               .remove(friendReq)
                                         },
-                                    icon: Icon(Icons.close))),
+                                    icon: const Icon(Icons.close))),
                           ],
                         ));
                   },

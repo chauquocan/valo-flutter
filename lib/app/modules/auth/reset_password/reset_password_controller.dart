@@ -25,6 +25,8 @@ class ResetPasswordController extends GetxController {
       final response = await authProvider.resetPassword(phone, newPassword);
       if (response.ok) {
         Get.offAllNamed('/');
+        customSnackbar()
+            .snackbarDialog('Successfully', 'Change password successfully');
       } else {
         customSnackbar().snackbarDialog('Something wrong', 'Try again');
       }

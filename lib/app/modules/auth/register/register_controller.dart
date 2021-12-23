@@ -31,12 +31,13 @@ class RegisterController extends GetxController {
       };
       final response = await authProvider.register(registerRequest);
       if (response.ok) {
+        customSnackbar().snackbarDialog('Sign up successfully', 'now you can sign in');
         Get.offAll(
           () => WelcomeScreen(),
         );
       } else {
         Get.back();
-        Get.snackbar('Sign up failed', 'something went wrong');
+        customSnackbar().snackbarDialog('Sign up failed', 'something went wrong');
       }
     }
   }

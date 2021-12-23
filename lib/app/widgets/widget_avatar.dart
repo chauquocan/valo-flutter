@@ -25,7 +25,7 @@ class WidgetAvatar extends StatelessWidget {
       child: Stack(
         children: [
           _buildAvatar(),
-          showDot ? _buildDot() : SizedBox(),
+          showDot ? _buildDot() :const  SizedBox(),
         ],
       ),
     );

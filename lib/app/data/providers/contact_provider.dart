@@ -3,7 +3,6 @@ import 'package:valo_chat_app/app/data/connect_service.dart';
 import 'package:valo_chat_app/app/data/models/contact_model.dart';
 import 'package:valo_chat_app/app/data/models/network_response.dart';
 import 'package:valo_chat_app/app/data/models/response_model.dart';
-import 'package:valo_chat_app/app/utils/storage_service.dart';
 
 class ContactProvider {
   //end point
