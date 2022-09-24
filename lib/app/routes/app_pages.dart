@@ -70,10 +70,10 @@ abstract class AppPages {
       page: () => ChatScreen(),
       binding: ChatBinding(),
     ),
-    GetPage(
-      name: Routes.SETTING,
-      page: () => SettingScreen(),
-      binding: SettingBinding(),
-    ),
+    // GetPage(
+    //   name: Routes.SETTING,
+    //   page: () => SettingScreen(),
+    //   binding: SettingBinding(),
+    // ),
   ];
 }

@@ -3,7 +3,7 @@ description: Valo chat app getx
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: ">=2.12.0 <3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -57,7 +57,7 @@ dependencies:
   #socket
   stomp_dart_client: ^0.4.3
   persistent_bottom_nav_bar: ^4.0.2
-  
+
   #phone permission
   permission_handler: ^8.3.0
 
@@ -66,7 +66,6 @@ dependencies:
   flutter_keyboard_visibility: ^5.1.0
   contacts_service: ^0.6.3
   connectivity_plus: ^2.0.3
-  settings_ui: ^1.0.0
 
   file_picker: ^4.2.4
   photo_view: ^0.13.0
@@ -81,7 +80,6 @@ dependencies:
   video_player: ^2.2.7
   video_thumbnail: ^0.4.3
 
-  
 dev_dependencies:
   flutter_launcher_icons: ^0.9.2
   flutter_native_splash: ^1.2.4
@@ -98,13 +96,13 @@ dev_dependencies:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 flutter_icons:
-  android: 'launcher_icon'
+  android: "launcher_icon"
   ios: true
-  image_path: 'assets/icons/valo.png'
+  image_path: "assets/icons/valo.png"
 # The following section is specific to Flutter.
 flutter_native_splash:
-  color: '#ffffff'
-  image: 'assets/icons/valo.png'
+  color: "#ffffff"
+  image: "assets/icons/valo.png"
 flutter:
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
